@@ -8,14 +8,12 @@ Bu sistemi hazırlarken **chroot** ve **busybox** komutlarını  kullanarak sist
 
 Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız. 
 
-.. code-block:: shell
-
-	$HOME/distro/rootfs/busybox
-	$HOME/distro/rootfs/init
-	$HOME/distro/iso/boot/initrd.img
-	$HOME/distro/iso/boot/vmlinuz
-	$HOME/distro/iso/boot/grub/grub.cfg
-	$HOME/distro/distro.iso
+1. $HOME/distro/rootfs/busybox
+2. $HOME/distro/rootfs/init
+3. $HOME/distro/iso/boot/initrd.img
+4. $HOME/distro/iso/boot/vmlinuz
+5. $HOME/distro/iso/boot/grub/grub.cfg
+6. $HOME/distro/distro.iso
 
 Şimdi sırasıyla dosya konumlarına uygun şekilde dizin ve dosyalarımızı oluşturalım.
 
@@ -54,7 +52,7 @@ Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına g�
 **$HOME/distro/rootfs/init**
 ----------------------------
 	
-**$HOME/distro/rootfs/init** konumuna init text dosyası oluşturulur(nano, gedit vb.).
+**$HOME/distro/rootfs/** konumuna **init** text dosyası oluşturulur(nano, gedit vb.).
 Aşağıdaki içerik oluşturulan **init** dosyası içine eklenir.
 
 .. code-block:: shell
