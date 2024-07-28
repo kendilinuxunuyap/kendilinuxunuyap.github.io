@@ -22,7 +22,7 @@ Bu dosyayı doğrudan derlersek **main** fonksiyonu bulunmadığı için aşağ�
 
 Kütüphane derlemek için aşağıdaki iki komutu arka arkaya kullanmalıyız.
 
-İlk satır **denem.o** dosyası oluşturacaktır. 
+İlk satır **deneme.o** dosyası oluşturacaktır. 
 ikinci satırımızda **-shared** parametresi kullanarak **main** bulunmayan kütüphane dosyamız derlendi ve **deneme.so** dosyası oluşturulmuş olur.
 
 .. code-block:: shell

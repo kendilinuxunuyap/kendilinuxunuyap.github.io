@@ -36,7 +36,7 @@ Busybox derlemek için öncelikle **make defconfig** kullanılarak veya önceden
 
 Derleme bittiğinde kaynak kodun bulunduğu dizinde busybox dosyamız oluşmuş olur.
 
-Static olarak derlemiş olduğumuz busyboxu kullanarak milimal kök dizin oluşturabiliriz. Bunun için öncelikle boş bir dizin açıp içerisine busyboxu kopyalayalım.
+Static olarak derlemiş olduğumuz busyboxu kullanarak minimal kök dizin oluşturabiliriz. Bunun için öncelikle boş bir dizin açıp içerisine busyboxu kopyalayalım.
 
 .. code-block:: shell
 

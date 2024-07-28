@@ -6,16 +6,16 @@ Bu dağıtımı hazırlaken Debian dağıtımı kullanıldı. Bazı paketler iç
 
 Bir dağıtım hazırlamak için çeşitli paketler lazımdır. Bu paketler;
 
-- **debootstrap	:** Dağıtım hazırlarken kullanılacak chroot uygulaması bu paket ile gelmektedir. chroot ayrı bir konu başlığıyla anlatılacaktır.
+- **debootstrap	:** Dağıtım hazırlarken kullanılacak **chroot** uygulaması bu paket ile gelmektedir. chroot ayrı bir konu başlığıyla anlatılacaktır.
 - **make	:** Paket derlemek için uygulama
 - **squashfs-tools:** Hazırladığımız sistemi sıkıştırılmış dosya halinde sistem görüntüsü oluşturmamızı sağlayan paket.
 - **gcc		:** c kodlarımızı derleyeceğimiz derleme aracı.
 - **wget	:** tarball vb. dosyaları indirmek için kullanılacak uygulama.
 - **unzip	:** Sıkıştırmış zip dosyalarını açmak için uygulama
 - **xz-utils	:** Yüksek sıkıştırma yapan sıkıştırma uygulaması
-- **tar		:** tar uzantılı dosya sıkıştırma ve açma içiçn kullanılan uygulama.
+- **tar		:** tar uzantılı dosya sıkıştırma ve açma için kullanılan uygulama.
 - **zstd	:** Yüksek sıkıştırma yapan sıkıştırma uygulaması 
-- **grub-mkrescue :** Hazırladığımız iso dizinini iso yapmak için kullanılan uygulama
+- **grub-mkrescue :** Hazırladığımız ve paketleri kurduğumuz dizini, iso dosyası yapmak için kullanılan uygulama
 - **qemu-system-x86:** iso dosyalarını test etmek ve kullanmak için sanal makina emülatörü uygulaması.
 
 

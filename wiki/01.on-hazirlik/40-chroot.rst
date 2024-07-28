@@ -6,7 +6,7 @@ Chroot Nedir?
 chroot komutu çalışan sistem üzerinde belirli bir klasöre root yetkisi verip sadece o klasörü sanki linux sistemi gibi çalıştıran bir komuttur. Sağladığı avantajlar çok fazladır. Bunlar;
 
     - Sistem tasarlama
-    - Sitem üzerinde yeni dağıtımlara müdahale etme ve sorun çözme
+    - Sistem üzerinde yeni dağıtımlara müdahale etme ve sorun çözme
     - Kullanıcı kendine özel geliştirme ortamı oluşturabilir.
     - Yazılım bağımlıkları sorunlarına çözüm olabilir.
     - Kullanıcıya sadece kendisine verilen alanda sınırsız yetki verme vb.
