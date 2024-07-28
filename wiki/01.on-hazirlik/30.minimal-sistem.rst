@@ -22,7 +22,8 @@ Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız.
 **Dizinlerin Oluşturulması**
 ----------------------------
 
-Sitemimizi istediğimiz bir yerinde terminal açarak aşağıdaki komutları sırasıyla çalıştıralım. 
+Sitemimizi istediğimiz bir yerde terminal açarak aşağıdaki komutları sırasıyla çalıştıralım.
+Komutları kopyala yapıştır yapabilirsiniz.
 
 .. code-block:: shell
 
@@ -53,23 +54,24 @@ Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına g�
 **$HOME/distro/rootfs/init**
 ----------------------------
 	
-**init** dosyasını aşağıdaki komutlarla  oluşturur ve içeriğine **EOF** ifadeleri arasındaki komutları ekelyecektir.
+**$HOME/distro/rootfs/init** konumuna init text dosyası oluşturulur(nano, gedit vb.).
+Aşağıdaki içerik oluşturulan **init** dosyası içine eklenir.
 
 .. code-block:: shell
 
-cd $HOME/distro/rootfs
-cat > $HOME/distro/rootfs/init << EOF
-#!busybox ash
-PATH=/bin
-/busybox mkdir /bin
-/busybox --install -s /bin
-/busybox ash
-EOF
+	#!busybox ash
+	PATH=/bin
+	/busybox mkdir /bin
+	/busybox --install -s /bin
+	/busybox ash
+
 	
 	
+init çalıştırılabilir yapılır.
 
+.. code-block:: shell
 
-**chmod +x init** komutu ile çalıştırılır yapılır.
+	chmod +x init #komutu ile çalıştırılır yapılır.
 
 **$HOME/distro/iso/boot/initrd.img**
 ------------------------------------
@@ -95,21 +97,23 @@ Aslında bu işlemi yapan şey **busybox** ikili dosyası.
 **$HOME/distro/iso/boot/grub/grub.cfg**
 ---------------------------------------
 
-Aşağıdaki mkodlar **grub.cfg**  dosyasını oluşturulur ve içeriğine **EOF** ifadeleri arasındaki komutları ekler.
+**$HOME/distro/iso/boot/grub/** konumuna **grub.cfg** dosyası oluşturun.
+Aşağıdaki komutları **grub.cfg**  dosyası içine eklenir.
 
 .. code-block:: shell
 
-cd $HOME/distro/iso/boot/grub/
-cat >$HOME/distro/iso/boot/grub/grub.cfg << EOF
-linux /boot/vmlinuz
-initrd /boot/initrd.img
-boot
-EOF
+	linux /boot/vmlinuz
+	initrd /boot/initrd.img
+	boot
 
 **$HOME/distro/distro.iso**
 ---------------------------
 
-**grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso** komutuyla iso doyamız oluşturulur.
+iso oluşturulur.
+
+.. code-block:: shell
+
+	grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso # komutuyla iso doyamız oluşturulur.
 
 Artık sistemi açabilen ve tty açıp bize suna bir yapı oluşturduk.
 
@@ -117,8 +121,13 @@ Artık sistemi açabilen ve tty açıp bize suna bir yapı oluşturduk.
 **Dağıtımın Test Edilmesi**
 ---------------------------
  
-Hazırlanan   $HOME/distro/distro.iso dağıtımımız qemu veya virtualbox ile test edilebilir.
+Hazırlanan   **$HOME/distro/distro.iso** dağıtımımız qemu veya virtualbox ile test edilebilir.
 
-**qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G** komutuyla çalıştırıp test edebiliriz.. 
+Aşağıdaki komutla çalıştırıp test edebiliriz.
+
+.. code-block:: shell
+
+	qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G
+
 Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk.
 
