@@ -1,6 +1,7 @@
 Minimal Dağıtım Oluşturma
 ++++++++++++++++++++++++++
 
+Bu minimal dağıtımı oluşturmamızın amacı bu dokümanda anlatılacak dağıtım hazırlama aşamalarını anlaşılması içindir.
 Dağıtım oluşturmak için kernel ve busybox dosyalarımızın olması yeterlidir. **busybox** dosyasının nasıl elde edileceği busybox bölümünde anlatılmıştır. **kernel** ise mevcut sistemimin kernelini kullanacağız. kernel **/boot/vmlinux** konumundan alabiliriz.
 
 Bu sistemi hazırlarken **chroot** ve **busybox** komutlarını  kullanarak sistemi hazırlayacağız ve test edeceğiz. **chroot** ve **busybox** kullanımı için dokümandanki ilgili konu başlığına bakınız.
@@ -35,9 +36,12 @@ Sitemimizi istediğimiz bir yerinde terminal açarak aşağıdaki komutları sı
 -------------------------------
 
 busybox aşağıdaki komutlarla  **$HOME/distro/rootfs/busybox** konumuna kopyalanak sistemimiz için hazır hale getirilir.
+Bu sistemi debian ortamında hazırlamaktayız. İsterseniz static busybox derleyebilirsiniz. busybox konusu altında anlatılmaktadır.
+isterseniz derlemeden mevcut sistemin altında bulunan static busybox kullanabiliriz. 
+Eğer yoksa **sudo apt install busybox-static -y** komutuyla debian sistemimize static busybox yükleyebiliriz. Ben debian üzerine yüklediğim busybox'ı kullanacağım. Eğer sistemde yoksa **sudo apt install busybox-static -y** komutuyla yükleyiniz.
 
 .. code-block:: shell
-
+	
 	cd $HOME/distro/rootfs
 	cp /bin/busybox $HOME/distro/rootfs/busybox	
 	ldd ./busybox	 
@@ -48,25 +52,24 @@ Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına g�
 
 **$HOME/distro/rootfs/init**
 ----------------------------
+	
+**init** dosyasını aşağıdaki komutlarla  oluşturur ve içeriğine **EOF** ifadeleri arasındaki komutları ekelyecektir.
 
 .. code-block:: shell
 
-	cd $HOME/distro/rootfs
-	**touch init** #dosyasını oluştur ve içeriğine aşağıdaki kodları ekle kaydet.
-
-**init içeriği**
-
-.. code-block:: shell
-
-	#!busybox ash
-	PATH=/bin
-	/busybox mkdir /bin
-	/busybox --install -s /bin
-	/busybox ash
+cd $HOME/distro/rootfs
+cat > $HOME/distro/rootfs/init << EOF
+#!busybox ash
+PATH=/bin
+/busybox mkdir /bin
+/busybox --install -s /bin
+/busybox ash
+EOF
+	
 	
 
 
-**chomod +x init** komutu ile çalıştırılır yapılır.
+**chmod +x init** komutu ile çalıştırılır yapılır.
 
 **$HOME/distro/iso/boot/initrd.img**
 ------------------------------------
@@ -92,19 +95,16 @@ Aslında bu işlemi yapan şey **busybox** ikili dosyası.
 **$HOME/distro/iso/boot/grub/grub.cfg**
 ---------------------------------------
 
-.. code-block:: shell
-	
-	touch $HOME/distro/iso/boot/grub/grub.cfg  #dosyası oluşturulur ve içeriği aşağıdaki gibi düzenlenir ve kaydedilir.
-
-**grub.cfg içeriği**
+Aşağıdaki mkodlar **grub.cfg**  dosyasını oluşturulur ve içeriğine **EOF** ifadeleri arasındaki komutları ekler.
 
 .. code-block:: shell
-	
-	linux /boot/vmlinuz
-	initrd /boot/initrd.img
-	boot
 
-Yukarıdaki üç satır **$HOME/distro/iso/boot/grub/grub.cfg** dosyasının içeri olacak şekilde ayarlanır.
+cd $HOME/distro/iso/boot/grub/
+cat >$HOME/distro/iso/boot/grub/grub.cfg << EOF
+linux /boot/vmlinuz
+initrd /boot/initrd.img
+boot
+EOF
 
 **$HOME/distro/distro.iso**
 ---------------------------
