@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>sfdisk Nedir &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/14-sfdisk.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="İmza Doğrulama" href="15-imzadogrulama.html" />
+    <link rel="prev" title="kmod Nedir?" href="13-modul-kmod.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="sfdisk-nedir">
+<h1>sfdisk Nedir<a class="headerlink" href="#sfdisk-nedir" title="Permalink to this heading">¶</a></h1>
+<p>sfdisk, Linux işletim sistemlerinde disk bölümlerini yönetmek için kullanılan bir komuttur. Disk bölümlerini oluşturmak, düzenlemek, silmek veya görüntülemek için sfdisk'i kullanabilirsiniz.</p>
+<section id="disk-bolumlerini-goruntuleme">
+<h2><strong>Disk Bölümlerini Görüntüleme:</strong><a class="headerlink" href="#disk-bolumlerini-goruntuleme" title="Permalink to this heading">¶</a></h2>
+<p>Diskinizdeki mevcut bölümleri görüntülemek için sfdisk komutunu kullanabilirsiniz. Aşağıdaki komutu kullanarak mevcut bölümleri listeleyebilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sfdisk<span class="w"> </span>-l<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+</section>
+<section id="disk-bolumleri-olusturma">
+<h2><strong>Disk Bölümleri Oluşturma:</strong><a class="headerlink" href="#disk-bolumleri-olusturma" title="Permalink to this heading">¶</a></h2>
+<p>Yeni bir disk bölümü oluşturmak için sfdisk komutunu kullanabilirsiniz. Örneğin, /dev/sda üzerinde yeni bir bölüm oluşturmak için aşağıdaki komutu kullanabilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;,,L&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sfdisk<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+<p>Bu komut, kullanılabilir tüm alanı kullanarak bir bölüm oluşturacaktır.</p>
+</section>
+<section id="disk-bolumlerini-silme">
+<h2><strong>Disk Bölümlerini Silme:</strong><a class="headerlink" href="#disk-bolumlerini-silme" title="Permalink to this heading">¶</a></h2>
+<p>Bir disk bölümünü silmek için sfdisk komutunu kullanabilirsiniz. Örneğin, /dev/sda üzerindeki bir bölümü silmek için aşağıdaki komutu kullanabilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;,,L&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sfdisk<span class="w"> </span>--delete<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+<p>Bu komut, belirtilen bölümü silecektir.</p>
+<p>sfdisk komutunun daha fazla seçeneği ve kullanımı vardır. Daha fazla bilgi için sfdisk komutunun man sayfasını inceleyebilirsiniz:</p>
+</section>
+<section id="disk-etiketi-belirleme">
+<h2><strong>Disk Etiketi Belirleme</strong><a class="headerlink" href="#disk-etiketi-belirleme" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;label: dos&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sfdisk<span class="w"> </span>/dev/vda<span class="w"> </span><span class="c1">#dos label</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;label: gpt&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sfdisk<span class="w"> </span>/dev/vda<span class="w"> </span><span class="c1">#gpt label</span>
+</pre></div>
+</div>
+</section>
+<section id="bazi-ornekler">
+<h2><strong>Bazı Örnekler</strong><a class="headerlink" href="#bazi-ornekler" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="ornek1">
+<h2><strong>Örnek1:</strong><a class="headerlink" href="#ornek1" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sfdisk<span class="w"> </span>/dev/sdf<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<span class="s"> 0,512</span>
+<span class="s"> ,512</span>
+<span class="s"> ;</span>
+<span class="s"> EOF</span>
+
+/dev/sdf1<span class="w"> </span><span class="m">0</span>+<span class="w"> </span><span class="m">511</span><span class="w"> </span><span class="m">512</span>-<span class="w"> </span><span class="m">4112639</span>+<span class="w"> </span><span class="m">83</span><span class="w"> </span>Linux
+/dev/sdf2<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">1023</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">4112640</span><span class="w"> </span><span class="m">83</span><span class="w"> </span>Linux
+/dev/sdf3<span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="m">1043</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="m">160650</span><span class="w"> </span><span class="m">83</span><span class="w"> </span>Linux
+</pre></div>
+</div>
+</section>
+<section id="ornek2">
+<h2><strong>Örnek2:</strong><a class="headerlink" href="#ornek2" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sfdisk<span class="w"> </span>/dev/vda<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+<span class="s">label: dos</span>
+<span class="s">label-id: 0xaaaaaaaa</span>
+<span class="s"># comment:</span>
+<span class="s">start=, size= 50M,  type= 7 , bootable</span>
+<span class="s">start=, size= 650M, type= 27</span>
+<span class="s">start=, size= 45G , type= 7</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</section>
+<section id="ornek3">
+<h2><strong>Örnek3:</strong><a class="headerlink" href="#ornek3" title="Permalink to this heading">¶</a></h2>
+<p>Bu örnekte ilk bölüm 1GB ve ikinci bölüm ise diskin geri kalan kısmıdır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;label: gpt\n,1GiB\n,&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sfdisk<span class="w"> </span>/dev/vda
+veya
+sfdisk<span class="w"> </span>/dev/vda<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+<span class="s">label: gpt</span>
+<span class="s">,1GiB</span>
+<span class="s">,</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</section>
+<section id="ornek4">
+<h2><strong>Örnek4:</strong><a class="headerlink" href="#ornek4" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>my.layout
+<span class="c1"># partition table of /dev/sda</span>
+unit:<span class="w"> </span>sectors
+
+/dev/sda1<span class="w"> </span>:<span class="w"> </span><span class="nv">start</span><span class="o">=</span><span class="w">     </span><span class="m">2048</span>,<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="w">   </span><span class="m">497664</span>,<span class="w"> </span><span class="nv">Id</span><span class="o">=</span><span class="m">83</span>,<span class="w"> </span>bootable
+/dev/sda2<span class="w"> </span>:<span class="w"> </span><span class="nv">start</span><span class="o">=</span><span class="w">   </span><span class="m">501758</span>,<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">1953021954</span>,<span class="w"> </span><span class="nv">Id</span><span class="o">=</span><span class="w"> </span><span class="m">5</span>
+/dev/sda3<span class="w"> </span>:<span class="w"> </span><span class="nv">start</span><span class="o">=</span><span class="w">        </span><span class="m">0</span>,<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="w">        </span><span class="m">0</span>,<span class="w"> </span><span class="nv">Id</span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+/dev/sda4<span class="w"> </span>:<span class="w"> </span><span class="nv">start</span><span class="o">=</span><span class="w">        </span><span class="m">0</span>,<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="w">        </span><span class="m">0</span>,<span class="w"> </span><span class="nv">Id</span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+/dev/sda5<span class="w"> </span>:<span class="w"> </span><span class="nv">start</span><span class="o">=</span><span class="w">   </span><span class="m">501760</span>,<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">1953021952</span>,<span class="w"> </span><span class="nv">Id</span><span class="o">=</span>8e
+</pre></div>
+</div>
+<p>Aynı disk bölümlemesini ve düzenini başka bir aygıta uygulamak için:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sfdisk<span class="w"> </span>/dev/sdb<span class="w"> </span>&lt;<span class="w"> </span>my.layout
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sfdisk Nedir</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#disk-bolumlerini-goruntuleme"><strong>Disk Bölümlerini Görüntüleme:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disk-bolumleri-olusturma"><strong>Disk Bölümleri Oluşturma:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disk-bolumlerini-silme"><strong>Disk Bölümlerini Silme:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disk-etiketi-belirleme"><strong>Disk Etiketi Belirleme</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bazi-ornekler"><strong>Bazı Örnekler</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ornek1"><strong>Örnek1:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ornek2"><strong>Örnek2:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ornek3"><strong>Örnek3:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ornek4"><strong>Örnek4:</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html">ld(linker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/14-sfdisk.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Live Sistem Oluşturma &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/11-liveolusturma.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="busybox Nedir?" href="12-busybox.html" />
+    <link rel="prev" title="Qemu Kullanımı" href="10-qemu.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="live-sistem-olusturma">
+<h1>Live Sistem Oluşturma<a class="headerlink" href="#live-sistem-olusturma" title="Permalink to this heading">¶</a></h1>
+<p>Canlı sistem oluşturma veya ram üzerinden çalışan sistem hazırlamak için SquashFS dosya sisteminde dağıtım sıkıştırılmalıdır. Bu bağlamda SquashFS dosya sistemi ve sıkıştıma nasıl yapılır bu dokümanda anlatılmaktadır.</p>
+<section id="squashfs-nedir">
+<h2>SquashFS Nedir?<a class="headerlink" href="#squashfs-nedir" title="Permalink to this heading">¶</a></h2>
+<p>SquashFS, Linux işletim sistemlerinde sıkıştırılmış bir dosya sistemidir. Bu dosya sistemi, sıkıştırma algoritması kullanarak dosyaları sıkıştırır ve ardından salt okunur bir dosya sistemine dönüştürür. SquashFS, özellikle gömülü sistemlerde ve Linux dağıtımlarında kullanılan bir dosya sistemidir.</p>
+</section>
+<section id="squashfs-olusturma">
+<h2>SquashFS Oluşturma<a class="headerlink" href="#squashfs-olusturma" title="Permalink to this heading">¶</a></h2>
+<p>#mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards
+mksquashfs initrd $HOME/distro/filesystem.squashfs -comp xz -wildcards</p>
+</section>
+</section>
+<section id="cdrom-erisimi">
+<h1>Cdrom Erişimi<a class="headerlink" href="#cdrom-erisimi" title="Permalink to this heading">¶</a></h1>
+<p>/dev/sr0, Linux işletim sistemlerinde bir CD veya DVD sürücüsünü temsil eden bir aygıt dosyasıdır. Bu dosya, CD veya DVD sürücüsünün fiziksel cihazını temsil eder ve kullanıcıların bu sürücüye erişmesini sağlar.</p>
+<p>/dev/sr0 dosyası, Linux'un aygıt dosyası sistemi olan /dev dizininde bulunur. Bu dosya, Linux çekirdeği tarafından otomatik olarak oluşturulur ve sürücüye bağlı olarak farklı bir isim alabilir. Örneğin, ikinci bir CD veya DVD sürücüsü /dev/sr1 olarak adlandırılabilir.</p>
+<p>Bu aygıt dosyası, kullanıcıların CD veya DVD'leri okumasına veya yazmasına olanak tanır. Örneğin, bir CD'yi okumak için aşağıdaki gibi bir komut kullanabilirsiniz:</p>
+<p>$ cat /dev/sr0</p>
+<section id="cdrom-baglama">
+<h2>Cdrom Bağlama<a class="headerlink" href="#cdrom-baglama" title="Permalink to this heading">¶</a></h2>
+<p>mkdir cdrom
+mount /dev/sr0 /cdrom</p>
+<p>Bu işlem sonucunda cdrom bağlanmış olacaktır. iso dosyamızın içerisine erişebiliriz.</p>
+</section>
+<section id="squashfs-dosyasini-bulma">
+<h2>squashfs Dosyasını Bulma<a class="headerlink" href="#squashfs-dosyasini-bulma" title="Permalink to this heading">¶</a></h2>
+<p>Genellikle isoların içine squashfs dosyası oluşturlur. Bu sayede live yükleme yapılabilir.
+Örneğin /live/filesystem.squashfs benim imajlarımda böyle konumlandırıyorum.</p>
+</section>
+<section id="squashfs-baglama">
+<h2>squashfs Bağlama<a class="headerlink" href="#squashfs-baglama" title="Permalink to this heading">¶</a></h2>
+<p>squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekmektedir. eğer yüklemediyseniz</p>
+<p>modprobe loop #loop modülü yüklenir.</p>
+<p>mkdir canli
+mount -t squashfs -o loop cdrom/live/filesystem.squashfs /canli</p>
+</section>
+</section>
+<section id="squashfs-sistemine-gecis">
+<h1>squashfs Sistemine Geçiş<a class="headerlink" href="#squashfs-sistemine-gecis" title="Permalink to this heading">¶</a></h1>
+<p>Yukarıdaki adımlarda squashfs doayamızı /canli adında dizine bağlamış olduk. Bu aşamadan sonra sistemimizin bir kopyası olan squashfs canlıdan erişebilir veya sistemi buradan başlatabiliriz.</p>
+<p>squashfs dosya sistemimize bağlanmak için;</p>
+<p>chroot canli /bin/bash</p>
+<p>Buişlemin yerine exec komutuyla bağlanırsak sistemimiz id &quot;1&quot; değeriyle çalıştıracaktır.
+Eğer sistemin bu dosya sistemiyle açılmasını istiyorsak exec ile çalıştırıp id=1 olmasına dikkat etmeliyiz.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Live Sistem Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-nedir">SquashFS Nedir?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-olusturma">SquashFS Oluşturma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cdrom-erisimi">Cdrom Erişimi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cdrom-baglama">Cdrom Bağlama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-dosyasini-bulma">squashfs Dosyasını Bulma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-baglama">squashfs Bağlama</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html">ld(linker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/11-liveolusturma.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

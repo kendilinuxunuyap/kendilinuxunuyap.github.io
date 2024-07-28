@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Yardımcı Konular &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/index.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Chroot Nedir?" href="1-chroot.html" />
+    <link rel="prev" title="Uefi Sistem Kurulumu" href="../08.iso-kurulumu/5-uefi-sistem-kurulum.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="yardimci-konular">
+<h1>Yardımcı Konular<a class="headerlink" href="#yardimci-konular" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#bagimlilik-scripti">Bağımlılık Scripti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#basit-sistem-olusturma">Basit Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#sistem-dizinin-olustrulmasi">Sistem Dizinin Oluştrulması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#ls-komutu">ls Komutu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#rmdir-komutu">rmdir Komutu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#mkdir-komutu">mkdir Komutu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#bash-komutu">bash Komutu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html#chroot-sistemde-calisma">chroot Sistemde Çalışma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#qemu-nedir">Qemu Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#sisteme-kurulum">Sisteme Kurulum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#sistem-hizlandirilmasi">Sistem Hızlandırılması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#boot-menu-acma">Boot Menu Açma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#uefi-kurulum-icin">Uefi kurulum için:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#qemu-host-erisimi">qemu Host Erişimi:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#vmlinuz-ve-initrd">vmlinuz ve initrd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#qemu-terminal-yonlendirmesi">qemu Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html#diskteki-sistemin-acilisini-terminale-yonlendirme">Diskteki Sistemin Açılışını Terminale Yönlendirme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-nedir">SquashFS Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-olusturma">SquashFS Oluşturma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-baglama">Cdrom Bağlama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-dosyasini-bulma">squashfs Dosyasını Bulma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-baglama">squashfs Bağlama</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#hello-c-dosyamiz">hello.c dosyamız</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#makefile-dosyamiz">Makefile dosyamız</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modulun-derlenmesi-ve-eklenip-kaldirilmasi">modülün derlenmesi ve eklenip kaldırılması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#not">Not:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#disk-bolumlerini-goruntuleme"><strong>Disk Bölümlerini Görüntüleme:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#disk-bolumleri-olusturma"><strong>Disk Bölümleri Oluşturma:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#disk-bolumlerini-silme"><strong>Disk Bölümlerini Silme:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#disk-etiketi-belirleme"><strong>Disk Etiketi Belirleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#bazi-ornekler"><strong>Bazı Örnekler</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#ornek1"><strong>Örnek1:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#ornek2"><strong>Örnek2:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#ornek3"><strong>Örnek3:</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html#ornek4"><strong>Örnek4:</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html#imza-olusturma">İmza Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html#belge-imzalama">Belge İmzalama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html#imzali-belge-dogrulama">İmzalı Belge Doğrulama</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15-imzadogrulama.html#bash-ile-dogrulama">bash ile Doğrulama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15-imzadogrulama.html#c-ile-dogrulama">c++ ile Doğrulama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15-imzadogrulama.html#c-libgpgme-ile-dogrulama">c++ libgpgme ile Doğrulama</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#kaynak-dosya-indirme">Kaynak Dosya İndirme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#kernel-ayarlari">Kernel Ayarları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#kernel-derleme">Kernel Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#modul-derleme">Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#modul-yukleme">Modül Yukleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#strip-yapma">Strip Yapma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#kernel-yukleme">Kernel Yukleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#header-yukleme">Header Yukleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html#libc-yukleme">libc Yukleme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#sistem-icin-gerekli-olan-dosyalar-ve-acilis-sureci">Sistem İçin Gerekli Olan Dosyalar Ve Açılış Süreci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#initrd-nedir-nasil-hazirlanir">initrd Nedir? Nasıl Hazırlanır?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#dizin-yapisinin-olusturulmasi">Dizin Yapısının oluşturulması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s1-distro-initrd-bin-busybox">S1- distro/initrd/bin/busybox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s2-s8-distro-initrd-bin-kmod">S2-S8 distro/initrd/bin/kmod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s9-distro-initrd-lib-modules-uname-r-moduller">S9- distro/initrd/lib/modules/$(uname -r)/moduller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s9-distro-initrd-bin-systemd-udevd">S9- distro/initrd/bin/systemd-udevd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s10-distro-initrd-bin-udevadm">S10- distro/initrd/bin/udevadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s12-distro-etc-udev-rules-d-s13-distro-lib-udev-rules-d">S12- distro/etc/udev/rules.d--S13- distro/lib/udev/rules.d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s14-distro-initrd-bin-init">S14- distro/initrd/bin/init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s15-distro-iso-initrd-img-s16-distro-iso-vmlinuz">S15- distro/iso/initrd.img - S16- distro/iso/vmlinuz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#s17-distro-iso-grub-grub-cfg">S17- distro/iso/grub/grub.cfg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#iso-olusturma">İso Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html#bagimliliklarin-tespiti">Bağımlılıkların Tespiti</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l1"><a class="reference internal" href="31-ld.html">ld(linker)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html#linker-turleri">Linker Türleri</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="34-polkit.html">polkit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html#tum-uygulamalarda-izin-verme">Tüm Uygulamalarda İzin Verme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html#bir-gruba-izin-verme">Bir Gruba İzin Verme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html#bir-grub-user-uygulamaya-izin-verme">Bir Grub-User-Uygulamaya İzin Verme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Yardımcı Konular</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html">ld(linker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

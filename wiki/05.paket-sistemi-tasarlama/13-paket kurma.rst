@@ -1,0 +1,104 @@
+Paket Kurmna
+++++++++++++
+
+Paket kurulurken paket içerisinde bulunan dosyalar sisteme kopyalanır.
+Daha sonra istenirse silinebilmesi için paket içeriğinde dosyaların listesi tutulur.
+Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
+
+Örneğin bir paketimiz zip dosyası olsun ve içinde dosya listesini tutan **.LIST** adında bir dosyamız olsun. Paketi aşağıdaki gibi kurabiliriz.
+
+.. code-block:: shell
+
+	cd /onbellek/dizini
+	unzip /dosya/yolu/paket.zip
+	cp -rfp ./* /
+	cp .LIST /paket/veri/yolu/paket.LIST
+
+Bu örnekte ilk satırda geçici dizine gittik ve paketi oraya açtık.
+Daha sonra paket içeriğini kök dizine kopyaladık.
+Daha sonra paket dosya listesini verilerin tutulduğu yere kopyaladık.
+Bu işlemden sonra paket kurulmuş oldu.
+
+**bps Paket Kurma Scripti Tasarlama**
+-------------------------------------
+
+Hazırlanan dağıtımda paketlerin kurulması için  sırasıyla aşağıdaki işlem adımları yapılmalıdır.
+
+1. Paketin indirilmesi
+2. İndirilen paketin /tmp/bps/kur/ konumunda açılması
+3. Açılan paket dosyalarının / konumuna yüklenmesi(kopyalanması)
+
+	- Paketin bağımlı olduğu paketler varmı kontrol edilir
+	- Yüklü olmayan bağımlılıklar yüklenir
+	
+4. Yüklenen paket bilgileri(name, version ve bağımlılık) yüklü paketlerin index bilgilerini tutan paket sistemi dizininindeki index dosyasına eklenir.	
+5. Açılan paket içindeki yüklenen dosyaların nereye yüklendiğini tutan file.index dosyası paket sistemi dizinine yüklenir
+
+
+Bu işlemler daha detaylandırılabilir. Bu işlemlerin detaylı olması paket sisteminin kullanılabilirliğini ve yetenekleri olarak ifade edebiliriz. İşlem adımlarını kolaylıkla sıralarken bunları yapacak script yazmak ciddi planlamalar yapılarak tasarlanması gerekmektedir.
+
+Burada basit seviyede kurulum yapan script kullanılmıştır. Detaylandırıldıkça doküman güncellenecektir. Kurulum scripti aşağıda görülmektedir.
+
+**bpskur** Scripti
+..................
+
+.. code-block:: shell
+	
+	#!/bin/sh
+	#set -e
+	paket=$1
+	paketname="name=\"${paket}\""
+	ROOTFS=$2
+	#echo "$paket"
+	indexpaket=$(cat /tmp/index.lst|grep $paketname)
+	name=""
+	version=""
+	depends=""
+	if [ -n "${indexpaket}" ]
+		then
+			namex=$(echo $indexpaket|cut -d":" -f1)
+			versionx=$(echo $indexpaket|cut -d":" -f2)
+			dependsx=$(echo $indexpaket|cut -d":" -f3)
+			name=${namex:6:-1}
+			version=${versionx:9:-1}
+			depends=${dependsx:9:-1}
+		else
+		echo "***********Paket Bulunamadı**********"; exit
+	fi
+
+	# paketi indirme
+	mkdir -p /tmp/bps
+	mkdir -p /tmp/bps/kur
+	rm -rf /tmp/bps/kur/*
+	./indirgentoo /tmp/bps/kur/${name}-${version}.tar.gz https://github.com/bayramkarahan/distro-binary-package/raw/master/${name}/${name}-${version}.bps
+	mkdir -p /var/lib/bps
+	cd /tmp/bps/kur/
+
+	# paketi açma
+	tar -xf ${name}-${version}.tar.gz
+	mkdir -p rootfs
+	tar -xf rootfs.tar.xz -C rootfs
+
+	# paketi kurma
+	cp -prfv rootfs/* $ROOTFS/
+
+	#name version depends /var/bps/index.lst eklenmesi
+	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>var/bps/index.lst
+	#paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
+	cp file.lst /var/bps/${name}-${version}.lst
+
+
+
+**bpskur** Scriptini Kullanma
+.............................
+
+Script iki parametre almaktadır. İlk parametre paket adı. İkinci parametremiz ise nereye kuracağını belirten hedef olmalıdır. Bu scripti kullanarak readline paketi aşağıdaki gibi kurulabilir. 
+
+.. code-block:: shell
+	
+	./bpskur readline /	
+
+.. raw:: pdf
+
+   PageBreak
+

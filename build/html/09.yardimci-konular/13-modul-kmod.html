@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>kmod Nedir? &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/13-modul-kmod.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="sfdisk Nedir" href="14-sfdisk.html" />
+    <link rel="prev" title="busybox Nedir?" href="12-busybox.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="kmod-nedir">
+<h1>kmod Nedir?<a class="headerlink" href="#kmod-nedir" title="Permalink to this heading">¶</a></h1>
+<p>Linux çekirdeği ile donanım arasındaki haberleşmeyi sağlayan kod parçalarıdır. Bu kod parçalarını kernele eklediğimizde kerneli tekrardan derlememiz gerekmektedir. Her eklenen koddan sonra kernel derleme, kod çıkarttığımzda kernel derlemek ciddi bir iş yükü ve karmaşa yaratacaktır.</p>
+<p>Bu sorunların çözümü için modul vardır. moduller kernele istediğimiz kod parpalarını ekleme ya da çıkartma yapabiliyoruz. Bu işlemleri yaparken kenel derleme işlemi yapmamıza gerek yok.</p>
+<p>Kernele modul yükleme kaldırma için kmod aracı kullanılmaktadır. kmaod aracı;</p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/bin/depmod
+ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/bin/insmod
+ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/initrd/bin/lsmod
+ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/bin/modinfo
+ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/bin/modprobe
+ln<span class="w"> </span>-s<span class="w"> </span>kmod<span class="w"> </span>/bin/rmmod
+</pre></div>
+</div>
+</div></blockquote>
+<p>şeklinde sembolik bağlarla yeni araçlar oluşturulmuştur.</p>
+<p><strong>lsmod :</strong> yüklü modulleri listeler</p>
+<p><strong>insmod:</strong> tek bir modul yükler</p>
+<p><strong>rmmod:</strong> tek bir modul siler</p>
+<p><strong>modinfo:</strong> modul hakkında bilgi alınır</p>
+<p><strong>modprobe:</strong> insmod komutunun aynısı fakat daha işlevseldir. module ait bağımlı olduğu modülleride yüklemektedir. modprobe  modülü /lib/modules/ dizini altında aramaktadır.</p>
+<p><strong>depmod:</strong> /lib/modules dizinindeki modüllerin listesini günceller. Fakat başka bir dizinde ise basedir=konum şeklinde belirtmek gerekir. konum dizininde /lib/modules/** şeklinde kalsörler olmalıdır.</p>
+</section>
+<section id="modul-yazma">
+<h1>Modul Yazma<a class="headerlink" href="#modul-yazma" title="Permalink to this heading">¶</a></h1>
+<section id="hello-c-dosyamiz">
+<h2>hello.c dosyamız<a class="headerlink" href="#hello-c-dosyamiz" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/module.h&gt;</span>
+<span class="c1">#include &lt;linux/kernel.h&gt;</span>
+<span class="c1">#include &lt;linux/init.h&gt;</span>
+MODULE_DESCRIPTION<span class="o">(</span><span class="s2">&quot;Hello World examples&quot;</span><span class="o">)</span><span class="p">;</span>
+MODULE_LICENSE<span class="o">(</span><span class="s2">&quot;GPL&quot;</span><span class="o">)</span><span class="p">;</span>
+MODULE_AUTHOR<span class="o">(</span><span class="s2">&quot;Bayram&quot;</span><span class="o">)</span><span class="p">;</span>
+static<span class="w"> </span>int<span class="w"> </span>__init<span class="w"> </span>hello_init<span class="o">(</span>void<span class="o">)</span>
+<span class="o">{</span>
+printk<span class="o">(</span>KERN_INFO<span class="w"> </span><span class="s2">&quot;Hello world!\n&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="k">return</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="o">}</span>
+static<span class="w"> </span>void<span class="w"> </span>__exit<span class="w"> </span>hello_cleanup<span class="o">(</span>void<span class="o">)</span>
+<span class="o">{</span>
+printk<span class="o">(</span>KERN_INFO<span class="w"> </span><span class="s2">&quot;remove module.\n&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="o">}</span>
+module_init<span class="o">(</span>hello_init<span class="o">)</span><span class="p">;</span>
+module_exit<span class="o">(</span>hello_cleanup<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="makefile-dosyamiz">
+<h2>Makefile dosyamız<a class="headerlink" href="#makefile-dosyamiz" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>obj-m+<span class="o">=</span>my_module.o
+all:
+<span class="w">    </span>make<span class="w"> </span>-C<span class="w"> </span>/lib/modules/<span class="k">$(</span>shell<span class="w"> </span>uname<span class="w"> </span>-r<span class="k">)</span>/build<span class="w"> </span><span class="nv">M</span><span class="o">=</span><span class="k">$(</span>PWD<span class="k">)</span><span class="w"> </span>modules
+clean:
+<span class="w">    </span>make<span class="w"> </span>-C<span class="w"> </span>/lib/modules/<span class="k">$(</span>shell<span class="w"> </span>uname<span class="w"> </span>-r<span class="k">)</span>/build<span class="w"> </span><span class="nv">M</span><span class="o">=</span><span class="k">$(</span>PWD<span class="k">)</span><span class="w"> </span>clean
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="modulun-derlenmesi-ve-eklenip-kaldirilmasi">
+<h2>modülün derlenmesi ve eklenip kaldırılması<a class="headerlink" href="#modulun-derlenmesi-ve-eklenip-kaldirilmasi" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make
+
+insmod<span class="w"> </span>my_modul.ko<span class="w"> </span>//<span class="w"> </span>modül<span class="w"> </span>kernele<span class="w"> </span>eklendi.
+
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>my_modul<span class="w"> </span>//modül<span class="w"> </span>yüklendi<span class="w"> </span>mi<span class="w"> </span>kontrol<span class="w"> </span>ediliyor.
+
+rmmod<span class="w"> </span>my_modul<span class="w"> </span>//<span class="w"> </span>modül<span class="w"> </span>kernelden<span class="w"> </span>çıkartılıyor.
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="not">
+<h2>Not:<a class="headerlink" href="#not" title="Permalink to this heading">¶</a></h2>
+<p>dmesg ile log kısmında eklendiğinde Hello Word yazısını ve  kaldırıldığında modul ismini görebiliriz.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modul-yazma">Modul Yazma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hello-c-dosyamiz">hello.c dosyamız</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#makefile-dosyamiz">Makefile dosyamız</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modulun-derlenmesi-ve-eklenip-kaldirilmasi">modülün derlenmesi ve eklenip kaldırılması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not">Not:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html">ld(linker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/13-modul-kmod.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

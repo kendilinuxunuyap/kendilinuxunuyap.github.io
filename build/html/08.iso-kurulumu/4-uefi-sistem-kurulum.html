@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Uefi Sistem Kurulumu &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/08.iso-kurulumu/4-uefi-sistem-kurulum.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Uefi Sistem Kurulumu" href="5-uefi-sistem-kurulum.html" />
+    <link rel="prev" title="Tek Bölüm Kurulum" href="4-tek-bolum-sistem-kurulum.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="uefi-sistem-kurulumu">
+<h1>Uefi Sistem Kurulumu<a class="headerlink" href="#uefi-sistem-kurulumu" title="Permalink to this heading">¶</a></h1>
+<p>Bu bölümde <strong>Ext4</strong> dosya sistemine grub kullanarak kurulum anlatılacaktır.
+Anlatım boyunca <strong>/dev/sda</strong> diski üzerinden örnekleme yapılmıştır. Siz kendi diskinize göre düzenleyebilirsiniz.
+Diskler üzerinde işlem yapabilmek için evdev veya udevd servisi çalışıyor olmalı.
+Disk ve isoya erişim için aşağıdaki modüllerin yüklü olduğundan emin olun.</p>
+<ul class="simple">
+<li><p>loop</p></li>
+<li><p>squashfs</p></li>
+<li><p>ext4 modulleri <strong>modprobe</strong> komutuyla yüklenmeli.</p></li>
+</ul>
+<section id="uefi-legacy-tespiti">
+<h2>Uefi - Legacy tespiti<a class="headerlink" href="#uefi-legacy-tespiti" title="Permalink to this heading">¶</a></h2>
+<p><strong>/sys/firmware/efi</strong> dizini varsa uefi, yoksa legacy sisteme sahipsinizdir.
+Eğer uefi ise ia32 veya x86_64 olup olmadığını anlamak için <strong>/sys/firmware/efi/fw_platform_size</strong> içeriğine bakın.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[[</span><span class="w"> </span>-d<span class="w"> </span>/sys/firmware/efi/<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>UEFI<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>Legacy
+<span class="o">[[</span><span class="w"> </span><span class="s2">&quot;64&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">$(</span>cat/sys/firmware/efi/fw_platform_size<span class="k">)</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>x86_64<span class="w"> </span><span class="o">||</span><span class="w"> </span>ia32
+</pre></div>
+</div>
+</section>
+<section id="disk-hazirlanmali">
+<h2>Disk Hazırlanmalı<a class="headerlink" href="#disk-hazirlanmali" title="Permalink to this heading">¶</a></h2>
+<p>Uefi kullananlar ayrı bir disk bölümüne ihtiyaç duyarlar.
+Bu bölümü <strong>fat32</strong> olarak bölümlendirmeliler.</p>
+<p>Bu anlatımda kurulum için <strong>/boot</strong> dizinini ayırmayı ve efi bölümü olarak aynı diski kullanmayı tercih edeceğiz.
+Öncelikle <strong>cfdisk</strong> veya <strong>fdisk</strong> komutları ile diski bölümlendirelim. Ben bu anlatımda <strong>cfdisk</strong> kullanacağım.</p>
+<ol class="arabic simple" start="0">
+<li><p>cfdisk komutuyla disk bölümlendirilmeli.</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cfdisk<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>gpt seçilmeli</p></li>
+<li><p>512 MB type uefi alan(sda1)</p></li>
+<li><p>geri kalanı type linux system(sda2)</p></li>
+<li><p>write</p></li>
+<li><p>quit</p></li>
+<li><p>Bu işlem sonucunda sadece sda1 sda2 olur</p></li>
+<li><p>mkfs.vfat ve mkfs.ext4 ile diskler biçimlendirilir.</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkfs.vfat<span class="w"> </span>/dev/sda1
+$<span class="w"> </span>mkfs.ext4<span class="w"> </span>/dev/sda2
+</pre></div>
+</div>
+</section>
+<section id="e2fsprogs-paketi">
+<h2>e2fsprogs Paketi<a class="headerlink" href="#e2fsprogs-paketi" title="Permalink to this heading">¶</a></h2>
+<p>e2fsprogs paket sistemde mkfs.ext4, e2fsck, tune2fs vb sistem araçlarının yüklenmesini sağlar. Eğer sistemde bu sistem uygulamaları yoksa bu paketin yüklenmesi veya derlenmesi gerekmektedir.</p>
+<p>Eğer /boot bölümünü ayırmayacaksanız grub yüklenirken <strong>unknown filesystem</strong> hatası almanız durumunda aşağıdaki yöntemi kullanabilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>e2fsck<span class="w"> </span>-f<span class="w"> </span>/dev/sda2
+$<span class="w"> </span>tune2fs<span class="w"> </span>-O<span class="w"> </span>^metadata_csum<span class="w"> </span>/dev/sda2
+</pre></div>
+</div>
+</section>
+<section id="dosya-sistemini-kopyalama">
+<h2>Dosya sistemini kopyalama<a class="headerlink" href="#dosya-sistemini-kopyalama" title="Permalink to this heading">¶</a></h2>
+<p>Kurulum medyası <strong>/cdrom</strong> dizinine bağlanır.
+Kurulacak sistemin imajını bir dizine bağlayalım.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>cdrom
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nb">source</span>
+$<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>iso9660<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/dev/sr0<span class="w"> </span>/cdrom/
+$<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>squashfs<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/cdrom/live/filesystem.squashfs<span class="w"> </span>/source
+</pre></div>
+</div>
+<p>Şimdi de disk bölümümüzü bağlayalım.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>target<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/boot<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/boot/efi<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+$<span class="w"> </span>mount<span class="w"> </span>/dev/sda2<span class="w"> </span>/target<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+$<span class="w"> </span>mount<span class="w"> </span>/dev/sda1<span class="w"> </span>/target/boot/efi
+</pre></div>
+</div>
+<p>Ardından dosyaları kopyalayalım.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># -p dosya izinlerini korur</span>
+<span class="c1"># -r alt dizinlerle beraber kopyalar</span>
+<span class="c1"># -f soru sormayı kapatır</span>
+<span class="c1"># -v detaylı çıktıları gösterir</span>
+$<span class="w"> </span>cp<span class="w"> </span>-prfv<span class="w"> </span>/source/*<span class="w"> </span>/target
+</pre></div>
+</div>
+<p>Daha sonra diski senkronize edelim.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sync
+</pre></div>
+</div>
+</section>
+<section id="bootloader-kurulumu">
+<h2>Bootloader kurulumu<a class="headerlink" href="#bootloader-kurulumu" title="Permalink to this heading">¶</a></h2>
+<p>grub kurulumu yapmak için grub paketinini kurulu olduğundan emin olun.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/dev
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/sys
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/proc
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/run
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/target/tmp
+$<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/dev<span class="w"> </span>/target/dev
+$<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/sys<span class="w"> </span>/target/sys
+$<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/proc<span class="w"> </span>/target/proc
+$<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/run<span class="w"> </span>/target/run
+$<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/tmp<span class="w"> </span>/target/tmp
+<span class="c1">#efi alan bağlanıyor. Eğer uefi aktif edilmişse kernel **/sys/firmware/efi** tarafından budizinler ve dosyalar oluşuyor.</span>
+<span class="c1">#sistem uefi değise **/sys/firmware/efi** konumunda dosyalar olmayacaktır.</span>
+$<span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-d<span class="w"> </span>/sys/firmware/efi<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span>mount<span class="w"> </span>--bind<span class="w"> </span>/sys/firmware/efi/efivars<span class="w"> </span>/target/sys/firmware/efi/efivars
+<span class="w">  </span><span class="k">fi</span>
+
+<span class="c1"># Bunun yerine aşağıdaki gibi de girilebilir.</span>
+<span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>/dev<span class="w"> </span>/sys<span class="w"> </span>/proc<span class="w"> </span>/run<span class="w"> </span>/tmp<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span>mount<span class="w"> </span>--bind<span class="w"> </span>/<span class="nv">$dir</span><span class="w"> </span>/target/<span class="nv">$dir</span>
+<span class="k">done</span>
+$<span class="w"> </span>chroot<span class="w"> </span>/target
+</pre></div>
+</div>
+<p>Şimdi de uefi kullandığımız için efivar bağlayalım.
+.. code-block:: shell</p>
+<blockquote>
+<div><p>$ mount -t efivarfs efivarfs /sys/firmware/efi/efivarfs</p>
+</div></blockquote>
+</section>
+<section id="grub-kuralim">
+<h2>Grub Kuralım<a class="headerlink" href="#grub-kuralim" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># biz /boot ayırdığımız ve efi bölümü olarak kullanacağız.</span>
+<span class="c1"># uefi kullanmayanlar --efi-directory belirtmemeliler.</span>
+<span class="c1"># kurulu sistemden bağımsız çalışması için --removable kullanılır.</span>
+$<span class="w"> </span>grub-install<span class="w"> </span>--removable<span class="w"> </span>--boot-directory<span class="o">=</span>/boot<span class="w"> </span>--efi-directory<span class="o">=</span>/boot<span class="w"> </span>--target<span class="o">=</span>x86_64-efi<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+</section>
+<section id="grub-yapilandirmasi">
+<h2>Grub yapılandırması<a class="headerlink" href="#grub-yapilandirmasi" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>/boot bölümünde initrd.img-&lt;çekirdek-sürümü&gt; dosyamızın olduğundan emin olalım.</p></li>
+<li><p>/boot bölümünde vmlinuz-&lt;çekirdek-sürümü&gt;  kernel dosyamızın olduğundan emin olalım.</p></li>
+<li><p>/boot/grub/grub.cfg konumunda dostamızı oluşturalım(vi, touch veya nano ile).</p></li>
+<li><p>dev/sda2 diskimizim uuid değerimizi bulalım.</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>blkid<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>/dev/sda2
+/dev/sda2:<span class="w"> </span><span class="nv">UUID</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="w"> </span><span class="nv">BLOCK_SIZE</span><span class="o">=</span><span class="s2">&quot;4096&quot;</span><span class="w"> </span><span class="nv">TYPE</span><span class="o">=</span><span class="s2">&quot;ext4&quot;</span><span class="w"> </span><span class="nv">PARTUUID</span><span class="o">=</span><span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p>Şimdi aşağıdaki gibi bir yapılandırma dosyası yazalım ve /boot/grub/grub.cfg dosyasına kaydedelim.
+Burada uuid değerini ve çekirdek sürümünü düzenleyin.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>linux<span class="w"> </span>/vmlinuz-&lt;çekirdek-sürümü&gt;<span class="w">        </span><span class="nv">root</span><span class="o">=</span><span class="nv">UUID</span><span class="o">=</span>&lt;uuid-değeri&gt;<span class="w"> </span>rw<span class="w"> </span>quiet
+initrd<span class="w"> </span>/initrd.img-&lt;çekirdek-sürümü&gt;
+boot
+</pre></div>
+</div>
+<p>Ayrıca otomatik yapılandırma da oluşturabiliriz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>grub-mkconfig<span class="w"> </span>-o<span class="w"> </span>/boot/grub/grub.cfg
+</pre></div>
+</div>
+</section>
+<section id="openrc-disk-islemi">
+<h2>OpenRc Disk İşlemi<a class="headerlink" href="#openrc-disk-islemi" title="Permalink to this heading">¶</a></h2>
+<p>Kullandığımız servis yöneticisi openrc ise <strong>/etc/fstab</strong> komunundaki dosyaya bakarak diske erişim sağlamaktadır. Bundan dolayı <strong>fstab</strong> dosyamızı aşağıdaki gibi yapılandırmalıyız.</p>
+<section id="fstab-dosyasi">
+<h3>Fstab dosyası<a class="headerlink" href="#fstab-dosyasi" title="Permalink to this heading">¶</a></h3>
+<p>Bu dosyayı doldurarak açılışta hangi disklerin bağlanacağını ayarlamalıyız. /etc/fstab dosyasını aşağıdakine uygun olarak doldurun.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># &lt;fs&gt;                  &lt;mountpoint&gt;    &lt;type&gt;          &lt;opts&gt;          &lt;dump/pass&gt;</span>
+/dev/sda1<span class="w">       </span>/boot<span class="w">   </span>vfat<span class="w">    </span>defaults,rw<span class="w">     </span><span class="m">0</span><span class="w">       </span><span class="m">1</span>
+/dev/sda2<span class="w">       </span>/<span class="w">       </span>ext4<span class="w">    </span>defaults,rw<span class="w">     </span><span class="m">0</span><span class="w">       </span><span class="m">1</span>
+</pre></div>
+</div>
+<p><strong>Not:</strong> Disk bölümü konumu yerine <strong>UUID=&quot;&lt;uuid-değeri&gt;&quot;</strong> şeklinde yazmanızı öneririm.
+Bölüm adları değişebilirken uuid değerleri değişmez.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sistem Kurulumu</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-sistem-kurma.html"><strong>Sistem Kurma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-tek-bolum-sistem-kurulum.html">Tek Bölüm Kurulum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3-iki-bolum-sistem-kurulum.html">İki Bölüm Kurulum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4-tek-bolum-sistem-kurulum.html">Tek Bölüm Kurulum</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Uefi Sistem Kurulumu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uefi-legacy-tespiti">Uefi - Legacy tespiti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disk-hazirlanmali">Disk Hazırlanmalı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#e2fsprogs-paketi">e2fsprogs Paketi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dosya-sistemini-kopyalama">Dosya sistemini kopyalama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bootloader-kurulumu">Bootloader kurulumu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grub-kuralim">Grub Kuralım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grub-yapilandirmasi">Grub yapılandırması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openrc-disk-islemi">OpenRc Disk İşlemi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fstab-dosyasi">Fstab dosyası</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="5-uefi-sistem-kurulum.html">Uefi Sistem Kurulumu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../09.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/08.iso-kurulumu/4-uefi-sistem-kurulum.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

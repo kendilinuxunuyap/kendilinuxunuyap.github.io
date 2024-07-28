@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Derleme türleri &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/23-derleme-türleri/0-derleme-türleri.html" />
+    <link rel="index" title="Dizin" href="../../genindex.html" />
+    <link rel="search" title="Ara" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="derleme-turleri">
+<span id="derlemebagimlilik"></span><h1>Derleme türleri<a class="headerlink" href="#derleme-turleri" title="Permalink to this heading">¶</a></h1>
+<p>Paketler derlenirken farklı derleme araçları ve derleyiciler kullanılır. Bu bölümde kaynak kod derleme ile ilgili bilgiler verilecektir. Anlatım için C programlama dili ve gcc tercih edilecektir.</p>
+<p>Bu bölümün amacı sizlere C kaynak kodlarının nasıl derlendiği ve nasıl çalıştığını anlatmaktır. C programlama dili ile ilgili yeterli bilginiz yoksa bu bölüme geçmeden önce bilgilerinizi gözden geçirmeyi öneririz.</p>
+<p>Örneğin elimizde aşağıdaki gibi bir C dosyası bulunsun. Bu dosya derlenip bilgisayarın anlayabileceği hale getirilmek için <strong>gcc</strong>  kullanılarak derlenmelidir.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="c1">//main.c dosyası</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(){</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Bu dosyayı derleyip çalıştırılabilir dosya elde edelim.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcc<span class="w"> </span>-c<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>main.o
+$<span class="w"> </span>gcc<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o
+<span class="c1"># .o oluşturmadan doğrudan da derleyebilirsiniz.</span>
+$<span class="w"> </span>gcc<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.c
+</pre></div>
+</div>
+<p>Yukarıdaki örnekte kaynak kodu ilk önce <strong>.o</strong> uzantılı object dosyasına çevirdik. Daha sonra bu dosyadan çalıştırılabilir dosya ürettik.</p>
+<p>Derlemeler <strong>static</strong> ve <strong>dynamic</strong> olarak 2 şekilde yapılabilir. Static olarak yapılan derleme herhangi bir bağımlılık olmaksızın çalışabilirken Dynamic olarak yapılmış derlemeler sistemdeki libc ve diğer gereken bağımlılıklara ihtiyaç duyar.
+static derleme boyut olarak daha büyüktür ve gerekli olan kütüphanelerin static hallerinin de bulunması gerekir.</p>
+</section>
+<section id="gcc-libstdc-ekleme">
+<h1>gcc libstdc++ Ekleme<a class="headerlink" href="#gcc-libstdc-ekleme" title="Permalink to this heading">¶</a></h1>
+<p>gcc ile derlenen bazı dosyalarda <strong>libstdc++</strong> görülür. Bu kütüphaneyi static olarak dahil etmek için <strong>-static-libstdc++</strong>
+eklenmelidir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gcc<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.c<span class="w"> </span>-static-libstdc++<span class="w"> </span><span class="c1">#statik kütüphane dahil edildi</span>
+</pre></div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/09.yardimci-konular/23-derleme-türleri/0-derleme-türleri.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

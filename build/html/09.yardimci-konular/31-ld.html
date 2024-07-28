@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ld(linker) &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+
+
+
+
+
+
+
+    <link rel="canonical" href="https://bayramkarahan.github.io/09.yardimci-konular/31-ld.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="cmake" href="32-cmake.html" />
+    <link rel="prev" title="strip" href="30-strip.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="ld-linker">
+<h1>ld(linker)<a class="headerlink" href="#ld-linker" title="Permalink to this heading">¶</a></h1>
+<p>ld (linker) komutu, Linux sistemlerinde derlenmiş nesne dosyalarını birleştirmek ve yürütülebilir dosyalar veya paylaşılan kütüphaneler oluşturmak için kullanılan bir araçtır. Bu komut, derleyicinin çıktısı olan nesne dosyalarını alır ve bunları birleştirerek çalıştırılabilir bir dosya oluşturur.</p>
+<p>ld komutu, bir programın bağımlılıklarını çözmek ve gerekli kütüphaneleri eklemek için kullanılır. Bu sayede program, çalıştırıldığında gereken tüm kütüphanelere erişebilir ve doğru şekilde çalışabilir.</p>
+<p>Aşağıda basit bir örnek verilmiştir:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gcc<span class="w"> </span>-c<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>main.o
+gcc<span class="w"> </span>-c<span class="w"> </span>helper.c<span class="w"> </span>-o<span class="w"> </span>helper.o
+ld<span class="w"> </span>main.o<span class="w"> </span>helper.o<span class="w"> </span>-o<span class="w"> </span>program
+</pre></div>
+</div>
+<p>Bu örnekte, gcc komutuyla main.c ve helper.c dosyaları derlenir ve nesne dosyaları (main.o ve helper.o) oluşturulur. Ardından, ld komutuyla bu nesne dosyaları birleştirilerek program adında bir çalıştırılabilir dosya oluşturulur.</p>
+<p>ld komutu, Linux sistemlerinde programların derlenmesi ve çalıştırılması sürecinde önemli bir rol oynar ve programların doğru şekilde çalışmasını sağlar.</p>
+<section id="linker-turleri">
+<h2>Linker Türleri<a class="headerlink" href="#linker-turleri" title="Permalink to this heading">¶</a></h2>
+<p>Linker, bir programın derlenmiş obje dosyalarını birleştirerek çalıştırılabilir bir dosya oluşturan bir yazılımdır. Linker, programın farklı bölümlerini bir araya getirir, sembol tablolarını oluşturur ve bağımlılıkları çözer.</p>
+<p>Linux'ta kullanılan yaygın linker çeşitleri şunlardır:</p>
+<blockquote>
+<div><p>GNU Linker (ld): GNU Projesi'nin bir parçası olan GNU Linker, Linux sistemlerinde en yaygın olarak kullanılan linker'dır. ld, derlenmiş obje dosyalarını birleştirir ve çalıştırılabilir bir dosya oluşturur. Ayrıca, dinamik bağlantı için gerekli olan dinamik kütüphaneleri de yönetir.</p>
+<p>Gold Linker: Gold Linker, GNU Linker'a alternatif olarak geliştirilmiş bir linker'dır. Gold Linker, daha hızlı bağlama süreleri sunar ve büyük projelerde performans avantajı sağlar.</p>
+<p>LLD (LLVM Linker): LLD, LLVM projesinin bir parçası olan modern bir linker'dır. LLD, hızlı bağlama süreleri ve düşük bellek tüketimi ile bilinir. Ayrıca, birden fazla platformda çalışabilme özelliğine sahiptir.</p>
+</div></blockquote>
+<p>Bu linker çeşitleri, Linux sistemlerinde programların birleştirilmesi ve çalıştırılabilir dosyaların oluşturulması için kullanılır. Her bir linker'ın kendine özgü avantajları ve kullanım senaryoları vardır. Projenizin gereksinimlerine ve tercihlerinize bağlı olarak uygun olanı seçebilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># GNU Linker (ld) kullanım örneği</span>
+ld<span class="w"> </span>-o<span class="w"> </span>program<span class="w"> </span>program.o
+
+<span class="c1"># Gold Linker kullanım örneği</span>
+gold<span class="w"> </span>-o<span class="w"> </span>program<span class="w"> </span>program.o
+
+<span class="c1"># LLD (LLVM Linker) kullanım örneği</span>
+lld<span class="w"> </span>-o<span class="w"> </span>program<span class="w"> </span>program.o
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Dağıtım Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.ortam-hizirlama/index.html">Ortam Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-itramfs.html">initrd Tasarımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ld(linker)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linker-turleri">Linker Türleri</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../10.ek-konular/index.html">Ek Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/31-ld.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
