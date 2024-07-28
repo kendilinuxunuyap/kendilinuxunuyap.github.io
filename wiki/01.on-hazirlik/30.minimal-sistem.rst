@@ -5,7 +5,7 @@ Dağıtım oluşturmak için kernel ve busybox dosyalarımızın olması yeterli
 
 Bu sistemi hazırlarken **chroot** ve **busybox** komutlarını  kullanarak sistemi hazırlayacağız ve test edeceğiz. **chroot** ve **busybox** kullanımı için dokümandanki ilgili konu başlığına bakınız.
 
-Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız. Sitemimizi istediğimiz bir yerde terminal açarak **distro** dizini oluşturarak dizin içerisine hazırlıyoruz. 
+Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız. 
 
 .. code-block:: shell
 
@@ -21,6 +21,8 @@ Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız. Sitemimizi isted
 **Dizinlerin Oluşturulması**
 ----------------------------
 
+Sitemimizi istediğimiz bir yerinde terminal açarak aşağıdaki komutları sırasıyla çalıştıralım. 
+
 .. code-block:: shell
 
 	mkdir $HOME/distro
@@ -30,7 +32,7 @@ Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız. Sitemimizi isted
 	mkdir $HOME/distro/iso/boot/grub
 
 **$HOME/distro/rootfs/busybox**
--------------------------
+-------------------------------
 
 busybox aşağıdaki komutlarla  **$HOME/distro/rootfs/busybox** konumuna kopyalanak sistemimiz için hazır hale getirilir.
 
@@ -67,7 +69,7 @@ Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına g�
 **chomod +x init** komutu ile çalıştırılır yapılır.
 
 **$HOME/distro/iso/boot/initrd.img**
-------------------------------
+------------------------------------
 
 initrd.img dosyası için aşağıdaki komutlar çalıştırılır
 
@@ -80,7 +82,7 @@ Oluşturulan **initrd.img** dosyası çalışacak tty açacak(konsol elde etmiş
 Aslında bu işlemi yapan şey **busybox** ikili dosyası.
 
 **$HOME/distro/iso/boot/vmlinuz**
----------------------------
+---------------------------------
 
 .. code-block:: shell
 
@@ -88,7 +90,7 @@ Aslında bu işlemi yapan şey **busybox** ikili dosyası.
 
 
 **$HOME/distro/iso/boot/grub/grub.cfg**
----------------------------------
+---------------------------------------
 
 .. code-block:: shell
 	
@@ -105,7 +107,7 @@ Aslında bu işlemi yapan şey **busybox** ikili dosyası.
 Yukarıdaki üç satır **$HOME/distro/iso/boot/grub/grub.cfg** dosyasının içeri olacak şekilde ayarlanır.
 
 **$HOME/distro/distro.iso**
----------------------
+---------------------------
 
 **grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso** komutuyla iso doyamız oluşturulur.
 
