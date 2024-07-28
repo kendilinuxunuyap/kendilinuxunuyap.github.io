@@ -114,11 +114,11 @@ Yukarıdaki üç satır **$HOME/distro/iso/boot/grub/grub.cfg** dosyasının iç
 Artık sistemi açabilen ve tty açıp bize suna bir yapı oluşturduk.
 
 
-Dağıtımın Test Edilmesi
------------------------
+**Dağıtımın Test Edilmesi**
+---------------------------
  
-Çalıştırmak için qemu kullanılabililir.
+Hazırlanan   $HOME/distro/distro.iso dağıtımımız qemu veya virtualbox ile test edilebilir.
 
-**qemu-system-x86_64 -cdrom $HOME/distro.iso -m 1G** komutuyla çalıştırıp test edebiliriz.. 
-Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komut rahatlıkla çalışan bir dağıtım oluşturmuş olduk.
+**qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G** komutuyla çalıştırıp test edebiliriz.. 
+Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk.
 
