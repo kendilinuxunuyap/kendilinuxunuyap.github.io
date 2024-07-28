@@ -1,5 +1,5 @@
-Dağıtım Hazırlama
-=================
+Temel Kavramlar
+===============
 .. toctree::
 	:glob:
 

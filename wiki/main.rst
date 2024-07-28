@@ -1,12 +1,12 @@
-Dağıtım Wiki
-============
+Kendi Linux'unu Yap
+===================
 
-Bu dokumanda basit seviyede dağıtım hazırlamak için temel adımlar anlatılmaktadır.
+Bu dokumanda dağıtım hazırlamak için temel işlemler anlatılmaktadır.
+
+Bu kitap, açık kaynak ve özgür yazılıma gönül vermiş kişilerin, Türkçe kaynak bulamama sıkıntısına bir çözüm olarak hayata geçirilmiş bir projedir. Açık kaynak dünyasında kendi dağıtımlarını yapmak isteyenlere isteyen kişilere bir rehber olacak şekilde hazırlanmıştır. 
 
 
 Kaynak ve dokümanlarımız yansılarımız:
 
-* Bu sitedeki bilgilerin pdf kitap hali için `tıklayınız. <https://basitdagitim.github.io/kitap/>`_
-* https://github.com/basitdagitim/bps-tools
-* https://github.com/basitdagitim/source-package
-* https://github.com/basitdagitim/binary-package
+* Bu sitedeki bilgilerin pdf kitap hali için `tıklayınız. <https://kendilinunuxyap.github.io/kitap/>`_
+
