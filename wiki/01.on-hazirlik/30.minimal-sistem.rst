@@ -51,7 +51,9 @@ Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına g�
 
 **$HOME/distro/rootfs/init**
 ----------------------------
-	
+
+Sistem açılırken iki dosyayı arar kernel ve initrd.img dosyası. Bu dosyaları grub.cfg dosyası içinde verilen konumlarına göre arar. Bu dosyaları bulduktan sonra initrd.img dosyasını açar ve içinde init dosyasını arar. init dosyasındaki komutları sırasıyla çalıştırır. 
+
 **$HOME/distro/rootfs/** konumuna **init** text dosyası oluşturulur(nano, gedit vb.).
 Aşağıdaki içerik oluşturulan **init** dosyası içine eklenir.
 
@@ -63,7 +65,16 @@ Aşağıdaki içerik oluşturulan **init** dosyası içine eklenir.
 	/busybox --install -s /bin
 	/busybox ash
 
-	
+**busybox** içerisinde linux ortamında kullanılan hemen hemen tüm komutların yerine kullanalılabilir. bulunduğumuz ortamda **busybox** dışında hiçbir komutun olmadığını düşünün. Mesela **cp** komutuna ihtiyacınız var bu durumda **busybox cp** yazarak kullanılabilirsiniz. Tüm temel komutları busyboxtan türetmek için  **/busybox --install -s /bin** komutunu kullanabilirsiniz.
+
+Buradaki komutları sırayla anlatırsak;
+1. #!busybox ash 		: ash bir kabuk veya terminal programıdır.
+2. PATH=/bin 			: komutlar çalışırken nerede arayacağı belirtiliyor
+3. /busybox mkdir /bin		: **busybox mkdir**  yardımıyla **/bin** dizini oluşturuluyor.
+4. /busybox --install -s /bin	: **/bin** dizinine tüm komutları kısa yol oluşturur.
+5. /busybox ash			: ash terminalini çalıştırır. Bash yerine alternatif.
+
+**kernel**, **initrd.img** dosyasını bellek üzerine açıp **init** dosyasını çalıştırınca sırasıyla numaralandırılarak anlattığımız işlemler yapılacak ve çalışabilecek ortam hazırlanacaktır. Daha sonra ash terminali çalışarak kullanıcının kullanımına hazır hale gelecektir.
 	
 init çalıştırılabilir yapılır.
 
