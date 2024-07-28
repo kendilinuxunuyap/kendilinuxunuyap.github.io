@@ -15,6 +15,37 @@ Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız.
 5. $HOME/distro/iso/boot/grub/grub.cfg
 6. $HOME/distro/distro.iso
 
+Linux sisteminin açılabilmesi için aşağıdaki 3 dosya yeterli. 
+
+. $HOME/distro/iso/boot/initrd.img
+. $HOME/distro/iso/boot/vmlinuz
+. $HOME/distro/iso/boot/grub/grub.cfg
+	
+Bu dosyaları yukarıdaki gibi dizin konumlarına koyduktan sonra, 
+**grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso #iso doyamız oluşturulur.**  komutuyla **distro.iso** dosyası elde ederiz. Artık iso dosyamız boot edebilen hazırlanmış bir dosyadır. Burada bazı sorulara cevap vermemiz gerekmektedir. 
+
+**$HOME/distro/iso/boot/initrd.img** dosyasını sistemin açılış sürecinden ön işlemleri yapmak ve gerçek sisteme geçiş sürecini yöneten bir dosyadır. Yazın devamında nasıl hazırlanacağı anlatılacaktır. 
+
+**$HOME/distro/iso/boot/vmlinuz** dosyamız kernelimiz oluyor. Ben kullandığım debian sisteminin mevcut kernelini kullandım. İstenirse kernel derlenebilir. 
+
+**$HOME/distro/iso/boot/grub/grub.cfg** dosyamız ise initrd.img ve vmlinuz dosyalarının grub yazılımının nereden bulacağını gösteren yapılandırma dosyasıdır.
+
+Bir linux siisteminin açılış süreci şu şekilde olmaktadır.
+ 
+1- **Bilgisayara Güç Verilmesi**
+
+2- **Bios İşlemleri Yapılıyor(POST)**
+
+3- **LILO/GRUB Yazılımı Yükleniyor(grub.cfg dosyası okunuyor ve vmlinuz ve initrd.img devreye giriyor)**
+
+4- **vmlinuz initrd.img sistemini belleğe yüklüyor**
+
+5- **vmlinuz initrd.img sistemini belleğe yüklüyor**
+
+6- **initrd.img içindeki init dosyasındaki işlem sürecine göre sistem işlemlere devam ediyor**
+
+Yazının devamında sistem için gerekli olan 3 temel dosyanın hazırlanması ve iso yapılma süreci anlatılacaktır.
+
 Şimdi sırasıyla dosya konumlarına uygun şekilde dizin ve dosyalarımızı oluşturalım.
 
 **Dizinlerin Oluşturulması**
