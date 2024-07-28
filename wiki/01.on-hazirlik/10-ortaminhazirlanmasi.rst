@@ -30,23 +30,6 @@ Paket kurulumu yapıldıktan sonra dağıtımı hazırlayacağımız yeri(hedefi
 **$HOME:** Bu ifade linux ortamında açık olan kullanıncının ev dizinini ifade eder. Örneğin sisteme giriş yapan kullanıcı  **ogrenci** adinda bir kullanıcı olsun. **$HOME** ifadesi **/home/ogrenci** konumunu ifade eder.
 
 
-Ortamın hazırlanmasından sonra bazı konuları bilmemiz gerelmektedir. Bunlar; 
-
-1. Derleme(Dinamik/Static) 
-2. chroot Kullanımı: :ref:`_chrootnedir` 
-3. Kernel/Modül Derleme
-4. initrd Tasarlama
-5. İso Oluşturma
-6. Canlı Sistem Oluşturma Kullanma
-7. qemu Kullanmı
-8. sfdisk Kullanımı
-9. Canlı Sistemden Kurulum Yapma
-
-Burada liste halinde verilen konu başlıkları bu dokümanın son bölümünde anlatılmaktadır. Bu konularla ilgili bir dağıtım hazırlanırken gerekli bilgiler verilmiştir.
-
-
-
-
 .. raw:: pdf
 
    PageBreak
