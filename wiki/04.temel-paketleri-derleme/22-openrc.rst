@@ -10,9 +10,14 @@ Kaynak koddan derlemek için aşağıdaki adımları izlemelisiniz:
 
 .. code-block:: shell
 
-	 git clone https://github.com/OpenRC/openrc
-	 cd openrc
-	  meson setup build \
+	
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+ 	git clone https://github.com/OpenRC/openrc
+	cd openrc
+	
+	meson setup build \
         --sysconfdir=/etc \
         --libdir=/lib \
         --prefix=/ \
@@ -22,7 +27,7 @@ Kaynak koddan derlemek için aşağıdaki adımları izlemelisiniz:
         -Dpkgconfig=true
 
 	 meson setup build --prefix=/usr
-	 export DESTDIR=${DESTDIR}//
+	 export DESTDIR=$HOME/distro/rootfs
 	 ninja -C build install
 	
 

@@ -13,15 +13,13 @@ ncurses Derleme
 	# kaynak kod indirme ve derleme için hazırlama
 	version="6.4"
 	name="ncurses"
-
-	cd /tmp
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
 	wget https://ftp.gnu.org/pub/gnu/ncurses/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
-	../${name}-${version}/configure --prefix=/ --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	configure --prefix=/ --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec
 	# derleme
 	make 
 	

@@ -13,24 +13,18 @@ zlib, genellikle dosya sıkıştırma, ağ iletişimi ve veritabanı yönetimi g
 
 	version="1.3"
 	name="zlib"
-
-	mkdir -p $HOME/distro
-	cd $HOME/distro
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
 
 	wget https://zlib.net/current/${name}.tar.gz
 	tar -xvf ${name}.tar.gz
-
-	mkdir build-${name}-${version}
-
-	cd build-${name}-${version}
-
-	../${name}-${version}/configure --prefix=/
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	configure --prefix=/
 
 	make 
 
-	make install DESTDIR=$HOME/rootfs
+	make install DESTDIR=$HOME/distro/rootfs
 	
 .. raw:: pdf
 

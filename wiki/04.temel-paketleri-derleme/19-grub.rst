@@ -34,26 +34,22 @@ grub paketini derlemek için aşağıdaki scripti kullabilirsiniz.
 
 	version="2.06"
 	name="grub"
-
-	mkdir -p $HOME/distro
-	cd $HOME/distro
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
 
 	wget ftp://ftp.gnu.org/gnu/grub/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
 
-	../${name}-${version}/configure --prefix= \
+	configure --prefix= \
 		    --sysconfdir=/etc \
 		    --libdir=/lib/ \
 		    --disable-werror 
 
 	make 
-	make install DESTDIR=$HOME/rootfs
-	cd $HOME/rootfs
-	
+	make install DESTDIR=$HOME/distro/rootfs
+
 	
 .. raw:: pdf
 

@@ -39,31 +39,31 @@
             
   <section id="glibc-nedir">
 <h1>glibc Nedir?<a class="headerlink" href="#glibc-nedir" title="Permalink to this heading">¶</a></h1>
-<p>glibc (GNU C Kütüphane) Linux sistemlerinde kullanılan bir C kütüphanesidir. Bu kütüphane, C programlama dilinin temel işlevlerini sağlar ve Linux çekirdeğiyle etkileşimde bulunur.</p>
-<p>glibc, birçok standart C işlevini içerir ve bu işlevler, bellek yönetimi, dosya işlemleri, dize işlemleri, ağ işlemleri ve daha fazlası gibi çeşitli görevleri yerine getirmek için kullanılabilir. Bu kütüphane, Linux sistemlerinde yazılım geliştirme sürecini kolaylaştırır ve programcılara güçlü bir araç seti sunar.</p>
-<p>glibc, Linux sistemlerinde C programlama dilini kullanarak yazılım geliştirmek için önemli bir araçtır. Bu kütüphane, Linux'ta çalışan birçok programın temelini oluşturur ve geliştiricilere güçlü bir platform sunar.</p>
+<p><strong>glibc</strong> dağıtımda sistemdeki bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. GNU C Library(glibc)'den farklı diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. <strong>glibc</strong> yerine alternatif olarak çeşitli avantajlarından dolayı kullanılabilir. <strong>glibc</strong> en çok tercih edilen ve uygulama (özgür olmayan) uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır.</p>
+<p>glibc (GNU C Kütüphane) Linux sistemlerinde kullanılan bir C kütüphanesidir. Bu kütüphane, C programlama dilinin temel işlevlerini sağlar ve Linux çekirdeğiyle etkileşimde bulunur. <strong>glibc</strong> listemizdeki tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiiz pakettir.</p>
 <section id="glibc-derleme">
 <h2>glibc Derleme<a class="headerlink" href="#glibc-derleme" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/<span class="w"> </span><span class="c1"># Ev dizinine geçiyorum.</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w">  </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+rm<span class="w"> </span>-rf<span class="w"> </span>/<span class="nv">$HOME</span>/distro/build/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="nb">cd</span><span class="w"> </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
 wget<span class="w"> </span>https://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz<span class="w"> </span><span class="c1"># glibc kaynak kodunu indiriyoruz.</span>
 tar<span class="w"> </span>-xvf<span class="w"> </span>glibc-2.38.tar.gz<span class="w"> </span><span class="c1"># glibc kaynak kodunu açıyoruz.</span>
-mkdir<span class="w"> </span>build-glibc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build-glibc<span class="w"> </span><span class="c1"># glibc derlemek için bir derleme dizini oluşturuyoruz.</span>
-../glibc-2.38/configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--disable-werror<span class="w"> </span><span class="c1"># Derleme ayarları yapılıyor</span>
+<span class="nb">cd</span><span class="w"> </span>glibc-2.38
+configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--disable-werror<span class="w"> </span><span class="c1"># Derleme ayarları yapılıyor</span>
 make<span class="w"> </span><span class="c1"># glibc derleyelim.</span>
 </pre></div>
 </div>
 </section>
 <section id="glibc-yukleme">
 <h2>glibc Yükleme<a class="headerlink" href="#glibc-yukleme" title="Permalink to this heading">¶</a></h2>
-<p><strong>$HOME/rootfs</strong> kalsörünü oluştrudan aşağıdaki gibi yükleme yapmalıyız.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/rootfs<span class="w"> </span><span class="c1"># Ev Dizinindeki rootfs dizinine glibc yükleyelim.</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/distro/rootfs<span class="w"> </span><span class="c1"># Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.</span>
 </pre></div>
 </div>
 </section>
 <section id="glibc-test-etme">
 <h2>glibc Test Etme<a class="headerlink" href="#glibc-test-etme" title="Permalink to this heading">¶</a></h2>
-<p>glibc kütüphanemizi <strong>$HOME/rootfs</strong> komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.</p>
-<p>Aşağıdaki c kodumuzu derleyelim ve <strong>$HOME/rootfs</strong> konumuna kopyalayalım.</p>
+<p>glibc kütüphanemizi <strong>$HOME/distro/rootfs</strong> komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.</p>
+<p>Aşağıdaki c kodumuzu derleyelim ve <strong>$HOME/distro/rootfs</strong> konumuna kopyalayalım. <strong>$HOME/</strong> (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#include&lt;stdio.h&gt;</span>
 void<span class="w"> </span>main<span class="o">()</span>
 <span class="o">{</span>
@@ -73,22 +73,24 @@ puts<span class="o">(</span><span class="s2">&quot;Merhaba Dünya&quot;</span><s
 </div>
 <section id="program-derleme">
 <h3>Program Derleme<a class="headerlink" href="#program-derleme" title="Permalink to this heading">¶</a></h3>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gcc<span class="w"> </span>-o<span class="w"> </span>merhaba<span class="w"> </span>merhaba.c
+<p>Aşağıdaki komutlarla merhaba.c dosyası derlenir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
+gcc<span class="w"> </span>-o<span class="w"> </span>merhaba<span class="w"> </span>merhaba.c
 </pre></div>
 </div>
 </section>
 <section id="program-yukleme">
 <h3>Program Yükleme<a class="headerlink" href="#program-yukleme" title="Permalink to this heading">¶</a></h3>
 <p>Derlenen çalışabilir merhaba dosyamızı <strong>glibc</strong> kütüphanemizin olduğu dizine yükleyelim.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>merhaba<span class="w"> </span><span class="nv">$HOME</span>/rootfs/merhaba<span class="w"> </span><span class="c1"># derlenen merhaba ikili dosyası $HOME/rootfs/ konumuna kopyalandı.</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>merhaba<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/merhaba<span class="w"> </span><span class="c1"># derlenen merhaba ikili dosyası $HOME/distro/rootfs/ konumuna kopyalandı.</span>
 </pre></div>
 </div>
 </section>
 <section id="programi-test-etme">
 <h3>Programı Test Etme<a class="headerlink" href="#programi-test-etme" title="Permalink to this heading">¶</a></h3>
-<p><strong>glibc</strong> kütüphanemizin olduğu dizin dağıtımızın ana dizini oluyor.  <strong>$HOME/rootfs/</strong> konumuna <strong>chroot</strong> ile erişelim.</p>
+<p><strong>glibc</strong> kütüphanemizin olduğu dizin dağıtımızın ana dizini oluyor.  <strong>$HOME/distro/rootfs/</strong> konumuna <strong>chroot</strong> ile erişelim.</p>
 <p>Aşağıdaki gibi çalıştırdığımızda bir hata alacağız.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span><span class="nv">$HOME</span>/rootfs/<span class="w"> </span>/merhaba
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/<span class="w"> </span>/merhaba
 chroot:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span><span class="nb">command</span><span class="w"> </span>‘/merhaba’:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
 </pre></div>
 </div>
@@ -96,38 +98,36 @@ chroot:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> 
 <section id="hata-cozumu">
 <h3>Hata Çözümü<a class="headerlink" href="#hata-cozumu" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># üstteki hatanın çözümü sembolik bağ oluşturmak.</span>
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/rootfs/
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/
 ln<span class="w"> </span>-s<span class="w"> </span>lib<span class="w"> </span>lib64
 </pre></div>
 </div>
 <p>#merhaba dosyamızı tekrar chroot ile çalıştıralım. Aşağıda görüldüğü gibi hatasız çalışacaktır.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span>rootfs<span class="w"> </span>/merhaba
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/<span class="w"> </span>/merhaba
 Merhaba<span class="w"> </span>Dünya
 </pre></div>
 </div>
 <p><strong>Merhaba Dünya</strong> mesajını gördüğümüzde glibc kütüphanemizin  ve merhaba çalışabilir dosyamızın çalıştığını anlıyoruz.
-Bu aşamadan sonra <strong>Temel Paketler</strong> listemizde bulunan paketleri kodlarından derleyerek <strong>$HOME/rootfs/</strong> dağıtım dizinimize yüklemeliyiz.
+Bu aşamadan sonra <strong>Temel Paketler</strong> listemizde bulunan paketleri kodlarından derleyerek <strong>$HOME/distro/rootfs/</strong> dağıtım dizinimize yüklemeliyiz.
 Derlemede <strong>glibc</strong> kütüphanesinin derlemesine benzer bir yol izlenecektir. <strong>glibc</strong> temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır.</p>
 <p><strong>glibc</strong> kütüphanemizi derlerken yukarıda yapılan işlem adımlarını ve hata çözümlemesini bir script dosyasında yapabiliriz. Bu dokümanda altta paylaşılan script dosyası yöntemi tercih edildi.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># kaynak kod indirme ve derleme için hazırlama</span>
 <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;2.38&quot;</span>
 <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;glibc&quot;</span>
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$HOME</span>/distro
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro
-rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-rm<span class="w"> </span>-rf<span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+mkdir<span class="w"> </span>-p<span class="w">  </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+rm<span class="w"> </span>-rf<span class="w"> </span>/<span class="nv">$HOME</span>/distro/build/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="nb">cd</span><span class="w"> </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
 wget<span class="w"> </span>https://ftp.gnu.org/gnu/libc/<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz
 tar<span class="w"> </span>-xvf<span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz
-mkdir<span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-<span class="nb">cd</span><span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-../<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>/configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--disable-werror
+<span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="c1"># Kaynak kodun içine giriliyor</span>
+configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--disable-werror
 
 <span class="c1"># derleme</span>
 make
 
 <span class="c1"># derlenen paketin yüklenmesi ve ayarlamaların yapılması</span>
-make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/rootfs
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/rootfs/
+make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/distro/rootfs
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/
 ln<span class="w"> </span>-s<span class="w"> </span>lib<span class="w"> </span>lib64
 </pre></div>
 </div>

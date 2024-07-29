@@ -89,18 +89,8 @@
 <li><p>zlib</p></li>
 <li><p>zstd</p></li>
 </ul>
-<p>Paket listemizde <strong>glibc</strong> tüm paketlerin ihtiyaç duyacağı kütüphaneleri sağlayan pakettir.</p>
-<p>Örneğin listede <strong>bash</strong> uygulamasının çalışabilmesi için <strong>readline</strong> ve <strong>ncurses</strong> kütüphaneleri gerekli. <strong>readline</strong> ve <strong>ncurses</strong> kütüphanelerinin çalışabilmesi içinde <strong>glibc</strong> kütüphanesi gerekli.
-Bash paketinin bağımlı olduğu kütüphaneler geriye doğru takip ederek listelenir.</p>
-<p>Sonuç olarak bash paketini derlerken paketin;</p>
-<ul class="simple">
-<li><p>name=&quot;bash&quot;</p></li>
-<li><p>version=&quot;x.x.x&quot;</p></li>
-<li><p>depends=&quot;glibc,readline,ncurses&quot; şeklinde temel bilgilerini belirterek paketler yapacağız.</p></li>
-</ul>
-<p>Bu sayede paketimizin çalışabilmesi için temel bilgileri belirlemiş oluyoruz.  Bu bilgileri paketi derlerken belirteceğiz. Bu temel bilgiler paketin dağıtıma kurulması, kaldırılması, bağımlılık ve bağımlılık çakışmalarının tespitinde kullanılacak.</p>
-<p>Listede bulunan tüm paketlerin hepsinde  burada anlatılan bağımlılık tespiti hatasız yapılmalıdır. Burada tüm paketlerin derlenmesinde izlenmesi gereken işlem adımlarını ve bağımlılık sadece <strong>bash</strong> ve <strong>kmod</strong> paketleri özelinde anlatılmaya çalışıldı. Diğer paketler içinde bağımlı olduğu paketler olacaktır.</p>
-<p><strong>glibc</strong> dağıtımda sistemdeki bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. GNU C Library(glibc)'den farklı diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. <strong>glibc</strong> yerine alternatif olarak çeşitli avantajlarından dolayı kullanılabilir. <strong>glibc</strong> en çok tercih edilen ve uygulama (özgür olmayan) uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdr. Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.</p>
+<p>Listede <strong>bash</strong> uygulamasının çalışabilmesi için <strong>readline</strong> ve <strong>ncurses</strong> kütüphaneleri gerekli. <strong>readline</strong> ve <strong>ncurses</strong> kütüphanelerinin çalışabilmesi içinde <strong>glibc</strong> kütüphanesi gerekli. Listede bulunan tüm paketlerin bağımlılıkları eksiksizdir.
+Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.</p>
 </section>
 
 

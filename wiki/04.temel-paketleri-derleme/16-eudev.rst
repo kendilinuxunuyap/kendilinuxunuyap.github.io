@@ -5,8 +5,6 @@ eudev, Linux işletim sistemlerinde donanım aygıtlarının tanınması ve yön
 
 eudev, Linux çekirdeği tarafından sağlanan "udev" hizmetinin bir alternatifidir. Udev, donanım aygıtlarının dinamik olarak tanınmasını ve yönetilmesini sağlar. Eudev ise, udev'in daha hafif ve basitleştirilmiş bir sürümüdür.
 
-Özetlemek gerekirse, eudev Linux işletim sistemlerinde donanım aygıtlarının tanınması ve yönetimi için kullanılan bir sistemdir. Donanım aygıtlarının otomatik olarak algılanması ve ilgili sürücülerin yüklenmesi gibi işlemleri gerçekleştirir. Bu sayede, kullanıcılar donanım aygıtlarını kolayca kullanabilir ve yönetebilir.
-
 eudev Derleme
 -------------
 
@@ -15,16 +13,14 @@ eudev Derleme
 	#https://www.linuxfromscratch.org/lfs/view/9.1/chapter06/eudev.html
 	version="3.2.14"
 	name="eudev"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+
 	wget https://github.com/eudev-project/eudev/releases/download/v3.2.14/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
-
-	../${name}-${version}/configure --prefix=/           \
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	configure --prefix=/           \
 		    --bindir=/sbin          \
 		    --sbindir=/sbin         \
 		    --libdir=/lib       \
@@ -35,7 +31,7 @@ eudev Derleme
 		    --enable-modules \
 		    --enable-kmod
 	make 
-	make install DESTDIR=$HOME/rootfs
+	make install DESTDIR=$HOME/distro/rootfs
 
 .. raw:: pdf
 

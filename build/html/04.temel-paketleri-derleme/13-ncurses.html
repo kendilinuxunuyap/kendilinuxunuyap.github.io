@@ -46,21 +46,19 @@
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># kaynak kod indirme ve derleme için hazırlama</span>
 <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;6.4&quot;</span>
 <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;ncurses&quot;</span>
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$HOME</span>/distro
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro
-rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-rm<span class="w"> </span>-rf<span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+mkdir<span class="w"> </span>-p<span class="w">  </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+rm<span class="w"> </span>-rf<span class="w"> </span>/<span class="nv">$HOME</span>/distro/build/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="nb">cd</span><span class="w"> </span>/<span class="nv">$HOME</span>/distro/build<span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
 wget<span class="w"> </span>https://ftp.gnu.org/pub/gnu/ncurses/<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz
 tar<span class="w"> </span>-xvf<span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz
-mkdir<span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-<span class="nb">cd</span><span class="w"> </span>build-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
-../<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>/configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--with-shared<span class="w"> </span>--disable-tic-depends<span class="w"> </span>--with-versioned-syms<span class="w">  </span>--enable-widec
+<span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="w"> </span><span class="c1"># Kaynak kodun içine giriliyor</span>
+configure<span class="w"> </span>--prefix<span class="o">=</span>/<span class="w"> </span>--with-shared<span class="w"> </span>--disable-tic-depends<span class="w"> </span>--with-versioned-syms<span class="w">  </span>--enable-widec
 <span class="c1"># derleme</span>
 make
 
 <span class="c1"># derlenen paketin yüklenmesi ve ayarlamaların yapılması</span>
-make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/rootfs
-<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/rootfs/lib
+make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$HOME</span>/distro/rootfs
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/lib
 ln<span class="w"> </span>-s<span class="w"> </span>libncursesw.so.6<span class="w"> </span>libtinfow.so.6
 ln<span class="w"> </span>-s<span class="w"> </span>libncursesw.so.6<span class="w"> </span>libtinfo.so.6
 ln<span class="w"> </span>-s<span class="w"> </span>libncursesw.so.6<span class="w"> </span>libncurses.so.6

@@ -15,18 +15,14 @@ util-linux Derleme
 	#https://www.linuxfromscratch.org/lfs/view/development/chapter07/util-linux.html
 	version="2.39"
 	name="util-linux"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+
 	wget https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/${name}-${version}.tar.xz
 	tar -xvf ${name}-${version}.tar.xz
-	#cd $HOME/distro/${name}-${version}
-	#sed -i 's/\(link_all_deplibs\)=no/\1=unknown/'
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
-
-	../${name}-${version}/configure --prefix=/ \
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	configure --prefix=/ \
 		--libdir=/lib \
 		--bindir=/bin \
 		--enable-shared \
@@ -46,11 +42,11 @@ util-linux Derleme
 		--enable-libmount \
 		--enable-libblkid 
 	make 
-	make install DESTDIR=$HOME/rootfs
-	mkdir -p $HOME/rootfs/lib
-	cp .libs/* -rf $HOME/rootfs/lib/
-	mkdir -p $HOME/rootfs/bin
-	cp $HOME/rootfs/lib/cfdisk $HOME/rootfs/bin/
+	make install DESTDIR=$HOME/distro/rootfs
+	mkdir -p $HOME/distro/rootfs/lib
+	cp .libs/* -rf $HOME/distro/rootfs/lib/
+	mkdir -p $HOME/distro/rootfs/bin
+	cp $HOME/distro/rootfs/lib/cfdisk $HOME/distro/rootfs/bin/
 	
 .. raw:: pdf
 

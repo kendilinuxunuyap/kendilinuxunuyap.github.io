@@ -2,36 +2,28 @@ busybox Nedir?
 ++++++++++++++
 Busybox tek bir dosya halinde bulunan birçok araç setine sahip olan bir programdır. Bu araçlar initramfs sisteminde ve sistem genelinde sıkça kullanılır. Busybox aşağıdaki gibi kullanılır. Örneğin, dosya listelemek için ls komutunu kullanmak isterseniz:
 
-.. code-block:: shell
-
-	$ busybox ls
-
-Busyboxtaki tüm araçları sisteme sembolik bağ atmak için aşağıdaki gibi bir yol izlenebilir. Bu işlem var olan dosyaları sildiği için tehlikeli olabilir. Sistemin tasarımına uygun olarak yapılmalıdır.
+busybox Derleme
+---------------
 
 .. code-block:: shell
 
-	$ busybox --install -s /bin # -s parametresi sembolik bağ olarak kurmaya yarar.
+	name="busybox"
+	version="1.36.1"
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+	wget https://busybox.net/downloads/${name}-${version}.tar.bz2
+	tar -xvf ${name}-${version}.tar.gz
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	
+	make defconfig
+	sed -i "s|.*CONFIG_STATIC_LIBGCC .*|CONFIG_STATIC_LIBGCC=y|" .config
+	sed -i "s|.*CONFIG_STATIC .*|CONFIG_STATIC=y|" .config
 
-Busybox **static** olarak derlenmediği sürece bir libc kütüphanesine ihtiyaç duyar. initramfs içerisinde kullanılacaksa içerisine libc dahil edilmelidir. Bir dosyanın static olarak derlenip derlenmediğini öğrenmek için aşağıdaki komut kullanılır.
+	make 
 
-.. code-block:: shell
-
-	$ ldd /bin/busybox # static derlenmişse hata mesajı verir. Derlenmemişse bağımlılıklarını listeler.
-
-Busybox derlemek için öncelikle **make defconfig** kullanılarak veya önceden oluşturduğumuz yapılandırma dosyasını atarak yapılandırma işlemi yapılır. Ardından eğer static derleme yapacaksak yapılandırma dosyasına müdahale edilir. Son olarak **make** komutu kullanarak derleme işlemi yapılır.
-
-.. code-block:: shell
-
-	$ make defconfig
-	$ sed -i "s|.*CONFIG_STATIC_LIBGCC .*|CONFIG_STATIC_LIBGCC=y|" .config
-	$ sed -i "s|.*CONFIG_STATIC .*|CONFIG_STATIC=y|" .config
-	$ make
-
-Derleme bittiğinde kaynak kodun bulunduğu dizinde busybox dosyamız oluşmuş olur.
-
-Static olarak derlemiş olduğumuz busybox'u kullanarak minimal kök dizin oluşturabiliriz. Burada static yapı kullanılmayacaktır. 
-Sistemdeki /bin/busybox kullanılacaktır. Eğer yoksa busybox sisteme yüklenmelidir.
-
+	mkdir -p $HOME/distro/rootfs/bin
+	install busybox $HOME/distro/rootfs/bin/busybox
 
 .. raw:: pdf
 

@@ -11,10 +11,13 @@ glibc Derleme
 
 .. code-block:: shell
 
-	cd /tmp #tmp dizinine geçiyoruz
+	mkdir -p  /$HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf /$HOME/distro/build/* #içeriği temizleniyor
+	cd /$HOME/distro/build #dizinine geçiyoruz
 	wget https://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz # glibc kaynak kodunu indiriyoruz.
 	tar -xvf glibc-2.38.tar.gz # glibc kaynak kodunu açıyoruz.
-	../glibc-2.38/configure --prefix=/ --disable-werror # Derleme ayarları yapılıyor
+	cd glibc-2.38
+	configure --prefix=/ --disable-werror # Derleme ayarları yapılıyor
 	make # glibc derleyelim.
 
 glibc Yükleme
@@ -43,7 +46,10 @@ Aşağıdaki c kodumuzu derleyelim ve **$HOME/distro/rootfs** konumuna kopyalaya
 Program Derleme
 ................
 
+Aşağıdaki komutlarla merhaba.c dosyası derlenir.
+
 .. code-block:: shell
+	
 	cd $HOME
 	gcc -o merhaba merhaba.c 
 
@@ -95,12 +101,13 @@ Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **
 	# kaynak kod indirme ve derleme için hazırlama
 	version="2.38"
 	name="glibc"
-	cd /tmp
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
 	wget https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
-	../${name}-${version}/configure --prefix=/ --disable-werror
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	configure --prefix=/ --disable-werror
 	
 	# derleme
 	make 
