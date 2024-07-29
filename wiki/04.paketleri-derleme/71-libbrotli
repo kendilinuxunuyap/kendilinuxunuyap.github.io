@@ -1,0 +1,28 @@
+version="1.0"
+name="libbrotli"
+
+mkdir -p $HOME/distro
+cd $HOME/distro
+rm -rf ${name}-${version}
+rm -rf build-${name}-${version}
+
+wget https://github.com/bagder/libbrotli/archive/refs/tags/${name}-${version}.tar.gz
+tar -xvf ${name}-${version}.tar.gz
+
+mkdir build-${name}-${version}
+
+cd $HOME/distro/${name}-${name}-${version}
+./autogen.sh
+autoreconf -fvi
+
+cd $HOME/distro/build-${name}-${version}
+
+$HOME/distro/${name}-${name}-${version}/configure --prefix=/ \
+	  --libdir=/lib \
+	  --enable-shared \
+	
+  
+make 
+
+make install DESTDIR=$HOME/rootfs
+

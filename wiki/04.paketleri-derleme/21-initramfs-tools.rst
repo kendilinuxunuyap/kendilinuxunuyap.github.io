@@ -1,9 +1,50 @@
-initramfs-tools Nedir
-++++++++++++++++++++
+initramfs-tools
++++++++++++++++
 
 initramfs-tools, Debian tabanlı sistemlerde kullanılan bir araçtır ve initramfs (initial RAM file system) oluşturmak için kullanılır. Bu araç, sistem açılırken kullanılan geçici bir dosya sistemini oluşturur ve gerekli modülleri yükler. initramfs için farklı araçlarda kullanılabilir.
 Kullanıcı isterse kendi scriptinide kullanabilir. Debian dışında **dracut** aracıda initramfs oluşturmak ve güncellemek için kullanılabilir.
 
+Derleme
+-------
+
+.. code-block:: shell
+
+	version="0.142"
+	name="initramfs-tools"
+
+	mkdir -p $HOME/distro
+	cd $HOME/distro
+	rm -rf ${name}-${version}
+	rm -rf build-${name}-${version}
+
+	wget ftp://ftp.gnu.org/gnu/grub/${name}-${version}.tar.gz
+	https://salsa.debian.org/kernel-team/initramfs-tools/-/archive/v${version}/${name}-${version}.tar.gz
+
+	tar -xvf ${name}-${version}.tar.gz
+
+	cd ${name}-${version}
+
+	DESTDIR=$HOME/rootfs
+
+	mkdir -p ${DESTDIR}/usr
+	mkdir -p ${DESTDIR}/usr/sbin
+
+	    cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
+		file=$(echo $line | cut -f1 -d" ")
+		target=$(echo $line | cut -f2 -d" ")
+		mkdir -p ${DESTDIR}/$target
+		cp -prvf $file ${DESTDIR}/$target/
+	    done
+	    # install mkinitramfs
+	    cp -pvf mkinitramfs ${DESTDIR}/usr/sbin/mkinitramfs
+	    sed -i "s/@BUSYBOX_PACKAGES@/busybox/g" ${DESTDIR}/usr/sbin/mkinitramfs
+	    sed -i "s/@BUSYBOX_MIN_VERSION@/1.22.0/g" ${DESTDIR}/usr/sbin/mkinitramfs
+	    # Remove debian stuff
+	    rm -rvf ${DESTDIR}/etc/kernel
+	    # install sysconf
+	    mkdir -p ${DESTDIR}/etc/sysconf.d
+	    install ../initramfs-tools.sysconf ${DESTDIR}/etc/sysconf.d/initramfs-tools
+	    
 **/etc/initramfs-tools/modules**
 
 **modules** dosyası initrd oluşturulma ve güncelleme durumunda isteğe bağlı olarak modullerin eklenmesisini ve **initrd** açıldığında modülün yüklenmesini istiyorsak **/etc/initramfs-tools/modules** komundaki dosyayı  aşağıdaki gibi düzenlemeliyiz. Bu dosya içinde **ext4**, **vfat** ve diğer yardımcı moduller eklenmiş durumdadır. 

@@ -1,0 +1,28 @@
+version="5.4.5"
+name="xz"
+
+mkdir -p $HOME/distro
+cd $HOME/distro
+rm -rf ${name}-${version}
+rm -rf build-${name}-${version}
+
+wget https://github.com/tukaani-project/xz/archive/refs/tags/v5.4.5.tar.gz
+tar -xvf v${version}.tar.gz
+
+mkdir build-${name}-${version}
+
+cd $HOME/distro/${name}-${version}
+autoreconf -fvi
+
+cd $HOME/distro/build-${name}-${version}
+
+../${name}-${version}/configure --prefix=/ \
+	  --libdir=/lib \
+	  --enable-shared \
+	$(use_opt doc --enable-doc --disable-doc) \
+	$(use_opt nls --enable-nls --disable-nls)
+  
+make 
+
+make install DESTDIR=$HOME/rootfs
+

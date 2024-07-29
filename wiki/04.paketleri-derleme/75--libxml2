@@ -1,0 +1,27 @@
+version="2.12.1"
+name="libxml2"
+
+mkdir -p $HOME/distro
+cd $HOME/distro
+rm -rf ${name}-${version}
+rm -rf build-${name}-${version}
+
+wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.12.1.tar.gz
+tar -xvf v${version}.tar.gz
+
+mkdir build-${name}-${version}
+
+cd $HOME/distro/${name}-${version}
+autoreconf -fvi
+
+cd $HOME/distro/build-${name}-${version}
+
+../${name}-${version}/configure --prefix=/ \
+	  --libdir=/lib \
+	  --enable-shared \
+	
+  
+make 
+
+make install DESTDIR=$HOME/rootfs
+

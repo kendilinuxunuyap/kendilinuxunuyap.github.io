@@ -1,0 +1,23 @@
+version="2.5.0"
+name="expat"
+
+mkdir -p $HOME/distro
+cd $HOME/distro
+rm -rf ${name}-${version}
+rm -rf build-${name}-${version}
+
+
+wget https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
+tar -xvf ${name}-${version}.tar.gz
+
+mkdir build-${name}-${version}
+
+cd build-${name}-${version}
+
+../${name}-${version}/configure --prefix=/
+
+make
+
+ make DESTDIR=$HOME/rootfs install	
+
+
