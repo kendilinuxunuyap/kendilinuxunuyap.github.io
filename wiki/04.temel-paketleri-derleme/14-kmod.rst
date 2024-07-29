@@ -13,14 +13,11 @@ kmod Derleme
 	# kaynak kod indirme ve derleme için hazırlama
 	version="31"
 	name="kmod"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
+	cd /tmp
 	rm -rf ${name}-${version}
 	rm -rf build-${name}-${version}
 	wget https://mirrors.edge.kernel.org/pub/linux/utils/kernel/kmod/${name}-${version}.tar.xz
 	tar -xvf ${name}-${version}.tar.xz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
 	../${name}-${version}/configure --prefix=/ \
 		--libdir=/lib/ \
 		--bindir=/sbin
@@ -32,12 +29,12 @@ kmod Derleme
 	make 
 		
 	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/rootfs
-	cd $HOME/rootfs/sbin
+	make install DESTDIR=$HOME/distro/rootfs
+	cd $HOME//distro/rootfs/sbin
 	for target in depmod insmod modinfo modprobe rmmod; do
 	  ln -sfv kmod $target
 	done
-	cd $HOME/rootfs/bin
+	cd $HOME/distro/rootfs/bin
 	ln -sfv ../sbin/kmod lsmod
 
 

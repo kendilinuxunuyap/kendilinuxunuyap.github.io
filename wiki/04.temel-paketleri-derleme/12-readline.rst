@@ -11,27 +11,24 @@ libreadline Derleme
 	# kaynak kod indirme ve derleme için hazırlama
 	version="8.1"
 	name="readline"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
+	cd /tmp
 	rm -rf ${name}-${version}
 	rm -rf build-${name}-${version}
 	wget https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
 	../${name}-${version}/configure --prefix=/ --enable-shared --enable-multibyte
 	
 	# derleme
 	make 
 	
 	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/rootfs
+	make install DESTDIR=$HOME/distro/rootfs
 
-Program Derleme
----------------
+Kodları Yazma
+-------------
 
 Altta görülen **readline**  kütüphanesini kullanarak terminalde kullanıcıdan mesaj alan ve mesajı ekrana yazan programı hazırladık.
-
+$HOME(ev dizinimiz) dizinine merhaba.c dosyası oluşturup aşağıdaki kodları ekleyelim.
 
 .. code-block:: shell
 
@@ -48,16 +45,16 @@ Program Derleme
 ---------------
 
 .. code-block:: shell
-
+	cd $HOME
 	gcc -o merhaba merhaba.c -lreadline
-	cp merhaba $HOME/rootfs/merhaba
+	cp merhaba $HOME/distro/rootfs/merhaba
 
 Program Test Etme
 -----------------
 
 .. code-block:: shell
 
-	sudo chroot $HOME/rootfs /merhaba
+	sudo chroot $HOME/distro/rootfs /merhaba
 
 Program hatasız çalışıyorsa **readline** kütüphanemiz hatasız derlenmiş olacaktır.
 

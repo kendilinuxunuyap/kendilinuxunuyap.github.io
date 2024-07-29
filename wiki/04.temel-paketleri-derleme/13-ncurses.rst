@@ -13,8 +13,8 @@ ncurses Derleme
 	# kaynak kod indirme ve derleme için hazırlama
 	version="6.4"
 	name="ncurses"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
+
+	cd /tmp
 	rm -rf ${name}-${version}
 	rm -rf build-${name}-${version}
 	wget https://ftp.gnu.org/pub/gnu/ncurses/${name}-${version}.tar.gz
@@ -26,8 +26,8 @@ ncurses Derleme
 	make 
 	
 	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/rootfs
-	cd $HOME/rootfs/lib
+	make install DESTDIR=$HOME/distro/rootfs
+	cd $HOME/distro/rootfs/lib
 	ln -s libncursesw.so.6 libtinfow.so.6
 	ln -s libncursesw.so.6 libtinfo.so.6
 	ln -s libncursesw.so.6 libncurses.so.6
