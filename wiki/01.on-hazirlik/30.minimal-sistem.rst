@@ -15,37 +15,29 @@ Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız.
 5. $HOME/distro/iso/boot/grub/grub.cfg
 6. $HOME/distro/distro.iso
 
-Linux sisteminin açılabilmesi için aşağıdaki 3 dosya yeterli. 
+Linux sisteminin açılabilmesi için 3., 4. ve 5. sıradaki gösterilen konumdaki dosyaların olması yeterli. 
+Bu üç dosyayı yukarıda belirtildiği gibi dizin konumlarına koyduktan sonra, **grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso**  komutuyla **distro.iso** dosyası elde ederiz. Artık 6. sırada belirtilen iso dosyamız boot edebilen şekilde hazırlanmış olur. 
 
-. $HOME/distro/iso/boot/initrd.img
-. $HOME/distro/iso/boot/vmlinuz
-. $HOME/distro/iso/boot/grub/grub.cfg
-	
-Bu dosyaları yukarıdaki gibi dizin konumlarına koyduktan sonra, 
-**grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso #iso doyamız oluşturulur.**  komutuyla **distro.iso** dosyası elde ederiz. Artık iso dosyamız boot edebilen hazırlanmış bir dosyadır. Burada bazı sorulara cevap vermemiz gerekmektedir. 
+Sistemi oluşturan **3., 4. ve 5.** sırada belirtlen dosyalarımız görevi şunlardır. 
 
-**$HOME/distro/iso/boot/initrd.img** dosyasını sistemin açılış sürecinden ön işlemleri yapmak ve gerçek sisteme geçiş sürecini yöneten bir dosyadır. Yazın devamında nasıl hazırlanacağı anlatılacaktır. 
+**$HOME/distro/iso/boot/initrd.img:** 
+Dosyasını sistemin açılış sürecinden ön işlemleri yapmak ve gerçek sisteme geçiş sürecini yöneten bir dosyadır. Yazın devamında nasıl hazırlanacağı anlatılacaktır. 
 
-**$HOME/distro/iso/boot/vmlinuz** dosyamız kernelimiz oluyor. Ben kullandığım debian sisteminin mevcut kernelini kullandım. İstenirse kernel derlenebilir. 
+**$HOME/distro/iso/boot/vmlinuz:** 
+Dosyamız kernelimiz oluyor. Ben kullandığım debian sisteminin mevcut kernelini kullandım. İstenirse kernel derlenebilir. 
 
-**$HOME/distro/iso/boot/grub/grub.cfg** dosyamız ise initrd.img ve vmlinuz dosyalarının grub yazılımının nereden bulacağını gösteren yapılandırma dosyasıdır.
+**$HOME/distro/iso/boot/grub/grub.cfg:** 
+Dosyamız ise initrd.img ve vmlinuz dosyalarının grub yazılımının nereden bulacağını gösteren yapılandırma dosyasıdır.
 
-Bir linux siisteminin açılış süreci şu şekilde olmaktadır.
+Bir linux sisteminin açılış süreci şu şekilde olmaktadır.
  
-1- **Bilgisayara Güç Verilmesi**
-
-2- **Bios İşlemleri Yapılıyor(POST)**
-
-3- **LILO/GRUB Yazılımı Yükleniyor(grub.cfg dosyası okunuyor ve vmlinuz ve initrd.img devreye giriyor)**
-
-4- **vmlinuz initrd.img sistemini belleğe yüklüyor**
-
-5- **vmlinuz initrd.img sistemini belleğe yüklüyor**
-
-6- **initrd.img içindeki init dosyasındaki işlem sürecine göre sistem işlemlere devam ediyor**
+1. **Bilgisayara Güç Verilmesi**
+2. **Bios İşlemleri Yapılıyor(POST)**
+3. **LILO/GRUB Yazılımı Yükleniyor(grub.cfg dosyası okunuyor ve vmlinuz ve initrd.img devreye giriyor)**
+4. **vmlinuz initrd.img sistemini belleğe yüklüyor**
+5. **initrd.img içindeki init dosyasındaki işlem sürecine göre sistem işlemlere devam ediyor**
 
 Yazının devamında sistem için gerekli olan 3 temel dosyanın hazırlanması ve iso yapılma süreci anlatılacaktır.
-
 Şimdi sırasıyla dosya konumlarına uygun şekilde dizin ve dosyalarımızı oluşturalım.
 
 **Dizinlerin Oluşturulması**
@@ -96,14 +88,15 @@ Aşağıdaki içerik oluşturulan **init** dosyası içine eklenir.
 	/busybox --install -s /bin
 	/busybox ash
 
-**busybox** içerisinde linux ortamında kullanılan hemen hemen tüm komutların yerine kullanalılabilir. bulunduğumuz ortamda **busybox** dışında hiçbir komutun olmadığını düşünün. Mesela **cp** komutuna ihtiyacınız var bu durumda **busybox cp** yazarak kullanılabilirsiniz. Tüm temel komutları busyboxtan türetmek için  **/busybox --install -s /bin** komutunu kullanabilirsiniz.
+**busybox** içerisinde linux ortamında kullanılan hemen hemen tüm komutların yerine kullanalılabilir. Bulunduğumuz ortamda **busybox** dışında hiçbir komutun olmadığını düşünün. Mesela **cp** komutuna ihtiyacınız var bu durumda **busybox cp** yazarak kullanılabilirsiniz. Tüm temel komutları busyboxtan türetmek için  **/busybox --install -s /bin** komutunu kullanabilirsiniz.
 
 Buradaki komutları sırayla anlatırsak;
-1. #!busybox ash 		: ash bir kabuk veya terminal programıdır.
-2. PATH=/bin 			: komutlar çalışırken nerede arayacağı belirtiliyor
-3. /busybox mkdir /bin		: **busybox mkdir**  yardımıyla **/bin** dizini oluşturuluyor.
-4. /busybox --install -s /bin	: **/bin** dizinine tüm komutları kısa yol oluşturur.
-5. /busybox ash			: ash terminalini çalıştırır. Bash yerine alternatif.
+
+- #!busybox ash: ash bir kabuk veya terminal programıdır.
+- PATH=/bin: komutlar çalışırken nerede arayacağı belirtiliyor
+- /busybox mkdir /bin: **busybox mkdir**  yardımıyla **/bin** dizini oluşturuluyor.
+- /busybox --install -s /bin: **/bin** dizinine tüm komutları kısa yol oluşturur.
+- /busybox ash: ash terminalini çalıştırır. Bash yerine alternatif.
 
 **kernel**, **initrd.img** dosyasını bellek üzerine açıp **init** dosyasını çalıştırınca sırasıyla numaralandırılarak anlattığımız işlemler yapılacak ve çalışabilecek ortam hazırlanacaktır. Daha sonra ash terminali çalışarak kullanıcının kullanımına hazır hale gelecektir.
 	
