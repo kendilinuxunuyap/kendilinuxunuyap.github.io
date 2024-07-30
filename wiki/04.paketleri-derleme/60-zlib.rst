@@ -6,8 +6,8 @@ zlib, sıkıştırma ve açma işlemleri için kullanılan bir kütüphanedir. L
 zlib, genellikle dosya sıkıştırma, ağ iletişimi ve veritabanı yönetimi gibi alanlarda kullanılır. Örneğin, bir dosyayı sıkıştırmak ve daha az depolama alanı kullanmak istediğinizde zlib'i kullanabilirsiniz. Ayrıca, ağ üzerinden veri iletişimi yaparken veri boyutunu azaltmak için de zlib kullanabilirsiniz.
 
 
-**Derleme**
------------
+Derleme
+-------
 
 .. code-block:: shell
 

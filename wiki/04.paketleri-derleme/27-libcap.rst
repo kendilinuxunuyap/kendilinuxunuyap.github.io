@@ -3,6 +3,8 @@ lipcap
 
 coreutils için gerekli olan paket.
 
+libcap, Linux işletim sisteminde yetkilendirme (authorization) işlemlerini yönetmek için kullanılan bir kütüphanedir. Bu kütüphane, özel yetkilendirme işlemlerini gerçekleştirmek için kullanıcıların ve uygulamaların ihtiyaç duyduğu yetkilendirmeleri yönetir. Özellikle, düşük seviyeli ağ ve sistem işlemlerinde güvenlik seviyesini artırmak için kullanılır. libcap, özel yetkilendirme gerektiren işlemleri gerçekleştirmek için kullanıcıların ayrıcalıklarını sınırlamak ve denetlemek için önemli bir araçtır. Bu sayede, sistemdeki güvenlik açıklarının sömürülmesini engellemeye yardımcı olur.
+
 Derleme
 -------
 

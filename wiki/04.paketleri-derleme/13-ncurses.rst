@@ -5,8 +5,8 @@ ncurses, Linux işletim sistemi için bir programlama kütüphanesidir. Bu küt�
 
 ncurses, kullanıcıya metin tabanlı bir arayüz sağlar ve terminal penceresinde çeşitli işlemler gerçekleştirmek için kullanılabilir. Örneğin, bir metin düzenleyici, dosya tarayıcısı veya metin tabanlı bir oyun gibi uygulamalar ncurses kullanarak geliştirilebilir.
 
-ncurses Derleme
----------------
+Derleme
+-------
 
 .. code-block:: shell
 	

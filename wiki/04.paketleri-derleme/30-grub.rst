@@ -24,8 +24,8 @@ Aşağıda, Grub ile ilgili bir örnek konfigürasyon dosyası gösterilmektedir
 
 Bu örnekte, Grub, öntanımlı olarak Linux işletim sistemini başlatacaktır. Eğer Windows'u başlatmak isterseniz, Grub menüsünden "Windows" seçeneğini seçebilirsiniz.
 
-grub Derleme
-------------
+Derleme
+-------
 
 grub paketini derlemek için aşağıdaki scripti kullabilirsiniz.
 

@@ -1,9 +1,9 @@
-busybox Nedir?
-++++++++++++++
+busybox
++++++++
 Busybox tek bir dosya halinde bulunan birçok araç setine sahip olan bir programdır. Bu araçlar initramfs sisteminde ve sistem genelinde sıkça kullanılır. Busybox aşağıdaki gibi kullanılır. Örneğin, dosya listelemek için ls komutunu kullanmak isterseniz:
 
-busybox Derleme
----------------
+Derleme
+-------
 
 .. code-block:: shell
 

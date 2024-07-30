@@ -5,8 +5,8 @@ eudev, Linux işletim sistemlerinde donanım aygıtlarının tanınması ve yön
 
 eudev, Linux çekirdeği tarafından sağlanan "udev" hizmetinin bir alternatifidir. Udev, donanım aygıtlarının dinamik olarak tanınmasını ve yönetilmesini sağlar. Eudev ise, udev'in daha hafif ve basitleştirilmiş bir sürümüdür.
 
-eudev Derleme
--------------
+Derleme
+-------
 
 .. code-block:: shell
 

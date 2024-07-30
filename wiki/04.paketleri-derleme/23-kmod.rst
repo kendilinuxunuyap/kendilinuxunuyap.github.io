@@ -15,8 +15,8 @@ kmod Komutları
 - **modprobe:** insmod komutunun aynısı fakat daha işlevseldir. module ait bağımlı olduğu modülleride yüklemektedir. modprobe  modülü /lib/modules/ dizini altında aramaktadır.
 - **depmod:** /lib/modules dizinindeki modüllerin listesini günceller. Fakat başka bir dizinde ise basedir=konum şeklinde belirtmek gerekir. konum dizininde /lib/modules/** şeklinde kalsörler olmalıdır.
 
-kmod Derleme
-------------
+Derleme
+-------
 
 .. code-block:: shell
 	
@@ -51,8 +51,8 @@ kmod Derleme
 	ln -sfv ../sbin/kmod lsmod
 
 
-kmod Test Edilmesi
-------------------
+Test Edilmesi
+-------------
 
 Bir modül eklendiğinde veya çıkartıldığında modülle ilgili mesajları dmesg logları ile görebiliriz.
 

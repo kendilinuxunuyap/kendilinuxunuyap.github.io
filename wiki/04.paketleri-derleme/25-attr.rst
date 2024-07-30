@@ -3,8 +3,10 @@ attr
 
 coreutils için gerekli olan paket.
 
-attr Derleme
-------------
+attr, dosya özniteliklerini ayarlamak veya görüntülemek için kullanılan bir komuttur. Bu komut, dosya veya dizinlerin özelliklerini (izinler, sahiplik, erişim zamanları vb.) yönetmek için kullanılır. Örneğin, bir dosyanın izinlerini değiştirmek veya bir dosyanın sahibini görmek için attr komutunu kullanabilirsiniz.
+
+Derleme
+-------
 
 .. code-block:: shell
 	

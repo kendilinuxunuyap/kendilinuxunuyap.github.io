@@ -3,8 +3,8 @@ libreadline
 
 libreadline, Linux işletim sistemi için geliştirilmiş bir kütüphanedir. Bu kütüphane, kullanıcıların komut satırında girdi almasını ve düzenlemesini sağlar. Bir programcı olarak, libreadline'i kullanarak kullanıcı girdilerini okuyabilir, düzenleyebilir ve işleyebilirsiniz.
 
-libreadline Derleme
--------------------
+Derleme
+-------
 
 .. code-block:: shell
 	
@@ -25,7 +25,7 @@ libreadline Derleme
 	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
 	make install DESTDIR=$HOME/distro/rootfs
 
-Kodları Yazma
+Program Yazma
 -------------
 
 Altta görülen **readline**  kütüphanesini kullanarak terminalde kullanıcıdan mesaj alan ve mesajı ekrana yazan programı hazırladık.

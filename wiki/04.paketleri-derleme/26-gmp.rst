@@ -3,8 +3,10 @@ gmp
 
 coreutils için gerekli olan paket.
 
-gmp Derleme
------------
+GMP (GNU Multiple Precision Arithmetic Library), büyük sayılarla çalışmak için kullanılan bir kütüphanedir. Bu kütüphane, standart veri türlerinin sınırlarını aşarak çok büyük sayılarla işlem yapmamıza olanak tanır. Özellikle kriptografi, sayı teorisi ve bilimsel hesaplama gibi alanlarda büyük sayılarla çalışmak gerektiğinde GMP oldukça faydalıdır. Linux sistemlerinde, GMP kütüphanesini kullanarak büyük sayılarla işlem yapabilir ve hesaplamalarınızı daha hassas bir şekilde gerçekleştirebilirsiniz.
+
+Derleme
+-------
 
 .. code-block:: shell
 	

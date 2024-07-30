@@ -1,13 +1,13 @@
-glibc Nedir?
-++++++++++++
+glibc
++++++
 
 **glibc** dağıtımda sistemdeki bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. GNU C Library(glibc)'den farklı diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. **glibc** yerine alternatif olarak çeşitli avantajlarından dolayı kullanılabilir. **glibc** en çok tercih edilen ve uygulama (özgür olmayan) uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır. 
 
 
 glibc (GNU C Kütüphane) Linux sistemlerinde kullanılan bir C kütüphanesidir. Bu kütüphane, C programlama dilinin temel işlevlerini sağlar ve Linux çekirdeğiyle etkileşimde bulunur. **glibc** listemizdeki tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiiz pakettir.
 
-glibc Derleme
--------------
+Derleme
+-------
 
 .. code-block:: shell
 
@@ -20,15 +20,15 @@ glibc Derleme
 	configure --prefix=/ --disable-werror # Derleme ayarları yapılıyor
 	make # glibc derleyelim.
 
-glibc Yükleme
--------------
+Yükleme
+-------
 
 .. code-block:: shell
 
 	make install DESTDIR=$HOME/distro/rootfs # Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.
 
-glibc Test Etme
----------------
+Test Etme
+---------
 
 glibc kütüphanemizi **$HOME/distro/rootfs** komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.
 

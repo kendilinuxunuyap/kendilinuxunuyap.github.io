@@ -1,9 +1,10 @@
-e2fsprogs Paketi
-^^^^^^^^^^^^^^^^
+e2fsprogs
++++++++++
+
 e2fsprogs paket sistemde mkfs.ext4, e2fsck, tune2fs vb sistem araçlarının yüklenmesini sağlar. Eğer sistemde bu sistem uygulamaları yoksa bu paketin yüklenmesi veya derlenmesi gerekmektedir.
 
-e2fsprogs Derleme
------------------
+Derleme
+-------
 
 .. code-block:: shell
 
