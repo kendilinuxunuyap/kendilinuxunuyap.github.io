@@ -24,7 +24,7 @@ Derleme
 
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 
-	configure  --prefix=/ \
+	./configure  --prefix=/ \
 		--libdir=/lib\
 		$(use_opt cxx --enable-cxx --disable-cxx) \
 		--enable-fat

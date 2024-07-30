@@ -21,7 +21,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.xz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --prefix=/ --libdir=/lib
+	./configure --prefix=/ --libdir=/lib
 
 	make 
 	

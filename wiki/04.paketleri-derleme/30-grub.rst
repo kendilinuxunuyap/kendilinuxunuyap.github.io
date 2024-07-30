@@ -42,7 +42,7 @@ grub paketini derlemek için aşağıdaki scripti kullabilirsiniz.
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 
-	configure --prefix= \
+	./configure --prefix= \
 		    --sysconfdir=/etc \
 		    --libdir=/lib/ \
 		    --disable-werror 

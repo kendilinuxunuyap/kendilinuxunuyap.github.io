@@ -18,7 +18,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --sbindir=/usr/bin \
+	./configure --sbindir=/usr/bin \
 		    --libdir=/usr/lib64/  
 	make 
 	

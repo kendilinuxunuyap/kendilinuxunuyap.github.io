@@ -107,7 +107,7 @@ Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **
 	wget https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/ --disable-werror
+	./configure --prefix=/ --disable-werror
 	
 	# derleme
 	make 

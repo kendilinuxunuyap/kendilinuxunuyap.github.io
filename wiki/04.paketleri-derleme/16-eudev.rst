@@ -20,7 +20,7 @@ Derleme
 	wget https://github.com/eudev-project/eudev/releases/download/v3.2.14/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/           \
+	./configure --prefix=/           \
 		    --bindir=/sbin          \
 		    --sbindir=/sbin         \
 		    --libdir=/lib       \

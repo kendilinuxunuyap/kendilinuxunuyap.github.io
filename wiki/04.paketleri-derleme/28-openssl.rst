@@ -24,7 +24,7 @@ Derleme
 
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 
-	config --prefix=/  \
+	./config --prefix=/  \
 		 --openssldir=/etc/ssl \
 		 --libdir=lib          \
 		 shared                \

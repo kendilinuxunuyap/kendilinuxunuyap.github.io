@@ -19,7 +19,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		--libdir=/lib \
 		--bindir=/bin \
 		--with-curses \

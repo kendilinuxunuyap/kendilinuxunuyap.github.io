@@ -17,7 +17,7 @@ Derleme
 	wget https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/ --enable-shared --enable-multibyte
+	./configure --prefix=/ --enable-shared --enable-multibyte
 	
 	# derleme
 	make 

@@ -22,7 +22,7 @@ Derleme
 	wget https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/${name}-${version}.tar.xz
 	tar -xvf ${name}-${version}.tar.xz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		--libdir=/lib \
 		--bindir=/bin \
 		--enable-shared \

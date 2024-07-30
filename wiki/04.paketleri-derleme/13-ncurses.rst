@@ -19,7 +19,7 @@ Derleme
 	wget https://ftp.gnu.org/pub/gnu/ncurses/${name}-${version}.tar.gz
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/ --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec
+	./configure --prefix=/ --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec
 	# derleme
 	make 
 	

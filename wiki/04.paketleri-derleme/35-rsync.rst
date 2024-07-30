@@ -20,7 +20,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.gz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		--libdir=/lib/ \
 		--with-included-popt \
 		--with-included-zlib \

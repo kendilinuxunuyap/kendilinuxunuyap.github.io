@@ -20,7 +20,7 @@ Derleme
 	tar -xvf ${name}-${version}.tgz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		 --libdir=/lib/ \
 		 --with-ncursesw
 	    # change default color blue to red

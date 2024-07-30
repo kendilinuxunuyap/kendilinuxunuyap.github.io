@@ -31,7 +31,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.xz
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
 	
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		--libdir=/lib/ \
 		--bindir=/sbin
 	# remove xsltproc dependency

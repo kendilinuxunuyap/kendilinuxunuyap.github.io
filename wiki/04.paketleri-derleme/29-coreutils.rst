@@ -19,7 +19,7 @@ Derleme
 	tar -xvf ${name}-${version}.tar.xz
 	
 	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	configure --prefix=/ \
+	./configure --prefix=/ \
 		--libdir=/lib \
 		--libexecdir=/usr/libexec \
 		--enable-largefile \
