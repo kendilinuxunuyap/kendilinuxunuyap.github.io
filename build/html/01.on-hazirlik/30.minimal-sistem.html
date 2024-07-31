@@ -19,7 +19,7 @@
     <link rel="canonical" href="https://bayramkarahan.github.io/01.on-hazirlik/30.minimal-sistem.html" />
     <link rel="index" title="Dizin" href="../genindex.html" />
     <link rel="search" title="Ara" href="../search.html" />
-    <link rel="next" title="busybox Nedir?" href="32-busybox.html" />
+    <link rel="next" title="Paketleri Derleme" href="../04.paketleri-derleme/index.html" />
     <link rel="prev" title="Dağıtım Ortamın Hazırlanması" href="10-ortaminhazirlanmasi.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -161,11 +161,12 @@ boot
 <section id="dagitimin-test-edilmesi">
 <h2><strong>Dağıtımın Test Edilmesi</strong><a class="headerlink" href="#dagitimin-test-edilmesi" title="Permalink to this heading">¶</a></h2>
 <p>Hazırlanan   <strong>$HOME/distro/distro.iso</strong> dağıtımımız qemu veya virtualbox ile test edilebilir.</p>
-<p>Aşağıdaki komutla çalıştırıp test edebiliriz.</p>
+<p>Aşağıdaki komutla qemu ile isomuzu çalıştırıp test edebiliriz. qemu ile ilgili bilgi için ek konular bölümünden erişebilirsiniz.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>qemu-system-x86_64<span class="w"> </span>-cdrom<span class="w"> </span><span class="nv">$HOME</span>/distro/distro.iso<span class="w"> </span>-m<span class="w"> </span>1G
 </pre></div>
 </div>
-<p>Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk.</p>
+<p>Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk. Ekran görüntüsü aşağıda görülmektedir.</p>
+<a class="reference internal image-reference" href="../_images/minimal-iso.png"><img alt="../_images/minimal-iso.png" src="../_images/minimal-iso.png" style="width: 400px;" /></a>
 <p>Dokümanın devamında kendi sistemimizi hazırlarken bu bölümde anlatılan yapıya benzer adımları yapacağız.
 Minimal sistemden farkı <strong>busybox</strong> ile oluşturduğumuz ikili dosyalarımızı(temel komutlar) kendimiz derleyeceğiz.
 Minimal sistemde static busybox kullandık.</p>
@@ -211,11 +212,9 @@ Avantajı hiçbir kütüphaneye ihtiyaç duymaz. Devevantajı ise boyutları yü
 <li class="toctree-l3"><a class="reference internal" href="#dagitimin-test-edilmesi"><strong>Dağıtımın Test Edilmesi</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="32-busybox.html">busybox Nedir?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="40-chroot.html">Chroot Nedir?</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../04.temel-paketleri-derleme/index.html">Temel Paketleri Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.paketleri-derleme/index.html">Paketleri Derleme</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi-tasarlama/index.html">Paket Sistemi Tasarlama</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../06.initrd-hazirlama/index.html">initrd Hazırlama</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>

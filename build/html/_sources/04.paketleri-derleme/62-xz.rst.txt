@@ -1,0 +1,39 @@
+xz
+++
+
+z, sıkıştırma ve arşivleme işlemleri için kullanılan bir yazılım paketidir. xz, genellikle Linux işletim sistemlerinde sıkıştırma işlemlerinde tercih edilen bir araçtır. xz, yüksek sıkıştırma oranları sağlayarak dosyaları daha küçük boyutlara indirger. Özellikle dağıtım dosyalarını sıkıştırmak ve depolamak için yaygın olarak kullanılır. xz paketini kullanarak dosyaları sıkıştırabilir ve açabilirsiniz.
+
+Derleme
+--------
+
+.. code-block:: shell
+	
+	# kaynak kod indirme ve derleme için hazırlama
+	version="5.4.5"
+	name="xz"
+
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+
+	wget https://github.com/tukaani-project/xz/archive/refs/tags/v5.4.5.tar.gz
+	tar -xvf v${version}.tar.gz
+
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	autoreconf -fvi
+
+	./configure --prefix=/ \
+		  --libdir=/lib \
+		  --enable-shared \
+		$(use_opt doc --enable-doc --disable-doc) \
+		$(use_opt nls --enable-nls --disable-nls)
+	  
+	make 
+
+	make install DESTDIR=$HOME/distro/rootfs
+
+
+.. raw:: pdf
+
+   PageBreak
+

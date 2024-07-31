@@ -156,13 +156,18 @@ Artık sistemi açabilen ve tty açıp bize suna bir yapı oluşturduk.
  
 Hazırlanan   **$HOME/distro/distro.iso** dağıtımımız qemu veya virtualbox ile test edilebilir.
 
-Aşağıdaki komutla çalıştırıp test edebiliriz.
+Aşağıdaki komutla qemu ile isomuzu çalıştırıp test edebiliriz. qemu ile ilgili bilgi için ek konular bölümünden erişebilirsiniz.
 
 .. code-block:: shell
 
 	qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G
 
-Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk.
+Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk. Ekran görüntüsü aşağıda görülmektedir. 
+
+.. image:: /_static/images/minimal-iso.png
+  :width: 400
+
+
 
 Dokümanın devamında kendi sistemimizi hazırlarken bu bölümde anlatılan yapıya benzer adımları yapacağız. 
 Minimal sistemden farkı **busybox** ile oluşturduğumuz ikili dosyalarımızı(temel komutlar) kendimiz derleyeceğiz.
