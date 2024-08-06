@@ -1,4 +1,4 @@
-lipcap
+libcap
 ++++++
 
 coreutils için gerekli olan paket.
@@ -10,35 +10,62 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	version="2.69"
-	name="libcap"
+    #!/usr/bin/env bash
+    version="2.69"
+    name="libcap"
+    depends="glibc,acl,openssl"
+    description="shell ve network copy"
+    source="https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${name}-${version}.tar.xz"
+    groups="net.misc"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
 
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
+    _common_make_options=(
+        CGO_CPPFLAGS="$CPPFLAGS"
+        CGO_CFLAGS="$CFLAGS"
+        CGO_CXXFLAGS="$CXXFLAGS"
+        CGO_LDFLAGS="$LDFLAGS"
+        CGO_REQUIRED="1"
+        GOFLAGS="-buildmode=pie -mod=readonly -modcacherw"
+        GO_BUILD_FLAGS="-ldflags '-compressdwarf=false -linkmode=external'"
+        )
 
-	wget https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${name}-${version}.tar.xz
+    setup(){
+        cd ${name}-${version} # Kaynak kodun içine giriliyor
 
-	tar -xvf ${name}-${version}.tar.xz
-
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-
-	cap_opts=(
-	    SUDO=""
-	    prefix=/
-	    KERNEL_HEADERS=/usr/include
-	    lib=lib64
-	    RAISE_SETFCAP=no
-	    $(use_opt pam PAM_CAP=yes PAM_CAP=no)
-	)
-	#make 
-	    make ${cap_opts[@]} DYNAMIC=yes
-	    make ${cap_opts[@]} DYNAMIC=no
-
-		
-	make install DESTDIR=$HOME/distro/rootfs
-
+        cap_opts=(
+            "${_common_make_options[@]}"
+            SUDO=""
+            prefix=/usr
+            KERNEL_HEADERS=/usr/include
+            lib=lib64
+            RAISE_SETFCAP=no
+            PAM_CAP=yes
+            )
+    }
+    build(){
+        make ${cap_opts[@]} DYNAMIC=yes
+    }
+    package(){
+        make "${_common_make_options[@]}"  \
+            DESTDIR="$HOME/distro/rootfs" \
+            RAISE_SETFCAP=no \
+            prefix=/usr \
+            lib=lib64 \
+            sbindir=bin \
+            install
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

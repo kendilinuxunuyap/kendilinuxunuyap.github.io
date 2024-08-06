@@ -8,21 +8,37 @@ Derleme
 
 .. code-block:: shell
 
-	version="1.3"
-	name="zlib"
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
+    #!/usr/bin/env bash
+    version="1.3.1"
+    name="zlib"
+    depends="glibc,readline,ncurses,flex"
+    description="Compression library implementing the deflate compression method found in gzip and PKZIP"
+    source="https://zlib.net/current/${name}.tar.gz"
+    groups="app.arch"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}.tar.gz
+    }
+    setup(){
+        cd ${name}-${version} # Kaynak kodun içine giriliyor
+        ./configure --prefix=/usr
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
-	wget https://zlib.net/current/${name}.tar.gz
-	tar -xvf ${name}.tar.gz
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	./configure --prefix=/
-
-	make 
-
-	make install DESTDIR=$HOME/distro/rootfs
-	
 .. raw:: pdf
 
    PageBreak

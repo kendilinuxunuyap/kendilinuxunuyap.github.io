@@ -8,31 +8,44 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	version="9.4"
-	name="coreutils"
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
+    #!/usr/bin/env bash
+    version="9.5"
+    name="coreutils"
+    depends="acl,attr,gmp,libcap,openssl"
+    description="The basic file, shell and text manipulation utilities of the GNU operating system"
+    source="https://ftp.gnu.org/gnu/coreutils/${name}-${version}.tar.xz"
+    groups="sys.apps"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
+    setup(){
+        cd ${name}-${version} # Kaynak kodun içine giriliyor
+        ./configure --prefix=/usr \
+            --libdir=/usr/lib64 \
+            --libexecdir=/usr/libexec \
+            --enable-largefile \
+            --disable-selinux \
+            --enable-single-binary=symlinks \
+            --enable-no-install-program=groups,hostname,kill,uptime \
+            --with-openssl
 
-	wget https://ftp.gnu.org/gnu/coreutils/${name}-${version}.tar.xz
-	tar -xvf ${name}-${version}.tar.xz
-	
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	./configure --prefix=/ \
-		--libdir=/lib \
-		--libexecdir=/usr/libexec \
-		--enable-largefile \
-		--disable-selinux \
-		--enable-single-binary=symlinks \
-		--enable-no-install-program=groups,hostname,kill,uptime \
-		$(use_opt openssl --with-openssl --without-openssl)
-
-
-	make 
-
-	make install DESTDIR=$HOME/distro/rootfs
-
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

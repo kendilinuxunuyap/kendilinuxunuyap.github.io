@@ -1,20 +1,20 @@
-bash
-++++
+gperf
++++++
 
-Bash, Linux ve diğer Unix tabanlı işletim sistemlerinde kullanılan bir kabuk programlama dilidir. Kullanıcıların komutlar vererek işletim sistemini yönetmelerine olanak tanır. Bash, kullanıcıların işlemleri otomatikleştirmesine ve betik dosyaları oluşturmasına olanak tanır. Özellikle sistem yöneticileri ve geliştiriciler arasında yaygın olarak kullanılan güçlü bir araçtır.
+gperf, C++ ile yazılmış mükemmel bir karma fonksiyon üretecidir.  n öğeli, kullanıcı tarafından belirlenen bir anahtar kelime kümesi W'yi mükemmel bir karma fonksiyonu F'ye dönüştürür. F, W'deki anahtar kelimeleri benzersiz bir şekilde 0..k aralığına eşler, burada k >= n-1.  Eğer k = n-1 ise F minimal mükemmel bir kıyım fonksiyonudur.  gperf, 0..k öğeli bir statik arama tablosu ve bir çift C işlevi oluşturur.  Bu işlevler, arama tablosunda en fazla bir sonda kullanarak belirli bir karakter dizisinin W'de bulunup bulunmadığını belirler.
 
 Derleme
---------
+-------
 
 .. code-block:: shell
-	
+
     #!/usr/bin/env bash
-    version="5.2.21"
-    name="bash"
-    depends="glibc,readline,ncurses"
-    description="GNU/Linux dağıtımında ön tanımlı kabuk"
-    source="https://ftp.gnu.org/pub/gnu/bash/${name}-${version}.tar.gz"
-    groups="app.shell"
+    version="3.1"
+    name="gperf"
+    depends=""
+    description="Perfect hash function generator."
+    source="https://ftp.gnu.org/gnu/gperf/gperf-$version.tar.gz"
+    groups="sys.apps"
     initsetup(){
         mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
         rm -rf $HOME/distro/build/* #içeriği temizleniyor
@@ -23,15 +23,13 @@ Derleme
         tar -xvf ${name}-${version}.tar.gz
     }
     setup(){
-        ${name}-${version}/configure --prefix=/usr --libdir=/usr/lib64 --bindir=/bin --with-curses --enable-readline --without-bash-malloc
+        ${name}-${version}/configure --prefix=/usr --libdir=/usr/lib64
     }
     build(){
         make
     }
     package(){
         make install DESTDIR=$HOME/distro/rootfs
-        cd $HOME/distro/rootfs/bin
-        ln -s bash sh
     }
     
     initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir

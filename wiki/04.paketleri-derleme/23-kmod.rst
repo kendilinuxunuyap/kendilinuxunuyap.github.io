@@ -20,36 +20,46 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	version="31"
-	name="kmod"
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
-
-	wget https://mirrors.edge.kernel.org/pub/linux/utils/kernel/kmod/${name}-${version}.tar.xz
-	tar -xvf ${name}-${version}.tar.xz
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	
-	./configure --prefix=/ \
-		--libdir=/lib/ \
-		--bindir=/sbin
-	# remove xsltproc dependency
-	   rm -f man/Makefile
-	   echo -e "all:\ninstall:" > man/Makefile
-	   
-	# derleme
-	make 
-		
-	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/distro/rootfs
-	cd $HOME/distro/rootfs/sbin
-	for target in depmod insmod modinfo modprobe rmmod; do
-	  ln -sfv kmod $target
-	done
-	cd $HOME/distro/rootfs/bin
-	ln -sfv ../sbin/kmod lsmod
-
+    #!/usr/bin/env bash
+    version="32"
+    name="kmod"
+    depends="zlib,xz-utils"
+    description="library and tools for managing linux kernel modules"
+    source="https://mirrors.edge.kernel.org/pub/linux/utils/kernel/kmod/${name}-${version}.tar.xz"
+    groups="sys.apps"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
+    setup(){
+        cd ${name}-${version} # Kaynak kodun içine giriliyor
+        ./configure --prefix=/usr \
+            --libdir=/usr/lib64/ \
+            --bindir=/bin \
+            --with-rootlibdir=/lib \
+            --with-zlib \
+            --with-openssl
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+        cd $HOME/distro/rootfs/sbin
+        for target in depmod insmod modinfo modprobe rmmod; do
+          ln -sfv kmod $target
+        done
+        cd $HOME/distro/rootfs/bin
+        ln -sfv ../sbin/kmod lsmod
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 Test Edilmesi
 -------------

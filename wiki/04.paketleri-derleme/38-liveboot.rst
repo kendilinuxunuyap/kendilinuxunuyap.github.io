@@ -8,29 +8,34 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
+    #!/usr/bin/env bash
+    version="1230131"
+    name="live-boot"
+    depends="glibc,acl,openssl"
+    description=""
+    source="https://salsa.debian.org/live-team/live-boot/-/archive/debian/1%2520230131/live-boot-debian-1%2520230131.tar.gz"
+    groups="sys.kernel"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+         tar -xvf ${name}-debian-1\ 240525.tar.gz
+    }
 
-	version="1230131"
-	name="live-boot"
-	depends="glibc,acl,openssl"
-	description="shell ve network copy"
-	source="https://salsa.debian.org/live-team/live-boot/-/archive/debian/1%2520230131/live-boot-debian-1%2520230131.tar.gz"
-	groups="sys.kernel"
-	setup()
-	{
-		echo "test"
-		cd $SOURCEDIR
-	}
-	build()
-	{
-		make 
-	}
-	package()
-	{
-		make install DESTDIR=$DESTDIR
-		sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $DESTDIR/usr/share/initramfs-tools/hooks/live
-	}
-
+    build(){
+        cd ${name}-debian-1%20240525
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+        sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $HOME/distro/rootfs/usr/share/initramfs-tools/hooks/live
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

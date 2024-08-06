@@ -8,31 +8,34 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	#!/usr/bin/env bash
-	name="p7zip"
-	version="17.05"
-	url="https://github.com/jinfeihan57/p7zip"
-	description="Command-line file archiver with high compression ratio"
-	source="https://github.com/p7zip-project/p7zip/archive/refs/tags/v${version}.tar.gz"
-	depends="gcc"
-	group="app.arch"
-	setup()
-	{
-	cd $SOURCEDIR
-	}
-	build(){
-	    make 7z 7zr 7za $jobs
-	}
-
-	package(){
-	    make install \
-		DEST_DIR="${DESTDIR}" \
-		DEST_HOME=/usr
-	    mv ${DESTDIR}/usr/lib{,64}
-	    sed -i "s/lib/lib64/g" ${DESTDIR}/usr/bin/*
-	}
-
+    #!/usr/bin/env bash
+    version="17.05"
+    name="p7zip"
+    depends=""
+    description="Command-line file archiver with high compression ratio"
+    source="https://github.com/p7zip-project/p7zip/archive/refs/tags/v${version}.tar.gz"
+    groups="app.arch"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.gz
+    }
+    build(){
+        cd ${name}-${version}
+        make 7z 7zr 7za
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs DEST_HOME=/usr
+        mv $HOME/distro/rootfs/usr/lib{,64}
+        sed -i "s/lib/lib64/g" $HOME/distro/rootfs/usr/bin/*
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

@@ -8,22 +8,35 @@ Derleme
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	version="8.1"
-	name="readline"
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
-	wget https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz
-	tar -xvf ${name}-${version}.tar.gz
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	./configure --prefix=/ --enable-shared --enable-multibyte
-	
-	# derleme
-	make 
-	
-	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/distro/rootfs
+    #!/usr/bin/env bash
+    version="8.1"
+    name="readline"
+    depends="glibc"
+    description="GNU readline library"
+    source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
+    groups="sys.apps"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.gz
+    }
+    setup(){
+        ${name}-${version}/configure --prefix=/usr --libdir=/usr/lib64
+    }
+    build(){
+        make SHLIB_LIBS="-L/tools/lib -lncursesw"
+    }
+    package(){
+        make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR=$HOME/distro/rootfs install
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 Program Yazma
 -------------

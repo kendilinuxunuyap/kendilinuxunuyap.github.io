@@ -1,39 +1,47 @@
 parted
 ++++++
 
-Nano, terminal tabanlı bir metin düzenleyicidir ve genellikle yeni başlayanlar için tercih edilir. Basit metin düzenleme işlemleri için idealdir ve kullanımı oldukça kolaydır. Özellikle komut satırında hızlıca metin dosyalarını açmak ve düzenlemek isteyenler için pratik bir araçtır. Nanonun kullanıcı dostu arayüzü, metin içinde gezinmeyi ve düzenlemeyi kolaylaştırır. Temel metin düzenleme işlemleri için tercih edilen bir araç olmasının yanı sıra, kısayol tuşlarıyla da hızlı erişim imkanı sunar.
+GNU Parted bölüm tablolarını yönetir.  Bu, yeni işletim sistemleri için alan oluşturmak, disk kullanımını yeniden düzenlemek, verileri sabit disklere kopyalamak ve disk görüntüleme için kullanışlıdır.  Paket, libparted adlı bir kitaplığın yanı sıra komut dosyalarında da kullanılabilen parted komut satırı ön ucunu içerir.
 
 Derleme
 -------
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-
-	version="3.6"
-	name="parted"
-	depends="glibc"
-	description="disks tools"
-	source="https://ftp.gnu.org/gnu/parted/parted-${version}.tar.xz"
-	groups="sys.block"
-	setup()
-	{
-		../${name}-${version}/configure --prefix=/usr \
-		--libdir=/usr/lib64/ \
-		--sbindir=/usr/bin \
-		--disable-rpath \
-		--disable-device-mapper
-		
-	}
-	build()
-	{
-		make 
-	}
-	package()
-	{
-		make install DESTDIR=$DESTDIR
-	}
-
+    #!/usr/bin/env bash
+    version="3.6"
+    name="parted"
+    depends="glibc"
+    description="disks tools"
+    source="https://ftp.gnu.org/gnu/parted/parted-${version}.tar.xz"
+    groups="sys.block"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
+    setup(){
+        cd ${name}-${version} # Kaynak kodun içine giriliyor
+        ./configure --prefix=/usr \
+            --libdir=/usr/lib64/ \
+            --sbindir=/usr/bin \
+            --disable-rpath \
+            --disable-device-mapper
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

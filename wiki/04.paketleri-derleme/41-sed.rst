@@ -1,35 +1,44 @@
 sed
 +++
 
-Nano, terminal tabanlı bir metin düzenleyicidir ve genellikle yeni başlayanlar için tercih edilir. Basit metin düzenleme işlemleri için idealdir ve kullanımı oldukça kolaydır. Özellikle komut satırında hızlıca metin dosyalarını açmak ve düzenlemek isteyenler için pratik bir araçtır. Nano'nun kullanıcı dostu arayüzü, metin içinde gezinmeyi ve düzenlemeyi kolaylaştırır. Temel metin düzenleme işlemleri için tercih edilen bir araç olmasının yanı sıra, kısayol tuşlarıyla da hızlı erişim imkanı sunar.
+sed bir akış düzenleyicisidir. Dosyalar ve string ifadeler gibi girdi akışları üzerinde temel metin işlemeyi gerçekleştirebilir. sed ile kelime ve satır arayabilir, bulabilir ve değiştirebilir, ekleyebilir ve silebilirsiniz. Karmaşık kalıpları eşleştirmenize izin veren temel ve genişletilmiş düzenli ifadeleri destekler.
 
 Derleme
 -------
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-	#!/usr/bin/env bash
-	name="sed"
-	version="4.9"
-	description="Super-useful stream editor"
-	source="https://ftp.gnu.org/gnu/sed/sed-$version.tar.xz"
-	depends="acl"
-	group="sys.apps"
-
-
-	setup(){
-	    $SOURCEDIR/configure --prefix=/usr \
-		--libdir=/usr/lib64/
-	}
-
-	build(){
-	    make
-	}
-
-	package(){
-	    make install DESTDIR=$DESTDIR
-	}
+    #!/usr/bin/env bash
+    version="4.9"
+    name="sed"
+    depends="acl"
+    description="Super-useful stream editor"
+    source="https://ftp.gnu.org/gnu/sed/sed-$version.tar.xz"
+    groups="sys.apps"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
+    setup(){
+        cd ${name}-${version}
+        ./configure --prefix=/usr \
+            --libdir=/usr/lib64/
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 

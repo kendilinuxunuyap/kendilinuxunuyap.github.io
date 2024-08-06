@@ -1,45 +1,52 @@
 pam
 +++
 
-Nano, terminal tabanlı bir metin düzenleyicidir ve genellikle yeni başlayanlar için tercih edilir. Basit metin düzenleme işlemleri için idealdir ve kullanımı oldukça kolaydır. Özellikle komut satırında hızlıca metin dosyalarını açmak ve düzenlemek isteyenler için pratik bir araçtır. Nanonun kullanıcı dostu arayüzü, metin içinde gezinmeyi ve düzenlemeyi kolaylaştırır. Temel metin düzenleme işlemleri için tercih edilen bir araç olmasının yanı sıra, kısayol tuşlarıyla da hızlı erişim imkanı sunar.
+Linux PAM paketi, uygulama programlarının kullanıcıların kimliğini nasıl doğruladığını kontrol etmek için yerel sistem yöneticisi tarafından kullanılan Takılabilir Kimlik Doğrulama Modüllerini içerir.
 
 Derleme
 -------
 
 .. code-block:: shell
 	
-	# kaynak kod indirme ve derleme için hazırlama
-
-	#!/usr/bin/env bash
-	name="pam"
-	version="1.6.0"
-	depends="libtirpc,libxcrypt,libnsl,audit"
-	description="PAM (Pluggable Authentication Modules) library'"
-	source="https://github.com/linux-pam/linux-pam/releases/download/v$version/Linux-PAM-$version.tar.xz"
-	groups="sys.libs"
-	setup()
-	{
-	    ../${name}-${version}/configure --prefix=/usr \
-		--sbindir=/usr/sbin \
-		--libdir=/usr/lib64 \
-		--enable-securedir=/usr/lib64/security \
-		--enable-static \
-		--enable-shared \
-		--disable-nls \
-		--disable-selinux \
-		--disable-db
-			    
-	     
-	}
-	build()
-	{
-		make
-	}
-	package()
-	{
-		make install DESTDIR=$DESTDIR
-		chmod +s "$DESTDIR"/usr/sbin/unix_chkpwd
-	}
+    #!/usr/bin/env bash
+    version="1.6.0"
+    name="pam"
+    depends="libtirpc,libxcrypt,libnsl,audit"
+    description="PAM (Pluggable Authentication Modules) library"
+    source="https://github.com/linux-pam/linux-pam/releases/download/v$version/Linux-PAM-$version.tar.xz"
+    groups="sys.libs"
+    initsetup(){
+        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+        rm -rf $HOME/distro/build/* #içeriği temizleniyor
+        cd $HOME/distro/build #dizinine geçiyoruz
+        wget ${source}
+        tar -xvf ${name}-${version}.tar.xz
+    }
+    setup(){
+        cd ${name}-${version}
+        ./configure --prefix=/usr \
+            --sbindir=/usr/sbin \
+            --libdir=/usr/lib64 \
+            --enable-securedir=/usr/lib64/security \
+            --enable-static \
+            --enable-shared \
+            --disable-nls \
+            --disable-selinux \
+            --disable-db
+    }
+    build(){
+        make
+    }
+    package(){
+        make install DESTDIR=$HOME/distro/rootfs
+        chmod +s $HOME/distro/rootfs/usr/sbin/unix_chkpwd
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    
 
 .. raw:: pdf
 
