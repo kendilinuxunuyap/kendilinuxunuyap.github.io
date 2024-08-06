@@ -39,7 +39,7 @@ Derleme
     	ln -s ../sbin/udevd udevd 	
     }
     
-    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
     setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.

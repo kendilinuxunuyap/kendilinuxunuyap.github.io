@@ -31,7 +31,7 @@ Derleme
         make install DESTDIR=$HOME/distro/rootfs
     }
     
-    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
     

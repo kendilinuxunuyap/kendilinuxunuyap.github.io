@@ -32,7 +32,7 @@ Derleme
         sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $HOME/distro/rootfs/usr/share/initramfs-tools/hooks/live
     }
     
-    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
     
