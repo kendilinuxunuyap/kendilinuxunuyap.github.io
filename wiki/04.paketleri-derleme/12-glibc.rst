@@ -159,6 +159,8 @@ Yukarıda paylaşılan **script** dosya tekrar düzenlenerek aşağıda son hali
 
 glibc Script Dosyası
 --------------------
+Debian ortamında bu paketin derlenmesi için;
+**sudo apt install make autotools gawk diffutils gcc gettext grep perl sed texinfo** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
@@ -175,12 +177,15 @@ glibc Script Dosyası
 	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
 	
 	initsetup(){
-		mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-		rm -rf $HOME/distro/build/* #içeriği temizleniyor
-		cd $HOME/distro/build #dizinine geçiyoruz
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
 		wget ${source}
-		tar -xvf ${name}-${version}.tar.gz
-		#cd ${name}-${version} # Kaynak kodun içine giriliyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
 	}
 
 	setup()

@@ -3,7 +3,7 @@ Kendi Linux'unu Yap
 
 Bu dokumanda dağıtım hazırlamak için temel işlemler anlatılmaktadır.
 
-Bu kitap, açık kaynak ve özgür yazılıma gönül vermiş kişilerin, Türkçe kaynak bulamama sıkıntısına bir çözüm olarak hayata geçirilmiş bir projedir. Açık kaynak dünyasında kendi dağıtımlarını yapmak isteyenlere isteyen kişilere bir rehber olacak şekilde hazırlanmıştır. 
+Bu kitap, açık kaynak ve özgür yazılıma gönül vermiş kişilerin, Türkçe kaynak bulamama sıkıntısına bir çözüm olarak hayata geçirilmiş bir projedir. Açık kaynak dünyasında kendi dağıtımlarını yapmak isteyen kişilere bir rehber olacak şekilde hazırlanmıştır. 
 
 
 Kaynak ve dokümanlarımız yansılarımız:

@@ -8,6 +8,10 @@ ncurses, kullanıcıya metin tabanlı bir arayüz sağlar ve terminal penceresin
 Derleme
 -------
 
+Debian ortamında bu paketin derlenmesi için;
+**sudo apt install libncurses-dev** komutuyla paketin kurulması gerekmektedir.
+
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -17,15 +21,24 @@ Derleme
     description="Console display library"
     source="https://ftp.gnu.org/pub/gnu/ncurses/${name}-${version}.tar.gz"
     groups="sys.libs"
+    BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+    DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+    
     initsetup(){
-        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-        rm -rf $HOME/distro/build/* #içeriği temizleniyor
-        cd $HOME/distro/build #dizinine geçiyoruz
-        wget ${source}
-        tar -xvf ${name}-${version}.tar.gz
-    }
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
+	}
+	
     setup(){
-            ${name}-${version}/configure --prefix=/usr --libdir=/lib64 --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec --with-cxx-binding --with-cxx-shared --enable-pc-files --without-ada
+    		cd ${name}-${version}
+    		./configure --prefix=/usr --libdir=/lib64 --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec --with-cxx-binding --with-cxx-shared --enable-pc-files --without-ada
     }
     build(){
             make
@@ -42,7 +55,8 @@ Derleme
     setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
-    
+
+  
 .. raw:: pdf
 
    PageBreak

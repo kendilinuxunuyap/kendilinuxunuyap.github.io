@@ -1,9 +1,28 @@
-.. _temelpakaetler:
-
 Temel Paketler
 ++++++++++++++
 
-Dağıtım temel seviyede kullanıcıya tyy ortamı sunan bir yapıdan oluşacak. Ayrıca kendini kurup initrd.img oluşturabilen ve grubu yükleyecek bir yapıda olmasını planlamaktayız. Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bunlar;
+Bir önceki bölümde minimal bir sistemi **busybox** yardımıyla tasarladık. Minimal sistem tasarımımızda temel bir sistemin nasıl hazırlandığını anlatmaya çalıştık. Eğer aşamaları takip ederek yaptığımızda kendisini açabilen bir sistem olduğunu görmekteyiz. Minimal sistemde kullanılan **busybox** aslında bizim işlerimiz çok kolaylaştırdı. Şimdi ise **busybox** ile yapabileceğimiz işlemleri kısaca şöyle sıralayabiliriz.
+
+- Temel linux komutlarının(ls, cp, mkdir vs.) yerine busybox kullanabilir.
+- Çeşitli sıkıştırma formatları(zip, tar, cpio vb.) yerine busybox kullanabilir.
+- İnternete bağlanabililir(udhcpc).
+- Dosya indirebilir(wget, curl vb.)
+- Log(raporlama) tutabilir.
+- Modülleri yönetebilir(kmod, modprobe,insmod vb.)
+
+Bu bölümde **busybox** ile yaptımız işleri yapan paketleri derleyeceğiz. **busybox** yapamadığımız bazı işlemleri(ssh vb.) yapan paketlerde olacak. Tasarlayacağımız sistemde genel olarak şunlar yapılabilecek.
+
+- Temel linux komutları kullanılacak
+- Bash kabuğu ile tty ortamı olacak
+- Sıkıştırma formatları kullanılabilecek
+- Modüller yönetilebilecek
+- initrd oluşturabilecek
+- grub kurabilecek
+- Sistemi kurabilecek
+- İnternete bağlanılabilecek
+- ssh bağlantısı ile uzaktan yönetilebilecek
+
+Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bunlar;
 
 - glibc
 - readline

@@ -19,7 +19,16 @@ Linux çekirdeği kullanılarak oluşturulan işletim sistemlerini tanımlamak i
 
 1. Clonezilla İmaj(tahta imajları)
 2. Dağıtım Editleme(etahta)
-3. Paket sistemi yazma ve paketleri yazma(ahenk,debian)
+3. Paket sistemi yazma (ahenk,debian)
+
+**Yazılım Bağımlılığı**
+-----------------------
+
+İşletim sistemi tekeli, belirli bir işletim sisteminin pazar payının diğer işletim sistemlerine göre belirgin şekilde yüksek olması durumunu ifade eder. Bu durumda, belirli bir işletim sistemi diğer alternatiflerine kıyasla daha yaygın olarak kullanılır ve genellikle bu işletim sisteminin sahibi veya geliştiricisi, pazarda belirleyici bir konuma sahip olabilir.
+
+Linux gibi açık kaynaklı işletim sistemleri, işletim sistemi tekeline alternatif oluşturabilir ve çeşitliliği artırabilir. Bu sayede kullanıcılar farklı seçeneklere sahip olabilir ve rekabet teşvik edilebilir.
+
+İşletim sistemi tekeli kavramı, pazar analizlerinde, rekabet politikalarında ve tüketici hakları açısından önemli bir konudur. Bu bağlamda, işletim sistemi çeşitliliği ve rekabetin desteklenmesi, kullanıcıların daha iyi hizmet ve ürün seçeneklerine erişimini sağlayabilir.
 
 
 .. raw:: pdf
