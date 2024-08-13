@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+version="1.0"
+name="base-file"
+depends=""
+description="temel dağıtım dosyaları ve ayarlar"
+source=""
+groups="sys.base"
+setup()
+{
+	echo ""
+}
+build()
+{
+	echo ""
+}
+package()
+{
+
+	cp -prfv $PACKAGEDIR/basefiles/*  ${DESTDIR}/
+	install -d -m 1777 ${DESTDIR}/tmp
+}
+
+

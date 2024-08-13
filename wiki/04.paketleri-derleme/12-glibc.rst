@@ -221,7 +221,10 @@ Debian ortamında bu paketin derlenmesi için;
 **glibc** script dosyasına benzer yapıda diğer paketler içinde script dosyası oluşturulacaktır. Bu sayede her aşamayı tek tek yazma gibi iş yükü olmayacak ve paket derlenirken hangi fonksiyonda(initsetup, setup vb.) sorun yaşanırsa o fonksiyon üzerinden hata ayıklama yapılacaktır.
 Bu şekilde bir script dosyasına ileri aşamalarda daha yeni özellikler katma ve kontrol etmeye imkan sağlayacaktır. glibc scriptide dahil sonraki aşalarda yapacağınız çalıştıracağınız script dosyaları bir dizin içinde sırasıyla(1-glibc vb) saklamanızı tavsiye ederim. Daha sonra bu işlemleri tekrarlamanız durumunda hangi sırayla paketleri derleyeceğinizi anlamanız ve hızlıca paketleri derlemenizi kolaylaştıracaktır.
 
+`tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc>`_
+
 `tıklayınız. <https://kendilinuxunuyap.github.io/_download/glibc>`_
+
 .. raw:: pdf
 
    PageBreak

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+name="locale-tr"
+version="1.0"
+description="loacale türkçeleştirme ayarı"
+source=""
+depends="glibc,tzdata"
+group="sys.apps"
+
+
+setup(){
+	echo ""
+}
+
+build(){
+	echo ""
+}
+
+package(){
+umask 022
+mkdir -p ${DESTDIR}/lib64
+mkdir -p ${DESTDIR}/lib64/locale
+
+mkdir -p ${DESTDIR}/etc
+mkdir -p ${DESTDIR}/etc/profile.d
+    cp -prfv $PACKAGEDIR/files/locale.sh  ${DESTDIR}/etc/profile.d/locale.sh
+        cp -prfv $PACKAGEDIR/files/keyboard.sh  ${DESTDIR}/etc/profile.d/keyboard.sh
+      cp -prfv $PACKAGEDIR/files/locale.gen  ${DESTDIR}/etc/locale.gen
+    cp -prfv $PACKAGEDIR/files/profile  ${DESTDIR}/etc/profile
+}
+
