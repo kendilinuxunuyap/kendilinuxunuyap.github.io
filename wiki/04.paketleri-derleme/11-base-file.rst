@@ -10,125 +10,54 @@ Yapının Oluşturulması
 
 .. code-block:: shell
 	
-	version="0"
-	name="base-files"
-	mkdir -p $HOME/distro/build
-	cd $HOME/distro
-	#rm -rf ${name}-${version}
+    #!/usr/bin/env bash
+    version="5.2.21"
+    name="base-file"
+    depends=""
+    description="temel paket ve dosyalar"
+    source=""
+    groups="sys.base"
+    BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+    initsetup(){
+		echo ""
+    }
+    setup(){
+        mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+    }
+    build(){
+        echo ""
+    }
+    package(){
+       	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+		var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
+		usr/local/{bin,etc,games,include,lib,sbin,share,src}
+		ln -s lib64 lib
+		cd var&&ln -s ../run run&&cd -
+		cd usr&&ln -s lib64 lib&&cd -
+		cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
 
-	mkdir -p ${name}-${version}
+		bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $rootfs/etc/shell"
+		bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $rootfs/etc/fstab"
+		bash -c "echo '127.0.0.1 basitdagitim' >> $rootfs/etc/hosts"
+		bash -c "echo 'basitdagitim' > $rootfs/etc/hostname"
+		bash -c "echo 'nameserver 8.8.8.8' > $rootfs/etc/resolv.conf"
 
-	cd ${name}-${version}
-
-	mkdir -p run
-	mkdir -p run/udev
-	mkdir -p etc
-	cp /etc/group ./etc/
-
-	cat > ./etc/resolv.conf << EOF
-	nameserver 8.8.8.8
-	nameserver 8.8.4.4
-	EOF
-	cat > ./etc/ld.so.conf << EOF
-	/usr/local/lib64
-	/usr/local/lib
-	include /etc/ld.so.conf.d/*.conf
-	/usr/lib64
-	/usr/lib
-	/lib64
-	/lib
-	EOF
-
-	#******************************ip alma*************************************
-	cat > ./newipeth0 << EOF
-	ip link set eth0 up
-	udhcpc -i eth0 -s /usr/share/udhcpc/udhcpc.sh
-	EOF
-	chmod 755 ./newipeth0
-
-
-	#******************************udhcpc.sh*************************************
-	mkdir -p usr
-	mkdir -p usr/share
-	mkdir -p usr/share/udhcpc
-
-	cat >  ./usr/share/udhcpc/udhcpc.sh << EOF
-	#!/bin/sh
-	ip addr add \$ip/\$mask dev \$interface
-	if [ "\$router" ] ; then
-	  ip route add default via \$router dev \$interface
-	fi
-	EOF
-	chmod 755 ./usr/share/udhcpc/udhcpc.sh
-
-	#******************************runudev*************************************
-	cat >  ./udv << EOF
-	#!/bin/sh
-
-	udevd --daemon --resolve-names=never #modprobe yerine kullanılıyor
-	udevadm trigger --type=subsystems --action=add
-	udevadm trigger --type=devices --action=add
-	udevadm settle || true
-	EOF
-	chmod 755 ./udv
-
-	cat >  ./kur-boot-root << EOF
-	#!/bin/sh
-	DISK=sda
-	modprobe loop
-	modprobe ext4
-
-	mkfs.ext4 /dev/sda2
-	mkfs.vfat /dev/sda1
-	mkdir -p hedef
-	mkdir -p kaynak
-	mkdir -p cdrom
-	mkdir -p boot 
-	mkdir -p /boot/grub
-
-	e2fsck -f /dev/sda2
-	tune2fs -O ^metadata_csum /dev/sda2
-	mount -t iso9660 -o loop /dev/sr0 cdrom
-	mount -t squashfs -o loop /cdrom/live/filesystem.squashfs /kaynak
-	mount /dev/sda2 /hedef
-	mount /dev/sda1 /boot
-
-	cp -prfv /kaynak/* /hedef/
-	cp /cdrom/boot/initrd.img /boot/
-	cp /cdrom/boot/vmlinuz /boot/
-
-	mkdir -p /hedef/dev
-	mkdir -p /hedef/sys
-	mkdir -p /hedef/proc
-	mkdir -p /hedef/run
-	mkdir -p /hedef/tmp
-
-	mount --bind /dev /hedef/dev
-	mount --bind /sys /hedef/sys
-	mount --bind /proc /hedef/proc
-	mount --bind /run /hedef/run
-	mount --bind /tmp /hedef/tmp
-
-	chroot /hedef grub-install --removable --boot-directory=/boot /dev/sda --target=i386-pc
-
-	bid=$(blkid|cut -d' ' -f2|cut -c 7-42)
-	touch /boot/grub/grub.cfg
-	echo "linux /vmlinuz	root=UUID=${bid} rw quiet">>/boot/grub/grub.cfg
-	echo "initrd /initrd.img">>/boot/grub/grub.cfg
-	echo "boot">>/boot/grub/grub.cfg
+		echo root:x:0:0:root:/root:/bin/sh > $rootfs/etc/passwd 
+		chmod 755 $rootfs/etc/passwd
 		
-	umount -f -R /hedef/dev
-	umount -f -R /hedef/sys
-	umount -f -R /hedef/proc
-	umount -f -R /hedef/run
-	umount -f -R /hedef/tmp
+		cp -prfv $BUILDDIR/*  $DESTDIR/
 
-	sync 
-	EOF
-	chmod 755 ./kur-boot-root
+    }
+    
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-	#******************************copy*************************************
-	cp $HOME/distro/${name}-${version}/* -rf $HOME/rootfs
+
 
 
 .. raw:: pdf

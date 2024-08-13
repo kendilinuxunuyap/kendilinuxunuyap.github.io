@@ -24,62 +24,86 @@ Bu bölümde **busybox** ile yaptımız işleri yapan paketleri derleyeceğiz. *
 - ssh bağlantısı ile uzaktan yönetilebilecek
 - Metin düzenleyici editör olacak
 
-Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bunlar;
+Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
 
-.. list-table:: Paket Listesi
+.. list-table:: Lise
    :widths: 25 25 50
-   :header-rows: 1
 
-   * - 1- glibc
-     - 2- readline
-     - 3- ncurses
-     - 4- bash
-     - 5- kmod
-     - 6- busybox
-     - 7- acl
-     8. attr
-     9. eudev
-     10. coreutils
-     11. util-linux
-     12. audit
-     13. base-file
-     14. brotli
-     15 dosfstools
-     16. e2fsprogs
-     17. efibootmgr
-     18. efivar
-     19. expat
-     20. file
-     21. findutils
-     22. gawk
-     23. gmp
-     24. grep
-     25. grub
-     
-   * - 26- gzip
-     - 27- initramfs-tools
-     - 28- libc6-dev
-     - 29- libcap
-     - 30- libmd
-     - 31- libpcre2
-     - 32- libstdc++-dev
-     33- libxml2
-     34. linux-headers
-     35. linux-image
-     36. linux-libc-dev
-     37. live-boot
-     38. live-config
-     39. openrc
-     40. openssl
-     41. p7zip
-     43. pam
-     44. parted
-     45. sed
-     46. xz-utils-debian
-     47. zlib
-     48. zstd
-   * - 51- libssh
-     - 48- openssh
+   * - 1- base-file
+     - 26- 
+     - 51- 
+   * - 2- glibc
+     - 27-
+     - 52- 
+   * - 3- readline
+     - 28- 
+     - 53- 
+   * - 4- ncurses
+     - 29- 
+     - 54- 
+   * - 5- bash
+     - 30- 
+     - 55- 
+   * - 6- kmod
+     - 31- 
+     - 56- 
+   * - 7- acl
+     - 32- 
+     - 57- 
+   * - 8- attr
+     - 33- 
+     - 58- 
+   * - 9- eudev
+     - 34- 
+     - 59- 
+   * - 10- util-linux
+     - 35- 
+     - 60- 
+   * - 11- core-utils
+     - 36- 
+     - 61- 
+   * - 12- brotli
+     - 37- 
+     - 62- 
+   * - 13- dosfstools
+     - 38- 
+     - 63- 
+   * - 14- e2fsprogs
+     - 39- 
+     - 64- 
+   * - 15- efibootmgr
+     - 40- 
+     - 65- 
+   * - 16- expat
+     - 41- 
+     - 66- 
+   * - 17- file
+     - 42- 
+     - 67- 
+   * - 18- findutils
+     - 43- 
+     - 68- 
+   * - 19- gawk
+     - 44- 
+     - 69- 
+   * - 20- grep
+     - 45- 
+     - 70- 
+   * - 21- grub
+     - 46- 
+     - 71- 
+   * - 22- gmp
+     - 47- 
+     - 72- 
+   * - 23- gzip
+     - 48- 
+     - 73- 
+   * - 24- 
+     - 49- 
+     - 74-    
+   * - 25- 
+     - 50- 
+     - 75-   
      
 - glibc
 - readline
