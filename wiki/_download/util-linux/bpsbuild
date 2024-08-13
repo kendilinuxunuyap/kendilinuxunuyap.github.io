@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+name="util-linux"
+version="2.40.1"
+description="Various useful Linux utilities"
+source="https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${version%.*}/util-linux-${version}.tar.gz"
+depends=""
+buildepend="libcap-ng,python,eudev,sqlite,eudev,cryptsetup,libxcrypt"
+group="sys.apps"
+
+setup(){
+	cp -prvf $PACKAGEDIR/files/ /tmp/bps/build/
+	cd $SOURCEDIR
+	patch -Np1 -i ../files/0001-util-linux-tmpfiles.patch
+   
+	./configure --prefix=/usr \
+		--libdir=/usr/lib64 \
+		--bindir=/usr/bin \
+		--enable-shared \
+		--enable-static \
+		--disable-su \
+		--disable-runuser \
+		--disable-chfn-chsh \
+		--disable-login \
+		--disable-sulogin \
+		--disable-makeinstall-chown \
+		--disable-makeinstall-setuid \
+		--disable-pylibmount \
+		--disable-raw \
+		--without-systemd \
+		--without-libuser \
+		--without-utempter \
+		--without-econf \
+		--with-python \
+		--with-udev
+}
+
+build(){
+    make
+}
+
+package(){
+	_python_stdlib="$(python -c 'import sysconfig; print(sysconfig.get_paths()["stdlib"])')"
+    make install DESTDIR=$DESTDIR
+    
+	# remove static libraries
+	rm "${DESTDIR}"/usr/lib/lib*.a*
+
+	# setuid chfn and chsh
+	chmod 4755 "${DESTDIR}"/usr/bin/{newgrp,ch{sh,fn}}
+
+	# install PAM files for login-utils
+	install -Dm0644 ../files/pam-common "${DESTDIR}/etc/pam.d/chfn"
+	install -m0644 ../files/pam-common "${DESTDIR}/etc/pam.d/chsh"
+	install -m0644 ../files/pam-login "${DESTDIR}/etc/pam.d/login"
+	install -m0644 ../files/pam-remote "${DESTDIR}/etc/pam.d/remote"
+	install -m0644 ../files/pam-runuser "${DESTDIR}/etc/pam.d/runuser"
+	install -m0644 ../files/pam-runuser "${DESTDIR}/etc/pam.d/runuser-l"
+	install -m0644 ../files/pam-su "${DESTDIR}/etc/pam.d/su"
+	install -m0644 ../files/pam-su "${DESTDIR}/etc/pam.d/su-l"
+
+	mkdir -p $DESTDIR/usr/lib64/python3.11
+
+	# runtime libs are shipped as part of util-linux-libs
+	install -d -m0755 util-linux-libs/lib/
+	mv "$DESTDIR"/usr/lib/lib*.so* util-linux-libs/lib64/
+	mv "$DESTDIR"/usr/lib/pkgconfig util-linux-libs/lib64/pkgconfig
+	mv "$DESTDIR"/usr/include util-linux-libs/include
+	mv "$DESTDIR"/"${_python_stdlib}"/site-packages util-linux-libs/site-packages
+	rmdir "$DESTDIR"/"${_python_stdlib}"
+	mv "$DESTDIR"/usr/share/man/man3 util-linux-libs/man3
+
+	mv util-linux-libs/lib/* "$DESTDIR"/usr/lib64/
+	mv util-linux-libs/include "$DESTDIR"/usr/include
+	mv util-linux-libs/site-packages "$DESTDIR"/"${_python_stdlib}"/site-packages
+
+	# install esysusers
+	install -Dm0644 ../files/util-linux.sysusers "${DESTDIR}/usr/lib64/sysusers.d/util-linux.conf"
+
+	install -Dm0644 ../files/60-rfkill.rules "${DESTDIR}/usr/lib64/udev/rules.d/60-rfkill.rules"
+}
+

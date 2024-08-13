@@ -1,0 +1,23 @@
+#!/bin/bash
+name="libffi"
+version="3.4.6"
+description="A portable foreign-function interface library. "
+source="https://github.com/libffi/libffi/releases/download/v${version}/libffi-${version}.tar.gz"
+depends=""
+builddepend=""
+group="dev.libs"
+
+setup(){
+	cd $SOURCEDIR
+    ./configure --prefix=/usr \
+        --libdir=/usr/lib64/ \
+        --enable-pax_emutramp \
+		--enable-portable-binary \
+		--disable-exec-static-tramp
+}
+build(){
+    make
+}
+package(){
+    make install DESTDIR=$DESTDIR
+}
