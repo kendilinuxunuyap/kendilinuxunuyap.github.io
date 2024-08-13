@@ -30,13 +30,13 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bun
    :widths: 25 25 50
    :header-rows: 1
 
-   * 1. glibc
-     2. readline
-     3. ncurses
-     4. bash
-     5. kmod
-     6. busybox
-     7. acl
+   * - 1- glibc
+     - 2- readline
+     - 3- ncurses
+     - 4- bash
+     - 5- kmod
+     - 6- busybox
+     - 7- acl
      8. attr
      9. eudev
      10. coreutils
@@ -56,14 +56,14 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bun
      24. grep
      25. grub
      
-   * 26. gzip
-     27. initramfs-tools
-     28. libc6-dev
-     29. libcap
-     30. libmd
-     31. libpcre2
-     32. libstdc++-dev
-     33. libxml2
+   * - 26- gzip
+     - 27- initramfs-tools
+     - 28- libc6-dev
+     - 29- libcap
+     - 30- libmd
+     - 31- libpcre2
+     - 32- libstdc++-dev
+     33- libxml2
      34. linux-headers
      35. linux-image
      36. linux-libc-dev
@@ -78,9 +78,8 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak. Bun
      46. xz-utils-debian
      47. zlib
      48. zstd
-   * 51. libssh
-   	 52. openssh
-
+   * - 51- libssh
+     - 48- openssh
      
 - glibc
 - readline
