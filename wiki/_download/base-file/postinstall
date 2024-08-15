@@ -1,5 +1,0 @@
-#!/bin/sh
-cp /etc/skel/.bashrc /root/
-cp /etc/skel/.profile /root/
-source /root/.bashrc
-

@@ -1,3 +1,0 @@
-#!/bin/bash
-rc-update del loadkeys default
-rc-service loadkeys stop

@@ -1,3 +1,0 @@
-#!/bin/bash
-rc-update add loadkeys default
-rc-service loadkeys start

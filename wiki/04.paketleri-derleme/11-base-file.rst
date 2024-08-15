@@ -7,18 +7,18 @@ Bu yapılandırmalar yapıldıktan sonra sistemi bunun üzerine işlemlere devam
 Yapının Oluşturulması
 ---------------------
 
-
 .. code-block:: shell
 	
-    #!/usr/bin/env bash
-    version="5.2.21"
-    name="base-file"
-    depends=""
-    description="temel paket ve dosyalar"
-    source=""
-    groups="sys.base"
-    BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	#!/usr/bin/env bash
+	version="1.0"
+	name="base-file"
+	depends=""
+	description=sistemin temel dosya ve dizin yapısı"
+	source=""
+	groups="sys.base"
+	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+	
     initsetup(){
 		echo ""
     }
@@ -58,6 +58,14 @@ Yapının Oluşturulması
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/base-file/files.tar>`_
+
+Tar dosyasını indirdikten sonra base-file adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha **build** scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları **base-file** dizinin içinde terminal açarak çalıştırınız.
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
 
 
 .. raw:: pdf

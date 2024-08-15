@@ -223,8 +223,6 @@ Bu şekilde bir script dosyasına ileri aşamalarda daha yeni özellikler katma 
 
 `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc>`_
 
-`tıklayınız. <https://kendilinuxunuyap.github.io/_download/glibc>`_
-
 .. raw:: pdf
 
    PageBreak
