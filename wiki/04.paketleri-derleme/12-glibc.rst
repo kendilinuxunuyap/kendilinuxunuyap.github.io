@@ -174,7 +174,7 @@ Debian ortamında bu paketin derlenmesi için;
 	export CC="gcc"
 	export CXX="g++"
 	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	
 	initsetup(){
 		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -190,8 +190,8 @@ Debian ortamında bu paketin derlenmesi için;
 
 	setup()
 	{
-	    	${name}-${version}/configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info \
-	    	--enable-bind-now --enable-multi-arch --enable-stack-protector=strong --enable-stackguard-randomization \
+		${name}-${version}/configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info \
+	    --enable-bind-now --enable-multi-arch --enable-stack-protector=strong --enable-stackguard-randomization \
 		--disable-crypt --disable-profile --disable-werror --enable-static-pie --enable-static-nss --disable-nscd \
 		--host=x86_64-pc-linux-gnu --libdir=/lib64 --libexecdir=/lib64/glibc
 	}
@@ -203,7 +203,7 @@ Debian ortamında bu paketin derlenmesi için;
 	}
 	package()
 	{
-	    	mkdir -p ${DESTDIR}/lib64
+	    mkdir -p ${DESTDIR}/lib64
 		cd $DESTDIR
 		ln -s lib64 lib
 		cd $BUILDDIR 
@@ -218,11 +218,17 @@ Debian ortamında bu paketin derlenmesi için;
 	package		# package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 
-**glibc** script dosyasına benzer yapıda diğer paketler içinde script dosyası oluşturulacaktır. Bu sayede her aşamayı tek tek yazma gibi iş yükü olmayacak ve paket derlenirken hangi fonksiyonda(initsetup, setup vb.) sorun yaşanırsa o fonksiyon üzerinden hata ayıklama yapılacaktır.
-Bu şekilde bir script dosyasına ileri aşamalarda daha yeni özellikler katma ve kontrol etmeye imkan sağlayacaktır. glibc scriptide dahil sonraki aşalarda yapacağınız çalıştıracağınız script dosyaları bir dizin içinde sırasıyla(1-glibc vb) saklamanızı tavsiye ederim. Daha sonra bu işlemleri tekrarlamanız durumunda hangi sırayla paketleri derleyeceğinizi anlamanız ve hızlıca paketleri derlemenizi kolaylaştıracaktır.
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc/files.tar>`_
 
-`tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc>`_
+tar dosyasını indirdikten sonra **glibc** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra **build** scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları **glibc** dizinin içinde terminal açarak çalıştırınız.
 
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+
+ **base-file ve glibc** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
+ 
 .. raw:: pdf
 
    PageBreak
