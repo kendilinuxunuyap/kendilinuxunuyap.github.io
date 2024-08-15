@@ -127,4 +127,23 @@ Paket adında(util-linux) istediğiniz bir konumda bir dizin oluşturun ve dizin
 
 		install -Dm0644 ../files/60-rfkill.rules "${DESTDIR}/usr/lib64/udev/rules.d/60-rfkill.rules"
 	}
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
+
+Paket adında(util-linux) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+  
+.. raw:: pdf
+
+   PageBreak
+
+
 
