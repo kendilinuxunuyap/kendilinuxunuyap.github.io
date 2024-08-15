@@ -17,13 +17,21 @@ Derleme
     description="shell ve network copy"
     source="https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${name}-${version}.tar.xz"
     groups="net.misc"
+    BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+    DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+    
     initsetup(){
-        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-        rm -rf $HOME/distro/build/* #içeriği temizleniyor
-        cd $HOME/distro/build #dizinine geçiyoruz
-        wget ${source}
-        tar -xvf ${name}-${version}.tar.xz
-    }
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
+	}
+
 
     _common_make_options=(
         CGO_CPPFLAGS="$CPPFLAGS"

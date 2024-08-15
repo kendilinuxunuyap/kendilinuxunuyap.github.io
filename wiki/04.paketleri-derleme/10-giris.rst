@@ -26,87 +26,87 @@ Bu bölümde **busybox** ile yaptımız işleri yapan paketleri derleyeceğiz. *
 
 Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
 
-.. list-table:: Lise
+.. list-table::
    :widths: 25 25 50
 
-   * - 1- base-file
-     - 26- 
-     - 51- 
-   * - 2- glibc
-     - 27-
-     - 52- 
-   * - 3- readline
-     - 28- 
-     - 53- 
-   * - 4- ncurses
-     - 29- 
-     - 54- 
-   * - 5- bash
-     - 30- 
-     - 55- 
-   * - 6- kmod
-     - 31- 
-     - 56- 
-   * - 7- acl
-     - 32- 
-     - 57- 
-   * - 8- attr
-     - 33- 
-     - 58- 
-   * - 9- eudev
-     - 34- 
-     - 59- 
-   * - 10- util-linux
-     - 35- 
-     - 60- 
-   * - 11- core-utils
-     - 36- 
-     - 61- 
-   * - 12- brotli
-     - 37- 
-     - 62- 
-   * - 13- dosfstools
-     - 38- 
-     - 63- 
-   * - 14- e2fsprogs
-     - 39- 
-     - 64- 
-   * - 15- efibootmgr
-     - 40- 
-     - 65- 
-   * - 16- expat
-     - 41- 
-     - 66- 
-   * - 17- file
-     - 42- 
-     - 67- 
-   * - 18- findutils
-     - 43- 
-     - 68- 
-   * - 19- gawk
-     - 44- 
-     - 69- 
-   * - 20- grep
-     - 45- 
-     - 70- 
-   * - 21- grub
-     - 46- 
+   * - 0- base-file
+     - 25- libsepol
+     - 50- iproute2
+   * - 1- glibc
+     - 26- tar
+     - 51- net-tools
+   * - 2- readline
+     - 27- zlib
+     - 52- dhcp
+   * - 3- ncurses
+     - 28- brotli
+     - 53- shadow
+   * - 4- bash
+     - 29- curl
+     - 54- openrc
+   * - 5- openssl
+     - 30- libxml2
+     - 55- rsync
+   * - 6- acl
+     - 31- eudev
+     - 56- kbd
+   * - 7- attr
+     - 32- libnsl
+     - 57- busybox
+   * - 8- libcap
+     - 33- pam
+     - 58- kernel
+   * - 9- libcap-ng
+     - 34- expat
+     - 59- kernel-headers
+   * - 10- gmp
+     - 35- libmd
+     - 60- live-boot
+   * - 11- grep
+     - 36- audit
+     - 61- live-config
+   * - 12- sed
+     - 37- libgcc
+     - 62- parted
+   * - 13- mpfr
+     - 38- libxcrypt
+     - 63- kmod
+   * - 14- gawk
+     - 39- sqlite
+     - 64- nano
+   * - 15- findutils
+     - 40- libtirpc
+     - 65- grub
+   * - 16- libpcre2
+     - 41- file
+     - 66- efibootmgr
+   * - 17- coreutils
+     - 42- e2fsprogs
+     - 67- efivar
+   * - 18- util-linux
+     - 43- dostools
+     - 68- dialog
+   * - 19- gzip
+     - 44- initramfs-tools
+     - 69- libssh
+   * - 20- xz-utils
+     - 45- cpio
+     - 70- openssh
+   * - 21- zstd
+     - 46- libio
      - 71- 
-   * - 22- gmp
-     - 47- 
+   * - 22- bzip2
+     - 47- lvm2
      - 72- 
-   * - 23- gzip
-     - 48- 
-     - 73- 
-   * - 24- 
-     - 49- 
-     - 74-    
-   * - 25- 
-     - 50- 
-     - 75-   
+   * - 23- elfutils
+     - 48- popt
+     - 73-    
+   * - 24- libselinux
+     - 49- icu
+     - 74-   
 
 
-Listede **bash** uygulamasının çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli. Listede bulunan tüm paketlerin bağımlılıkları eksiksizdir.
+Listede bulunan  **bash** paketinin sorunsuz çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli. Listede bulunan tüm paketlerin bağımlılıkları eksiksizdir.
 Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.
 
 .. raw:: pdf

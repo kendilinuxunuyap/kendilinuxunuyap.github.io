@@ -15,21 +15,31 @@ Derleme
     description="GNU readline library"
     source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
     groups="sys.apps"
+    BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+    DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+    
     initsetup(){
-        mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-        rm -rf $HOME/distro/build/* #içeriği temizleniyor
-        cd $HOME/distro/build #dizinine geçiyoruz
-        wget ${source}
-        tar -xvf ${name}-${version}.tar.gz
-    }
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
+	}
+
     setup(){
-        ${name}-${version}/configure --prefix=/usr --libdir=/usr/lib64
+        cp -prvf $PACKAGEDIR/files/* /tmp/bps/build/
+	../${name}-${version}/configure --prefix=/usr --libdir=/usr/lib64
     }
     build(){
         make SHLIB_LIBS="-L/tools/lib -lncursesw"
     }
     package(){
-        make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR=$HOME/distro/rootfs install
+        make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
+	install -Dm644 ../inputrc "$DESTDIR"/etc/inputrc
     }
     
     initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -37,7 +47,14 @@ Derleme
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
+Paket adında(readline) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
 
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+  
 Program Yazma
 -------------
 
