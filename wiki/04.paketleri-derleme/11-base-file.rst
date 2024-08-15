@@ -84,7 +84,6 @@ Yapıyı Oluşturan Script
     groups="sys.base"
     BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
     DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-
 initsetup(){
 	echo ""
 }
@@ -106,20 +105,15 @@ package(){
     cd var&&ln -s ../run run&&cd -
     cd usr&&ln -s lib64 lib&&cd -
     cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
-
     bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $BUILDDIR/etc/shell"
     bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $BUILDDIR/etc/fstab"
     bash -c "echo '127.0.0.1 basitdagitim' >> $BUILDDIR/etc/hosts"
     bash -c "echo 'basitdagitim' > $BUILDDIR/etc/hostname"
     bash -c "echo 'nameserver 8.8.8.8' > $BUILDDIR/etc/resolv.conf"
-
 	echo root:x:0:0:root:/root:/bin/sh > $BUILDDIR/etc/passwd
 	chmod 755 $BUILDDIR/etc/passwd
-
 	cp -prfv $BUILDDIR/*  $DESTDIR/
-
 }
-
 initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
