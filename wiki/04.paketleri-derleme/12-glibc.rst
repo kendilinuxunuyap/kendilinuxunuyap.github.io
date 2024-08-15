@@ -227,7 +227,8 @@ tar dosyasını indirdikten sonra **glibc** adında bir dizin oluşturun ve tar 
 	chmod 755 build
 	./build
 
- **base-file ve glibc** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
+
+**base-file ve glibc** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
  
 .. raw:: pdf
 

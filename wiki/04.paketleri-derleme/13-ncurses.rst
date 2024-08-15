@@ -56,6 +56,16 @@ Debian ortamında bu paketin derlenmesi için;
     build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
     package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
+
+Paket adında(ncurses) bir dizin oluşturun ve dizin içinde açınınız. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+
+
   
 .. raw:: pdf
 

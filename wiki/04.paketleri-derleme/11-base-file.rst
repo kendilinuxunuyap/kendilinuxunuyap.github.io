@@ -42,14 +42,26 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
-	version=""
-	name=""
+	version="1.0"
+	name="base-file"
 	depends=""
 	description=""
 	source=""
-	groups=""
+	groups="sys.base"
+	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+	
 	initsetup(){
 		# Paketin kaynak dosyalarının indirilmesi
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
 	}
 	setup(){
 		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
@@ -74,50 +86,56 @@ Yapıyı Oluşturan Script
 -----------------------
 
 .. code-block:: shell
-	
- #!/usr/bin/env bash
+
+	#!/usr/bin/env bash
     version="1.0"
     name="base-file"
     depends=""
-    description="sistemin temel dosya ve dizin yapısı"
+    description="sistemin temel yapısı"
     source=""
     groups="sys.base"
     BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
-    DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-initsetup(){
-	echo ""
-}
-setup(){
-    mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-    mkdir -p  $DESTDIR #sistemin oluşturlacağı dizin yoksa oluşturuluyor
-    rm -rf $BUILDDIR/* #içeriği temizleniyor
-    cp -prfv files/* $BUILDDIR/
-    cd $BUILDDIR #dizinine geçiyoruz
-}
-build(){
-    echo ""
-}
-package(){
-    mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
-    var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
+    DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+    
+    initsetup(){
+	mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+    	mkdir -p  $DESTDIR #Sistemin oluşturlacağı dizin yoksa oluşturuluyor
+    	rm -rf $BUILDDIR/* #içeriği temizleniyor
+    	cp -prfv files/* $BUILDDIR/
+    	cd $BUILDDIR #dizinine geçiyoruz
+	}
+	
+    setup(){
+            echo ""
+    }
+    
+    build(){
+            echo ""
+    }
+    
+    package(){
+        mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+    	var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 	usr/local/{bin,etc,games,include,lib,sbin,share,src}
-    ln -s lib64 lib
-    cd var&&ln -s ../run run&&cd -
-    cd usr&&ln -s lib64 lib&&cd -
-    cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
-    bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $BUILDDIR/etc/shell"
-    bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $BUILDDIR/etc/fstab"
-    bash -c "echo '127.0.0.1 basitdagitim' >> $BUILDDIR/etc/hosts"
-    bash -c "echo 'basitdagitim' > $BUILDDIR/etc/hostname"
-    bash -c "echo 'nameserver 8.8.8.8' > $BUILDDIR/etc/resolv.conf"
+    	ln -s lib64 lib
+    	cd var&&ln -s ../run run&&cd -
+    	cd usr&&ln -s lib64 lib&&cd -
+    	cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
+    	bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $BUILDDIR/etc/shell"
+    	bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $BUILDDIR/etc/fstab"
+    	bash -c "echo '127.0.0.1 basitdagitim' >> $BUILDDIR/etc/hosts"
+    	bash -c "echo 'basitdagitim' > $BUILDDIR/etc/hostname"
+    	bash -c "echo 'nameserver 8.8.8.8' > $BUILDDIR/etc/resolv.conf"
 	echo root:x:0:0:root:/root:/bin/sh > $BUILDDIR/etc/passwd
 	chmod 755 $BUILDDIR/etc/passwd
 	cp -prfv $BUILDDIR/*  $DESTDIR/
-}
-initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
-setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
-build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
-package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+    }
+
+    initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+    setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+    build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+    package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/base-file/files.tar>`_
 
