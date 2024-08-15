@@ -1,0 +1,106 @@
+eudev
++++++
+
+Eudev, Linux tabanlı sistemlerde cihaz yönetimi için kullanılan bir kullanıcı alanı aracı olan udev'in bir fork'udur. Udev, sistemdeki donanım bileşenlerinin tanınması, yönetilmesi ve olay bildirimlerinin gerçekleştirilmesi için kritik bir rol oynar. Eudev, özellikle daha hafif ve daha az bağımlılığa sahip bir alternatif arayan kullanıcılar için geliştirilmiştir.
+
+Derleme
+--------
+
+.. code-block:: shell
+	
+	#!/usr/bin/env bash
+	version="3.2.14"
+	name="eudev"
+	depends="glibc,readline,ncurses,gperf"
+	description="modül ve sistem iletişimi sağlayan paket"
+	source="https://github.com/eudev-project/eudev/releases/download/v3.2.14/${name}-${version}.tar.gz"
+	groups="sys.fs"
+	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$BUILDDIR/${name}-${version}"
+
+	initsetup(){
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
+	}
+
+	setup()
+	{
+		cp $PACKAGEDIR/files/eudev.hook $SOURCEDIR
+		cp $PACKAGEDIR/files/eudev.init-bottom $SOURCEDIR
+		cp $PACKAGEDIR/files/eudev.init-top $SOURCEDIR
+
+		$SOURCEDIR/configure --prefix=/usr \
+		  	--bindir=/sbin          \
+		  	--sbindir=/sbin         \
+		   	--libdir=/lib64      \
+		   	--disable-manpages       \
+		   	--disable-static \
+		   	--disable-selinux \
+		    	--enable-modules \
+		   	--enable-kmod \
+		   	--sysconfdir=/etc \
+		   	--exec-prefix=/ \
+			--with-rootprefix=/ \
+			--with-rootrundir=/run \
+			--with-rootlibexecdir=/lib64/udev \
+			--enable-split-usr 
+		    	#--enable-blkid \
+	}
+	build()
+	{
+		make 
+	}
+	package()
+	{
+		make install DESTDIR=$DESTDIR
+		mkdir -p ${DESTDIR}/usr/share/initramfs-tools/{hooks,scripts}
+	  	mkdir -p ${DESTDIR}/usr/share/initramfs-tools/scripts/init-{top,bottom}
+	  
+		
+		install $SOURCEDIR/eudev.hook         ${DESTDIR}/usr/share/initramfs-tools/hooks/udev
+	    	install $SOURCEDIR/eudev.init-top         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-top/udev
+	    	install $SOURCEDIR/eudev.init-bottom         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-bottom/udev
+	    	
+	    	cd ${DESTDIR}
+	    	mkdir -p bin
+	    	cd bin
+	    	ln -s ../sbin/udevadm udevadm
+	    	ln -s ../sbin/udevd udevd
+	    	mkdir -p  ${DESTDIR}/usr/lib64/pkgconfig/
+	    	cd ${DESTDIR}/usr/lib64/pkgconfig/
+	    	ln -s ../../../lib64/pkgconfig/libudev.pc libudev.pc
+	    	#ln -sv libudev.pc "$DESTDIR/usr/lib64/pkgconfig/libudev.pc"
+	}
+
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/eudev/files.tar>`_
+
+tar dosyasını indirdikten sonra istediğiniz bir konumda **eudev** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
+
+Paket adında(eudev) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+  
+.. raw:: pdf
+
+   PageBreak
+
+
+

@@ -7,7 +7,7 @@ source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 groups="sys.apps"
 
 setup(){
-	cp -prvf $PACKAGEDIR/inputrc /tmp/bps/build/
+	cp -prvf $PACKAGEDIR/files/* /tmp/bps/build/
 	../${name}-${version}/configure --prefix=/usr \
 		--libdir=/usr/lib64
 }

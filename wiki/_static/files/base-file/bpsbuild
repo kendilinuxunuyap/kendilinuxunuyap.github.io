@@ -1,23 +1,36 @@
-#!/usr/bin/env bash
+ #!/usr/bin/env bash
 version="1.0"
 name="base-file"
 depends=""
-description="temel dağıtım dosyaları ve ayarlar"
+description="sistemin temel yapısı"
 source=""
 groups="sys.base"
-setup()
-{
-	echo ""
-}
-build()
-{
-	echo ""
-}
-package()
-{
 
-	cp -prfv $PACKAGEDIR/basefiles/*  ${DESTDIR}/
-	install -d -m 1777 ${DESTDIR}/tmp
+setup(){
+    cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
+    cd $BUILDDIR #dizinine geçiyoruz
+        echo ""
 }
 
+build(){
+        echo ""
+}
+
+package(){
+    mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+    var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
+    usr/local/{bin,etc,games,include,lib,sbin,share,src}
+    ln -s lib64 lib
+    cd var&&ln -s ../run run&&cd -
+    cd usr&&ln -s lib64 lib&&cd -
+    cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
+    bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $BUILDDIR/etc/shell"
+    bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $BUILDDIR/etc/fstab"
+    bash -c "echo '127.0.0.1 basitdagitim' >> $BUILDDIR/etc/hosts"
+    bash -c "echo 'kly' > $BUILDDIR/etc/hostname"
+    bash -c "echo 'nameserver 8.8.8.8' > $BUILDDIR/etc/resolv.conf"
+    echo root:x:0:0:root:/root:/bin/sh > $BUILDDIR/etc/passwd
+    chmod 755 $BUILDDIR/etc/passwd
+    cp -prfv $BUILDDIR/*  $DESTDIR/
+}
 
