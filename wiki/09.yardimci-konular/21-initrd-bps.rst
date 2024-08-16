@@ -1,7 +1,5 @@
-.. _initrdhazirlama:
-
-initrd
-++++++
+initrd(bps)
++++++++++++
 
 initrd (initial RAM disk), Linux işletim sistemlerinde kullanılan bir geçici dosya sistemidir. Bu dosya sistemi, işletim sistemi açılırken kullanılan bir köprü görevi görür ve gerçek kök dosya sistemine geçiş yapmadan önce gerekli olan modülleri ve dosyaları içerir.Ayrıca, sistem başlatıldığında kök dosya sistemine erişim sağlamadan önce gerekli olan dosyaları yüklemek için de kullanılabilir.
 Bu bölümü uygualamadan önce uygualam adımlarını daha anlayabilmek için mutlaka initr tasalama konusunu okumalısınız. :ref:`initrdtasarimi` 

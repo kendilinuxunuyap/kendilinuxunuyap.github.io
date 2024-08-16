@@ -1,7 +1,5 @@
-.. _initrdtasarimi:
-
-initrd Tasarımı
-+++++++++++++++
+initrd Tasarımı(Debian)
++++++++++++++++++++++++
 
 Sistem İçin Gerekli Olan Dosyalar Ve Açılış Süreci
 --------------------------------------------------
