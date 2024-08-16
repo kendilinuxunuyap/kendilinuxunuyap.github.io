@@ -32,7 +32,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
    * - 0- `base-file <https://kendilinuxunuyap.github.io/04.paketleri-derleme/00-base-file.html>`_
      - 25- `libsepol <https://kendilinuxunuyap.github.io/04.paketleri-derleme/25-libsepol.html>`_
      - 50- `iproute2 <https://kendilinuxunuyap.github.io/04.paketleri-derleme/50-iproute2.html>`_
-   * - 1- `glibc <https://kendilinuxunuyap.github.io/04.paketleri-derleme01-glibc.html>`_
+   * - 1- `glibc <./01-glibc.html>`_
      - 26- `tar <https://kendilinuxunuyap.github.io/04.paketleri-derleme/26-tar.html>`_
      - 51- `net-tools <https://kendilinuxunuyap.github.io/04.paketleri-derleme/51-net-tools.html>`_
    * - 2- `readline <https://kendilinuxunuyap.github.io/04.paketleri-derleme/02-readline.html>`_
