@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Minimal Dağıtım Oluşturma &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://bayramkarahan.github.io/01.on-hazirlik/30.minimal-sistem.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Derleme Araçları" href="../02.derleme-araclari/index.html" />
+    <link rel="prev" title="Dağıtım Ortamın Hazırlanması" href="10.ortaminhazirlanmasi.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="minimal-dagitim-olusturma">
+<h1>Minimal Dağıtım Oluşturma<a class="headerlink" href="#minimal-dagitim-olusturma" title="Permalink to this heading">¶</a></h1>
+<p>Bu minimal dağıtımı oluşturmamızın amacı bu dokümanda anlatılacak dağıtım hazırlama aşamalarını anlaşılması içindir.
+Dağıtım oluşturmak için kernel ve busybox dosyalarımızın olması yeterlidir. <strong>busybox</strong> dosyasının nasıl elde edileceği busybox bölümünde anlatılmıştır. <strong>kernel</strong> ise mevcut sistemimin kernelini kullanacağız. kernel <strong>/boot/vmlinux</strong> konumundan alabiliriz.</p>
+<p>Bu sistemi hazırlarken <strong>chroot</strong> ve <strong>busybox</strong> komutlarını  kullanarak sistemi hazırlayacağız ve test edeceğiz. <strong>chroot</strong> ve <strong>busybox</strong> kullanımı için dokümandanki ilgili konu başlığına bakınız.</p>
+<p>Sistemimiz için aşağıdaki gibi bir yapı oluşturmalıyız.</p>
+<ol class="arabic simple">
+<li><p>$HOME/distro/rootfs/busybox</p></li>
+<li><p>$HOME/distro/rootfs/init</p></li>
+<li><p>$HOME/distro/iso/boot/initrd.img</p></li>
+<li><p>$HOME/distro/iso/boot/vmlinuz</p></li>
+<li><p>$HOME/distro/iso/boot/grub/grub.cfg</p></li>
+<li><p>$HOME/distro/distro.iso</p></li>
+</ol>
+<p>Linux sisteminin açılabilmesi için 3., 4. ve 5. sıradaki gösterilen konumdaki dosyaların olması yeterli.
+Bu üç dosyayı yukarıda belirtildiği gibi dizin konumlarına koyduktan sonra, <strong>grub-mkrescue $HOME/distro/iso/ -o $HOME/distro/distro.iso</strong>  komutuyla <strong>distro.iso</strong> dosyası elde ederiz. Artık 6. sırada belirtilen iso dosyamız boot edebilen şekilde hazırlanmış olur.</p>
+<p>Sistemi oluşturan <strong>3., 4. ve 5.</strong> sırada belirtlen dosyalarımız görevi şunlardır.</p>
+<p><strong>$HOME/distro/iso/boot/initrd.img:</strong>
+Dosyasını sistemin açılış sürecinden ön işlemleri yapmak ve gerçek sisteme geçiş sürecini yöneten bir dosyadır. Yazın devamında nasıl hazırlanacağı anlatılacaktır.</p>
+<p><strong>$HOME/distro/iso/boot/vmlinuz:</strong>
+Dosyamız kernelimiz oluyor. Ben kullandığım debian sisteminin mevcut kernelini kullandım. İstenirse kernel derlenebilir.</p>
+<p><strong>$HOME/distro/iso/boot/grub/grub.cfg:</strong>
+Dosyamız ise initrd.img ve vmlinuz dosyalarının grub yazılımının nereden bulacağını gösteren yapılandırma dosyasıdır.</p>
+<p>Bir linux sisteminin açılış süreci şu şekilde olmaktadır.</p>
+<ol class="arabic simple">
+<li><p><strong>Bilgisayara Güç Verilmesi</strong></p></li>
+<li><p><strong>Bios İşlemleri Yapılıyor(POST)</strong></p></li>
+<li><p><strong>LILO/GRUB Yazılımı Yükleniyor(grub.cfg dosyası okunuyor ve vmlinuz ve initrd.img devreye giriyor)</strong></p></li>
+<li><p><strong>vmlinuz initrd.img sistemini belleğe yüklüyor</strong></p></li>
+<li><p><strong>initrd.img içindeki init dosyasındaki işlem sürecine göre sistem işlemlere devam ediyor</strong></p></li>
+</ol>
+<p>Yazının devamında sistem için gerekli olan 3 temel dosyanın hazırlanması ve iso yapılma süreci anlatılacaktır.
+Şimdi sırasıyla dosya konumlarına uygun şekilde dizin ve dosyalarımızı oluşturalım.</p>
+<section id="dizinlerin-olusturulmasi">
+<h2><strong>Dizinlerin Oluşturulması</strong><a class="headerlink" href="#dizinlerin-olusturulmasi" title="Permalink to this heading">¶</a></h2>
+<p>Sitemimizi istediğimiz bir yerde terminal açarak aşağıdaki komutları sırasıyla çalıştıralım.
+Komutları kopyala yapıştır yapabilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span><span class="nv">$HOME</span>/distro
+mkdir<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs
+mkdir<span class="w"> </span><span class="nv">$HOME</span>/distro/iso
+mkdir<span class="w"> </span><span class="nv">$HOME</span>/distro/iso/boot
+mkdir<span class="w"> </span><span class="nv">$HOME</span>/distro/iso/boot/grub
+</pre></div>
+</div>
+</section>
+<section id="home-distro-rootfs-busybox">
+<h2><strong>$HOME/distro/rootfs/busybox</strong><a class="headerlink" href="#home-distro-rootfs-busybox" title="Permalink to this heading">¶</a></h2>
+<p>busybox aşağıdaki komutlarla  <strong>$HOME/distro/rootfs/busybox</strong> konumuna kopyalanak sistemimiz için hazır hale getirilir.
+Bu sistemi debian ortamında hazırlamaktayız. İsterseniz static busybox derleyebilirsiniz. busybox konusu altında anlatılmaktadır.
+isterseniz derlemeden mevcut sistemin altında bulunan static busybox kullanabiliriz.
+Eğer yoksa <strong>sudo apt install busybox-static -y</strong> komutuyla debian sistemimize static busybox yükleyebiliriz. Ben debian üzerine yüklediğim busybox'ı kullanacağım. Eğer sistemde yoksa <strong>sudo apt install busybox-static -y</strong> komutuyla yükleyiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs
+cp<span class="w"> </span>/bin/busybox<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/busybox
+ldd<span class="w"> </span>./busybox
+özdevimli<span class="w"> </span>bir<span class="w"> </span>çalıştırılabilir<span class="w"> </span>değil
+</pre></div>
+</div>
+<p>&quot;özdevimli bir çalıştırılabilir değil&quot; dinamik değil diyor yani static kısacası bir bağımlılığı yok demektir.
+Eğer bağımlılığı olsaydı bağımlı olduğu dosyalarıda konumlarına göre kopyalamamız gerekmekteydi.</p>
+</section>
+<section id="home-distro-rootfs-init">
+<h2><strong>$HOME/distro/rootfs/init</strong><a class="headerlink" href="#home-distro-rootfs-init" title="Permalink to this heading">¶</a></h2>
+<p>Sistem açılırken iki dosyayı arar kernel ve initrd.img dosyası. Bu dosyaları grub.cfg dosyası içinde verilen konumlarına göre arar. Bu dosyaları bulduktan sonra initrd.img dosyasını açar ve içinde init dosyasını arar. init dosyasındaki komutları sırasıyla çalıştırır.</p>
+<p><strong>$HOME/distro/rootfs/</strong> konumuna <strong>init</strong> text dosyası oluşturulur(nano, gedit vb.).
+Aşağıdaki içerik oluşturulan <strong>init</strong> dosyası içine eklenir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!busybox ash</span>
+<span class="nv">PATH</span><span class="o">=</span>/bin
+/busybox<span class="w"> </span>mkdir<span class="w"> </span>/bin
+/busybox<span class="w"> </span>--install<span class="w"> </span>-s<span class="w"> </span>/bin
+/busybox<span class="w"> </span>ash
+</pre></div>
+</div>
+<p><strong>busybox</strong> içerisinde linux ortamında kullanılan hemen hemen tüm komutların yerine kullanalılabilir. Bulunduğumuz ortamda <strong>busybox</strong> dışında hiçbir komutun olmadığını düşünün. Mesela <strong>cp</strong> komutuna ihtiyacınız var bu durumda <strong>busybox cp</strong> yazarak kullanılabilirsiniz. Tüm temel komutları busyboxtan türetmek için  <strong>/busybox --install -s /bin</strong> komutunu kullanabilirsiniz.</p>
+<p>Buradaki komutları sırayla anlatırsak;</p>
+<ol class="arabic simple">
+<li><p>#!busybox ash: ash bir kabuk veya terminal programıdır.</p></li>
+<li><p>PATH=/bin: komutlar çalışırken nerede arayacağı belirtiliyor</p></li>
+<li><p>/busybox mkdir /bin: <strong>busybox mkdir</strong>  yardımıyla <strong>/bin</strong> dizini oluşturuluyor.</p></li>
+<li><p>/busybox --install -s /bin: <strong>/bin</strong> dizinine tüm komutları kısa yol oluşturur.</p></li>
+<li><p>/busybox ash: ash terminalini çalıştırır. Bash yerine alternatif.</p></li>
+</ol>
+<p><strong>kernel</strong>, <strong>initrd.img</strong> dosyasını bellek üzerine açıp <strong>init</strong> dosyasını çalıştırınca sırasıyla numaralandırılarak anlattığımız işlemler yapılacak ve çalışabilecek ortam hazırlanacaktır. Daha sonra ash terminali çalışarak kullanıcının kullanımına hazır hale gelecektir.</p>
+<p>init çalıştırılabilir yapılır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span>+x<span class="w"> </span>init<span class="w"> </span><span class="c1">#komutu ile çalıştırılır yapılır.</span>
+</pre></div>
+</div>
+</section>
+<section id="home-distro-iso-boot-initrd-img">
+<h2><strong>$HOME/distro/iso/boot/initrd.img</strong><a class="headerlink" href="#home-distro-iso-boot-initrd-img" title="Permalink to this heading">¶</a></h2>
+<p>initrd.img dosyası için aşağıdaki komutlar çalıştırılır</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs
+find<span class="w"> </span>./<span class="w"> </span><span class="p">|</span><span class="w"> </span>cpio<span class="w"> </span>-H<span class="w"> </span>newc<span class="w"> </span>-o<span class="w"> </span>&gt;<span class="nv">$HOME</span>/distro/iso/boot/initrd.img
+</pre></div>
+</div>
+<p>Oluşturulan <strong>initrd.img</strong> dosyası çalışacak tty açacak(konsol elde etmiş olacağız).
+Aslında bu işlemi yapan şey <strong>busybox</strong> ikili dosyası.</p>
+</section>
+<section id="home-distro-iso-boot-vmlinuz">
+<h2><strong>$HOME/distro/iso/boot/vmlinuz</strong><a class="headerlink" href="#home-distro-iso-boot-vmlinuz" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>/boot/vmlinuz*<span class="w"> </span><span class="nv">$HOME</span>/distro/iso/boot/vmlinuz<span class="w">  </span><span class="c1">#sistemde kullandığım kerneli kopyaladım istenirde kernel derlenebilir.</span>
+</pre></div>
+</div>
+</section>
+<section id="home-distro-iso-boot-grub-grub-cfg">
+<h2><strong>$HOME/distro/iso/boot/grub/grub.cfg</strong><a class="headerlink" href="#home-distro-iso-boot-grub-grub-cfg" title="Permalink to this heading">¶</a></h2>
+<p><strong>$HOME/distro/iso/boot/grub/</strong> konumuna <strong>grub.cfg</strong> dosyası oluşturun.
+Aşağıdaki komutları <strong>grub.cfg</strong>  dosyası içine eklenir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>linux<span class="w"> </span>/boot/vmlinuz
+initrd<span class="w"> </span>/boot/initrd.img
+boot
+</pre></div>
+</div>
+</section>
+<section id="home-distro-distro-iso">
+<h2><strong>$HOME/distro/distro.iso</strong><a class="headerlink" href="#home-distro-distro-iso" title="Permalink to this heading">¶</a></h2>
+<p>iso oluşturulur.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>grub-mkrescue<span class="w"> </span><span class="nv">$HOME</span>/distro/iso/<span class="w"> </span>-o<span class="w"> </span><span class="nv">$HOME</span>/distro/distro.iso<span class="w"> </span><span class="c1"># komutuyla iso doyamız oluşturulur.</span>
+</pre></div>
+</div>
+<p>Artık sistemi açabilen ve tty açıp bize suna bir yapı oluşturduk.</p>
+</section>
+<section id="dagitimin-test-edilmesi">
+<h2><strong>Dağıtımın Test Edilmesi</strong><a class="headerlink" href="#dagitimin-test-edilmesi" title="Permalink to this heading">¶</a></h2>
+<p>Hazırlanan   <strong>$HOME/distro/distro.iso</strong> dağıtımımız qemu veya virtualbox ile test edilebilir.</p>
+<p>Aşağıdaki komutla qemu ile isomuzu çalıştırıp test edebiliriz. qemu ile ilgili bilgi için ek konular bölümünden erişebilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>qemu-system-x86_64<span class="w"> </span>-cdrom<span class="w"> </span><span class="nv">$HOME</span>/distro/distro.iso<span class="w"> </span>-m<span class="w"> </span>1G
+</pre></div>
+</div>
+<p>Eğer hatasız yapılmışsa sistem açılacak ve tty açacaktır. Birçok komutu çalışan bir dağıtım oluşturmuş olduk. Ekran görüntüsü aşağıda görülmektedir.</p>
+<a class="reference internal image-reference" href="../_images/minimal-iso.png"><img alt="../_images/minimal-iso.png" src="../_images/minimal-iso.png" style="width: 400px;" /></a>
+<p>Dokümanın devamında kendi sistemimizi hazırlarken bu bölümde anlatılan yapıya benzer adımları yapacağız.
+Minimal sistemden farkı <strong>busybox</strong> ile oluşturduğumuz ikili dosyalarımızı(temel komutlar) kendimiz derleyeceğiz.
+Minimal sistemde static busybox kullandık.</p>
+<p>Static dosyalarda dosyanın çalışması için kütüphanelerin hepsi kendi içerisine gömümülü(dahil) bir şekilde gelir.
+Avantajı hiçbir kütüphaneye ihtiyaç duymaz. Devevantajı ise boyutları yüksek olur. İstisnalar olsada genel olarak static tercih edilmemektedir. Static olduğunda iso boyutlarımız olması gerekenden 5-10 kat fazla olabilmektedir.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ön Hazırlık</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="10.ortaminhazirlanmasi.html">Dağıtım Ortamın Hazırlanması</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Minimal Dağıtım Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dizinlerin-olusturulmasi"><strong>Dizinlerin Oluşturulması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-rootfs-busybox"><strong>$HOME/distro/rootfs/busybox</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-rootfs-init"><strong>$HOME/distro/rootfs/init</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-iso-boot-initrd-img"><strong>$HOME/distro/iso/boot/initrd.img</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-iso-boot-vmlinuz"><strong>$HOME/distro/iso/boot/vmlinuz</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-iso-boot-grub-grub-cfg"><strong>$HOME/distro/iso/boot/grub/grub.cfg</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#home-distro-distro-iso"><strong>$HOME/distro/distro.iso</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dagitimin-test-edilmesi"><strong>Dağıtımın Test Edilmesi</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../02.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.yardimci-konular/index.html">Yardımcı Konular</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/01.on-hazirlik/30.minimal-sistem.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

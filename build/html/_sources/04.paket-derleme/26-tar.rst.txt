@@ -1,0 +1,74 @@
+tar
++++
+
+Tar paketi, Unix ve Linux sistemlerinde dosya arşivleme ve sıkıştırma işlemleri için kullanılan bir dosya formatıdır. "tar" kelimesi, "tape archive" ifadesinin kısaltmasıdır ve başlangıçta manyetik bantlarda veri saklamak amacıyla geliştirilmiştir.
+
+Derleme
+--------
+
+.. code-block:: shell
+	
+	#!/usr/bin/env bash
+	name="tar"
+	version="1.35"
+	description="Utility used to store, backup, and transport files"
+	source="https://ftp.gnu.org/gnu/tar/tar-$version.tar.xz"
+	depends="glibc,acl"
+	builddepend=""
+	groups="app.arch"
+	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$BUILDDIR/${name}-${version}"
+
+	initsetup(){
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		mv $director ${name}-${version};
+	}
+
+	setup()
+	{
+		cd $SOURCEDIR
+		./configure --prefix=/usr \
+			--libdir=/usr/lib64 \
+			--sbindir=/usr/bin \
+			--libexecdir=/usr/lib64/tar \
+			--localstatedir=/var \
+			--enable-backup-scripts
+	}
+	build()
+	{
+		make 
+	}
+	package()
+	{
+		make DESTDIR=$DESTDIR install
+	}
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
+
+Paket adında(tar) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+  
+.. raw:: pdf
+
+   PageBreak
+
+
+
+

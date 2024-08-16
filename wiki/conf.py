@@ -28,7 +28,7 @@ pdf_fit_mode = "shrink"
 
 # -- Options for HTML output --
 
-html_baseurl = 'https://bayramkarahan.github.io/'
+html_baseurl = 'https://kendilinuxunuyap.github.io/'
 #html_theme = 'alabaster'
 
 
