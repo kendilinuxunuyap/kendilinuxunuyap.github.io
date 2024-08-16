@@ -96,15 +96,16 @@ Yapıyı Oluşturan Script
 		description="sistemin temel yapısı"
 		source=""
 		groups="sys.base"
-		BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
-		DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+		ROOTBUILDDIR="$HOME/distro/build"
+		BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+		DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 		PACKAGEDIR=$(pwd)
-		SOURCEDIR="$BUILDDIR/${name}-${version}"
+		SOURCEDIR="$HOME/distro/build/${name}-${version}"
 		initsetup(){
 		# Paketin kaynak dosyalarının indirilmesi
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		mkdir -p  $DESTDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		mkdir -p  $ROOTBUILDDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
 		cd $BUILDDIR #dizinine geçiyoruz
 		}
 		setup(){

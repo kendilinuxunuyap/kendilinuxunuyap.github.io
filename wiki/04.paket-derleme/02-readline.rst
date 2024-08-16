@@ -15,25 +15,27 @@ Derleme
 	description="readline kütüphanesi"
 	source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 	groups="sys.apps"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
 		wget ${source}
 		dowloadfile=$(ls|head -1)
 		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
+		cd $BUILDDIR
 	}
 
 
 	setup(){
-		cp -prvf $PACKAGEDIR/files/* /tmp/bps/build/
+		cp -prvf $PACKAGEDIR/files/* $BUILDDIR/
 		../${name}-${version}/configure --prefix=/usr \
 			--libdir=/usr/lib64
 	}
