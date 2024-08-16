@@ -1,5 +1,5 @@
-Paket Sistemi Tasarlama
-=======================
+Paket Sistemi
+=============
 .. toctree::
 	:glob:
 

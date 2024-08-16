@@ -1,5 +1,5 @@
-Paketleri Derleme
-=================
+Paket Derleme
+=============
 .. toctree::
 	:glob:
 
