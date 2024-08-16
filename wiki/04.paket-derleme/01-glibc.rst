@@ -27,134 +27,7 @@ Yükleme
 
 	make install DESTDIR=$HOME/distro/rootfs # Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.
 
-Test Etme
----------
 
-glibc kütüphanemizi **$HOME/distro/rootfs** komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.
-
-Aşağıdaki c kodumuzu derleyelim ve **$HOME/distro/rootfs** konumuna kopyalayalım. **$HOME/** (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.
-
-
-.. code-block:: shell
-
-	#include<stdio.h>
-	void main()
-	{
-	puts("Merhaba Dünya");
-	}
-
-Program Derleme
-................
-
-Aşağıdaki komutlarla merhaba.c dosyası derlenir.
-
-.. code-block:: shell
-	
-	cd $HOME
-	gcc -o merhaba merhaba.c 
-
-Program Yükleme
-...............
-
-Derlenen çalışabilir merhaba dosyamızı **glibc** kütüphanemizin olduğu dizine yükleyelim. 
-
-.. code-block:: shell
-	
-	cp merhaba $HOME/distro/rootfs/merhaba # derlenen merhaba ikili dosyası $HOME/distro/rootfs/ konumuna kopyalandı.
-
-Programı Test Etme
-..................
-
-**glibc** kütüphanemizin olduğu dizin dağıtımızın ana dizini oluyor.  **$HOME/distro/rootfs/** konumuna **chroot** ile erişelim.
-
-Aşağıdaki gibi çalıştırdığımızda bir hata alacağız.
-
-.. code-block:: shell
-
-	sudo chroot $HOME/distro/rootfs/ /merhaba
-	chroot: failed to run command ‘/merhaba’: No such file or directory
-	
-Hata Çözümü
-...........
-
-.. code-block:: shell
-	
-	# üstteki hatanın çözümü sembolik bağ oluşturmak.
-	cd $HOME/distro/rootfs/
-	ln -s lib lib64
-
-#merhaba dosyamızı tekrar chroot ile çalıştıralım. Aşağıda görüldüğü gibi hatasız çalışacaktır.
-
-.. code-block:: shell
-	
-	sudo chroot $HOME/distro/rootfs/ /merhaba
-	Merhaba Dünya
-
-**Merhaba Dünya** mesajını gördüğümüzde glibc kütüphanemizin  ve merhaba çalışabilir dosyamızın çalıştığını anlıyoruz. 
-Bu aşamadan sonra **Temel Paketler** listemizde bulunan paketleri kodlarından derleyerek **$HOME/distro/rootfs/** dağıtım dizinimize yüklemeliyiz.
-Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **glibc** temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır.
-
-**glibc** kütüphanemizi derlerken yukarıda yapılan işlem adımlarını ve hata çözümlemesini bir script dosyasında yapabiliriz. Bu dokümanda altta paylaşılan script dosyası yöntemi tercih edildi. Aslında yukarıdaki işlem adımlarının aynısını bir dosya içerisine eklemiş olduk. Tek tek çalıştırmak yerine bir script dosya içine eklemeyerek tek bir işlem adımıyla tüm aşamalar çalıştırılabilir.
-
-.. code-block:: shell
-	
-	# tanımlamalar
-	version="2.38"
-	name="glibc"
-	
-	# derleme yerinin hazırlanması
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
-	wget https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz
-	tar -xvf ${name}-${version}.tar.gz
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	
-	# derleme öncesi paketin ayarlanması
-	./configure --prefix=/ --disable-werror
-	
-	# derleme
-	make 
-	
-	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/distro/rootfs
-	cd $HOME/distro/rootfs/
-	ln -s lib lib64
-
-Diğer paketlerimizde de **glibc** için paylaşılan script dosyası gibi dosyalar hazırlayıp derlenecektir.
-Yukarıda paylaşılan **script** dosya tekrar düzenlenerek aşağıda son haline getirilecektir. Aşağıda paylaşılan **script** dosya üstteki script dosyadan bir farkı yok. Sadece fonksiyonel hale getirilerek daha anlaşılır ve kontrol edilebilir hale getiriyoruz. Son halinin şablon script dosyası ve ona uygun **glibc** scriptinini hazırlanmış hali aşağıda verilmiştir.
-
-Şablon Script Dosyası
----------------------
-
-.. code-block:: shell
-	
-	#!/usr/bin/env bash
-	version=""
-	name=""
-	depends=""
-	description=""
-	source=""
-	groups=""
-	initsetup(){
-		# Paketin kaynak dosyalarının indirilmesi
-	}
-	setup(){
-		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
-	}
-	build(){
-		#Paketin derlenmesi
-	}
-	package(){
-		# Derlenen dosyaları yükleme öncesi ayar ve yükleme işleminin yapılması
-	}
-
-	initsetup 	# initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
-	setup		# setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
-	build		# build fonksiyonu çalışır ve kaynak dosyaları derlenir.
-	package		# package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
-	
-Şablon dosyasındaki her bir fonksiyonu aslında **glibc** için paylaşılan script dosya ve öncesinde adım adım yaptığımız işlemleri kapsamaktadır. Biz bu işlem adımlarını şablon dosyamızın ilgili fonksiyonlarına aşama aşama yaptığımız işlemleri ayrıştıracağız.
  
 
 glibc Script Dosyası
@@ -288,14 +161,105 @@ Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine
 	./build
 
 
-**base-file ve glibc** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için istediğiniz bir konumda bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
-**build**  dosyasını bulunduğu dizininde terminali açarak aşağıdaki gibi çalıştırınız.
+
+Test Etme
+---------
+
+glibc kütüphanemizi **$HOME/distro/rootfs** komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.
+
+Aşağıdaki c kodumuzu derleyelim ve **$HOME/distro/rootfs** konumuna kopyalayalım. **$HOME/** (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.
+
+
+.. code-block:: shell
+
+	#include<stdio.h>
+	void main()
+	{
+	puts("Merhaba Dünya");
+	}
+
+Program Derleme
+................
+
+Aşağıdaki komutlarla merhaba.c dosyası derlenir.
 
 .. code-block:: shell
 	
-	chmod 755 build
-	./build
+	cd $HOME
+	gcc -o merhaba merhaba.c 
+
+Program Yükleme
+...............
+
+Derlenen çalışabilir merhaba dosyamızı **glibc** kütüphanemizin olduğu dizine yükleyelim. 
+
+.. code-block:: shell
 	
+	cp merhaba $HOME/distro/rootfs/merhaba # derlenen merhaba ikili dosyası $HOME/distro/rootfs/ konumuna kopyalandı.
+
+Programı Test Etme
+..................
+
+**glibc** kütüphanemizin olduğu dizin dağıtımızın ana dizini oluyor.  **$HOME/distro/rootfs/** konumuna **chroot** ile erişelim.
+
+Aşağıdaki gibi çalıştırdığımızda bir hata alacağız.
+
+.. code-block:: shell
+
+	sudo chroot $HOME/distro/rootfs/ /merhaba
+	chroot: failed to run command ‘/merhaba’: No such file or directory
+	
+Hata Çözümü
+...........
+
+.. code-block:: shell
+	
+	# üstteki hatanın çözümü sembolik bağ oluşturmak.
+	cd $HOME/distro/rootfs/
+	ln -s lib lib64
+
+#merhaba dosyamızı tekrar chroot ile çalıştıralım. Aşağıda görüldüğü gibi hatasız çalışacaktır.
+
+.. code-block:: shell
+	
+	sudo chroot $HOME/distro/rootfs/ /merhaba
+	Merhaba Dünya
+
+**Merhaba Dünya** mesajını gördüğümüzde glibc kütüphanemizin  ve merhaba çalışabilir dosyamızın çalıştığını anlıyoruz. 
+Bu aşamadan sonra **Temel Paketler** listemizde bulunan paketleri kodlarından derleyerek **$HOME/distro/rootfs/** dağıtım dizinimize yüklemeliyiz.
+Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **glibc** temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır.
+
+**glibc** kütüphanemizi derlerken yukarıda yapılan işlem adımlarını ve hata çözümlemesini bir script dosyasında yapabiliriz. Bu dokümanda altta paylaşılan script dosyası yöntemi tercih edildi. Aslında yukarıdaki işlem adımlarının aynısını bir dosya içerisine eklemiş olduk. Tek tek çalıştırmak yerine bir script dosya içine eklemeyerek tek bir işlem adımıyla tüm aşamalar çalıştırılabilir.
+
+.. code-block:: shell
+	
+	# tanımlamalar
+	version="2.38"
+	name="glibc"
+	
+	# derleme yerinin hazırlanması
+	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf $HOME/distro/build/* #içeriği temizleniyor
+	cd $HOME/distro/build #dizinine geçiyoruz
+	wget https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz
+	tar -xvf ${name}-${version}.tar.gz
+	cd ${name}-${version} # Kaynak kodun içine giriliyor
+	
+	# derleme öncesi paketin ayarlanması
+	./configure --prefix=/ --disable-werror
+	
+	# derleme
+	make 
+	
+	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
+	make install DESTDIR=$HOME/distro/rootfs
+	cd $HOME/distro/rootfs/
+	ln -s lib lib64
+
+Diğer paketlerimizde de **glibc** için paylaşılan script dosyası gibi dosyalar hazırlayıp derlenecektir.
+Yukarıda paylaşılan **script** dosya tekrar düzenlenerek aşağıda son haline getirilecektir. Aşağıda paylaşılan **script** dosya üstteki script dosyadan bir farkı yok. Sadece fonksiyonel hale getirilerek daha anlaşılır ve kontrol edilebilir hale getiriyoruz. Son halinin şablon script dosyası ve ona uygun **glibc** scriptinini hazırlanmış hali aşağıda verilmiştir.
+
+
 	
 .. raw:: pdf
 

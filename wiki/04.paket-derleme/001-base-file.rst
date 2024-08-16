@@ -50,10 +50,12 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	groups="sys.base"
 	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
-	
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$BUILDDIR/${name}-${version}"
 	initsetup(){
 		# Paketin kaynak dosyalarının indirilmesi
 		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		mkdir -p  $DESTDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
 		rm -rf $BUILDDIR/* #içeriği temizleniyor
 		cd $BUILDDIR #dizinine geçiyoruz
 		wget ${source}
@@ -98,6 +100,13 @@ Yapıyı Oluşturan Script
 		DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
 		PACKAGEDIR=$(pwd)
 		SOURCEDIR="$BUILDDIR/${name}-${version}"
+		initsetup(){
+		# Paketin kaynak dosyalarının indirilmesi
+		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
+		mkdir -p  $DESTDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
+		rm -rf $BUILDDIR/* #içeriği temizleniyor
+		cd $BUILDDIR #dizinine geçiyoruz
+		}
 		setup(){
 			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
 			cd $BUILDDIR #dizinine geçiyoruz
@@ -135,6 +144,18 @@ Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç va
 tar dosyasını indirdikten sonra istediğiniz bir konumda **base-file** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. 
 
 Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra **build** scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları **base-file** dizinin içinde terminal açarak çalıştırınız.
+
+.. code-block:: shell
+	
+	chmod 755 build
+	./build
+
+
+Paket Derleme Yöntemi
+---------------------
+
+**base-file** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için istediğiniz bir konumda bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
+**build**  dosyasının bulunduğu dizininde terminali açarak aşağıdaki gibi çalıştırınız.
 
 .. code-block:: shell
 	
