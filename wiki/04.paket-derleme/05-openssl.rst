@@ -17,28 +17,30 @@ Derleme
 	description="opnssl"
 	source="https://www.openssl.org/source/${name}-${version}.tar.gz"
 	groups="dev.libs"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cp -prfv $PACKAGEDIR/files/update-certdata.sh $SOURCEDIR/update-certdata
-		wget -O $SOURCEDIR/cacert.pem https://curl.haxx.se/ca/cacert.pem
-		cd $SOURCEDIR
-		./config --prefix=/usr  \
+		cp -prfv $PACKAGEDIR/files/update-certdata.sh $BUILDDIR/update-certdata
+		wget -O $BUILDDIR/cacert.pem https://curl.haxx.se/ca/cacert.pem
+		$SOURCEDIR/config --prefix=/usr  \
 		 --openssldir=/etc/ssl \
 		 --libdir=/usr/lib64 \
 		 shared linux-x86_64
@@ -51,8 +53,8 @@ Derleme
 	package()
 	{
 		mkdir -p "${DESTDIR}/etc/ssl/" "${DESTDIR}/sbin/"
-		install $SOURCEDIR/update-certdata "${DESTDIR}/sbin/update-certdata"
-		install $SOURCEDIR/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"
+		install $BUILDDIR/update-certdata "${DESTDIR}/sbin/update-certdata"
+		install $BUILDDIR/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"
 		make DESTDIR="${DESTDIR}" \
 		install_sw \
 		install_ssldirs \

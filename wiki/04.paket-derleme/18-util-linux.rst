@@ -16,29 +16,31 @@ Derleme
 	depends=""
 	buildepend="libcap-ng,python,eudev,sqlite,eudev,cryptsetup,libxcrypt"
 	group="sys.apps"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
-
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup(){
-		cp -prvf $PACKAGEDIR/files/ /tmp/bps/build/
-		cd $SOURCEDIR
-		patch -Np1 -i ../files/0001-util-linux-tmpfiles.patch
+		cp -prvf $PACKAGEDIR/files/ $BUILDDIR/
+		
+		patch -Np1 -i files/0001-util-linux-tmpfiles.patch
 	   
-		./configure --prefix=/usr \
+		$SOURCEDIR/configure --prefix=/usr \
 			--libdir=/usr/lib64 \
 			--bindir=/usr/bin \
 			--enable-shared \
@@ -75,14 +77,14 @@ Derleme
 		chmod 4755 "${DESTDIR}"/usr/bin/{newgrp,ch{sh,fn}}
 
 		# install PAM files for login-utils
-		install -Dm0644 ../files/pam-common "${DESTDIR}/etc/pam.d/chfn"
-		install -m0644 ../files/pam-common "${DESTDIR}/etc/pam.d/chsh"
-		install -m0644 ../files/pam-login "${DESTDIR}/etc/pam.d/login"
-		install -m0644 ../files/pam-remote "${DESTDIR}/etc/pam.d/remote"
-		install -m0644 ../files/pam-runuser "${DESTDIR}/etc/pam.d/runuser"
-		install -m0644 ../files/pam-runuser "${DESTDIR}/etc/pam.d/runuser-l"
-		install -m0644 ../files/pam-su "${DESTDIR}/etc/pam.d/su"
-		install -m0644 ../files/pam-su "${DESTDIR}/etc/pam.d/su-l"
+		install -Dm0644 files/pam-common "${DESTDIR}/etc/pam.d/chfn"
+		install -m0644 files/pam-common "${DESTDIR}/etc/pam.d/chsh"
+		install -m0644 files/pam-login "${DESTDIR}/etc/pam.d/login"
+		install -m0644 files/pam-remote "${DESTDIR}/etc/pam.d/remote"
+		install -m0644 files/pam-runuser "${DESTDIR}/etc/pam.d/runuser"
+		install -m0644 files/pam-runuser "${DESTDIR}/etc/pam.d/runuser-l"
+		install -m0644 files/pam-su "${DESTDIR}/etc/pam.d/su"
+		install -m0644 files/pam-su "${DESTDIR}/etc/pam.d/su-l"
 
 		mkdir -p $DESTDIR/usr/lib64/python3.11
 
@@ -100,9 +102,9 @@ Derleme
 		mv util-linux-libs/site-packages "$DESTDIR"/"${_python_stdlib}"/site-packages
 
 		# install esysusers
-		install -Dm0644 ../files/util-linux.sysusers "${DESTDIR}/usr/lib64/sysusers.d/util-linux.conf"
+		install -Dm0644 files/util-linux.sysusers "${DESTDIR}/usr/lib64/sysusers.d/util-linux.conf"
 
-		install -Dm0644 ../files/60-rfkill.rules "${DESTDIR}/usr/lib64/udev/rules.d/60-rfkill.rules"
+		install -Dm0644 files/60-rfkill.rules "${DESTDIR}/usr/lib64/udev/rules.d/60-rfkill.rules"
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

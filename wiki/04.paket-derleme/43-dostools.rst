@@ -15,40 +15,39 @@ Derleme
 	description="DOS filesystem tools - provides mkdosfs, mkfs.msdos, mkfs.vfat"
 	source="https://github.com/dosfstools/dosfstools/archive/refs/tags/v$version.tar.gz"
 	groups="sys.block"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
-
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cd $SOURCEDIR
-		./autogen.sh
-		./configure --prefix=/usr \
+		$SOURCEDIR/autogen.sh
+		$SOURCEDIR/configure --prefix=/usr \
 		    --libdir=/usr/lib64/ \
 		    --enable-compat-symlinks
 		
 	}
 	build()
 	{
-	cd $SOURCEDIR
 		make 
 	}
 	package()
 	{
-	cd $SOURCEDIR
 		make install DESTDIR=$DESTDIR
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir

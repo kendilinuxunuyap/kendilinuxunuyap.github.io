@@ -15,32 +15,32 @@ Derleme
 	description="servis yöneticisi"
 	source="https://github.com/linux-audit/audit-userspace/archive/refs/tags/v$version.tar.gz"
 	groups="sys.process"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
-
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cp $PACKAGEDIR/files/auditd.initd $SOURCEDIR/auditd.initd
-		cp $PACKAGEDIR/files/auditd.confd $SOURCEDIR/auditd.confd
+		cp $PACKAGEDIR/files/auditd.initd $BUILDDIR/auditd.initd
+		cp $PACKAGEDIR/files/auditd.confd $BUILDDIR/auditd.confd
 		
-		cd $SOURCEDIR
-		 autoreconf -fv --install
-		 cd $BUILDDIR
-	    ../${name}-${version}/configure --prefix=/usr \
+		$SOURCEDIR/autoreconf -fv --install
+	    $SOURCEDIR/configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--libdir=/usr/lib64 \
 		--disable-zos-remote \
@@ -63,8 +63,8 @@ Derleme
 	package()
 	{
 		make install DESTDIR=$DESTDIR
-		install -Dm755 $SOURCEDIR/auditd.initd "$DESTDIR"/etc/init.d/auditd
-	    	install -Dm755 $SOURCEDIR/auditd.confd "$DESTDIR"/etc/conf.d/auditd
+		install -Dm755 $BUILDDIR/auditd.initd "$DESTDIR"/etc/init.d/auditd
+	    install -Dm755 $BUILDDIR/auditd.confd "$DESTDIR"/etc/conf.d/auditd
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

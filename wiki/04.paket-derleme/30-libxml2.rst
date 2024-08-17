@@ -16,30 +16,31 @@ Derleme
 	description="XML C parser and toolkit"
 	source="https://github.com/GNOME/libxml2/archive/refs/tags/v${version}.tar.gz"
 	groups="dev.libs"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
-
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cd $SOURCEDIR
-		autoreconf -fvi
+		$SOURCEDIR/autoreconf -fvi
 		#NOCONFIGURE=1 ./autogen.sh
 
-		./configure --prefix=/usr \
+		$SOURCEDIR/configure --prefix=/usr \
 			--libdir=/usr/lib64 \
 			--with-history \
 			--with-icu \
