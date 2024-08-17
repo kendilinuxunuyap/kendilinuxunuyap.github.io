@@ -90,33 +90,33 @@ Yapıyı Oluşturan Script
 
 .. code-block:: shell
 
-		#!/usr/bin/env bash
-		version="1.0"
-		name="base-file"
-		depends=""
-		description="sistemin temel yapısı"
-		source=""
-		groups="sys.base"
+	#!/usr/bin/env bash
+	version="1.0"
+	name="base-file"
+	depends=""
+	description="sistemin temel yapısı"
+	source=""
+	groups="sys.base"
 	ROOTBUILDDIR="$HOME/distro/build"
 	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+			mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+			rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+			cd $ROOTBUILDDIR #dizinine geçiyoruz
+			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-		setup(){
+	setup(){
 			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
-		}
+	}
 
-		build(){
+	build(){
 			echo ""
-		}
+	}
 
-		package(){
+	package(){
 			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
 			var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 			usr/local/{bin,etc,games,include,lib,sbin,share,src}
@@ -132,11 +132,11 @@ Yapıyı Oluşturan Script
 			echo root:x:0:0:root:/root:/bin/sh > $BUILDDIR/etc/passwd
 			chmod 755 $BUILDDIR/etc/passwd
 			cp -prfv $BUILDDIR/*  $DESTDIR/
-		}
-		initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
-		setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
-		build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
-		package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+	}
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 		
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/base-file/files.tar>`_
 
