@@ -54,16 +54,17 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		cd $ROOTBUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
-		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 	setup(){
 		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
@@ -96,20 +97,17 @@ Yapıyı Oluşturan Script
 		description="sistemin temel yapısı"
 		source=""
 		groups="sys.base"
-		ROOTBUILDDIR="$HOME/distro/build"
-		BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-		DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-		PACKAGEDIR=$(pwd)
-		SOURCEDIR="$HOME/distro/build/${name}-${version}"
-		initsetup(){
-		# Paketin kaynak dosyalarının indirilmesi
-		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		mkdir -p  $ROOTBUILDDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
-		cd $ROOTBUILDDIR #dizinine geçiyoruz
-		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
-		
-		}
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	initsetup(){
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+	}
 		setup(){
 			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
 		}

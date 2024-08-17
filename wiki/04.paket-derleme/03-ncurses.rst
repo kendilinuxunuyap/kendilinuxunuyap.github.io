@@ -28,21 +28,22 @@ Debian ortamında bu paketin derlenmesi için;
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		cd $ROOTBUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		dowloadfile=$(ls|head -1)
-		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		director=$(find ./* -maxdepth 0 -type d)
-		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
-		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		../${name}-${version}/configure \
+		$SOURCEDIR/configure \
 			--prefix=/usr \
 			--libdir=/lib64 \
 			--with-shared \
@@ -50,13 +51,13 @@ Debian ortamında bu paketin derlenmesi için;
 			--with-versioned-syms  \
 			--enable-widec \
 			--with-cxx-binding \
-		--with-cxx-shared \
-		--enable-pc-files \
-		--mandir=/usr/share/man \
-		--with-manpage-format=normal \
-		--with-xterm-kbs=del \
-		--with-pkg-config-libdir=/usr/lib64/pkgconfig
-
+			--with-cxx-shared \
+			--enable-pc-files \
+			--mandir=/usr/share/man \
+			--with-manpage-format=normal \
+			--with-xterm-kbs=del \
+			--with-pkg-config-libdir=/usr/lib64/pkgconfig
+			
 	    #    --without-ada
 	}
 	build()
