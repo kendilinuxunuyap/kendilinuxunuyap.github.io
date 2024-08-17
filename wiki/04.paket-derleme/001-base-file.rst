@@ -42,28 +42,28 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
-	version="1.0"
-	name="base-file"
+	version=""
+	name=""
 	depends=""
 	description=""
 	source=""
-	groups="sys.base"
-	BUILDDIR="$HOME/distro/build" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #paketin yükleneceği sistem konumu
+	groups=""
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$BUILDDIR/${name}-${version}"
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		# Paketin kaynak dosyalarının indirilmesi
-		mkdir -p  $BUILDDIR #derleme dizini yoksa oluşturuluyor
-		mkdir -p  $DESTDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
-		rm -rf $BUILDDIR/* #içeriği temizleniyor
-		cd $BUILDDIR #dizinine geçiyoruz
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
 		wget ${source}
 		dowloadfile=$(ls|head -1)
 		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		director=$(find ./* -maxdepth 0 -type d)
-		mv $director ${name}-${version};
+		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
+		cd $BUILDDIR
 	}
 	setup(){
 		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
@@ -106,12 +106,12 @@ Yapıyı Oluşturan Script
 		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		mkdir -p  $ROOTBUILDDIR #paketin yükleneceği sistem konumu yok oluşturuluyor
-		cd $BUILDDIR #dizinine geçiyoruz
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		
 		}
 		setup(){
 			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
-			cd $BUILDDIR #dizinine geçiyoruz
-			echo ""
 		}
 
 		build(){

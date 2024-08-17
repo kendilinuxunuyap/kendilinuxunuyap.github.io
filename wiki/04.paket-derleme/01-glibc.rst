@@ -62,7 +62,7 @@ Debian ortamında bu paketin derlenmesi için;
 		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		director=$(find ./* -maxdepth 0 -type d)
 		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
-		cd $BUILDDIR
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
