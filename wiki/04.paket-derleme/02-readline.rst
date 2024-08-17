@@ -35,7 +35,7 @@ Derleme
 	}
 	
 	setup(){
-		cp -prvf $PACKAGEDIR/files/* $BUILDDIR/
+		cp -prvf $PACKAGEDIR/files $BUILDDIR/
 		$SOURCEDIR/configure --prefix=/usr \
 			--libdir=/usr/lib64
 	}
@@ -47,7 +47,7 @@ Derleme
 	package(){
 		make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
 		
-		install -Dm644 ../inputrc "$DESTDIR"/etc/inputrc
+		install -Dm644 files/inputrc "$DESTDIR"/etc/inputrc
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
