@@ -15,7 +15,7 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
     cp -prfv files/* $HOME/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
     cd $HOME/distro/build  #build geçiyoruz
 	
-	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+    mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
     var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 	usr/local/{bin,etc,games,include,lib,sbin,share,src}
     ln -s lib64 lib
@@ -29,10 +29,10 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
     bash -c "echo 'basitdagitim' > $HOME/distro/build/etc/hostname"
     bash -c "echo 'nameserver 8.8.8.8' > $HOME/distro/build/etc/resolv.conf"
 
-	echo root:x:0:0:root:/root:/bin/sh > $HOME/distro/build/etc/passwd
-	chmod 755 $HOME/distro/build/etc/passwd
+    echo root:x:0:0:root:/root:/bin/sh > $HOME/distro/build/etc/passwd
+    chmod 755 $HOME/distro/build/etc/passwd
 
-	cp -prfv $HOME/distro/build/*  $HOME/distro/rootfs/
+    cp -prfv $HOME/distro/build/*  $HOME/distro/rootfs/
 	
 Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için aşağıda verilen script şablon yapısını kullanacağız.
 
@@ -63,7 +63,7 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		director=$(find ./* -maxdepth 0 -type d)
 		if [ "${director}" != "${name}-${version}" ]; then mv $director ${name}-${version};fi
-		cd $BUILDDIR
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 	setup(){
 		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
