@@ -48,7 +48,7 @@ Derleme
 	build()
 	{
 		make depend
-		make
+		make -j5 #-C $DESTDIR all
 	}
 	package()
 	{

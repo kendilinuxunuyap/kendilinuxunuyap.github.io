@@ -8,6 +8,9 @@ attr, dosya özniteliklerini ayarlamak veya görüntülemek için kullanılan bi
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+**sudo apt install libattr1-dev** komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash

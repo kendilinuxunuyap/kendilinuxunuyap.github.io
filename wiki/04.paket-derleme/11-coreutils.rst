@@ -44,12 +44,13 @@ Derleme
 		--enable-largefile \
 		--enable-single-binary=symlinks \
 		--enable-no-install-program=groups,hostname,kill,uptime \
+		--without-selinux \
 		--without-openssl
 
 	}
 
 	build(){
-	    make
+	    make -j5 #-C $DESTDIR all
 	}
 
 	package(){

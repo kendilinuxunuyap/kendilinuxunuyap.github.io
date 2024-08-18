@@ -32,8 +32,9 @@ Yükleme
 
 glibc Script Dosyası
 --------------------
+
 Debian ortamında bu paketin derlenmesi için;
-**sudo apt install make autotools gawk diffutils gcc gettext grep perl sed texinfo** komutuyla paketin kurulması gerekmektedir.
+**sudo apt install make autotools gawk diffutils gcc gettext grep perl sed texinfo libtool** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	

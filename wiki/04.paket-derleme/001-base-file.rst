@@ -48,11 +48,11 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	description=""
 	source=""
 	groups=""
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -80,9 +80,23 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	setup		# setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build		# build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package		# package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
-	
+
+Şablon içinde kullanılan bazı sabit bilgiler var. Bular;
+
+- ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
+- BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+- DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+- PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+- SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
+Burada derleme konumunu uzun uzun yazmak yerine sadece $ROOTBUILDDIR ifadesi kullanılabilir. Aslında bu işelem takma ad(alias) işlemidir. Mesela kaynak kodların olduğu konumda bir şeyler yapmak istersek $SOURCEDIR ifadesinin kullanmamız yeterli olacaktır. Bu takma adlar tüm paketlerde geçerli olacak ifadelerdir.
+
 Şablon dosyasındaki her bir fonksiyonu aslında **base-file** için paylaşılan komutları adım adım yaptığımız işlemleri kapsamaktadır. Biz bu işlem adımlarını şablon dosyamızın ilgili fonksiyonlarına aşama aşama yaptığımız işlemleri ayrıştıracağız.
+
+
 **base-file** script dosyasına benzer yapıda diğer paketler içinde script dosyası oluşturulacaktır. Bu sayede her aşamayı tek tek yazma gibi iş yükü olmayacak ve paket derlenirken hangi fonksiyonda(initsetup, setup vb.) sorun yaşanırsa o fonksiyon üzerinden hata ayıklama yapılacaktır.
+
+
 Bu şekilde bir script dosyasına ileri aşamalarda daha yeni özellikler katma ve kontrol etmeye imkan sağlayacaktır. **base-file** scriptide dahil sonraki aşamalarda yapacağınız çalıştıracağınız script dosyaları bir dizin içinde sırasıyla(1-base-file vb) saklamanızı tavsiye ederim. Daha sonra bu işlemleri tekrarlamanız durumunda hangi sırayla paketleri derleyeceğinizi anlamanız ve hızlıca paketleri derlemenizi kolaylaştıracaktır.
 
 Yapıyı Oluşturan Script
@@ -97,11 +111,11 @@ Yapıyı Oluşturan Script
 	description="sistemin temel yapısı"
 	source=""
 	groups="sys.base"
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 	initsetup(){
 			mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 			rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor

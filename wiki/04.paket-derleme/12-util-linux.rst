@@ -63,48 +63,11 @@ Derleme
 	}
 
 	build(){
-		make
+		make -j5 #-C $DESTDIR all
 	}
 
 	package(){
-		    _python_stdlib="$(python -c 'import sysconfig; print(sysconfig.get_paths()["stdlib"])')"
 		make install DESTDIR=$DESTDIR
-
-		    # remove static libraries
-		    rm "${DESTDIR}"/usr/lib/lib*.a*
-
-		    # setuid chfn and chsh
-		    chmod 4755 "${DESTDIR}"/usr/bin/{newgrp,ch{sh,fn}}
-
-		    # install PAM files for login-utils
-		    install -Dm0644 $BUILDDIR/files/pam-common "${DESTDIR}/etc/pam.d/chfn"
-		    install -m0644 $BUILDDIR/files/pam-common "${DESTDIR}/etc/pam.d/chsh"
-		    install -m0644 $BUILDDIR/files/pam-login "${DESTDIR}/etc/pam.d/login"
-		    install -m0644 $BUILDDIR/files/pam-remote "${DESTDIR}/etc/pam.d/remote"
-		    install -m0644 $BUILDDIR/files/pam-runuser "${DESTDIR}/etc/pam.d/runuser"
-		    install -m0644 $BUILDDIR/files/pam-runuser "${DESTDIR}/etc/pam.d/runuser-l"
-		    install -m0644 $BUILDDIR/files/pam-su "${DESTDIR}/etc/pam.d/su"
-		    install -m0644 $BUILDDIR/files/pam-su "${DESTDIR}/etc/pam.d/su-l"
-
-		    mkdir -p $DESTDIR/usr/lib64/python3.11
-
-		    # runtime libs are shipped as part of util-linux-libs
-		    install -d -m0755 util-linux-libs/lib/
-		    mv "$DESTDIR"/usr/lib/lib*.so* util-linux-libs/lib64/
-		    mv "$DESTDIR"/usr/lib/pkgconfig util-linux-libs/lib64/pkgconfig
-		    mv "$DESTDIR"/usr/include util-linux-libs/include
-		    mv "$DESTDIR"/"${_python_stdlib}"/site-packages util-linux-libs/site-packages
-		    rmdir "$DESTDIR"/"${_python_stdlib}"
-		    mv "$DESTDIR"/usr/share/man/man3 util-linux-libs/man3
-
-		    mv util-linux-libs/lib/* "$DESTDIR"/usr/lib64/
-		    mv util-linux-libs/include "$DESTDIR"/usr/include
-		    mv util-linux-libs/site-packages "$DESTDIR"/"${_python_stdlib}"/site-packages
-
-		    # install esysusers
-		    install -Dm0644 $BUILDDIR/files/util-linux.sysusers "${DESTDIR}/usr/lib64/sysusers.d/util-linux.conf"
-
-		    install -Dm0644 $BUILDDIR/files/60-rfkill.rules "${DESTDIR}/usr/lib64/udev/rules.d/60-rfkill.rules"
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

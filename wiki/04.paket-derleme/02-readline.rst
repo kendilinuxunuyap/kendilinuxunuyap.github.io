@@ -1,10 +1,13 @@
-libreadline 
+readline 
 +++++++++++
 
 libreadline, Linux işletim sistemi için geliştirilmiş bir kütüphanedir. Bu kütüphane, kullanıcıların komut satırında girdi almasını ve düzenlemesini sağlar. Bir programcı olarak, libreadline'i kullanarak kullanıcı girdilerini okuyabilir, düzenleyebilir ve işleyebilirsiniz.
 
 Derleme
 -------
+
+Debian ortamında bu paketin derlenmesi için;
+**sudo apt install libreadline-dev** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 

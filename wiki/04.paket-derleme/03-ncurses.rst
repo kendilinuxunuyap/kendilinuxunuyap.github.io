@@ -62,7 +62,7 @@ Debian ortamında bu paketin derlenmesi için;
 	}
 	build()
 	{
-		make 
+		 make -j5 #-C $DESTDIR all 
 	}
 	package()
 	{

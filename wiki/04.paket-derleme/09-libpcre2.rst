@@ -36,7 +36,9 @@ Derleme
 
 	setup()
 	{
-	     $SOURCEDIR/configure --prefix=/usr \
+	     cd $SOURCEDIR
+	     # kaynak dışında başka yerde derleme hatası verdiği için build dizininden source dizinine geçtik
+	     ./configure --prefix=/usr \
 	    	--libdir=/lib64 \
 		    --enable-shared \
 		    --enable-static \
@@ -47,7 +49,7 @@ Derleme
 	}
 	build()
 	{
-		make 
+		make -j5 #-C $DESTDIR all
 	}
 	package()
 	{

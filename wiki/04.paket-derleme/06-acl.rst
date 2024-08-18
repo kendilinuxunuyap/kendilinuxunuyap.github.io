@@ -8,6 +8,9 @@ ACL (Access Control List), dosya sistemlerinde veya ağ cihazlarında erişim ko
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+**sudo apt install libattr1-dev** komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -40,7 +43,7 @@ Derleme
 		--libdir=/usr/lib64
 	}
 	build(){
-	    make
+	     make -j5 #-C $DESTDIR all
 	}
 
 	package(){
