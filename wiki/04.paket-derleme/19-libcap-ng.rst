@@ -36,11 +36,12 @@ Derleme
 
 	setup()
 	{	
-		$SOURCEDIR/autoreconf -fvi
-		$SOURCEDIR/configure --prefix=/usr \
-		  --libdir=/lib64 \
-		  $(use_opt python --with-python --without-python) \
-		$(use_opt python --with-python3 --without-python3)
+		cd $SOURCEDIR/
+        ./autogen.sh
+        ./configure --prefix=/usr \
+          --libdir=/lib64 \
+         --with-python \
+   		--with-python3
 		
 	}
 	build()

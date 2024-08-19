@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+version="1.0.8"
+name="bzip2"
+depends="glibc,readline,ncurses"
+description="şıkıştırma kütüphanesi"
+source="https://sourceware.org/pub/bzip2/${name}-${version}.tar.gz"
+groups="app.arch"
+setup()
+{
+	cd $SOURCEDIR
+
+# Generate relative symlinks
+	sed -i \
+		-e 's:\$(PREFIX)/man:\$(PREFIX)/share/man:g' \
+		-e 's:ln -s -f $(PREFIX)/bin/:ln -s :' \
+		Makefile
+
+	# fixup broken version stuff
+	sed -i \
+		-e "s:1\.0\.4:$version:" \
+		bzip2.1 bzip2.txt Makefile-libbz2_so manual.*
+		
+	
+}
+build()
+{
+	 make -f Makefile-libbz2_so all
+	 make all
+}
+package()
+{
+	cd $SOURCEDIR
+	make PREFIX="$DESTDIR"/usr install
+	install -D libbz2.so.$version "$DESTDIR"/usr/lib/libbz2.so.$pkgver
+	ln -s libbz2.so.$version "$DESTDIR"/usr/lib/libbz2.so
+	ln -s libbz2.so.$version "$DESTDIR"/usr/lib/libbz2.so.${version%%.*}
+
+	mkdir -p "$DESTDIR"/usr/lib/pkgconfig/
+	sed "s|@VERSION@|$version|" $SOURCEDIR/bzip2.pc.in > "$DESTDIR"/usr/lib/pkgconfig/bzip2.pc
+}
+
+

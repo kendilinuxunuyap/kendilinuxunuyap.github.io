@@ -49,6 +49,7 @@ Derleme
 	{
 		make install DESTDIR=$DESTDIR
 		mkdir -p $DESTDIR/lib
+		mkdir -p $DESTDIR/lib/pkgconfig
 		cp -prfv $DESTDIR/usr/lib/x86_64-linux-gnu/* $DESTDIR/lib/
 		
 	}

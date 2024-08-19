@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Sistem Dili Değiştirme &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/09.yardimci-konular/36-sistemdili.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Kullanıcı Sistem Ayarları" href="37-yerelayarlar.html" />
+    <link rel="prev" title="user-dirs" href="35-userdirs.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="sistem-dili-degistirme">
+<h1>Sistem Dili Değiştirme<a class="headerlink" href="#sistem-dili-degistirme" title="Permalink to this heading">¶</a></h1>
+<p>Dil ayarlama</p>
+<p>Sistem dilini ayarlamak için öncelikle /etc/locale.gen dosyamızı aşağıdaki gibi düzenleyelim.</p>
+<blockquote>
+<div><p>Dil kodlarına /usr/share/i18n/locales içerisinden ulaşabilirsiniz.</p>
+<p>Karakter kodlamalara /usr/share/i18n/charmaps içinden ulaşabilirsiniz.</p>
+</div></blockquote>
+<p>tr_TR.UTF-8 UTF-8</p>
+<p>Not: En altta boş bir satır bulunmalıdır.</p>
+<p>Ardından /lib64/locale dizini yoksa oluşturalım.</p>
+<p>mkdir -p /lib64/locale/</p>
+<p>Şimdi de çevresel değişkenlerimizi ayarlamak için /etc/profile.d/locale.sh dosyamızı düzenleyelim.</p>
+<p>#!/bin/sh
+# Language settings
+export LANG=&quot;tr_TR.UTF-8&quot;
+export LC_ALL=&quot;tr_TR.UTF-8&quot;</p>
+<p>Not: Türkçe büyük küçük harf dönüşümü (i -&gt; İ ve ı -&gt; I) ascii standartına uyumsuz olduğu için LC_ALL kısmını türkçe ayarlamayı önermiyoruz. Bunun yerine C.UTF-8 veya en_US.UTF-8 olarak ayarlayabilirsiniz.</p>
+<p>Son olarak locale-gen komutunu çalıştıralım.</p>
+<p>locale-gen</p>
+<p>Eğer /lib64/locale/ dizine okuma iznimiz yoksa verelim.</p>
+<p>chmod 755 -R /lib64/locale/</p>
+<section id="yontem">
+<h2><strong>1. Yöntem</strong><a class="headerlink" href="#yontem" title="Permalink to this heading">¶</a></h2>
+<p>/etc/default/locale dosyasını root olarak bir metin editörü ile açın.</p>
+<p>Türkçe için : LANG=tr_TR.UTF-8
+İngilizce için : LANG=en_US.UTF-8</p>
+<p>Sistemi yeniden başlattığınızda seçtiğiniz dil aktif olacaktır.</p>
+</section>
+<section id="id1">
+<h2><strong>2. Yöntem</strong><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>/etc/profile.d/locale.sh dosyanı oluşturun içeriğini aşağıdaki gibi ayarlayın.</p>
+<p># Language settings
+export LANG=&quot;tr_TR.UTF-8&quot;
+export LC_ALL=&quot;tr_TR.UTF-8&quot;</p>
+<p><strong>/etc/profile.d/</strong>  dizin erişim iznini 755 yapın.</p>
+</section>
+<section id="profile">
+<h2><strong>profile</strong><a class="headerlink" href="#profile" title="Permalink to this heading">¶</a></h2>
+<dl>
+<dt><strong>/etc/profile</strong> dosya içeriğini  aşağıdaki gibi bir betik bulunmalıdır.</dt><dd><p>/etc/profile dosyanının içerisinde aşağıdaki betik olmalıdır. Bu betik <strong>/etc/profile.d</strong> içerisinde betikler varsa tüm kullanıcalr için çalıştırılmasını sağlar.</p>
+<dl>
+<dt>if [ -d /etc/profile.d ]; then</dt><dd><dl>
+<dt>for i in /etc/profile.d/<a href="#id2"><span class="problematic" id="id3">*</span></a>.sh; do</dt><dd><dl class="simple">
+<dt>if [ -r $i ]; then</dt><dd><p>. $i</p>
+</dd>
+</dl>
+<p>fi</p>
+</dd>
+</dl>
+<p>done
+unset i</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>fi</p>
+</section>
+<section id="id4">
+<h2><strong>3.Yöntem</strong><a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h2>
+<p>ayarlarını değiştirmek istediğimiz kullanıcı dizinideki <strong>~/.profile</strong> dosyasının içeriğine aşağıdaki kod satırını eklemeliyiz.</p>
+<p>export LANG=&quot;tr_TR.UTF-8&quot;
+export LC_ALL=&quot;tr_TR.UTF-8&quot;</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08.iso-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-imzadogrulama.html">İmza Doğrulama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-kernel-derleme.html">Kernel Modul Derleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-initrd-debian.html">initrd Tasarımı(Debian)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="21-initrd-bps.html">initrd(bps)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-ld.html">ld(linker)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-sudoers.html">sudoers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-polkit.html">polkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-userdirs.html">user-dirs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sistem Dili Değiştirme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#yontem"><strong>1. Yöntem</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><strong>2. Yöntem</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#profile"><strong>profile</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4"><strong>3.Yöntem</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="37-yerelayarlar.html">Kullanıcı Sistem Ayarları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="38-kullaniciekleme.html">adduser ve useradd Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="40-internet.html">internet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="41-terminalyonlendirme.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9-openrc.html">OpenRC</a></li>
+</ul>
+</li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.yardimci-konular/36-sistemdili.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

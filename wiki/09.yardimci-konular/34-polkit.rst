@@ -67,6 +67,42 @@ Bir Grub-User-Uygulamaya İzin Verme
 	  }
 	);
 
+Uygulamaya İzin Verme
+----------------------
+
+/usr/share/polkit-1/rules.d/test.rules veya /etc/polkit-1/rules.d/test.rules konumlu dosya ile /test uygulamasına rootyetkisi verilebilir.
+
+.. code-block:: shell
+
+	polkit.addRule(function(action, subject) {
+		if (action.id == "org.freedesktop.policykit.exec" &&
+		    action.lookup("program") == "/test") {
+		    return polkit.Result.YES;
+		}
+	});
+
+Uygulamaya İzin Verme
+----------------------
+
+/usr/share/polkit-1/actions/test.policy konumlu dosya ile /usr/bin/python3 /test.py uygulamasına rootyetkisi verilebilir.
+
+.. code-block:: shell
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy 1.0//EN"
+	"http://www.freedesktop.org/standards/PolicyKit/1.0/policykit-policy.dtd">
+	<policyconfig>
+	  <action id="org.example.test">
+		<message>Bu scripti çalıştırmak için yetki gereklidir.</message>
+		<defaults>
+		  <allow_any>no</allow_any>
+		  <allow_inactive>no</allow_inactive>
+		  <allow_active>yes</allow_active>
+		</defaults>
+		 <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/python3</annotate>
+	  <annotate key="org.freedesktop.policykit.exec.argv1">/test.py</annotate>
+	  </action>
+	</policyconfig>
 
 .. raw:: pdf
 

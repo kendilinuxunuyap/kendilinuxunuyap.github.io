@@ -1,0 +1,6 @@
+Dağıtım
+=======
+.. toctree::
+	:glob:
+
+	*/index

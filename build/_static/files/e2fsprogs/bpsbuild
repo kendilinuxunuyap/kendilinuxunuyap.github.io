@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+version="1.47.0"
+name="e2fsprogs"
+depends="glibc,readline,ncurses"
+description="modül ve sistem iletişimi sağlayan paket"
+source="https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v${version}/${name}-${version}.tar.xz"
+groups="sys.fs"
+setup()
+{
+	cd $SOURCEDIR
+	./configure --sbindir=/usr/bin \
+	    --libdir=/usr/lib64/  
+}
+build()
+{
+	make 
+}
+package()
+{
+	make install DESTDIR=$DESTDIR
+	rm -rf $DESTDIR/usr/share/man/man8/fsck.8
+}
+
+
