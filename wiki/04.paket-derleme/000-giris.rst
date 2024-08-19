@@ -69,7 +69,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 37- `audit <./37-audit.html>`_
      - 62- `parted <./62-parted.html>`_
    * - 13- `grep <./13-grep.html>`_
-     - 38- `libxcrypt <./libxcrypt.html>`_
+     - 38- `libxcrypt <./38-libxcrypt.html>`_
      - 63- `busybox <./63-busybox.html>`_
    * - 14- `sed <./14-sed.html>`_
      - 39- `libnsl <./39-libnsl.html>`_

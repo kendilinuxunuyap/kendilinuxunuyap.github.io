@@ -83,13 +83,13 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 
 Şablon içinde kullanılan bazı sabit bilgiler var. Bular;
 
-- ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
-- BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-- DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-- PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-- SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+- ROOTBUILDDIR="$HOME/distro/build": Derleme konumu ev dizininde bulunan **distro/build** dizini.
+- BUILDDIR="$HOME/distro/build/build-${name}-${version}": Derleme yapılan paketin derleme konumu.
+- DESTDIR="$HOME/distro/rootfs": Derlenmiş paketin yükleneceği sistem konumu dizini.
+- PACKAGEDIR=$(pwd) : Derleme talimatının bulunduğu(build dosyası) konum.
+- SOURCEDIR="$HOME/distro/build/${name}-${version}": Derlenecek paketin kaynak kodlarının olduğu konum.
 
-Burada derleme konumunu uzun uzun yazmak yerine sadece $ROOTBUILDDIR ifadesi kullanılabilir. Aslında bu işelem takma ad(alias) işlemidir. Mesela kaynak kodların olduğu konumda bir şeyler yapmak istersek $SOURCEDIR ifadesinin kullanmamız yeterli olacaktır. Bu takma adlar tüm paketlerde geçerli olacak ifadelerdir.
+Derleme konumunu uzun uzun yazmak yerine sadece $ROOTBUILDDIR ifadesi kullanılıyor. Aslında bu işleme takma ad(alias) denir. Mesela kaynak kodların olduğu konumda bir şeyler yapmak istersek $SOURCEDIR ifadesinin kullanmamız yeterli olacaktır. Bu takma adlar tüm paketlerde geçerli olacak ifadelerdir.
 
 Şablon dosyasındaki her bir fonksiyonu aslında **base-file** için paylaşılan komutları adım adım yaptığımız işlemleri kapsamaktadır. Biz bu işlem adımlarını şablon dosyamızın ilgili fonksiyonlarına aşama aşama yaptığımız işlemleri ayrıştıracağız.
 

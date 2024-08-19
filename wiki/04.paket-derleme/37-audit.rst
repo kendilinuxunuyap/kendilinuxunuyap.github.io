@@ -39,8 +39,9 @@ Derleme
 		cp $PACKAGEDIR/files/auditd.initd $BUILDDIR/auditd.initd
 		cp $PACKAGEDIR/files/auditd.confd $BUILDDIR/auditd.confd
 		
-		$SOURCEDIR/autoreconf -fv --install
-	    $SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+		./autogen.sh
+	    ./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--libdir=/usr/lib64 \
 		--disable-zos-remote \

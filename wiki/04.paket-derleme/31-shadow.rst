@@ -6,6 +6,8 @@ Shadow paketi, Linux işletim sistemlerinde kullanıcı hesaplarının şifreler
 Derleme
 --------
 
+shadow derlerken **setcap** hatasıyla debian ortamında karşılaşabilirsiniz. Bunu çözmek için shadow paketini sudo ile derleyebilirsiniz. Bu şekilde sistem için tehlikeli olabilir. Bunun yerine **cp /sbin/setcap /bin/** komutuyla kopyalayıp derleyebilirsiniz.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -35,8 +37,7 @@ Derleme
 	}
 
 	setup(){
-		mkdir -p /tmp/bps/build/files
-		cp -prvf $PACKAGEDIR/files/ /tmp/bps/build/
+		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
 		cd $SOURCEDIR
 		autoreconf -fiv      
 		./configure --prefix=/usr \

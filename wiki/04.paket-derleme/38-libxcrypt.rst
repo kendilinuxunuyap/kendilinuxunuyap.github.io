@@ -35,16 +35,17 @@ Derleme
 	}
 
 	setup() {
-	    $SOURCEDIR/configure --prefix=/usr \
+	    cd $SOURCEDIR
+	    ./configure --prefix=/usr \
 		--libdir=/usr/lib64/ \
 		--sbindir=/usr/bin 
 		
 	}
 	build() {
-	    make -C $BUILDDIR
+	    make -C $SOURCEDIR
 	}
 	package() {
-	    make -C $BUILDDIR install DESTDIR=$DESTDIR
+	    make -C $SOURCEDIR install DESTDIR=$DESTDIR
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

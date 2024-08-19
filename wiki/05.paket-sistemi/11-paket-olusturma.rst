@@ -1,30 +1,58 @@
 Paket Oluşturma
 +++++++++++++++
 
-bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Temel Paketler** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
+bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Paket Derleme** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
 
-Dokümanda readline paketi nasıl derleneceği aşağıdaki script yapılıyor.
+Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilmiştir.
 
 .. code-block:: shell
-	
-	# kaynak kod indirme ve derleme için hazırlama
-	version="8.1"
+
+	#!/usr/bin/env bash
+	version="8.2"
 	name="readline"
-	mkdir -p $HOME/distro
-	cd $HOME/distro
-	rm -rf ${name}-${version}
-	rm -rf build-${name}-${version}
-	wget https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz
-	tar -xvf ${name}-${version}.tar.gz
-	mkdir build-${name}-${version}
-	cd build-${name}-${version}
-	../${name}-${version}/configure --prefix=/ --enable-shared --enable-multibyte
+	depends="glibc"
+	description="readline kütüphanesi"
+	source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
+	groups="sys.apps"
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	initsetup(){
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+	}
 	
-	# derleme
-	make 
-	
-	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/rootfs
+	setup(){
+		cp -prvf $PACKAGEDIR/files $BUILDDIR/
+		$SOURCEDIR/configure --prefix=/usr \
+			--libdir=/usr/lib64
+	}
+
+	build(){
+		make SHLIB_LIBS="-L/tools/lib -lncursesw"
+	}
+
+	package(){
+		make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
+		
+		install -Dm644 files/inputrc "$DESTDIR"/etc/inputrc
+	}
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 Bu script readline kodunu internetten indirip derliyor ve kurulumu yapıyor. Aslında bu scriptle **paketleme**, **paket kurma** işlemini bir arada yapıyor. Bu işlem mantıklı gibi olsada paket sayısı arttıkça ve rutin yapılan işlemleri tekrar tekrar yapmak gibi işlem fazlalığına sebep olmaktadır.
 
@@ -80,24 +108,28 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 .. code-block:: shell
 
 	#!/usr/bin/env bash
-	version="8.1"
+	version="8.2"
 	name="readline"
 	depends="glibc"
 	description="readline kütüphanesi"
 	source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 	groups="sys.apps"
-	setup()
-	{
-		../${name}-${version}/configure --prefix=/ --enable-shared --enable-multibyte
+		setup(){
+		cp -prvf $PACKAGEDIR/files $BUILDDIR/
+		$SOURCEDIR/configure --prefix=/usr \
+			--libdir=/usr/lib64
 	}
-	build()
-	{
-		make 
+
+	build(){
+		make SHLIB_LIBS="-L/tools/lib -lncursesw"
 	}
-	package()
-	{
-		make install DESTDIR=$DESTDIR
+
+	package(){
+		make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
+		
+		install -Dm644 files/inputrc "$DESTDIR"/etc/inputrc
 	}
+
 
 
 **bpspaketle** Dosyamızın Son Hali
@@ -113,41 +145,25 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	if [ ! -f "${paket}/bpsbuild" ]; then echo "Paket dosyası bulunamadı!"; exit; fi
 	echo "Paket : $paket"
 	source ${paket}/bpsbuild
-	DESTDIR=/tmp/bps/build/rootfs-${name}-${version}
-	SOURCEDIR=/tmp/bps/build/${name}-${version}
-	BUILDDIR=/tmp/bps/build/build-${name}-${version}
-
-	# paketin indirilmesi ve /tmp/bps/build konumunda derlenmesi için gerekli dizinler hazırlanır.
-	initsetup() 
-	{
-		mkdir -p /tmp/bps
-		mkdir -p /tmp/bps/build
-		cd /tmp/bps/build
-		rm -rf ./*
-		rm -rf build-${name}-${version}*
-		rm -rf ${name}-${version}*
-		rm -rf rootfs-${name}-${version}*
-		
-		if [ -n "${source}" ]
-		then
-			wget ${source}
-			dowloadfile=$(ls|head -1)
-			filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-			echo "***********dosya sıkıştırma türü**********:${filetype}"
-			if [ ${filetype} == "bz2" ]; then tar -xvf ${dowloadfile}; fi
-			if [ ${filetype} == "tar" ]; then tar -xvf ${dowloadfile}; fi
-			if [ ${filetype} == "xz" ]; then tar -xvf ${dowloadfile}; fi
-			if [ "${filetype}" == "gz" ]; then echo "*****dosya gz ile sıkıştırılmış**"; tar -xvf ${dowloadfile}; fi
-			if [ "${filetype}" == "???" ]; then echo "****dosya zip ile sıkıştırılmış****"; unzip  ${dowloadfile}; fi
-			#*********************************************************************************************************
-			director=$(find ./* -maxdepth 0 -type d)
-			if [ "${director}" != "./${name}-${version}" ]; then mv $director ${name}-${version}; fi
-		fi
-		mkdir -p build-${name}-${version}
-		mkdir -p rootfs-${name}-${version}
-		cp ${dizin}/${paket}/bpsbuild /tmp/bps/build
-		cd build-${name}-${version}
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	initsetup(){
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+		    wget ${source}
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
+
 
 	#paketlenecek dosların listesini tutan file.index dosyası oluşturulur
 	packageindex() 
