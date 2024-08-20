@@ -1,42 +1,49 @@
 Depo indexleme
 ++++++++++++++
-Depo, paket yönetim sistemlerinde kurulacak olan paketleri içeren bir veri topluluğudur.
-Kaynak depo ve ikili depo olarak ikiye ayrılır.
-Depo içerisinde hiyerarşik olarak paketler yer alır.
-Index ise depoda yer alan paketlerin isimleri sürüm numaraları gibi bilgiler ile adreslerini tutan kayıttır.
-Paket yönetim sistemi index içerisinden gelen veriye göre gerekli paketi indirir ve kurar. Depo indexi aşağıdaki gibi olabilir:
+
+Depo paketlerimizin olduğu alandır. Paketler genel olarak;
+1. Sıkıştırılmış bir dosyadır
+2. İçerisinde sisteme yüklenecek derlenmiş paket dizini(sıkıştırılmış olur genelde)
+3. Sisteme yüklenecek derlenmiş paket dizini içindeki dosyaların ve dizinleri konumu ve listesi(file.LST)
+4. Paket derleme talimatı.
+
+Depoada ne kadar paket varsa bunların isimleri sürüm numaraları gibi bilgiler ile adreslerini liste halinde oluşturma işlemine **depo indexleme** denir.
+Depo indexlenirken genellikle bilgiler **paket derleme talimatı** dosyasından alınır.
+Paketlerin listesi oluşturlduktan sonra paketler kurulurken, silinirken ve güncellenirken bu listeden yararlanılır.
 
 .. code-block:: yaml
 
-	Package: hello
+	Name: bash
 	Version: 1.0
-	Dependencies: test, foo, bar
-	Path: h/hello/hello_1.0_x86_64.zip
+	Dependencies: glibc, ncurses, readline
+	Path: b/bash/bash_1.0.zip
 	
-	Package: test
+	Name: test
 	Version: 1.1
-	Path: t/test/test_1.1_aarch64.zip
+	Dependencies:
+	Path: t/test/test_2.0.zip
 	
 	...
 
 Yukarıdaki örnekte paket adı bilgisi sürüm bilgisi ve bağımılılıklar gibi bilgiler ile paketin sunucu içerisindeki konumu yer almaktadır.
 Depo indexi paketlerin içinde yer alan paket bilgileri okunarak otomatik olarak oluşturulur.
 
-Örneğin paketlerimiz zip dosyası olsun ve paket bilgisini **.INFO** dosyası taşısın. Aşağıdaki gibi depo indexi alabiliriz.
+Örneğin paketlerimiz zip dosyası olsun ve paket bilgisini **build** dosyası taşısın. Aşağıdaki gibi depo indexi alabiliriz.
 
 .. code-block:: shell
 
 	function index {
 	    > index.txt
 	    for i in $@ ; do
-	        unzip -p $i .INFO >> index.txt
+	        unzip -p $i build >> index.txt
 	        echo "Path: $i" >> index.txt
 	    done
 	}
-	index t/test/test_1.0_x86_64.zip h/hello/hello_1.1_aarch64.zip ...
+	
+	index t/test/test_2.0.zip b/bash/bash_1.0.zip ...
 
 Bu örnekte paketlerin içindeki paket bilgisi içeren dosyaları uç uca ekledik.
-Buna ek olarak paketin nerede olduğunu anlamak içn paket konumunu da ekledik.
+Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik.
 
 
 **bps Paket Liste İndexi Güncelleme**

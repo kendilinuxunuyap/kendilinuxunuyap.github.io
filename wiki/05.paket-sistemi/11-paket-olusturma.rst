@@ -5,13 +5,13 @@ Paket sisteminde en önemli kısımlardan birisi paket oluşturmadır. Bu işlem
 
 Paket oluşturma işlemi sırayla şu aşamalardan oluşmaktadır.
 
-- 1- Paketin indirilmesi
-- 2- Paketin derleme öncesi hazırlanması(configure)
-- 3- Paketin derlenmesi
-- 4- Derlenmiş paketin bir dizine yüklenmesi
-- 5- Yüklenen dizindeki dosya ve dizin yapısının konum listesini tutan file.index oluşturulması
-- 6- Derlenmiş paketin bir dizinin sıkıştırılması
-- 7- Sıkıştırılmış derlenmiş dizin, file.index ve derleme talimatının paket isimve versiyonuyla tekrardan sıkıştırılması
+1. Paketin indirilmesi
+2. Paketin derleme öncesi hazırlanması(configure)
+3. Paketin derlenmesi
+4. Derlenmiş paketin bir dizine yüklenmesi
+5. Yüklenen dizindeki dosya ve dizin yapısının konum listesini tutan file.index oluşturulması
+6. Derlenmiş paketin bir dizinin sıkıştırılması
+7. Sıkıştırılmış derlenmiş dizin, file.index ve derleme talimatının paket isim ve versiyonuyla tekrardan sıkıştırılması
 
 Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma amacıyla sırasıyla yapmamız gerekmektedir. 7. maddede anlatılan son sıkıştırılma öncesi yapı aşağıda gösterilmiştir.
 

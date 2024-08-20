@@ -1,26 +1,5 @@
-Paket Kurmna
-++++++++++++
-
-Paket kurulurken paket içerisinde bulunan dosyalar sisteme kopyalanır.
-Daha sonra istenirse silinebilmesi için paket içeriğinde dosyaların listesi tutulur.
-Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
-
-Örneğin bir paketimiz zip dosyası olsun ve içinde dosya listesini tutan **.LIST** adında bir dosyamız olsun. Paketi aşağıdaki gibi kurabiliriz.
-
-.. code-block:: shell
-
-	cd /onbellek/dizini
-	unzip /dosya/yolu/paket.zip
-	cp -rfp ./* /
-	cp .LIST /paket/veri/yolu/paket.LIST
-
-Bu örnekte ilk satırda geçici dizine gittik ve paketi oraya açtık.
-Daha sonra paket içeriğini kök dizine kopyaladık.
-Daha sonra paket dosya listesini verilerin tutulduğu yere kopyaladık.
-Bu işlemden sonra paket kurulmuş oldu.
-
-**bps Paket Kurma Scripti Tasarlama**
--------------------------------------
+Paket Kurma
++++++++++++
 
 Hazırlanan dağıtımda paketlerin kurulması için  sırasıyla aşağıdaki işlem adımları yapılmalıdır.
 
@@ -37,7 +16,31 @@ Hazırlanan dağıtımda paketlerin kurulması için  sırasıyla aşağıdaki i
 
 Bu işlemler daha detaylandırılabilir. Bu işlemlerin detaylı olması paket sisteminin kullanılabilirliğini ve yetenekleri olarak ifade edebiliriz. İşlem adımlarını kolaylıkla sıralarken bunları yapacak script yazmak ciddi planlamalar yapılarak tasarlanması gerekmektedir.
 
+
+Örneğin bir paketimiz zip dosyası olsun ve içinde dosya listesini tutan **file.index** adında bir dosyamız olsun. Paketi aşağıdaki gibi kurabiliriz.
+
+.. code-block:: shell
+
+	cd /tmp/kur/
+	unzip /dosya/yolu/paket.zip
+	cp -rfp ./* /
+	cp file.index /paket/veri/yolu/paket.index
+
+- Bu örnekte ilk satırda geçici dizine gittik 
+- Paketi oraya açtık.
+- Paket içeriğini kök dizine kopyaladık.
+- Paket dosya listesini verilerin tutulduğu yere kopyaladık.
+
+Bu işlemden sonra paket kurulmuş oldu.
+
+**bps Paket Kurma Scripti Tasarlama**
+-------------------------------------
 Burada basit seviyede kurulum yapan script kullanılmıştır. Detaylandırıldıkça doküman güncellenecektir. Kurulum scripti aşağıda görülmektedir.
+
+Paket kurulurken paket içerisinde bulunan dosyalar sisteme kopyalanır.
+Daha sonra istenirse silinebilmesi için paket içeriğinde dosyaların listesi tutulur.
+Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
+
 
 **bpskur** Scripti
 ..................
@@ -66,26 +69,26 @@ Burada basit seviyede kurulum yapan script kullanılmıştır. Detaylandırıld�
 		echo "***********Paket Bulunamadı**********"; exit
 	fi
 
-	# paketi indirme
+	# 1. adım paketi indirme
 	mkdir -p /tmp/bps
 	mkdir -p /tmp/bps/kur
 	rm -rf /tmp/bps/kur/*
-	./indirgentoo /tmp/bps/kur/${name}-${version}.tar.gz https://github.com/bayramkarahan/distro-binary-package/raw/master/${name}/${name}-${version}.bps
+	curl -Lo /tmp/bps/kur/${name}-${version}.tar.gz https://github.com/basitdagitim/kly-binary-packages/raw/master/${name}/${name}-${version}.bps
 	mkdir -p /var/lib/bps
 	cd /tmp/bps/kur/
 
-	# paketi açma
+	#2. adım paketi açma
 	tar -xf ${name}-${version}.tar.gz
 	mkdir -p rootfs
 	tar -xf rootfs.tar.xz -C rootfs
 
-	# paketi kurma
+	#3. adım  paketi kurma
 	cp -prfv rootfs/* $ROOTFS/
 
-	#name version depends /var/bps/index.lst eklenmesi
+	#4. adım name version depends /var/bps/index.lst eklenmesi
 	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>var/bps/index.lst
-	#paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
-	cp file.lst /var/bps/${name}-${version}.lst
+	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
+	cp file.index /var/bps/${name}-${version}.lst
 
 
 
