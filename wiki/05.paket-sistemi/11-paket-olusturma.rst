@@ -212,12 +212,16 @@ Bu bilgilere göre readline paketi nasıl oluşturulur onu görelim. Paketlerimi
 
 	mkdir readline
 	cd readline
-	#readline için hazırlanan bpsbuild dosyası bu konuma oluşturulur ve içeriği readline için oluşturduğumuz bpsbuild içeriği olarak ayarlanır.
+	#readline için hazırlanan bpsbuild dosyası bu konuma oluşturulur ve içeriği readline için oluşturduğumuz bpsbuild dosyası bu konuma kopyalayın
 	cd ..
 	./bpspaketle readline # bpspaketle dosyamızın bu konumda olduğu varsayılmıştır ve parametre olarak readline dizini verilmiştir.
 
-Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır.
-Artık sisteme kurulum için ikili dosya, kütüphaneleri ve dizinleri barındıran paketimiz oluştruldu. Bu paketi sistemimize nasıl kurarız? konusu **Paket Kurma** başlığı altında anlatılacaktır.
+Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir.
+
+.. image:: /_static/images/bpspaketle.png
+  	:width: 100
+
+Artık sisteme kurulum için ikili dosya, kütüphaneleri ve dizinleri barındıran paketimiz oluşturuldu. Bu paketi sistemimize nasıl kurarız? konusu **Paket Kurma** başlığı altında anlatılacaktır.
 
 .. raw:: pdf
 
