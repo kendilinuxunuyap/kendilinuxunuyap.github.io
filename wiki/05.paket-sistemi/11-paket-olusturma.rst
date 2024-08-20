@@ -1,6 +1,29 @@
 Paket Oluşturma
 +++++++++++++++
 
+Paket sisteminde en önemli kısımlardan birisi paket oluşturmadır. Bu işlem paketin derlenmesi ve derlenmiş paketin belirli bir yapıyla saklanması olayıdır. Bu saklanan paket daha sonra ihtiyaç halinde uzaktan(internet üzerinden) ve yerelden istediğimiz sisteme kurma işlemidir. Bu başlıkta paketin derlenmesi ve saklanması(paket oluşturma) anlatılacaktır.
+
+Paket oluşturma işlemi sırayla şu aşamalardan oluşmaktadır.
+
+- 1- Paketin indirilmesi
+- 2- Paketin derleme öncesi hazırlanması(configure)
+- 3- Paketin derlenmesi
+- 4- Derlenmiş paketin bir dizine yüklenmesi
+- 5- Yüklenen dizindeki dosya ve dizin yapısının konum listesini tutan file.index oluşturulması
+- 6- Derlenmiş paketin bir dizinin sıkıştırılması
+- 7- Sıkıştırılmış derlenmiş dizin, file.index ve derleme talimatının paket isimve versiyonuyla tekrardan sıkıştırılması
+
+Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma amacıyla sırasıyla yapmamız gerekmektedir. 7. maddede anlatılan son sıkıştırılma öncesi yapı aşağıda gösterilmiştir.
+
+.. image:: /_static/images/bpspaketle-0.png
+  	:width: 600
+
+
+
+   
+**bps Paket Yapma**
+-------------------
+
 bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Paket Derleme** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
 
 Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilmiştir.
@@ -117,16 +140,17 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	description="readline kütüphanesi"
 	source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 	groups="sys.apps"
-		setup(){
+	#2. madde, derleme öncesi hazırlık 
+	setup(){
 		cp -prvf $PACKAGEDIR/files $BUILDDIR/
 		$SOURCEDIR/configure --prefix=/usr \
 			--libdir=/usr/lib64
 	}
-
+	#3. madde, paketin derlenmesi 	
 	build(){
 		make SHLIB_LIBS="-L/tools/lib -lncursesw"
 	}
-
+	#4. madde, derlenen paketin bir dizine yüklenmesi 
 	package(){
 		make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
 		
@@ -153,6 +177,7 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	#1. madde, paketin indirilmesi
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -168,7 +193,7 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	}
 
 
-	#paketlenecek dosların listesini tutan file.index dosyası oluşturulur
+	#6. madde, paketlenecek dosların listesini tutan file.index dosyası oluşturulur
 	packageindex() 
 		rm -rf file.index
 		cd /tmp/bps/build/rootfs-${name}-${version}
@@ -178,8 +203,8 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 
 	# paket dosyası oluşturulur;
 	# kurulacak data rootfs.tar.xz, file.index ve bpsbuild dosyaları tek bir dosya olarak tar.gz dosyası olarak  hazırlanıyor.
-	# tar.gz dosyası olarak hazırlanan dosya bps ismiyle değiştirilip paketimiz hazırlanır.
-
+	
+	#7. madde, tar.gz dosyası olarak hazırlanan dosya bps ismiyle değiştirilip paketimiz hazırlanır.
 	packagecompress() 
 	{
 	cd /tmp/bps/build/rootfs-${name}-${version}
@@ -191,12 +216,13 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	}
 
 	# fonksiyonlar aşağıdaki sırayla çalışacaktır.
-	echo "******************** initsetup ******************"; initsetup #bu dosya içindeki fonksiyon
-	echo "******************** setup **********************"; setup #bpsbuild dosyasından gelen fonksiyon
-	echo "******************** build **********************"; build #bpsbuild dosyasından gelen fonksiyon
-	echo "******************** package ********************"; package #bpsbuild dosyasından gelen fonksiyon
-	echo "******************** packageindex****************"; packageindex #bu dosya içindeki fonksiyon
-	echo "*******************packagecompress***************"; packagecompress #bu dosya içindeki fonksiyon
+	
+	initsetup #bu dosya içindeki fonksiyon (indirilmesi)
+	setup #bpsbuild dosyasından gelen fonksiyon (derleme öncesi hazırlık)
+	build #bpsbuild dosyasından gelen fonksiyon (derleme)
+	package #bpsbuild dosyasından gelen fonksiyon (derlenen paketin dizine yüklenemesi)
+	packageindex #bu dosya içindeki fonksiyon (dizine yüklelen paketin indexlenmesi)
+	packagecompress #bu dosya içindeki fonksiyon (index.lst, derleme talimatı ve dizinin sıkıştırılmas)
 
 Burada **readline** paketini örnek alarak **bpspaketle** dosyasının ve **bpsbuild** dosyasının nasıl hazırlandığı anlatıldı.
 Diğer paketler için sadece hazırlanacak pakete uygun şekilde **bpsbuild** dosyası hazırlayacağız. **bpspaketle**  dosyamızda değişiklik yapmayacağız. Artık  **bpspaketle**  dosyası paketimizi oluşturan script **bpsbuild** ise hazırlanacak paketin bilgilerini bulunduran script doyasıdır.
