@@ -56,7 +56,10 @@ Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilm
 
 Bu script readline kodunu internetten indirip derliyor ve kurulumu yapıyor. Aslında bu scriptle **paketleme**, **paket kurma** işlemini bir arada yapıyor. Bu işlem mantıklı gibi olsada paket sayısı arttıkça ve rutin yapılan işlemleri tekrar tekrar yapmak gibi işlem fazlalığına sebep olmaktadır.
 
-Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Yeni düzenlenen halini  **bpspaketle** ve **bpsbuild** adlı script dosyaları olarak düzenleyeceğiz. Genel yapısı aşağıdaki gibi olacaktır.
+Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Yeni düzenlenen halini  **bpspaketle** ve **bpsbuild** adlı script dosyaları olarak düzenleyeceğiz. Genel yapısı aşağıdaki gibi olacaktır. Script dosyasının yeniden bpspaketle ve bpsbuild şeklinde ayrıştırılmış hali resimde gözükmektedir. Devamında ise **packageindex** ve **packagecompress** fonksiyonları bpspaketle dosyasına eklenecektir.
+
+.. image:: /_static/images/bpspaketle-1.png
+  	:width: 600
 
 
 **bpsbuild** Dosyası
@@ -218,8 +221,8 @@ Bu bilgilere göre readline paketi nasıl oluşturulur onu görelim. Paketlerimi
 
 Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir.
 
-.. image:: /_static/images/bpspaketle.png
-  	:width: 100
+.. image:: /_static/images/bpspaketle-2.png
+  	:width: 600
 
 Artık sisteme kurulum için ikili dosya, kütüphaneleri ve dizinleri barındıran paketimiz oluşturuldu. Bu paketi sistemimize nasıl kurarız? konusu **Paket Kurma** başlığı altında anlatılacaktır.
 
