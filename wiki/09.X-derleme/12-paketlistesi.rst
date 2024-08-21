@@ -1,5 +1,5 @@
-**X Pencere Derleme**
-++++++++++++++++++++
+**X Paketleri**
++++++++++++++++
 
 x11 pencere sisteminin en önemli paketleri şunlardır;
 
@@ -8,6 +8,7 @@ x11 pencere sisteminin en önemli paketleri şunlardır;
 3. cairo
 
 Tüm paketleri derlesek bile bu paketler düzgün ve uyumlu versiyonları olmadığı zaman X penceremiz açılmayacaktır.
+
 .. raw:: pdf
 
    PageBreak
