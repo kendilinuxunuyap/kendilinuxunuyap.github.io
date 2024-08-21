@@ -2,7 +2,6 @@
 ++++++++++++++++++++
 
 X Pencere Sistemi, grafik kullanıcı arayüzü (GUI) uygulamalarının çalışmasını sağlayan bir sistemdir. Linux ve Unix tabanlı işletim sistemlerinde yaygın olarak kullanılır.
-Cevap
 
 X Pencere Sistemi, kullanıcıların grafiksel arayüzler aracılığıyla etkileşimde bulunmasını sağlayan bir altyapıdır. 1984 yılında MIT tarafından geliştirilen bu sistem, ağ üzerinden grafiksel uygulamaların çalıştırılmasına olanak tanır. X, istemci-sunucu mimarisi ile çalışır; burada istemciler, grafiksel uygulamalar iken, sunucu ise ekran, klavye ve fare gibi giriş/çıkış aygıtlarını yönetir.
 
