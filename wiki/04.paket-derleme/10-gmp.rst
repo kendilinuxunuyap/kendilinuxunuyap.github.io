@@ -36,7 +36,8 @@ Derleme
 
 	setup()
 	{
-		$SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+		./configure --prefix=/usr \
 		--libdir=/usr/lib64 \
 			$(use_opt cxx --enable-cxx --disable-cxx) \
 		--enable-fat

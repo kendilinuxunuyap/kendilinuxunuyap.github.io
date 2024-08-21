@@ -39,7 +39,8 @@ Debian ortamında bu paketin derlenmesi için;
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 	setup(){
-	    $SOURCEDIR/configure --prefix=/usr \
+	    cd $SOURCEDIR
+	    ./configure --prefix=/usr \
 		--libdir=/usr/lib64
 	}
 	build(){

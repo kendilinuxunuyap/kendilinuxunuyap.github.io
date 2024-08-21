@@ -36,8 +36,9 @@ Derleme
 
 	setup()
 	{
-		$SOURCEDIR/autogen.sh
-		$SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+		./autogen.sh
+		./configure --prefix=/usr \
 		    --libdir=/usr/lib64/ \
 		    --enable-compat-symlinks
 		

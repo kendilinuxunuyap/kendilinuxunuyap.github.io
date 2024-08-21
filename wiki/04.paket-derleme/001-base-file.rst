@@ -167,7 +167,13 @@ Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine
 Paket Derleme Yöntemi
 ---------------------
 
-**base-file** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için istediğiniz bir konumda bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
+**base-file** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için istediğiniz bir konumda bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Test amaçlı derleme yaptığım paketler ve **base-file** için yaptığımız dizin yapısı aşağıda gösterilmiştir.
+
+.. image:: /_static/images/base-file-0.png
+  	:width: 600
+
+
+Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
 **build**  dosyasının bulunduğu dizininde terminali açarak aşağıdaki gibi çalıştırınız.
 
 .. code-block:: shell

@@ -36,7 +36,8 @@ Derleme
 
 	setup()
 	{
-	    $SOURCEDIR/configure --prefix=/usr \
+	    cd $SOURCEDIR
+	    ./configure --prefix=/usr \
 		--sbindir=/usr/sbin \
 		--libdir=/usr/lib64 \
 		--enable-securedir=/usr/lib64/security \

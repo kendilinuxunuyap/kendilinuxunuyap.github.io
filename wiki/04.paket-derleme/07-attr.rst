@@ -40,7 +40,8 @@ Debian ortamında bu paketin derlenmesi için;
 	}
 	
 	setup(){
-	    $SOURCEDIR/configure --prefix=/usr \
+	    cd $SOURCEDIR
+	    ./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--libdir=/usr/lib64
 	}
