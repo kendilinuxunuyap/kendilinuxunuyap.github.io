@@ -7,7 +7,9 @@ Derleme
 --------
 
 Debian ortamında bu paketin derlenmesi için;
-**sudo apt install libpcre2-dev** komutuyla paketin kurulması gerekmektedir.
+- **sudo apt install libpcre2-dev** 
+- **sudo apt install libsepol-dev**
+komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
