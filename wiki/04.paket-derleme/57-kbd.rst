@@ -26,7 +26,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -37,8 +38,8 @@ Derleme
 	}
 
 	setup(){
-		mkdir -p $SOURCEDIR/files
-		cp $PACKAGEDIR/files/* SOURCEDIR/files/
+
+		cp $PACKAGEDIR/files SOURCEDIR/
 		
 	    cd $SOURCEDIR
 	    autoreconf -fvi
@@ -49,15 +50,14 @@ Derleme
 	}
 
 	build(){
-		cd ../$name-$version
-		pwd
+
 	    make KEYCODES_PROGS=yes RESIZECONS_PROGS=yes
 	}
 
 	package(){
 	    make DESTDIR=${DESTDIR} install
 	    install -Dm755 $SOURCEDIR/files/loadkeys.initd "$DESTDIR"/etc/init.d/loadkeys
-		install -Dm644$SOURCEDIR/files/loadkeys.confd "$DESTDIR"/etc/conf.d/loadkeys
+		install -Dm644 $SOURCEDIR/files/loadkeys.confd "$DESTDIR"/etc/conf.d/loadkeys
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

@@ -152,4 +152,3 @@ Bölüm adları değişebilirken uuid değerleri değişmez.
 .. raw:: pdf
 
    PageBreak
-

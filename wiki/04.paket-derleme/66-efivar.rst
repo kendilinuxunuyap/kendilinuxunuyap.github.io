@@ -1,21 +1,25 @@
-libnsl
+efivar
 ++++++
 
-libnsl, "Network Services Library" anlamına gelen bir kütüphanedir ve genellikle Unix sistemlerinde ağ hizmetleri ile ilgili işlevsellik sağlamak amacıyla kullanılır. Bu kütüphane, uzaktan prosedür çağrıları (RPC) ve diğer ağ iletişim protokollerinin uygulanmasında kritik bir bileşendir. libnsl, özellikle eski sistemlerde ve uygulamalarda yaygın olarak bulunur ve modern sistemlerde de bazı uygulamalar için gereklidir.
+efivar paketi, UEFI tabanlı sistemlerde, firmware ile işletim sistemi arasında veri alışverişini sağlamak için kritik bir rol oynamaktadır. UEFI, BIOS'un yerini alarak daha modern bir arayüz sunmakta ve sistem başlangıcında daha fazla esneklik sağlamaktadır. efivar, UEFI değişkenlerini okuma, yazma ve silme işlemlerini gerçekleştirmek için bir dizi komut sunar.
 
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+- **sudo apt install libefivar-dev** 
+komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
-	name="libnsl"
-	version="2.0.0"
-	url="https://github.com/thkukuk/libnsl"
-	description="Public client interface library for NIS(YP)"
-	source="https://github.com/thkukuk/libnsl/releases/download/v$version/libnsl-$version.tar.xz"
-	depends="libtirpc"
-	group="net.libs"
+	name="efivar"
+	version="39"
+	description="Tools and libraries to work with EFI variables"
+	source="https://github.com/rhboot/efivar/archive/refs/tags/$version.tar.gz"
+	depends=""
+	builddepend=""
+	group="sys.libs"
 	ROOTBUILDDIR="$HOME/distro/build"
 	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
 	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
@@ -37,17 +41,27 @@ Derleme
 	}
 
 	setup(){
-	    cd $SOURCEDIR
-	    ./configure --prefix=/usr \
-		--libdir=/usr/lib64
+		export ERRORS=''
+		export PATH=$PATH:$HOME
+		# fake mandoc for ignore extra dependency
+	    echo "exit 0" > $HOME/mandoc
+	    chmod +x $HOME/mandoc
 	}
 
 	build(){
-	    make $jobs
+		cd $SOURCEDIR
+	    make
 	}
 
 	package(){
-	    make install DESTDIR=$DESTDIR
+		local make_options=(
+	    V=1
+	    libdir=/usr/lib64/
+	    bindir=/usr/bin/
+	    mandir=/usr/share/man/
+	    includedir=/usr/include/
+		)
+	    make DESTDIR=$DESTDIR "${make_options[@]}" install
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -55,7 +69,7 @@ Derleme
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 
-Paket adında(libnsl) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+Paket adında(efivar) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
 
 
 .. code-block:: shell
@@ -66,6 +80,7 @@ Paket adında(libnsl) istediğiniz bir konumda bir dizin oluşturun ve dizin iç
 .. raw:: pdf
 
    PageBreak
+
 
 
 

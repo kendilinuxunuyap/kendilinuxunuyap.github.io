@@ -6,6 +6,13 @@ Eudev, Linux tabanlı sistemlerde cihaz yönetimi için kullanılan bir kullanı
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+
+- **sudo apt install libkmod-dev**
+- **sudo apt install libgperf-dev**
+komutuyla paketin kurulması gerekmektedir.
+
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -24,7 +31,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi

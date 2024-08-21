@@ -24,7 +24,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -36,7 +37,8 @@ Derleme
 
 	setup()
 	{
-		../${name}-${version}/configure --prefix=/usr \
+		cd $SOURCEDIR
+		./configure --prefix=/usr \
 		--libdir=/lib64/ \
 		--with-included-popt \
 		--with-included-zlib \

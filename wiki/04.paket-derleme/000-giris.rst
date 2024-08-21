@@ -79,10 +79,10 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 65- `grub <./65-grub.html>`_
    * - 16- `gawk <./16-gawk.html>`_
      - 41- `libtirpc <./41-libtirpc.html>`_
-     - 66- `efibootmgr <./66-efibootmgr.html>`_
+     - 66- `efibootmgr <./66-efivar.html>`_
    * - 17- `findutils <./17-findutils.html>`_
      - 42- `e2fsprogs <./42-e2fsprogs.html>`_
-     - 67- `efivar <./67-efivar.html>`_
+     - 67- `efivar <./67-efibootmgr.html>`_
    * - 18- `libgcc <./18-libgcc.html>`_
      - 43- `dostools <./43-dostools.html>`_
      - 68- `dialog <./68-dialog.html>`_
@@ -108,6 +108,18 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
 
 Listede bulunan  **bash** paketinin sorunsuz çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli. Listede bulunan tüm paketlerin bağımlılıkları eksiksizdir.
 Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.
+
+Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
+
+- sudo apt-get install autoconf
+- sudo apt-get install autotools
+- sudo apt-get install make
+- sudo apt-get install meson
+- sudo apt-get install cmake
+- sudo apt-get install ninja
+
+
+
 
 .. raw:: pdf
 

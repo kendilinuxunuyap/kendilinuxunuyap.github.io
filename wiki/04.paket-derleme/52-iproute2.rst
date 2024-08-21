@@ -24,7 +24,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -36,20 +37,21 @@ Derleme
 
 	setup(){
 
-		cp ${PACKAGEDIR}/files/* $SOURCEDIR/
-	  # set correct fhs structure
-	  patch -Np1 -i "${SOURCEDIR}"/0001-make-iproute2-fhs-compliant.patch
+		cp -prvf ${PACKAGEDIR}/files/ $SOURCEDIR/
+		# set correct fhs structure
+		cd $SOURCEDIR
+		patch -Np1 -i $SOURCEDIR/files/0001-make-iproute2-fhs-compliant.patch
 
-	  # use Berkeley DB 5.3
-	  patch -Np1 -i "${SOURCEDIR}"/0002-bdb-5-3.patch
+		# use Berkeley DB 5.3
+		patch -Np1 -i $SOURCEDIR/files/0002-bdb-5-3.patch
 
-	  # do not treat warnings as errors
-	  sed -i 's/-Werror//' Makefile
+		# do not treat warnings as errors
+		sed -i 's/-Werror//' Makefile
 
-	  export CFLAGS+=' -ffat-lto-objects'
+		export CFLAGS+=' -ffat-lto-objects'
 
-	  $SOURCEDIR/configure
-
+		#cd $SOURCEDIR
+		./configure
 	}
 
 	build(){

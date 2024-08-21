@@ -25,7 +25,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -140,13 +141,31 @@ Paket adında(initramfs-tools) istediğiniz bir konumda bir dizin oluşturun ve 
 **/usr/share/initramfs-tools/hooks/** konumundaki dosyaları dikkatlice düzenlemek gerekmektedir.
 Dosyaları alfabetik sırayla çalıştırdığı için **busybox** **zzz-busybox** şeklinde ayarlanmıştır.
 
-**initramfs-tools Güncelleme**
-------------------------------
+**initrd Oluşturma/Güncelleme**
+-------------------------------
+
+sistemin initrd.img dosyasının güncellenmesi için çalıştığınız sistemde  aşağıdaki komutla güncelleenbilir. 
 
 .. code-block:: shell
 
 	/usr/sbin/update-initramfs -u -k $(uname -r) #initrd günceller
 
+Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sisteme erişiliyorsa yukarıdaki komut yeterli olmayacaktır. chroot öncesinde sistemin **dev sys proc run** diziznlerinin  bağlanılması gerekmektedir. Dizindeki sistemimizin dizin ismi **taarget** olsun. Buna göre aşağıda sisteme yukarıdaki komutu çalıştırmadan önce çalıştırılması gereken komutlar aşağıda verilmiştir.
+
+.. code-block:: shell
+
+	$ mkdir -p /target/dev
+	$ mkdir -p /target/sys
+	$ mkdir -p /target/proc 
+	$ mkdir -p /target/run
+	$ mkdir -p /target/tmp
+	$ mount --bind /dev /target/dev
+	$ mount --bind /sys /target/sys
+	$ mount --bind /proc /target/proc
+	$ mount --bind /run /target/run
+	$ mount --bind /tmp /target/tmp
+	$ chroot /target
+	 
 Güncelleme ve oluşturma aşamasında **/usr/share/initramfs-tools/hooks/** konumundaki dosyarı çalıştırarak yeni initrd dosyasını oluşturacaktır.
 Oluşturma **/var/tmp** olacaktır. Ayrıca **/boot/config-6.6.0-amd64** gibi sistemde kullanılan kernel versiyonuyla config dosyası olmalıdır. Burada verilen **6.6.0-amd64** örnek amaçlı verilmiştir.
 
@@ -174,11 +193,3 @@ Oluşan initrd.img dosyası sistemin açılmasını sağlayamıyorsa script aç�
 .. raw:: pdf
 
    PageBreak
- 
-.. raw:: pdf
-
-   PageBreak
-
-
-
-

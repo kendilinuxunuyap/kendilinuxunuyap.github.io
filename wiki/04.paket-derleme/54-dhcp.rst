@@ -24,7 +24,8 @@ Derleme
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -35,8 +36,10 @@ Derleme
 	}
 
 	setup(){
-	    $SOURCEDIR/configure --prefix=/usr \
-		--libdir=/usr/lib64/
+		cp -prvf ${PACKAGEDIR}/files $SOURCEDIR/
+	     cd $SOURCEDIR
+    	./configure --prefix=/usr \
+        --libdir=/usr/lib64/
 	}
 
 	build(){
@@ -52,8 +55,8 @@ Derleme
 	    for level in boot default nonetwork shutdown sysinit ; do
 	    mkdir -p ${DESTDIR}/etc/runlevels/$level
 	    done
-	    install  $PACKAGEDIR/dhclient.init.d $DESTDIR/etc/init.d/dhclient
-	     install $PACKAGEDIR/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
+	    install  $SOURCEDIR/dhclient.init.d $DESTDIR/etc/init.d/dhclient
+	    install $SOURCEDIR/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
