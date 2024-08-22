@@ -37,8 +37,8 @@ Derleme
 
 	setup(){
 
-		cp $PACKAGEDIR/files $SOURCEDIR/
-		cp $PACKAGEDIR/extras $SOURCEDIR/
+		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
+		cp -prfv $PACKAGEDIR/extras $SOURCEDIR/
 		cd $SOURCEDIR
 	    meson setup $BUILDDIR \
 		--sysconfdir=/etc \

@@ -38,8 +38,9 @@ Derleme
 	setup()
 	{
 		export DEFS="NO_ASM"
-		$SOURCEDIR/autoreconf -fvi
-		$SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+		./autoreconf -fvi
+		./configure --prefix=/usr \
 		--libdir=/usr/lib64/
 	}
 	build()

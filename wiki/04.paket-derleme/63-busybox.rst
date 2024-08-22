@@ -32,7 +32,7 @@ Derleme
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
             wget ${source}
             for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
+            dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		    director=$(find ./* -maxdepth 0 -type d)

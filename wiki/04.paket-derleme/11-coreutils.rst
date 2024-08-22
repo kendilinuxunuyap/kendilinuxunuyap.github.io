@@ -39,15 +39,16 @@ Derleme
 	#set FORCE_UNSAFE_CONFIGURE=1
 	setup(){
 
-	  FORCE_UNSAFE_CONFIGURE=1  $SOURCEDIR/configure --prefix=/usr \
-		--libdir=/usr/lib64 \
-		--libexecdir=/usr/libexec \
-		--enable-largefile \
-		--enable-single-binary=symlinks \
-		--enable-no-install-program=groups,hostname,kill,uptime \
-		--without-selinux \
-		--without-openssl
-
+	  	cd $SOURCEDIR
+    	export FORCE_UNSAFE_CONFIGURE=1 
+    	./configure --prefix=/usr \
+        --libdir=/usr/lib64 \
+        --libexecdir=/usr/libexec \
+        --enable-largefile \
+        --enable-single-binary=symlinks \
+        --enable-no-install-program=groups,hostname,kill,uptime \
+        --without-selinux \
+        --without-openssl
 	}
 
 	build(){

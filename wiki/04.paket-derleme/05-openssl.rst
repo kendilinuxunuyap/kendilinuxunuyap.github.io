@@ -8,6 +8,10 @@ OpenSSL, açık kaynaklı bir kriptografik kütüphanedir ve genellikle ağ ilet
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+- **sudo apt install perl** 
+komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -23,43 +27,44 @@ Derleme
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+		        wget ${source}
+		        dowloadfile=$(ls|head -1)
+		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		        director=$(find ./* -maxdepth 0 -type d)
+		        directorname=$(basename ${director})
+		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cp -prfv $PACKAGEDIR/files/update-certdata.sh $BUILDDIR/update-certdata
-		wget -O $BUILDDIR/cacert.pem https://curl.haxx.se/ca/cacert.pem
-		$SOURCEDIR/config --prefix=/usr  \
-		 --openssldir=/etc/ssl \
-		 --libdir=/usr/lib64 \
-		 shared linux-x86_64
+		    cp -prfv $PACKAGEDIR/files/ $SOURCEDIR
+		    cd $SOURCEDIR
+		    wget -O $SOURCEDIR/files/cacert.pem https://curl.haxx.se/ca/cacert.pem
+		    patch -Np1 -i $SOURCEDIR/files/ca-dir.patch
+		    ./config --prefix=/usr  \
+				 --openssldir=/etc/ssl \
+				 --libdir=/usr/lib64 \
+				 shared linux-x86_64
 	}
 	build()
 	{
-		make depend
-		make -j5 #-C $DESTDIR all
+		    make depend
+		    make -j5 #-C $DESTDIR all
 	}
 	package()
 	{
-		mkdir -p "${DESTDIR}/etc/ssl/" "${DESTDIR}/sbin/"
-		install $BUILDDIR/update-certdata "${DESTDIR}/sbin/update-certdata"
-		install $BUILDDIR/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"
-		make DESTDIR="${DESTDIR}" \
-		install_sw \
-		install_ssldirs \
-		install_man_docs  $jobs
+		    mkdir -p "${DESTDIR}/etc/ssl/" "${DESTDIR}/sbin/"
+		    install $SOURCEDIR/files/update-certdata "${DESTDIR}/sbin/update-certdata"
+		    install $SOURCEDIR/files/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"
+		    make DESTDIR="${DESTDIR}" \
+		    install_sw \
+		    install_ssldirs \
+		    install_man_docs  $jobs
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

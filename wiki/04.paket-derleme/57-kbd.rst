@@ -39,14 +39,14 @@ Derleme
 
 	setup(){
 
-		cp $PACKAGEDIR/files SOURCEDIR/
+		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
 		
 	    cd $SOURCEDIR
 	    autoreconf -fvi
 	    ./configure --prefix=/usr \
-	    	--sysconfdir=/etc \
-	    	--datadir=/usr/share/kbd \
-			--enable-optional-progs
+	   	--sysconfdir=/etc \
+	    --datadir=/usr/share/kbd \
+		--enable-optional-progs
 	}
 
 	build(){

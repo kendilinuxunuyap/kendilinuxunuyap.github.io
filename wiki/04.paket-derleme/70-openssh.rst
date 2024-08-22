@@ -15,7 +15,7 @@ Derleme
 	version="9.6p1"
 	description="OpenBSD ssh server & client"
 	source="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
-	depends="zlib,libxcrypt,openssl,libmd,libssh"		
+	depends="zlib,libxcrypt,openssl,libmd,libssh"
 	group="net.misc"
 	ROOTBUILDDIR="$HOME/distro/build"
 	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
@@ -23,45 +23,44 @@ Derleme
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+				wget ${source}
+				for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        dowloadfile=$(ls|head -1)
+		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		        director=$(find ./* -maxdepth 0 -type d)
+		        directorname=$(basename ${director})
+		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup(){
-		cp -prfv $PACKAGEDIR/files/sshd.initd $BUILDDIR/
-		cp -prfv $PACKAGEDIR/files/sshd.confd $BUILDDIR/
-		cd $BUILDDIR
-	    ../${name}-${version}/configure --prefix=/usr \
-		--libdir=/usr/lib64/ \
-		--sysconfdir=/etc/ssh \
-		--without-pam \
-		--disable-strip \
-		--with-ssl-engine \
-		--with-privsep-user=nobody \
-		--with-pid-dir=/run \
-		--with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+		    cp -prfv $PACKAGEDIR/files $SOURCEDIR/
+		    cd $SOURCEDIR
+			./configure --prefix=/usr \
+		    --libdir=/usr/lib64/ \
+		    --sysconfdir=/etc/ssh \
+		    --without-pam \
+		    --disable-strip \
+		    --with-ssl-engine \
+		    --with-privsep-user=nobody \
+		    --with-pid-dir=/run \
+		    --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 	}
 
 	build(){
-	    make
+		make
 	}
 
 	package(){
-	cd $BUILDDIR
-	    make install DESTDIR=$DESTDIR
-	    mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
-	    install -m755 -D sshd.initd "$DESTDIR"/etc/init.d/sshd
-	    install -m755 -D sshd.confd "$DESTDIR"/etc/conf.d/sshd
+	
+		make install DESTDIR=$DESTDIR
+		mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
+		install -m755 -D $SOURCEDIR/files/sshd.initd "$DESTDIR"/etc/init.d/sshd
+		install -m755 -D $SOURCEDIR/files/sshd.confd "$DESTDIR"/etc/conf.d/sshd
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
