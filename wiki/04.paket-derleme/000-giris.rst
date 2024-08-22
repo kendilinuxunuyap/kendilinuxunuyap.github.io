@@ -87,7 +87,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 43- `dostools <./43-dostools.html>`_
      - 68- `dialog <./68-dialog.html>`_
    * - 19- `libcap-ng <./19-libcap-ng.html>`_
-     - 44- `initramfs-tools <./44-initramfs.html>`_
+     - 44- `initramfs-tools <./44-initramfs-tools.html>`_
      - 69- `libssh <./69-libssh.html>`_
    * - 20- `sqlite <./20-sqlite.html>`_
      - 45- `libxml2 <./45-libxml2.html>`_
@@ -112,6 +112,7 @@ Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altı
 Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
 
 - sudo apt-get install autoconf
+- sudo apt-get install automake
 - sudo apt-get install autotools
 - sudo apt-get install make
 - sudo apt-get install meson

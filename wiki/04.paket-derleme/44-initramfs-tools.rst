@@ -22,77 +22,71 @@ Derleme
 	PACKAGEDIR=$(pwd)
 	SOURCEDIR="$HOME/distro/build/${name}-${version}"
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        dowloadfile=$(ls|head -1)
+		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		        director=$(find ./* -maxdepth 0 -type d)
+		        directorname=$(basename ${director})
+		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
-	{	
-		mkdir -p $SOURCEDIR/conf-hooks.d
-		cp ${dizin}/${paket}/conf-hooks.d/* $SOURCEDIR/conf-hooks.d/
-		mkdir -p $SOURCEDIR/patches
-		cp $PACKAGEDIR/files/patches/* $SOURCEDIR/patches/
-		cp $PACKAGEDIR/files/initramfs-tools.sysconf $SOURCEDIR/initramfs-tools.sysconf
-		cp $PACKAGEDIR/files/zzz-busybox $SOURCEDIR/zzz-busybox
-		#cp $PACKAGEDIR/files/fsck $SOURCEDIR/fsck
-		cp $PACKAGEDIR/files/modules $SOURCEDIR/modules
+	{
+		   
 
-		
-		cd $SOURCEDIR
-		patch -Np1 < $SOURCEDIR/patches/remove-zstd.patch
-	    	patch -Np1 < $SOURCEDIR/patches/remove-logsave.patch
-	    	patch -Np1 < $SOURCEDIR/patches/non-debian.patch
+		    cp -prfv $PACKAGEDIR/files/* $SOURCEDIR/
+
+
+		    cd $SOURCEDIR
+		    patch -Np1 < $SOURCEDIR/patches/remove-zstd.patch
+		    patch -Np1 < $SOURCEDIR/patches/remove-logsave.patch
+		    patch -Np1 < $SOURCEDIR/patches/non-debian.patch
 	}
 	build()
 	{
-		echo ""
+		    echo ""
 	}
 	package()
 	{
-		cd $SOURCEDIR
-		cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
-		file=$(echo $line | cut -f1 -d" ")
-		target=$(echo $line | cut -f2 -d" ")
-		mkdir -p ${DESTDIR}/$target
-		cp -prvf $file ${DESTDIR}/$target/
-	    	done
-	    	# install mkinitramfs
-	    	cp -pvf mkinitramfs ${DESTDIR}/usr/sbin/mkinitramfs
-	    	sed -i "s/@BUSYBOX_PACKAGES@/busybox/g" ${DESTDIR}/usr/sbin/mkinitramfs
-	    	sed -i "s/@BUSYBOX_MIN_VERSION@/1.22.0/g" ${DESTDIR}/usr/sbin/mkinitramfs
-	    	# Remove debian stuff
-	    	rm -rvf ${DESTDIR}/etc/kernel
-	    	# install sysconf
-	    	mkdir -p ${DESTDIR}/etc/sysconf.d
-	    	install ../initramfs-tools.sysconf ${DESTDIR}/etc/sysconf.d/initramfs-tools
-	    	
+		    cd $SOURCEDIR
+		    cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
+		    file=$(echo $line | cut -f1 -d" ")
+		    target=$(echo $line | cut -f2 -d" ")
+		    mkdir -p ${DESTDIR}/$target
+		    cp -prvf $file ${DESTDIR}/$target/
+		    done
+		    # install mkinitramfs
+		    cp -pvf mkinitramfs ${DESTDIR}/usr/sbin/mkinitramfs
+		    sed -i "s/@BUSYBOX_PACKAGES@/busybox/g" ${DESTDIR}/usr/sbin/mkinitramfs
+		    sed -i "s/@BUSYBOX_MIN_VERSION@/1.22.0/g" ${DESTDIR}/usr/sbin/mkinitramfs
+		    # Remove debian stuff
+		    rm -rvf ${DESTDIR}/etc/kernel
+		    # install sysconf
+		    mkdir -p ${DESTDIR}/etc/sysconf.d
+		    install $SOURCEDIR/initramfs-tools.sysconf ${DESTDIR}/etc/sysconf.d/initramfs-tools
 
-	    	install $SOURCEDIR/zzz-busybox ${DESTDIR}/usr/share/initramfs-tools/hooks/
-	    	install $SOURCEDIR/modules ${DESTDIR}/usr/share/initramfs-tools/
-	    	install $SOURCEDIR/modules ${DESTDIR}/etc/initramfs-tools/
-	    	
-	    	mkdir -p ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d
-	    	install $SOURCEDIR/conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
-	 
-	    	
-	    	mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
-	    	
+
+		    install $SOURCEDIR/zzz-busybox ${DESTDIR}/usr/share/initramfs-tools/hooks/
+		    install $SOURCEDIR/modules ${DESTDIR}/usr/share/initramfs-tools/
+		    install $SOURCEDIR/modules ${DESTDIR}/etc/initramfs-tools/
+
+		    mkdir -p ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d
+		    install $SOURCEDIR/conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
+
+
+		    mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
+
 	  }
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
-
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/initramfs-tools/files.tar>`_
 

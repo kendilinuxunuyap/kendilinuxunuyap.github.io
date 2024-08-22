@@ -23,24 +23,14 @@ Xorg'u elle başlatmak için terminalde aşağıdaki komutu kullanabilirsiniz:
 
 .. code-block:: shell
 	
-	startx
+	export DISPLAY=:0
+	Xorg:0
 
 Bu komut, varsayılan kullanıcı arayüzünü başlatacaktır. Eğer belirli bir pencere yöneticisi veya masaüstü ortamı ile başlatmak istiyorsanız, ~/.xinitrc dosyasını düzenlemeniz gerekebilir. Örneğin, openbox kullanmak istiyorsanız, dosyanın içeriği şöyle olmalıdır:
 
 .. code-block:: shell
 
 	exec openbox-session
-
-Hata Ayıklama
--------------
-
-Eğer Xorg başlatılamıyorsa, hata ayıklamak için aşağıdaki komutu kullanarak log dosyalarını kontrol edebilirsiniz:
-
-.. code-block:: shell
-	
-	cat /var/log/Xorg.0.log
-
-Bu dosya, Xorg'un başlatılması sırasında oluşan hataları ve uyarıları içerecektir. Hataları inceleyerek sorunu çözmeye çalışabilirsiniz.
 
 Xorg'u Durdurma
 ---------------
