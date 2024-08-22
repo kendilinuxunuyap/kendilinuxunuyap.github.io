@@ -16,6 +16,26 @@ Bu komut, xorg.conf.new adında bir dosya oluşturacaktır. Bu dosyayı /etc/X11
 	
 	sudo cp ~/xorg.conf.new /etc/X11/xorg.conf
 
+Xwrapper.config
+...............
+
+.. code-block:: shell
+	
+	echo needs_root_rights=yes>/etc/X11/Xwrapper.config
+	echo allowed_users=anybody>>/etc/X11/Xwrapper.config
+
+Kullanınıcı Ayarı
+.................
+ 
+Kullanıcının tty ve wheel grubunda olması lazım ayrıca **/dev/tty*** dosyalarının grub ve izinleri ayarlanmalıdır. 
+.. code-block:: shell
+	
+	chmod 620 /dev/tty*
+	chgrp tty /dev/tty*
+	usermod -a -G tty by
+	addgroup wheel
+	usermod -a -G wheel by
+
 Xorg'u Elle Başlatma
 --------------------
 
@@ -25,6 +45,12 @@ Xorg'u elle başlatmak için terminalde aşağıdaki komutu kullanabilirsiniz:
 	
 	export DISPLAY=:0
 	Xorg:0
+	
+Bu şekilde çalıştırmak yerine;
+
+.. code-block:: shell
+	
+		startx
 
 Bu komut, varsayılan kullanıcı arayüzünü başlatacaktır. Eğer belirli bir pencere yöneticisi veya masaüstü ortamı ile başlatmak istiyorsanız, ~/.xinitrc dosyasını düzenlemeniz gerekebilir. Örneğin, openbox kullanmak istiyorsanız, dosyanın içeriği şöyle olmalıdır:
 

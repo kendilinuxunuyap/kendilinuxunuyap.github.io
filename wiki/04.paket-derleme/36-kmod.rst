@@ -6,6 +6,10 @@ Bash, Linux ve diğer Unix tabanlı işletim sistemlerinde kullanılan bir kabuk
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+- **sudo apt install libkmod-dev** 
+komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash

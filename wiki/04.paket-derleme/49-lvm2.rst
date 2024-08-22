@@ -37,7 +37,8 @@ Derleme
 	}
 
 	setup(){
-		$SOURCEDIR/configure --prefix=/usr \
+			cd $SOURCEDIR
+			./configure --prefix=/usr \
 			--libdir=/usr/lib64/  \
 			CONFIG_SHELL=/bin/bash \
 			--sbindir=/usr/bin \

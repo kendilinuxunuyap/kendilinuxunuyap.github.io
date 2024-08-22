@@ -38,10 +38,9 @@ Derleme
 
 	setup()
 	{
-		$SOURCEDIR/autoreconf -fvi
-		#NOCONFIGURE=1 ./autogen.sh
-
-		$SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+        ./autogen.sh
+       	./configure --prefix=/usr \
 			--libdir=/usr/lib64 \
 			--with-history \
 			--with-icu \

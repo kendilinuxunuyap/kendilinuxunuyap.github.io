@@ -55,8 +55,8 @@ Derleme
 	    for level in boot default nonetwork shutdown sysinit ; do
 	    mkdir -p ${DESTDIR}/etc/runlevels/$level
 	    done
-	    install  $SOURCEDIR/dhclient.init.d $DESTDIR/etc/init.d/dhclient
-	    install $SOURCEDIR/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
+	    install  $SOURCEDIR/files/dhclient.init.d $DESTDIR/etc/init.d/dhclient
+	    install $SOURCEDIR/files/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
