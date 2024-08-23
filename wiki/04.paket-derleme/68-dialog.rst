@@ -49,7 +49,6 @@ Derleme
 	}
 	build()
 	{
-		cd $BUILDDIR
 		make 
 	}
 	package()

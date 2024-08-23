@@ -1,7 +1,72 @@
 kernel
 ++++++
 
-Bash, Linux ve diğer Unix tabanlı işletim sistemlerinde kullanılan bir kabuk programlama dilidir. Kullanıcıların komutlar vererek işletim sistemini yönetmelerine olanak tanır. Bash, kullanıcıların işlemleri otomatikleştirmesine ve betik dosyaları oluşturmasına olanak tanır. Özellikle sistem yöneticileri ve geliştiriciler arasında yaygın olarak kullanılan güçlü bir araçtır.
+Kernel, bilgisayar sistemlerinde işletim sisteminin kalbini oluşturan bir yazılım katmanıdır. Donanım kaynaklarını yönetir, sistem çağrılarını işler ve uygulama yazılımlarının donanım ile etkileşimini sağlar. Linux işletim sisteminde, kernel, çoklu görev yönetimi, bellek yönetimi, dosya sistemi erişimi ve ağ iletişimi gibi kritik işlevleri yerine getirir.
+
+Aşağıda nasıl derlendiği detaylıca anlatılmıştır. Derleme işlemi zaman ve tecrübe gerektirdiği için hazır derlenmiş olanı kullanacağız. Aslında debian, arch vb. dağıtımların kernelini derlemeden kullanabiliriz. Bir uyumsuzluk yaratmayacaktır. Bundan dolayı debian kernelini indirip kendi sistemimize yükleyen bir işlem yapacağız. Fakat derlemek isterseniz Derleme başlığı altın paylaşılan scripti kullanabilirsiniz. Debian kerneli için aşağıd scripti verilmiştir.
+
+Debian Kernel
+------------
+
+.. code-block:: shell
+	
+		#!/usr/bin/env bash
+	version="6.8.12"
+	name="linux-image"
+	depends=""
+	description="temel dağıtım kernel dosyası ve moduller"
+	source=""
+	groups="sys.base"
+	ROOTBUILDDIR="$HOME/distro/build"
+	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd)
+	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	initsetup(){
+		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		    cd $ROOTBUILDDIR #dizinine geçiyoruz
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		    dowloadfile=$(ls|head -1)
+		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		    director=$(find ./* -maxdepth 0 -type d)
+		    directorname=$(basename ${director})
+		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+	}
+
+	setup()
+	{
+	mkdir -p $SOURCEDIR
+
+		echo ""
+		# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/
+		cd $SOURCEDIR
+		wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/linux-image-6.10.6-amd64_6.10.6-1_amd64.deb
+		# ar x indirilen dosya
+		ar x image.deb
+		# tar -xf data.tar.xz
+		tar -xf data.tar.xz
+		# find ./ -iname "*" -exec unxz {} \; komutuyla xz açılır
+	}
+	build()
+	{
+		echo ""
+	}
+	package()
+	{
+		cd $SOURCEDIR
+		cp -prfv boot  ${DESTDIR}/
+		cp -prfv lib  ${DESTDIR}/
+		find ${DESTDIR}/ -iname "*" -exec unxz {} \;
+	}
+	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 Derleme
 --------

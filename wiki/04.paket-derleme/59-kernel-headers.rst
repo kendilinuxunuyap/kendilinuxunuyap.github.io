@@ -2,6 +2,8 @@ kernel-headers
 ++++++++++++++
 
 Kernel-headers paketi, Linux çekirdeği ile kullanıcı alanı uygulamaları arasında bir köprü işlevi gören başlık dosyalarını barındırır. Bu dosyalar, sistem programcılarının ve geliştiricilerin, çekirdek işlevlerine erişim sağlamak için gerekli olan API'leri ve veri yapılarını tanımlar. Özellikle, sürücü geliştirme ve sistem yazılımları için kritik öneme sahiptir.
+Kernel headers debian kernel kullanmadığınız zaman derleyiniz.
+
 
 Derleme
 --------

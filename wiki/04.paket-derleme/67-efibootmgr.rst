@@ -8,6 +8,7 @@ Derleme
 
 Debian ortamında bu paketin derlenmesi için;
 - **sudo apt install libefiboot-dev** 
+- **sudo cp -prfv /usr/include/efivar /usr/include/**
 komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell

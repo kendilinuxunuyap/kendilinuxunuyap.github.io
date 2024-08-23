@@ -10,6 +10,10 @@ Derleme
 Debian ortamında bu paketin derlenmesi için;
 - **sudo apt install libreadline-dev** 
 - **sudo apt install libcap-dev**
+- sudo cp /sbin/capsh /bin/
+- sudo cp /sbin/getcap /bin/
+- sudo cp /sbin/getpcaps /bin/
+- sudo cp /sbin/setcap /bin/
 
 komutuyla paketin kurulması gerekmektedir.
 

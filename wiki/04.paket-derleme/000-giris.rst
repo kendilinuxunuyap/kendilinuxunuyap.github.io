@@ -118,6 +118,7 @@ Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
 - sudo apt-get install meson
 - sudo apt-get install cmake
 - sudo apt-get install ninja
+- sudo apt-get install pkgconf
 
 
 

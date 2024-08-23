@@ -46,7 +46,7 @@ Derleme
 	}
 	package()
 	{
-		make prefix=/ install DESTDIR=$DESTDIR
+		make prefix=/usr install DESTDIR=$DESTDIR
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
