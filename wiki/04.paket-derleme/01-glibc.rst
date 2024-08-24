@@ -10,10 +10,12 @@ Derleme
 -------
 
 .. code-block:: shell
-
-	mkdir -p  /$HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf /$HOME/distro/build/* #içeriği temizleniyor
-	cd /$HOME/distro/build #dizinine geçiyoruz
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	mkdir -p  /home/$user/distro/build #derleme dizini yoksa oluşturuluyor
+	rm -rf /home/$user/distro/build/* #içeriği temizleniyor
+	cd /home/$user/distro/build #dizinine geçiyoruz
 	wget https://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz # glibc kaynak kodunu indiriyoruz.
 	tar -xvf glibc-2.38.tar.gz # glibc kaynak kodunu açıyoruz.
 	cd glibc-2.38
@@ -25,7 +27,7 @@ Yükleme
 
 .. code-block:: shell
 
-	make install DESTDIR=$HOME/distro/rootfs # Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.
+	make install DESTDIR=/home/$user/distro/rootfs # Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.
 
 
  
@@ -47,12 +49,16 @@ Debian ortamında bu paketin derlenmesi için;
 
 	groups="sys.base"
 	export CC="gcc"
-	export CXX="g++",
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	export CXX="g++"
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -136,20 +142,20 @@ Debian ortamında bu paketin derlenmesi için;
 		        # fix ldd shebang
 		        sed -i "s|#!/bin/bash|#!/bin/sh|g" ${DESTDIR}/usr/bin/ldd
 
-	   cd ${DESTDIR}/lib64/
-	   mkdir -p x86_64-linux-gnu
-	   cd x86_64-linux-gnu
+	   		cd ${DESTDIR}/lib64/
+	  		 mkdir -p x86_64-linux-gnu
+	   		cd x86_64-linux-gnu
 		         while read -rd '' file; do
 		           ln -s $file $(basename "$file")
-	   done< <(find "../"  -maxdepth 1 -type f -iname "*" -print0)
-
-
+	   		done< <(find "../"  -maxdepth 1 -type f -iname "*" -print0)
+			${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc/files.tar>`_
@@ -230,40 +236,9 @@ Hata Çözümü
 
 **Merhaba Dünya** mesajını gördüğümüzde glibc kütüphanemizin  ve merhaba çalışabilir dosyamızın çalıştığını anlıyoruz. 
 Bu aşamadan sonra **Temel Paketler** listemizde bulunan paketleri kodlarından derleyerek **$HOME/distro/rootfs/** dağıtım dizinimize yüklemeliyiz.
-Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **glibc** temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır.
 
-**glibc** kütüphanemizi derlerken yukarıda yapılan işlem adımlarını ve hata çözümlemesini bir script dosyasında yapabiliriz. Bu dokümanda altta paylaşılan script dosyası yöntemi tercih edildi. Aslında yukarıdaki işlem adımlarının aynısını bir dosya içerisine eklemiş olduk. Tek tek çalıştırmak yerine bir script dosya içine eklemeyerek tek bir işlem adımıyla tüm aşamalar çalıştırılabilir.
+Derlemede **glibc** kütüphanesinin derlemesine benzer bir yol izlenecektir. **glibc** temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır. Diğer paketlerimizde de **glibc** için paylaşılan script dosyası gibi dosyalar hazırlayıp derlenecektir.
 
-.. code-block:: shell
-	
-	# tanımlamalar
-	version="2.38"
-	name="glibc"
-	
-	# derleme yerinin hazırlanması
-	mkdir -p  $HOME/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf $HOME/distro/build/* #içeriği temizleniyor
-	cd $HOME/distro/build #dizinine geçiyoruz
-	wget https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz
-	tar -xvf ${name}-${version}.tar.gz
-	cd ${name}-${version} # Kaynak kodun içine giriliyor
-	
-	# derleme öncesi paketin ayarlanması
-	./configure --prefix=/ --disable-werror
-	
-	# derleme
-	make 
-	
-	# derlenen paketin yüklenmesi ve ayarlamaların yapılması
-	make install DESTDIR=$HOME/distro/rootfs
-	cd $HOME/distro/rootfs/
-	ln -s lib lib64
-
-Diğer paketlerimizde de **glibc** için paylaşılan script dosyası gibi dosyalar hazırlayıp derlenecektir.
-Yukarıda paylaşılan **script** dosya tekrar düzenlenerek aşağıda son haline getirilecektir. Aşağıda paylaşılan **script** dosya üstteki script dosyadan bir farkı yok. Sadece fonksiyonel hale getirilerek daha anlaşılır ve kontrol edilebilir hale getiriyoruz. Son halinin şablon script dosyası ve ona uygun **glibc** scriptinini hazırlanmış hali aşağıda verilmiştir.
-
-
-	
 .. raw:: pdf
 
    PageBreak

@@ -15,11 +15,15 @@ Derleme
 	source=("https://www.libssh.org/files/0.10/libssh-${version}.tar.xz")
 	group="net.libs"
 	depends="openssl,zlib"
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -57,6 +61,7 @@ Derleme
 	package() {
 	    make -C $BUILDDIR install DESTDIR=$DESTDIR
 	    install $BUILDDIR/src/libssh.a ${DESTDIR}/usr/lib64/
+	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

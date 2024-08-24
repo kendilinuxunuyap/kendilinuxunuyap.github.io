@@ -16,11 +16,15 @@ Derleme
 	description="initramfs  generate sağlayan paket"
 	source="https://salsa.debian.org/kernel-team/initramfs-tools/-/archive/v$version/initramfs-tools-v$version.tar.gz"
 	groups="sys.fs"
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
 	initsetup(){
 		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -79,9 +83,8 @@ Derleme
 		    mkdir -p ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d
 		    install $SOURCEDIR/conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
 
-
 		    mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
-
+			${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
 	  }
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -138,27 +141,44 @@ Dosyaları alfabetik sırayla çalıştırdığı için **busybox** **zzz-busybo
 **initrd Oluşturma/Güncelleme**
 -------------------------------
 
-sistemin initrd.img dosyasının güncellenmesi için çalıştığınız sistemde  aşağıdaki komutla güncelleenbilir. 
+Sistemin initrd.img dosyasının güncellenmesi/oluşturulması için çalıştığınız sistemde  aşağıdaki komutlarla yapılabilir. 
 
 .. code-block:: shell
 
 	/usr/sbin/update-initramfs -u -k $(uname -r) #initrd günceller
 
-Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sisteme erişiliyorsa yukarıdaki komut yeterli olmayacaktır. chroot öncesinde sistemin **dev sys proc run** diziznlerinin  bağlanılması gerekmektedir. Dizindeki sistemimizin dizin ismi **taarget** olsun. Buna göre aşağıda sisteme yukarıdaki komutu çalıştırmadan önce çalıştırılması gereken komutlar aşağıda verilmiştir.
+Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sisteme erişiliyorsa yukarıdaki komut yeterli olmayacaktır. chroot öncesinde sistemin **dev sys proc run** dizinlerinin  bağlanılması gerekmektedir. Dizindeki sistemimizin dizin konumu **/$HOME/distro/rootfs** olsun. Buna göre aşağıda sisteme yukarıdaki komutu çalıştırmadan önce çalıştırılması gereken komutlar aşağıda verilmiştir. Dikkat edilmesi gereken en önemli noktalardan biriside bu komutlar **root** yetkisiyle çalıştırılmalıdır.
 
 .. code-block:: shell
 
-	$ mkdir -p /target/dev
-	$ mkdir -p /target/sys
-	$ mkdir -p /target/proc 
-	$ mkdir -p /target/run
-	$ mkdir -p /target/tmp
-	$ mount --bind /dev /target/dev
-	$ mount --bind /sys /target/sys
-	$ mount --bind /proc /target/proc
-	$ mount --bind /run /target/run
-	$ mount --bind /tmp /target/tmp
-	$ chroot /target
+	rootfs="$HOME/distro/rootfs"
+	distro="$HOME/distro"
+	mkdir -p $rootfs/dev
+	mkdir -p $rootfs/sys
+	mkdir -p $rootfs/proc 
+	mkdir -p $rootfs/run
+	mkdir -p $rootfs/tmp
+	mount --bind /dev $rootfs/dev
+	mount --bind /sys $rootfs/sys
+	mount --bind /proc $rootfs/proc
+	mount --bind /run$rootfs/run
+	mount --bind /tmp $rootfs/tmp
+	
+	### update-initrd
+	fname=$(basename $rootfs/boot/config*)
+	kversion=${fname:7}
+	mv $rootfs/boot/config* $rootfs/boot/config-$kversion
+	cp $rootfs/boot/config-$kversion $rootfs/etc/kernel-config
+	
+	chroot $rootfs update-initramfs -u -k $kversion
+	
+	umount -lf -R $rootfs/dev 2>/dev/null
+	umount -lf -R $rootfs/sys 2>/dev/null
+	umount -lf -R $rootfs/proc 2>/dev/null
+	umount -lf -R $rootfs/run 2>/dev/null
+	umount -lf -R $rootfs/tmp 2>/dev/null
+	#### Copy initramfs
+	cp -pf $rootfs/boot/initrd.img-* $distro/iso/boot/initrd.img
 	 
 Güncelleme ve oluşturma aşamasında **/usr/share/initramfs-tools/hooks/** konumundaki dosyarı çalıştırarak yeni initrd dosyasını oluşturacaktır.
 Oluşturma **/var/tmp** olacaktır. Ayrıca **/boot/config-6.6.0-amd64** gibi sistemde kullanılan kernel versiyonuyla config dosyası olmalıdır. Burada verilen **6.6.0-amd64** örnek amaçlı verilmiştir.

@@ -15,11 +15,15 @@ Derleme
 	description="şıkıştırma kütüphanesi"
 	source="https://sourceware.org/pub/bzip2/${name}-${version}.tar.gz"
 	groups="app.arch"
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
 	initsetup(){
 		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -67,6 +71,7 @@ Derleme
 
 		mkdir -p "$DESTDIR"/usr/lib64/pkgconfig/
 		install -Dm644 $SOURCEDIR/files/bzip2.pc -t "$DESTDIR"/usr/lib64/pkgconfig
+		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

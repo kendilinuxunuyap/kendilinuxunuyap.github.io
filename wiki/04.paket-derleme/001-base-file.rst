@@ -9,11 +9,13 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
 
 .. code-block:: shell
 
-	mkdir -p  $HOME/distro/build 	#Derleme dizini yoksa oluşturuluyor
-    mkdir -p  $HOME/distro/rootfs  	#Sistemin oluşturlacağı dizin yoksa oluşturuluyor
-    rm -rf /$HOME/distro/build/* #içeriği temizleniyor
-    cp -prfv files/* $HOME/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
-    cd $HOME/distro/build  #build geçiyoruz
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	# açık ekran tespit ediliyor
+	user=$(who | grep '('$display')' | awk '{print $1}')	#ekranı açan kullanıcı tespit ediliyor
+	mkdir -p  /home/$user/distro/build 	#Derleme dizini yoksa oluşturuluyor
+    mkdir -p   /home/$user/distro/rootfs  	#Sistemin oluşturlacağı dizin yoksa oluşturuluyor
+    rm -rf  /home/$user/distro/build/* #içeriği temizleniyor
+    cp -prfv files/*  /home/$user/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
+    cd  /home/$user/distro/build  #build geçiyoruz
 	
     mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
     var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
@@ -23,16 +25,16 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
     cd usr&&ln -s lib64 lib&&cd -
     cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
 
-    bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $HOME/distro/build/etc/shell"
-    bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $HOME/distro/build/etc/fstab"
-    bash -c "echo '127.0.0.1 basitdagitim' >> $HOME/distro/build/etc/hosts"
-    bash -c "echo 'basitdagitim' > $HOME/distro/build/etc/hostname"
-    bash -c "echo 'nameserver 8.8.8.8' > $HOME/distro/build/etc/resolv.conf"
+    bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >>  /home/$user/distro/build/etc/shell"
+    bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >>  /home/$user/distro/build/etc/fstab"
+    bash -c "echo '127.0.0.1 basitdagitim' >>  /home/$user/distro/build/etc/hosts"
+    bash -c "echo 'basitdagitim' >  /home/$user/distro/build/etc/hostname"
+    bash -c "echo 'nameserver 8.8.8.8' >  /home/$user/distro/build/etc/resolv.conf"
 
-    echo root:x:0:0:root:/root:/bin/sh > $HOME/distro/build/etc/passwd
-    chmod 755 $HOME/distro/build/etc/passwd
+    echo root:x:0:0:root:/root:/bin/sh >  /home/$user/distro/build/etc/passwd
+    chmod 755  /home/$user/distro/build/etc/passwd
 
-    cp -prfv $HOME/distro/build/*  $HOME/distro/rootfs/
+    cp -prfv  /home/$user/distro/build/*   /home/$user/distro/rootfs/
 	
 Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için aşağıda verilen script şablon yapısını kullanacağız.
 
@@ -48,11 +50,14 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	description=""
 	source=""
 	groups=""
-	ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	# açık ekran tespit ediliyor
+	user=$(who | grep '('$display')' | awk '{print $1}')	#ekranı açan kullanıcı tespit ediliyor
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -83,11 +88,11 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 
 Şablon içinde kullanılan bazı sabit bilgiler var. Bular;
 
-- ROOTBUILDDIR="$HOME/distro/build": Derleme konumu ev dizininde bulunan **distro/build** dizini.
-- BUILDDIR="$HOME/distro/build/build-${name}-${version}": Derleme yapılan paketin derleme konumu.
-- DESTDIR="$HOME/distro/rootfs": Derlenmiş paketin yükleneceği sistem konumu dizini.
+- ROOTBUILDDIR=" /home/$user/distro/build": Derleme konumu ev dizininde bulunan **distro/build** dizini.
+- BUILDDIR=" /home/$user/distro/build/build-${name}-${version}": Derleme yapılan paketin derleme konumu.
+- DESTDIR=" /home/$user/distro/rootfs": Derlenmiş paketin yükleneceği sistem konumu dizini.
 - PACKAGEDIR=$(pwd) : Derleme talimatının bulunduğu(build dosyası) konum.
-- SOURCEDIR="$HOME/distro/build/${name}-${version}": Derlenecek paketin kaynak kodlarının olduğu konum.
+- SOURCEDIR=" /home/$user/distro/build/${name}-${version}": Derlenecek paketin kaynak kodlarının olduğu konum.
 
 Derleme konumunu uzun uzun yazmak yerine sadece $ROOTBUILDDIR ifadesi kullanılıyor. Aslında bu işleme takma ad(alias) denir. Mesela kaynak kodların olduğu konumda bir şeyler yapmak istersek $SOURCEDIR ifadesinin kullanmamız yeterli olacaktır. Bu takma adlar tüm paketlerde geçerli olacak ifadelerdir.
 
@@ -111,11 +116,15 @@ Yapıyı Oluşturan Script
 	description="sistemin temel yapısı"
 	source=""
 	groups="sys.base"
-	ROOTBUILDDIR="$HOME/distro/build" # Derleme konumu
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="$HOME/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	
 	initsetup(){
 			mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 			rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
