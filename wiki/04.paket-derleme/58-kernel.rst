@@ -11,7 +11,7 @@ Debian Kernel
 .. code-block:: shell
 	
 		#!/usr/bin/env bash
-	version="6.8.12"
+	version="6.10.6"
 	name="linux-image"
 	depends=""
 	description="temel dağıtım kernel dosyası ve moduller"

@@ -154,6 +154,7 @@ Artık sistemi açabilen ve tty açıp bize sunan bir yapı oluşturduk. Çalı�
 	### system chroot  bind/mount
 	for dir in dev dev/pts proc sys; do mount -o bind /$dir $rootfs/$dir; done
 	
+	chroot $rootfs echo -e "1\n1\n"|chroot $rootfs passwd root
 	chroot $rootfs useradd live -m -s /bin/sh  -d /home/live
 	chroot $rootfs echo -e "live\nlive\n"|chroot $rootfs passwd live
 
