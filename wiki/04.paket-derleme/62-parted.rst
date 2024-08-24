@@ -36,7 +36,6 @@ komutuyla paketin kurulması gerekmektedir.
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
 		    wget ${source}
 		    for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    wget ${source}
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
