@@ -37,7 +37,6 @@ Derleme
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
-		    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
 	}
 
 	setup()
