@@ -41,7 +41,8 @@ Derleme
 
 	setup()
 	{
-		$SOURCEDIR/configure --prefix=/usr \
+		cd $SOURCEDIR
+        ./configure --prefix=/usr \
 			--libdir=/usr/lib64 \
 			--bindir=/bin \
 			--with-curses \

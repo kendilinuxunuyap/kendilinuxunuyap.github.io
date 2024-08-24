@@ -43,6 +43,7 @@ Derleme
 	setup()
 	{
 		cd $SOURCEDIR
+		export FORCE_UNSAFE_CONFIGURE=1
 		./configure --prefix=/usr \
 			--libdir=/usr/lib64 \
 			--sbindir=/usr/bin \

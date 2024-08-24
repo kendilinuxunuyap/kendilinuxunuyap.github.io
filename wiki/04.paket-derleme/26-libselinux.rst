@@ -14,7 +14,7 @@ Debian ortamında bu paketin derlenmesi için;
 komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
-	
+
 	#!/usr/bin/env bash
 	version="3.6"
 	name="libselinux"
@@ -22,9 +22,9 @@ komutuyla paketin kurulması gerekmektedir.
 	description="lib"
 	source="https://github.com/SELinuxProject/selinux/releases/download/3.6/${name}-${version}.tar.gz"
 	groups="app.arch"
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"      #Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')    #Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
 	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
@@ -32,42 +32,42 @@ komutuyla paketin kurulması gerekmektedir.
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        dowloadfile=$(ls|head -1)
+		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		        director=$(find ./* -maxdepth 0 -type d)
+		        directorname=$(basename ${director})
+		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-	      echo ""
+		  echo ""
 	}
 	build()
 	{
-		cp -prvf $PACKAGEDIR/files/lfs64.patch /tmp/bps/build/
-		cd $SOURCEDIR
-		patch -Np1 -i ../lfs64.patch 
-		make FTS_LDLIBS="-lfts"
+		    cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
+		    cd $SOURCEDIR
+		    patch -Np1 -i files/lfs64.patch
+		    make FTS_LDLIBS="-lfts"
 	}
 	package()
 	{
-		cd $SOURCEDIR
-		make install DESTDIR=$DESTDIR
-		#mv  ${DESTDIR}/lib  ${DESTDIR}/lib64
-		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+		    cd $SOURCEDIR
+		    make install DESTDIR=$DESTDIR
+		    #mv  ${DESTDIR}/lib  ${DESTDIR}/lib64
+		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
-	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.	
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/libselinux/files.tar>`_
 

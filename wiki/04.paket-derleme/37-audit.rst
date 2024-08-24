@@ -15,9 +15,9 @@ Derleme
 	description="servis yöneticisi"
 	source="https://github.com/linux-audit/audit-userspace/archive/refs/tags/v$version.tar.gz"
 	groups="sys.process"
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"      #Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')    #Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
 	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
@@ -25,56 +25,56 @@ Derleme
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        dowloadfile=$(ls|head -1)
+		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		        director=$(find ./* -maxdepth 0 -type d)
+		        directorname=$(basename ${director})
+		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
 	setup()
 	{
-		cp $PACKAGEDIR/files/auditd.initd $SOURCEDIR/auditd.initd
-		cp $PACKAGEDIR/files/auditd.confd $SOURCEDIR/auditd.confd
-		
+		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
+
 		cd $SOURCEDIR
 		./autogen.sh
-	    ./configure --prefix=/usr \
-		--sysconfdir=/etc \
-		--libdir=/usr/lib64 \
-		--disable-zos-remote \
-		--disable-listener \
-		--disable-systemd \
-		--disable-gssapi-krb5 \
-		--enable-shared=audit \
-		    --with-arm \
-		    --with-aarch64\
-		    --without-python \
-		    --without-python3 \
-		    --with-libcap-ng=no 
+		./configure --prefix=/usr \
+		    --sysconfdir=/etc \
+		    --libdir=/usr/lib64 \
+		    --disable-zos-remote \
+		    --disable-listener \
+		    --disable-systemd \
+		    --disable-gssapi-krb5 \
+		    --enable-shared=audit \
+			--with-arm \
+			--with-aarch64\
+			--without-python \
+			--without-python3 \
+			--with-libcap-ng=no
 	}
 	build()
 	{
-		make
+		    make
 	}
 	package()
 	{
 		make install DESTDIR=$DESTDIR
-		install -Dm755 $SOURCEDIR/auditd.initd "$DESTDIR"/etc/init.d/auditd
-	    install -Dm755 $SOURCEDIR/auditd.confd "$DESTDIR"/etc/conf.d/auditd
-	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+		install -Dm755 files/auditd.initd "$DESTDIR"/etc/init.d/auditd
+		install -Dm755 files/auditd.confd "$DESTDIR"/etc/conf.d/auditd
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/audit/files.tar>`_
 
