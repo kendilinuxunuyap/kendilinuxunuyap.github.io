@@ -61,7 +61,7 @@ Derleme
 	package() {
 	    make -C $BUILDDIR install DESTDIR=$DESTDIR
 	    install $BUILDDIR/src/libssh.a ${DESTDIR}/usr/lib64/
-	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -75,7 +75,7 @@ Paket adında(libssh) istediğiniz bir konumda bir dizin oluşturun ve dizin iç
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

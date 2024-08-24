@@ -41,7 +41,6 @@ Derleme
 
 	setup()
 	{
-		echo "test"
 		cd $SOURCEDIR
 	}
 	build()
@@ -52,7 +51,7 @@ Derleme
 	{
 		make install DESTDIR=$DESTDIR
 		sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $DESTDIR/usr/share/initramfs-tools/hooks/live
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -66,7 +65,7 @@ Paket adında(live-boot) istediğiniz bir konumda bir dizin oluşturun ve dizin 
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

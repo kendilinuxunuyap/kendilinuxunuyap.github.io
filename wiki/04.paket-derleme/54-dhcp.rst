@@ -61,7 +61,7 @@ Derleme
 	    done
 	    install  $SOURCEDIR/files/dhclient.init.d $DESTDIR/etc/init.d/dhclient
 	    install $SOURCEDIR/files/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
-	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -79,7 +79,7 @@ Paket adında(dhcp) istediğiniz bir konumda bir dizin oluşturun ve dizin için
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

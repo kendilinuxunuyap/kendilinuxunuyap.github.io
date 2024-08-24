@@ -170,7 +170,7 @@ Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
 
 
 Paket Derleme Yöntemi
@@ -188,7 +188,7 @@ Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kay
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
 
 .. raw:: pdf
 

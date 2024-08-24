@@ -52,7 +52,7 @@ Derleme
 	{
 		make install DESTDIR=$DESTDIR
 		rm -rf $DESTDIR/usr/share/man/man8/fsck.8
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -66,7 +66,7 @@ Paket adında(e2fsprogs) istediğiniz bir konumda bir dizin oluşturun ve dizin 
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

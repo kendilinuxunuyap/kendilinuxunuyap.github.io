@@ -148,7 +148,7 @@ Debian ortamında bu paketin derlenmesi için;
 		         while read -rd '' file; do
 		           ln -s $file $(basename "$file")
 	   		done< <(find "../"  -maxdepth 1 -type f -iname "*" -print0)
-			${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+			${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -167,7 +167,7 @@ Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
 
 
 

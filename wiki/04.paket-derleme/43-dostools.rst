@@ -54,7 +54,7 @@ Derleme
 	package()
 	{
 		make install DESTDIR=$DESTDIR
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -68,7 +68,7 @@ Paket adında(dostools) istediğiniz bir konumda bir dizin oluşturun ve dizin i
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

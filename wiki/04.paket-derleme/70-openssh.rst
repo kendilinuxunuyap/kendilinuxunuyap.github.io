@@ -8,6 +8,12 @@ OpenSSH, genellikle ssh, scp, sftp ve sshd gibi araçları içerir.
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+
+- **sudo apt install libcrypt-dev** 
+
+komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -65,7 +71,7 @@ Derleme
 		mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
 		install -m755 -D $SOURCEDIR/files/sshd.initd "$DESTDIR"/etc/init.d/sshd
 		install -m755 -D $SOURCEDIR/files/sshd.confd "$DESTDIR"/etc/conf.d/sshd
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -80,8 +86,7 @@ Paket adında(openssh) istediğiniz bir konumda bir dizin oluşturun ve dizin i�
 
 .. code-block:: shell
 	
-	chmod 755 build
-	./build
+	sudo ./build
 
 Paketler derlendikten sonra files dizini içindeki postinstall scriptinin çalıştırılması gerekmektedir.
 Bu dosya "$HOME/distro/rootfs" konumunda chroot ile çalıştırılmalıdır.

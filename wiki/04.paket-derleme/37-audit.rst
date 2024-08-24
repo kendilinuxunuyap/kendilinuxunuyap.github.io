@@ -69,7 +69,7 @@ Derleme
 		make install DESTDIR=$DESTDIR
 		install -Dm755 $SOURCEDIR/auditd.initd "$DESTDIR"/etc/init.d/auditd
 	    install -Dm755 $SOURCEDIR/auditd.confd "$DESTDIR"/etc/conf.d/auditd
-	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -87,7 +87,7 @@ Paket adında(audit) istediğiniz bir konumda bir dizin oluşturun ve dizin içi
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

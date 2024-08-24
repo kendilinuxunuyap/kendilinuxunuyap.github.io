@@ -58,7 +58,7 @@ Derleme
 	  	# hostname is provided by inetutils
 	  	rm "${DESTDIR}"/usr/bin/{hostname,dnsdomainname,domainname}
 	  	rm -r "${DESTDIR}"/usr/share/man/man1
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -72,7 +72,7 @@ Paket adında(net-tools) istediğiniz bir konumda bir dizin oluşturun ve dizin 
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

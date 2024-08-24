@@ -120,7 +120,7 @@ Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
 - sudo apt-get install ninja
 - sudo apt-get install pkgconf
 
-
+Paketlerin derlenmesiniz **root** yetkisiyle yapınız.
 
 
 .. raw:: pdf

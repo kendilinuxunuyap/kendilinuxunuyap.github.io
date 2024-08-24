@@ -84,7 +84,7 @@ Derleme
 		    install $SOURCEDIR/conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
 
 		    mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
-			${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+			${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	  }
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -102,7 +102,7 @@ Paket adında(initramfs-tools) istediğiniz bir konumda bir dizin oluşturun ve 
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
 
 **/etc/initramfs-tools/modules**
 ---------------------------------

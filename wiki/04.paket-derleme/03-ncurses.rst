@@ -95,7 +95,7 @@ Debian ortamında bu paketin derlenmesi için;
 	    	for lib in libncursesw libncurses libtinfo libpanelw libformw libmenuw ; do
 		ln -sv ${lib}.so.${so_ver} ${lib}.so.5
 	    	done
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -109,7 +109,7 @@ Paket adında(ncurses) istediğiniz bir konumda bir dizin oluşturun ve dizin i�
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

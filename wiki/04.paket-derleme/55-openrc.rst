@@ -102,7 +102,7 @@ Derleme
 	    ln -s agetty agetty.tty1
 	    install ${DESTDIR}/etc/init.d/agetty.tty1 ${DESTDIR}/etc/runlevels/default/agetty.tty1
 	    #mv  ${DESTDIR}/lib  ${DESTDIR}/lib64
-	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -121,7 +121,7 @@ Paket adında(openrc) istediğiniz bir konumda bir dizin oluşturun ve dizin iç
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
 
 Çalıştırılması
 --------------

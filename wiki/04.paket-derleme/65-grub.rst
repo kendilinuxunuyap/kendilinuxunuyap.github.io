@@ -122,7 +122,7 @@ Derleme
 		echo "#!/bin/sh" > $DESTDIR/usr/bin/update-grub
 		echo "grub-mkconfig -o /boot/grub/grub.cfg" >> $DESTDIR/usr/bin/update-grub
 		chmod 755 $DESTDIR/usr/bin/update-grub
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -135,7 +135,7 @@ Paket adında(grub) istediğiniz bir konumda bir dizin oluşturun ve dizin için
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

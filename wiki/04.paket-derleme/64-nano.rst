@@ -56,6 +56,7 @@ Derleme
 		cd $DESTDIR
 		mkdir -p $DESTDIR/lib
 		echo "INPUT(-lncursesw)" > $DESTDIR/lib/libncurses.so
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -69,7 +70,7 @@ Paket adında(nano) istediğiniz bir konumda bir dizin oluşturun ve dizin için
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

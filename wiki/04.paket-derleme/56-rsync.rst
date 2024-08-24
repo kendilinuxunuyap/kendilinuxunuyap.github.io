@@ -58,6 +58,7 @@ Derleme
 	package()
 	{
 		make install DESTDIR=$DESTDIR
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -72,7 +73,7 @@ Paket adında(rsync) istediğiniz bir konumda bir dizin oluşturun ve dizin içi
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

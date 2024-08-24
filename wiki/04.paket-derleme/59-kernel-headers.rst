@@ -163,7 +163,7 @@ Paket adında(kernel-headers) istediğiniz bir konumda bir dizin oluşturun ve d
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

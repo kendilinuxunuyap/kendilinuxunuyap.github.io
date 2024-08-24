@@ -62,7 +62,7 @@ Debian ortamında bu paketin derlenmesi için;
 		mkdir -p $DESTDIR/lib
 		mkdir -p $DESTDIR/lib/pkgconfig
 		cp -prfv $DESTDIR/usr/lib/x86_64-linux-gnu/* $DESTDIR/lib/
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -76,7 +76,7 @@ Paket adında(brotli) istediğiniz bir konumda bir dizin oluşturun ve dizin iç
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

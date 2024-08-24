@@ -81,7 +81,7 @@ Derleme
 			sbindir=bin \
 			install
 		#mv $DESTDIR/lib64 $DESTDIR/usr/lib64
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -96,7 +96,7 @@ Paket adında(libcap) istediğiniz bir konumda bir dizin oluşturun ve dizin iç
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

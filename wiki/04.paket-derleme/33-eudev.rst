@@ -94,7 +94,7 @@ komutuyla paketin kurulması gerekmektedir.
 	    cd ${DESTDIR}/usr/lib64/pkgconfig/
 	    ln -s ../../../lib64/pkgconfig/libudev.pc libudev.pc
 	    #ln -sv libudev.pc "$DESTDIR/usr/lib64/pkgconfig/libudev.pc"
-	    ${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -112,7 +112,7 @@ Paket adında(eudev) istediğiniz bir konumda bir dizin oluşturun ve dizin içi
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

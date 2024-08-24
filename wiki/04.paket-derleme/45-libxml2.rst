@@ -63,7 +63,7 @@ Derleme
 		mkdir -p $DESTDIR/usr/lib64/python3.11
 		mv $DESTDIR/usr/lib/* $DESTDIR/usr/lib64/
 		rm -rf $DESTDIR/usr/lib
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -77,7 +77,7 @@ Paket adında(libxml2) istediğiniz bir konumda bir dizin oluşturun ve dizin i�
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 

@@ -58,7 +58,7 @@ komutuyla paketin kurulması gerekmektedir.
 
 	package(){
 		EFIDIR="/boot/efi" sbindir=/usr/bin make DESTDIR="$DESTDIR" install
-		${DESTDIR/sbin/ldconfig -r ${DESTDIR		# sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
@@ -73,7 +73,7 @@ Paket adında(efibootmgr) istediğiniz bir konumda bir dizin oluşturun ve dizin
 .. code-block:: shell
 	
 	chmod 755 build
-	./build
+	sudo ./build
   
 .. raw:: pdf
 
