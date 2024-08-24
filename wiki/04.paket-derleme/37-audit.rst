@@ -6,6 +6,12 @@ Audit paketi, Linux sistemlerinde güvenlik denetimlerini gerçekleştirmek içi
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+
+- **sudo apt install libaudit-dev**
+
+komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
