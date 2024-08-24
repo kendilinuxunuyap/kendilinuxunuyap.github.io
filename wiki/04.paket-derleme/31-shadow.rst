@@ -17,10 +17,7 @@ Debian ortamında bu paketin derlenmesi için;
 - sudo cp /sbin/getpcaps /bin/
 - sudo cp /sbin/setcap /bin/
 
-komutuyla paketin kurulması gerekmektedir.
-
-shadow derlerken **setcap** hatasıyla debian ortamında karşılaşabilirsiniz. Bunu çözmek için shadow paketini sudo ile derleyebilirsiniz. Bu şekilde sistem için tehlikeli olabilir. Bunun yerine **sudo cp /sbin/setcap /bin/** komutuyla kopyalayıp derleyebilirsiniz.
-
+komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 
 .. code-block:: shell
 	
