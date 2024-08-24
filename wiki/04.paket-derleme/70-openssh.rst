@@ -70,8 +70,20 @@ komutuyla paketin kurulması gerekmektedir.
 		make install DESTDIR=$DESTDIR
 		mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
 		install -m755 -D $SOURCEDIR/files/sshd.initd "$DESTDIR"/etc/init.d/sshd
+		install $SOURCEDIR/files/sshd.initd  ${DESTDIR}/etc/runlevels/default/sshd
 		install -m755 -D $SOURCEDIR/files/sshd.confd "$DESTDIR"/etc/conf.d/sshd
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+		sed -i "/nobody/d"  ${DESTDIR}/etc/group
+		sed -i "/nobody/d"  ${DESTDIR}/etc/passwd
+		mkdir -p  ${DESTDIR}/var/empty
+		chown root:root  ${DESTDIR}/var/empty
+		chmod 755  ${DESTDIR}/var/empty
+		echo "nobody:!:65534:" >>  ${DESTDIR}/etc/group
+		echo "nobody:!:65534:65534::/var/empty:/usr/sbin/nologin" >>  ${DESTDIR}/etc/passwd
+
+
+		sed -i "/PermitRootLogin/d" /etc/ssh/sshd_config
+		echo -e "\nPermitRootLogin yes">> /etc/ssh/sshd_config
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
