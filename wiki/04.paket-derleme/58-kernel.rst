@@ -63,7 +63,7 @@ Debian Kernel
 	{
 		cd $SOURCEDIR
 		cp -prfv boot  ${DESTDIR}/
-		cp -prfv lib  ${DESTDIR}/
+		cp -prfv usr/lib/*  ${DESTDIR}/lib/
 		find ${DESTDIR}/ -iname "*" -exec unxz {} \;
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
