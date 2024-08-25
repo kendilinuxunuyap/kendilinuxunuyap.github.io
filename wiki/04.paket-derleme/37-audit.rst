@@ -1,16 +1,12 @@
 audit
 +++++
 
-Audit paketi, Linux sistemlerinde güvenlik denetimlerini gerçekleştirmek için tasarlanmış bir yazılımdır. Bu paket, sistemdeki önemli olayları, kullanıcı aktivitelerini ve dosya erişimlerini kaydederek, sistem yöneticilerine kapsamlı bir denetim ve izleme imkanı sunar. Audit, özellikle güvenlik ihlallerinin tespit edilmesi ve sistemin uyumluluk gereksinimlerini karşılaması açısından kritik bir rol oynar.
+Audit paketi, Linux sistemlerinde güvenlik denetimlerini gerçekleştirmek için tasarlanmış bir yazılımdır. Bu paket, sistemdeki önemli olayları, kullanıcı aktivitelerini ve dosya erişimlerini kaydederek, sistem yöneticilerine kapsamlı bir denetim ve izleme imkanı sunar. 
 
 Derleme
 --------
 
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libaudit-dev**
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libaudit-dev** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
@@ -29,7 +25,6 @@ komutuyla paketin kurulması gerekmektedir.
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -44,7 +39,6 @@ komutuyla paketin kurulması gerekmektedir.
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
 		./autogen.sh

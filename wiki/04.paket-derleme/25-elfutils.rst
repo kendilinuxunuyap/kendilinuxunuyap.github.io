@@ -42,15 +42,8 @@ Derleme
 	}
 	setup(){
 	    ./configure --prefix=/usr --libdir=/usr/lib64 \
-			--enable-shared \
-			--disable-debuginfod \
-			--enable-libdebuginfod=dummy \
-			--disable-thread-safety \
-			--disable-valgrind \
-			--disable-nls \
-			--program-prefix="eu-" \
-			--with-bzlib \
-			--with-lzma 
+			--enable-shared --disable-debuginfod --enable-libdebuginfod=dummy \
+			--disable-thread-safety --disable-valgrind --disable-nls --program-prefix="eu-" --with-bzlib --with-lzma 
 	}
 	build(){
 	    make

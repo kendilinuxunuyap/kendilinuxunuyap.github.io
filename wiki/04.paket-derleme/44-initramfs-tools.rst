@@ -2,7 +2,6 @@ initramfs-tools
 +++++++++++++++
 
 initramfs-tools, Debian tabanlı sistemlerde kullanılan bir araçtır ve initramfs (initial RAM file system) oluşturmak için kullanılır. Bu araç, sistem açılırken kullanılan geçici bir dosya sistemini oluşturur ve gerekli modülleri yükler. initramfs için farklı araçlarda kullanılabilir.
-Kullanıcı isterse kendi scriptinide kullanabilir. Debian dışında **dracut** aracıda initramfs oluşturmak ve güncellemek için kullanılabilir.
 
 Derleme
 --------
@@ -24,13 +23,12 @@ Derleme
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		        cd $ROOTBUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        wget ${source}
+		        for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		        dowloadfile=$(ls|head -1)
 		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -39,7 +37,6 @@ Derleme
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup()	{
 		    cp -prfv $PACKAGEDIR/files/* $SOURCEDIR/
 		    patch -Np1 < $SOURCEDIR/patches/remove-zstd.patch
@@ -47,7 +44,7 @@ Derleme
 		    patch -Np1 < $SOURCEDIR/patches/non-debian.patch
 	}
 	build()	{
-		    echo ""
+	echo ""
 	}
 	package()	{
 		    cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
@@ -65,15 +62,12 @@ Derleme
 		    # install sysconf
 		    mkdir -p ${DESTDIR}/etc/sysconf.d
 		    install $SOURCEDIR/initramfs-tools.sysconf ${DESTDIR}/etc/sysconf.d/initramfs-tools
-
-
 		    install $SOURCEDIR/zzz-busybox ${DESTDIR}/usr/share/initramfs-tools/hooks/
 		    install $SOURCEDIR/modules ${DESTDIR}/usr/share/initramfs-tools/
 		    install $SOURCEDIR/modules ${DESTDIR}/etc/initramfs-tools/
 
 		    mkdir -p ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d
 		    install $SOURCEDIR/conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
-
 		    mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
 			${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	  }

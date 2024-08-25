@@ -1,7 +1,7 @@
 dhcp
 ++++
 
-DHCP, dinamik IP adresi atama sürecini otomatikleştirerek ağ yöneticilerinin iş yükünü azaltır. Bu protokol, bir istemci cihazın ağa bağlandığında, DHCP sunucusuna bir istek göndererek IP adresi talep etmesiyle başlar. Sunucu, istemciye uygun bir IP adresi, alt ağ maskesi, varsayılan ağ geçidi ve DNS sunucusu gibi bilgileri iletir.
+Bu protokol, bir istemci cihazın ağa bağlandığında, DHCP sunucusuna bir istek göndererek IP adresi talep etmesiyle başlar. Sunucu, istemciye uygun bir IP adresi, alt ağ maskesi, varsayılan ağ geçidi ve DNS sunucusu gibi bilgileri iletir.
 
 Derleme
 --------
@@ -23,7 +23,6 @@ Derleme
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -49,8 +48,7 @@ Derleme
 		mkdir -p $DESTDIR/sbin/
 	    make install DESTDIR=$DESTDIR
 	    install  $SOURCEDIR/client/scripts/linux $DESTDIR/sbin/dhclient-script
-	    mkdir -p $DESTDIR/etc/init.d
-	    
+	    mkdir -p $DESTDIR/etc/init.d    
 	    for level in boot default nonetwork shutdown sysinit ; do
 	    mkdir -p ${DESTDIR}/etc/runlevels/$level
 	    done

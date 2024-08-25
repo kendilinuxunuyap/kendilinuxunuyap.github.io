@@ -39,26 +39,17 @@ Derleme
 		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
 		patch -Np1 -i $SOURCEDIR/files/0001-util-linux-tmpfiles.patch
-		./configure --prefix=/usr \
-		    	--libdir=/usr/lib64 --bindir=/usr/bin \
-				--enable-shared --enable-static \
-				--disable-su --disable-runuser \
-				--disable-chfn-chsh --disable-login \
-				--disable-sulogin --disable-makeinstall-chown \
-				--disable-makeinstall-setuid --disable-pylibmount \
-				--disable-raw --without-systemd \
-				--without-libuser --without-utempter \
-				--without-econf --with-python --with-udev
+		./configure --prefix=/usr --libdir=/usr/lib64 --bindir=/usr/bin \
+				--enable-shared --enable-static --disable-su --disable-runuser --disable-chfn-chsh --disable-login \
+				--disable-sulogin --disable-makeinstall-chown --disable-makeinstall-setuid --disable-pylibmount \
+				--disable-raw --without-systemd --without-libuser --without-utempter --without-econf --with-python --with-udev
 	}
-
 	build(){
 		make -j5 #-C $DESTDIR all
 	}
-
 	package(){
 		make install DESTDIR=$DESTDIR
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

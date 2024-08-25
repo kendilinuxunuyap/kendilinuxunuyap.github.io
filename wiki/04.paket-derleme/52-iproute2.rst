@@ -38,26 +38,18 @@ Derleme
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		cp -prvf ${PACKAGEDIR}/files/ $SOURCEDIR/
-		# set correct fhs structure
 		patch -Np1 -i $SOURCEDIR/files/0001-make-iproute2-fhs-compliant.patch
-		# use Berkeley DB 5.3
 		patch -Np1 -i $SOURCEDIR/files/0002-bdb-5-3.patch
-		# do not treat warnings as errors
 		sed -i 's/-Werror//' Makefile
 		export CFLAGS+=' -ffat-lto-objects'
-		#cd $SOURCEDIR
 		./configure
 	}
-
 	build(){
 	   make DBM_INCLUDE='/usr/include/db5.3'
 	}
-
 	package(){
-
 		make DESTDIR=$DESTDIR SBINDIR="/sbin" install
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

@@ -37,28 +37,12 @@ Derleme
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
-	setup()
-	{
+	setup(){
 		    opts=(
-		    --prefix=/usr
-		    --libdir=/usr/lib64
-		    --disable-ldap
-		    --disable-ldaps
-		    --disable-versioned-symbols
-		    --enable-doh
-		    --enable-ftp
-		    --enable-ipv6
-		    --with-ca-path=/etc/ssl/certs
-		    --with-ca-bundle=/etc/ssl/cert.pem
-		    --enable-threaded-resolverl
-		    --enable-websockets
-		    --without-libidn2
-		    --without-libpsl
-		    --without-nghttp2
-		     
-		    #--without-zstd --without-zlib --without-brotli --without-libssh)
-		)
+		    --prefix=/usr --libdir=/usr/lib64 --disable-ldap --disable-ldaps --disable-versioned-symbols
+		    --enable-doh --enable-ftp --enable-ipv6 --with-ca-path=/etc/ssl/certs --with-ca-bundle=/etc/ssl/cert.pem
+		    --enable-threaded-resolverl --enable-websockets --without-libidn2 --without-libpsl --without-nghttp2)
+		      #--without-zstd --without-zlib --without-brotli --without-libssh)
 		    ./configure ${opts[@]} --with-openssl
 	}
 	build(){

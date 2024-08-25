@@ -6,11 +6,7 @@ efivar paketi, UEFI tabanlı sistemlerde, firmware ile işletim sistemi arasınd
 Derleme
 --------
 
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libefivar-dev** 
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libefivar-dev** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
@@ -45,7 +41,6 @@ komutuyla paketin kurulması gerekmektedir.
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		export ERRORS=''
 		export PATH=$PATH:$HOME

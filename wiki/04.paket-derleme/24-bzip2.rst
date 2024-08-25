@@ -37,29 +37,21 @@ Derleme
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
-	setup()
-	{
+	setup(){
 		    cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
-			# Generate relative symlinks
 		    sed -i -e 's:\$(PREFIX)/man:\$(PREFIX)/share/man:g' -e 's:ln -s -f $(PREFIX)/bin/:ln -s :' Makefile
-
-		    # fixup broken version stuff
 		    sed -i -e "s:1\.0\.4:$version:" bzip2.1 bzip2.txt Makefile-libbz2_so manual.*
 	}
-	build()
-	{
+	build(){
 		     make -f Makefile-libbz2_so all
 		     make all
 	}
-	package()
-	{
+	package(){
 		    cd $SOURCEDIR
 		    make DESTDIR=$DESTDIR/usr install
 		    install -D libbz2.so.$version "$DESTDIR"/usr/lib64/libbz2.so.$version
 		    ln -s libbz2.so.$version "$DESTDIR"/usr/lib64/libbz2.so
 		    ln -s libbz2.so.$version "$DESTDIR"/usr/lib64/libbz2.so.${version%%.*}
-
 		    mkdir -p "$DESTDIR"/usr/lib64/pkgconfig/
 		    install -Dm644 files/bzip2.pc -t "$DESTDIR"/usr/lib64/pkgconfig
 		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

@@ -1,18 +1,12 @@
 openssl
 +++++++
 
-coreutils için gerekli olan paket.
-
-OpenSSL, açık kaynaklı bir kriptografik kütüphanedir ve genellikle ağ iletişimi güvenliği için kullanılır. SSL/TLS protokollerini uygulamak, şifreleme, dijital sertifikalar oluşturma ve doğrulama gibi işlemleri gerçekleştirmek için yaygın olarak tercih edilir. Özellikle web sunucuları, e-posta sunucuları ve diğer ağ uygulamaları için güvenli iletişim sağlamak amacıyla kullanılır. OpenSSL, Linux sistemlerinde sıkça kullanılan bir araçtır ve güvenli veri iletimi için önemli bir rol oynar.
+OpenSSL, açık kaynaklı bir kriptografik kütüphanedir ve genellikle ağ iletişimi güvenliği için kullanılır. SSL/TLS protokollerini uygulamak, şifreleme, dijital sertifikalar oluşturma ve doğrulama gibi işlemleri gerçekleştirmek için yaygın olarak tercih edilir. coreutils için gerekli olan paket.
 
 Derleme
 --------
 
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install perl** 
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install perl** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
@@ -31,7 +25,6 @@ komutuyla paketin kurulması gerekmektedir.
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 			mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 			rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -45,20 +38,17 @@ komutuyla paketin kurulması gerekmektedir.
 			if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-	setup()
-	{
+	setup(){
 		    cp -prfv $PACKAGEDIR/files/ $SOURCEDIR
 		    wget -O $SOURCEDIR/files/cacert.pem https://curl.haxx.se/ca/cacert.pem
 		    patch -Np1 -i $SOURCEDIR/files/ca-dir.patch
 		    ./config --prefix=/usr  --openssldir=/etc/ssl --libdir=/usr/lib64 shared linux-x86_64
 	}
-	build()
-	{
+	build(){
 		    make depend
 		    make -j5 #-C $DESTDIR all
 	}
-	package()
-	{
+	package(){
 		    mkdir -p "${DESTDIR}/etc/ssl/" "${DESTDIR}/sbin/"
 		    install $SOURCEDIR/files/update-certdata "${DESTDIR}/sbin/update-certdata"
 		    install $SOURCEDIR/files/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"

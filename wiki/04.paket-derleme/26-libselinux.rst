@@ -6,12 +6,7 @@ libselinux paketi, Linux işletim sistemlerinde güvenlik politikalarının uygu
 Derleme
 --------
 
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libpcre2-dev** 
-- **sudo apt install libsepol-dev**
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libpcre2-dev libsepol-dev** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 
