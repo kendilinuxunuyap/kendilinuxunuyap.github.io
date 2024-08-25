@@ -1,7 +1,7 @@
 bzip2
 +++++
 
-bzip2, dosyaları sıkıştırmak için kullanılan bir yazılımdır ve genellikle Unix tabanlı sistemlerde tercih edilmektedir. Bu araç, dosyaların boyutunu önemli ölçüde azaltarak depolama alanından tasarruf sağlar ve veri transferini hızlandırır. bzip2, Lempel-Ziv ve Burrows-Wheeler algoritmalarını kullanarak yüksek sıkıştırma oranları suna
+bzip2, dosyaları sıkıştırmak için kullanılan bir yazılımdır ve genellikle Unix tabanlı sistemlerde tercih edilmektedir.
 
 Derleme
 --------

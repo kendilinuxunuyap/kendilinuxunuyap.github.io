@@ -1,7 +1,7 @@
 openrc
 ++++++
 
-OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla geliştirilmiş bir init sistemidir. Gentoo Linux gibi dağıtımlarda yaygın olarak kullanılmakta olup, sistemin daha esnek ve modüler bir şekilde yönetilmesine olanak tanır. OpenRC, sistem hizmetlerini başlatmak, durdurmak ve yeniden başlatmak için bir dizi betik ve yapılandırma dosyası kullanır.
+OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla geliştirilmiş bir init sistemidir. Gentoo Linux gibi dağıtımlarda yaygın olarak kullanılmakta olup, sistemin daha esnek ve modüler bir şekilde yönetilmesine olanak tanır.
 
 Derleme
 --------
@@ -53,7 +53,6 @@ Derleme
 	    rm -f ${DESTDIR}/etc/runlevels/*/*	    # disable all services
 	    rm ${DESTDIR}//etc/init.d/functions.sh
 	    ln -s ../../lib/rc/sh/functions.sh ${DESTDIR}/etc/init.d/functions.sh
-
 	    mkdir -p ${DESTDIR}/etc/sysconf.d/	    # install sysconf script
 	    install $SOURCEDIR/files/openrc.sysconf ${DESTDIR}/etc/sysconf.d/openrc
 	    mkdir -p ${DESTDIR}/usr ${DESTDIR}/sbin
@@ -86,7 +85,6 @@ Derleme
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
- 
 .. raw:: pdf
 
    PageBreak
