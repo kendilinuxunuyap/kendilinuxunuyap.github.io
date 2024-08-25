@@ -52,10 +52,7 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install perl** komutuy
 		    mkdir -p "${DESTDIR}/etc/ssl/" "${DESTDIR}/sbin/"
 		    install $SOURCEDIR/files/update-certdata "${DESTDIR}/sbin/update-certdata"
 		    install $SOURCEDIR/files/cacert.pem "${DESTDIR}/etc/ssl/cert.pem"
-		    make DESTDIR="${DESTDIR}" \
-		    install_sw \
-		    install_ssldirs \
-		    install_man_docs  $jobs
+		    make DESTDIR="${DESTDIR}" install_sw install_ssldirs install_man_docs  $jobs
 		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
