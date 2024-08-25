@@ -40,20 +40,14 @@ Derleme
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
 	    autoreconf -fvi
-	    ./configure --prefix=/usr \
-	   	--sysconfdir=/etc \
-	    --datadir=/usr/share/kbd \
-		--enable-optional-progs
+	    ./configure --prefix=/usr --sysconfdir=/etc --datadir=/usr/share/kbd --enable-optional-progs
 	}
-
 	build(){
 	    make KEYCODES_PROGS=yes RESIZECONS_PROGS=yes
 	}
-
 	package(){
 	    make DESTDIR=${DESTDIR} install
 	    install -Dm755 $SOURCEDIR/files/loadkeys.initd "$DESTDIR"/etc/init.d/loadkeys

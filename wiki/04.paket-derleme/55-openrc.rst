@@ -23,7 +23,6 @@ Derleme
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -38,7 +37,6 @@ Derleme
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
@@ -52,20 +50,16 @@ Derleme
 	package(){
 	    export DESTDIR=${DESTDIR}//
 	    DESTDIR="$DESTDIR" meson install --no-rebuild -C $BUILDDIR
-	    
-	    # disable all services
-	    rm -f ${DESTDIR}/etc/runlevels/*/*
+	    rm -f ${DESTDIR}/etc/runlevels/*/*	    # disable all services
 	    rm ${DESTDIR}//etc/init.d/functions.sh
 	    ln -s ../../lib/rc/sh/functions.sh ${DESTDIR}/etc/init.d/functions.sh
-	    # install sysconf script
-	    mkdir -p ${DESTDIR}/etc/sysconf.d/
-	    install $SOURCEDIR/files/openrc.sysconf ${DESTDIR}/etc/sysconf.d/openrc
 
-	    # move /share to /usr/share
+	    mkdir -p ${DESTDIR}/etc/sysconf.d/	    # install sysconf script
+	    install $SOURCEDIR/files/openrc.sysconf ${DESTDIR}/etc/sysconf.d/openrc
 	    mkdir -p ${DESTDIR}/usr ${DESTDIR}/sbin
-	    mv ${DESTDIR}/{,usr}/share
-	    # reboot and poweroff script
-	    install $SOURCEDIR/files/reboot ${DESTDIR}/sbin/reboot
+	    mv ${DESTDIR}/{,usr}/share	    # move /share to /usr/share
+
+	    install $SOURCEDIR/files/reboot ${DESTDIR}/sbin/reboot	    # reboot and poweroff script
 	    install $SOURCEDIR/files/poweroff ${DESTDIR}/sbin/poweroff
 	    ln -s openrc-shutdown ${DESTDIR}/sbin/shutdown
 	    # install extras
@@ -86,7 +80,6 @@ Derleme
 	    cd ${DESTDIR}/etc/init.d/
 	    ln -s agetty agetty.tty1
 	    install ${DESTDIR}/etc/init.d/agetty.tty1 ${DESTDIR}/etc/runlevels/default/agetty.tty1
-	    #mv  ${DESTDIR}/lib  ${DESTDIR}/lib64
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir

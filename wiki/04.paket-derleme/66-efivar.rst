@@ -44,21 +44,14 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libefivar-dev*
 	setup(){
 		export ERRORS=''
 		export PATH=$PATH:$HOME
-		# fake mandoc for ignore extra dependency
-	    echo "exit 0" > $HOME/mandoc
+	    echo "exit 0" > $HOME/mandoc		# fake mandoc for ignore extra dependency
 	    chmod +x $HOME/mandoc
 	}
 	build(){
 	    make
 	}
 	package(){
-		local make_options=(
-	    V=1
-	    libdir=/usr/lib64/
-	    bindir=/usr/bin/
-	    mandir=/usr/share/man/
-	    includedir=/usr/include/
-		)
+		local make_options=(V=1 libdir=/usr/lib64/ bindir=/usr/bin/ mandir=/usr/share/man/ includedir=/usr/include/)
 	    make DESTDIR=$DESTDIR "${make_options[@]}" install
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

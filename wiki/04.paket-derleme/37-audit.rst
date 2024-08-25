@@ -17,7 +17,6 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libaudit-dev**
 	description="servis yöneticisi"
 	source="https://github.com/linux-audit/audit-userspace/archive/refs/tags/v$version.tar.gz"
 	groups="sys.process"
-
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"      #Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')    #Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -29,8 +28,8 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libaudit-dev**
 		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		        cd $ROOTBUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		        wget ${source}
+		        for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		        dowloadfile=$(ls|head -1)
 		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -42,9 +41,7 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libaudit-dev**
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
 		./autogen.sh
-		./configure --prefix=/usr --sysconfdir=/etc \
-		    --libdir=/usr/lib64 --disable-zos-remote --disable-listener --disable-systemd --disable-gssapi-krb5 \
-		    --enable-shared=audit --with-arm --with-aarch64 --without-python --without-python3 --with-libcap-ng=no
+		./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 --disable-zos-remote --disable-listener --disable-systemd 	--disable-gssapi-krb5 --enable-shared=audit --with-arm --with-aarch64 --without-python --without-python3 --with-libcap-ng=no
 	}
 	build(){
 		    make
