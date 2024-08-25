@@ -85,6 +85,7 @@ Paket adında(openssh) istediğiniz bir konumda bir dizin oluşturun ve dizin i�
 
 .. code-block:: shell
 	
+	chmod 755 build
 	sudo ./build
 
 Paketler derlendikten sonra files dizini içindeki postinstall scriptinin çalıştırılması gerekmektedir.

@@ -41,7 +41,8 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libaudit-dev**
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
 		./autogen.sh
-		./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 --disable-zos-remote --disable-listener --disable-systemd 	--disable-gssapi-krb5 --enable-shared=audit --with-arm --with-aarch64 --without-python --without-python3 --with-libcap-ng=no
+		./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 --disable-zos-remote --disable-listener --disable-systemd \
+		--disable-gssapi-krb5 --enable-shared=audit --with-arm --with-aarch64 --without-python --without-python3 --with-libcap-ng=no
 	}
 	build(){
 		    make

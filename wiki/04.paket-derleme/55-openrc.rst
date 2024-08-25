@@ -62,7 +62,6 @@ Derleme
 	    install $SOURCEDIR/files/reboot ${DESTDIR}/sbin/reboot	    # reboot and poweroff script
 	    install $SOURCEDIR/files/poweroff ${DESTDIR}/sbin/poweroff
 	    ln -s openrc-shutdown ${DESTDIR}/sbin/shutdown
-	    # install extras
 	    mkdir -p ${DESTDIR}/usr/libexec
 	    install $SOURCEDIR/extras/disable-secondary-gpu.sh ${DESTDIR}/usr/libexec/disable-secondary-gpu
 	    install $SOURCEDIR/extras/disable-secondary-gpu.initd ${DESTDIR}/etc/init.d
@@ -87,6 +86,11 @@ Derleme
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
+ 
+.. raw:: pdf
+
+   PageBreak
+   
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openrc/files.tar>`_
 
 Bu extras dosyalarını indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openrc/extras.tar>`_
