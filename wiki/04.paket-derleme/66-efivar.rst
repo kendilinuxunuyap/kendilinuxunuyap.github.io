@@ -43,7 +43,7 @@ komutuyla paketin kurulması gerekmektedir.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
@@ -53,12 +53,9 @@ komutuyla paketin kurulması gerekmektedir.
 	    echo "exit 0" > $HOME/mandoc
 	    chmod +x $HOME/mandoc
 	}
-
 	build(){
-		cd $SOURCEDIR
 	    make
 	}
-
 	package(){
 		local make_options=(
 	    V=1

@@ -37,18 +37,12 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 
 	setup(){
-	    #cd $name-autoconf-$srcver
-	    $SOURCEDIR/configure --prefix=/usr \
-		--libdir=/usr/lib64 \
-		--enable-fts3 \
-		--enable-fts4 \
-		--enable-fts5 \
-		--enable-rtree \
+	    ./configure --prefix=/usr --libdir=/usr/lib64 --enable-fts3 --enable-fts4 --enable-fts5 --enable-rtree \
 		CPPFLAGS="-DSQLITE_ENABLE_FTS3=1            \
 		          -DSQLITE_ENABLE_FTS4=1            \
 		          -DSQLITE_ENABLE_COLUMN_METADATA=1 \

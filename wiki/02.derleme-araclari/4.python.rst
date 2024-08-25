@@ -27,3 +27,7 @@ Ardından, terminalde projenizin bulunduğu dizine giderek aşağıdaki komutu �
 	python3 -m installer --destdir="$DESTDIR" dist/*.whl
 
 Bu komut, paketi dist klasörüne derleyecektir. Artık paketiniz hazır ve dağıtıma uygun hale gelmiştir.
+
+.. raw:: pdf
+
+   PageBreak

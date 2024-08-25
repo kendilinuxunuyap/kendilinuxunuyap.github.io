@@ -35,26 +35,17 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
 	{
 		    cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
-		    cd $SOURCEDIR
-
-	# Generate relative symlinks
-		    sed -i \
-		            -e 's:\$(PREFIX)/man:\$(PREFIX)/share/man:g' \
-		            -e 's:ln -s -f $(PREFIX)/bin/:ln -s :' \
-		            Makefile
+			# Generate relative symlinks
+		    sed -i -e 's:\$(PREFIX)/man:\$(PREFIX)/share/man:g' -e 's:ln -s -f $(PREFIX)/bin/:ln -s :' Makefile
 
 		    # fixup broken version stuff
-		    sed -i \
-		            -e "s:1\.0\.4:$version:" \
-		            bzip2.1 bzip2.txt Makefile-libbz2_so manual.*
-
-
+		    sed -i -e "s:1\.0\.4:$version:" bzip2.1 bzip2.txt Makefile-libbz2_so manual.*
 	}
 	build()
 	{

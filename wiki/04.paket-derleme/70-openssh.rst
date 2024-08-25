@@ -44,29 +44,18 @@ komutuyla paketin kurulması gerekmektedir.
 		        director=$(find ./* -maxdepth 0 -type d)
 		        directorname=$(basename ${director})
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		    cp -prfv $PACKAGEDIR/files $SOURCEDIR/
-		    cd $SOURCEDIR
-			./configure --prefix=/usr \
-		    --libdir=/usr/lib64/ \
-		    --sysconfdir=/etc/ssh \
-		    --without-pam \
-		    --disable-strip \
-		    --with-ssl-engine \
-		    --with-privsep-user=nobody \
-		    --with-pid-dir=/run \
+			./configure --prefix=/usr --libdir=/usr/lib64/ --sysconfdir=/etc/ssh --without-pam --disable-strip \
+		    --with-ssl-engine --with-privsep-user=nobody --with-pid-dir=/run \
 		    --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 	}
-
 	build(){
 		make
 	}
-
 	package(){
-	
 		make install DESTDIR=$DESTDIR
 		mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
 		install -m755 -D $SOURCEDIR/files/sshd.initd "$DESTDIR"/etc/init.d/sshd
@@ -80,8 +69,6 @@ komutuyla paketin kurulması gerekmektedir.
 		chmod 755  ${DESTDIR}/var/empty
 		echo "nobody:!:65534:" >>  ${DESTDIR}/etc/group
 		echo "nobody:!:65534:65534::/var/empty:/usr/sbin/nologin" >>  ${DESTDIR}/etc/passwd
-
-
 		sed -i "/PermitRootLogin/d" /etc/ssh/sshd_config
 		echo -e "\nPermitRootLogin yes">> /etc/ssh/sshd_config
 	}

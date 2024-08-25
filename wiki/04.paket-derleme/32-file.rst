@@ -35,7 +35,7 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
@@ -46,7 +46,7 @@ Derleme
 		--enable-elf
 		--enable-elf-core
 	    )
-	    $SOURCEDIR/configure ${opts[@]} \
+	    ./configure ${opts[@]} \
 		$(use_opt zlib --enable-zlib --disable-zlib) \
 		$(use_opt lzma --enable-xzlib --disable-xzlib) \
 		$(use_opt bzip2 --enable-bzlib --disable-bzlib) \

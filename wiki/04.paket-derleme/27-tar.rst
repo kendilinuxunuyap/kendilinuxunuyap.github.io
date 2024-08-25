@@ -37,12 +37,10 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
+	setup(){
 		export FORCE_UNSAFE_CONFIGURE=1
 		./configure --prefix=/usr \
 			--libdir=/usr/lib64 \
@@ -51,12 +49,10 @@ Derleme
 			--localstatedir=/var \
 			--enable-backup-scripts
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make DESTDIR=$DESTDIR install
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

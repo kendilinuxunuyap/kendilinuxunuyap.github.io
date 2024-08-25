@@ -1,9 +1,7 @@
 libcap
 ++++++
 
-coreutils için gerekli olan paket.
-
-libcap paketi, Linux işletim sistemlerinde kullanıcı ve grup yetkilendirmelerini yönetmek için kullanılan bir kütüphanedir. Bu kütüphane, sistem kaynaklarına erişim kontrolü sağlamak amacıyla çeşitli yetki seviyeleri tanımlamaktadır.
+libcap paketi, Linux işletim sistemlerinde kullanıcı ve grup yetkilendirmelerini yönetmek için kullanılan bir kütüphanedir. Bu kütüphane, sistem kaynaklarına erişim kontrolü sağlamak amacıyla çeşitli yetki seviyeleri tanımlamaktadır. coreutils için gerekli olan paket.
 
 Derleme
 --------
@@ -38,7 +36,7 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	_common_make_options=(
@@ -53,7 +51,6 @@ Derleme
 	
 	setup()
 	{
-	cd $SOURCEDIR
 	cap_opts=(
 		"${_common_make_options[@]}"
 	    SUDO=""
@@ -64,7 +61,6 @@ Derleme
 	    RAISE_SETFCAP=no
 	    #$(use_opt pam PAM_CAP=yes PAM_CAP=no)
 	    )
-
 	}
 	build()
 	{
@@ -73,13 +69,7 @@ Derleme
 	}
 	package()
 	{
-		make "${_common_make_options[@]}"  \
-			DESTDIR="$DESTDIR" \
-			RAISE_SETFCAP=no \
-			prefix=/usr \
-			lib=lib64 \
-			sbindir=bin \
-			install
+		make "${_common_make_options[@]}" DESTDIR="$DESTDIR" RAISE_SETFCAP=no prefix=/usr lib=lib64 sbindir=bin install
 		#mv $DESTDIR/lib64 $DESTDIR/usr/lib64
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

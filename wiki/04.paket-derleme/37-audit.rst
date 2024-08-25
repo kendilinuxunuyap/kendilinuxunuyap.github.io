@@ -42,35 +42,20 @@ komutuyla paketin kurulması gerekmektedir.
 		        director=$(find ./* -maxdepth 0 -type d)
 		        directorname=$(basename ${director})
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
+	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
-
-		cd $SOURCEDIR
 		./autogen.sh
-		./configure --prefix=/usr \
-		    --sysconfdir=/etc \
-		    --libdir=/usr/lib64 \
-		    --disable-zos-remote \
-		    --disable-listener \
-		    --disable-systemd \
-		    --disable-gssapi-krb5 \
-		    --enable-shared=audit \
-			--with-arm \
-			--with-aarch64\
-			--without-python \
-			--without-python3 \
-			--with-libcap-ng=no
+		./configure --prefix=/usr --sysconfdir=/etc \
+		    --libdir=/usr/lib64 --disable-zos-remote --disable-listener --disable-systemd --disable-gssapi-krb5 \
+		    --enable-shared=audit --with-arm --with-aarch64 --without-python --without-python3 --with-libcap-ng=no
 	}
-	build()
-	{
+	build(){
 		    make
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		install -Dm755 files/auditd.initd "$DESTDIR"/etc/init.d/auditd
 		install -Dm755 files/auditd.confd "$DESTDIR"/etc/conf.d/auditd

@@ -36,24 +36,18 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
-
 		cp -prvf ${PACKAGEDIR}/files/ $SOURCEDIR/
 		# set correct fhs structure
-		cd $SOURCEDIR
 		patch -Np1 -i $SOURCEDIR/files/0001-make-iproute2-fhs-compliant.patch
-
 		# use Berkeley DB 5.3
 		patch -Np1 -i $SOURCEDIR/files/0002-bdb-5-3.patch
-
 		# do not treat warnings as errors
 		sed -i 's/-Werror//' Makefile
-
 		export CFLAGS+=' -ffat-lto-objects'
-
 		#cd $SOURCEDIR
 		./configure
 	}

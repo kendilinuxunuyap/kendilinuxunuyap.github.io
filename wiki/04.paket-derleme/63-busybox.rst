@@ -1,7 +1,7 @@
 busybox
 +++++++
 
-BusyBox, Linux tabanlı sistemlerde yaygın olarak kullanılan, birçok temel Unix aracını bir araya getiren bir yazılım paketidir. "İsviçre Ordusu Bıçağı" benzeri bir işlevsellik sunarak, çeşitli komutları tek bir ikili dosya altında toplar. Bu sayede, sistem kaynaklarını verimli bir şekilde kullanarak, özellikle gömülü sistemlerde ve düşük kaynaklı ortamlarda önemli bir rol oynar.
+BusyBox, Linux tabanlı sistemlerde "İsviçre Çakısı" benzeri bir işlevsellik sunarak, çeşitli komutları tek bir ikili dosya altında toplar. Bu sayede, sistem kaynaklarını verimli bir şekilde kullanarak, özellikle gömülü sistemlerde ve düşük kaynaklı ortamlarda önemli bir rol oynar.
 
 BusyBox, ls, cp, mv, rm gibi temel komutların yanı sıra, ağ yönetimi, dosya sistemleri ve sistem yönetimi gibi birçok alanda işlevsellik sunar. Kullanıcılar, bu komutları BusyBox ile çağırarak, sistem üzerinde etkili bir şekilde işlem yapabilirler. Örneğin, bir dosyayı kopyalamak için aşağıdaki komut kullanılabilir:
 
@@ -42,25 +42,19 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
+	setup(){
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
-
-		cd $SOURCEDIR
 		make defconfig
 		sed -i "s|.*CONFIG_STATIC_LIBGCC .*|CONFIG_STATIC_LIBGCC=y|" .config
 		sed -i "s|.*CONFIG_STATIC .*|CONFIG_STATIC=y|" .config
 	}
-	build()
-	{
-
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		mkdir -p $DESTDIR/bin
 		install busybox ${DESTDIR}/bin/busybox
 		# install udhcpc script and service

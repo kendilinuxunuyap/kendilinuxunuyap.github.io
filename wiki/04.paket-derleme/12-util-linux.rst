@@ -26,45 +26,33 @@ Derleme
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		        cd $ROOTBUILDDIR #dizinine geçiyoruz
-            	wget ${source}
-            	for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		        dowloadfile=$(ls|head -1)
-		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		        director=$(find ./* -maxdepth 0 -type d)
-		        directorname=$(basename ${director})
-		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+ 		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
-		    cp -prvf $PACKAGEDIR/files/ $BUILDDIR/
-			cd  $SOURCEDIR
-		    patch -Np1 -i $BUILDDIR/files/0001-util-linux-tmpfiles.patch
-
-		    $SOURCEDIR/configure --prefix=/usr \
-		            --libdir=/usr/lib64 \
-		            --bindir=/usr/bin \
-		            --enable-shared \
-		            --enable-static \
-		            --disable-su \
-		            --disable-runuser \
-		            --disable-chfn-chsh \
-		            --disable-login \
-		            --disable-sulogin \
-		            --disable-makeinstall-chown \
-		            --disable-makeinstall-setuid \
-		            --disable-pylibmount \
-		            --disable-raw \
-		            --without-systemd \
-		            --without-libuser \
-		            --without-utempter \
-		            --without-econf \
-		            --with-python \
-		            --with-udev
+		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
+		patch -Np1 -i $SOURCEDIR/files/0001-util-linux-tmpfiles.patch
+		./configure --prefix=/usr \
+		    	--libdir=/usr/lib64 --bindir=/usr/bin \
+				--enable-shared --enable-static \
+				--disable-su --disable-runuser \
+				--disable-chfn-chsh --disable-login \
+				--disable-sulogin --disable-makeinstall-chown \
+				--disable-makeinstall-setuid --disable-pylibmount \
+				--disable-raw --without-systemd \
+				--without-libuser --without-utempter \
+				--without-econf --with-python --with-udev
 	}
 
 	build(){

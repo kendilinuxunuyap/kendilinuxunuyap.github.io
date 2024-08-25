@@ -17,7 +17,7 @@ komutuyla paketin kurulması gerekmektedir.
 	
 	#!/usr/bin/env bash
 	name="efibootmgr"
-	version="18"
+	version="17"
 	description="Linux user-space application to modify the Intel Extensible Firmware Interface (EFI) Boot Manager."
 	source="https://github.com/rhboot/efibootmgr/archive/refs/tags/$version.tar.gz"
 	depends="efivar,popt"
@@ -44,18 +44,14 @@ komutuyla paketin kurulması gerekmektedir.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 		echo ""
 	}
-
 	build(){
-		cd $SOURCEDIR
 	    make sbindir=/usr/bin EFIDIR=/boot/efi PCDIR=/usr/lib64/pkgconfig
 	}
-
 	package(){
 		EFIDIR="/boot/efi" sbindir=/usr/bin make DESTDIR="$DESTDIR" install
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

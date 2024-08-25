@@ -4,7 +4,7 @@
 **Linux Nedir?**
 ----------------
 
-Linux; Linux çekirdeğine dayalı, açık kaynak kodlu, Unix benzeri bir işletim sistemi ailesidir. GNU Genel Kamu Lisansı versiyon 2 ile sunulan ve Linux Vakfı çatısı altında geliştirilen bir özgür yazılım projesidir. Linux, “Linus Torvalds” tarafından geliştirilmeye başlanmıştır. Günümüzde bilgisayarlarda, akıllı cihazların ve internet altyapısında kullanılan cihazların işletim sistemlerinde yaygın olarak kullanılmaktadır.
+Linux; Linux çekirdeğine dayalı, açık kaynak kodlu, Unix benzeri bir işletim sistemi ailesidir. GNU Genel Kamu Lisansı versiyon 2 ile sunulan ve Linux Vakfı çatısı altında geliştirilen bir özgür yazılım projesidir. Linux, “Linus Torvalds” tarafından geliştirilmeye başlanmıştır. Günümüzde bilgisayarlarda, akıllı cihazların ve internet altyapısında kullanılan cihazların işletim sistemlerinde yaygın olarak kullanılmaktadır.[https://tr.wikipedia.org/wiki/Linux]
 
 **Açık Kaynak Nedir?**
 ----------------------
@@ -17,9 +17,9 @@ Açık kaynak terimi, yazılım geliştirme sürecinde kaynak kodunun genel olar
 GNU, uygulamalar, kütüphaneler, geliştirici araçları, hatta oyunların bir arada olduğu Unix benzeri bir işletim sistemidir.
 Linux çekirdeği kullanılarak oluşturulan işletim sistemlerini tanımlamak için yaygın olarak Linux ismi kullanılmaktadır. Mesela, Linux çekirdeği ve GNU araçları bir araya getirilerek oluşturulan bir işletim sistemi “GNU/Linux dağıtımı” olarak adlandırılır, ancak konuşma dilinde kısaca (yanlış da olsa) Linux olarak ifade edilmektedir.
 
-1. Clonezilla İmaj(tahta imajları)
-2. Dağıtım Editleme(etahta)
-3. Paket sistemi yazma (ahenk,debian)
+1. Clonezilla İmaj
+2. Dağıtım Editleme
+3. Paket sistemi yazma
 
 **Yazılım Bağımlılığı**
 -----------------------

@@ -59,24 +59,18 @@ Derleme
 		        director=$(find ./* -maxdepth 0 -type d)
 		        directorname=$(basename ${director})
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 	cd $ROOTBUILDDIR
 	 echo depends bli part_gpt > $SOURCEDIR/grub-core/extra_deps.lst
 		for tgt in ${uses[@]} ; do
-		   # if ! use $tgt ; then
-		    #    continue
-		   # fi
 		    cp -prfv $name-$version $tgt
 		done
 
 
 		for tgt in ${uses[@]} ; do
-		    #if ! use $tgt ; then
-		    #    continue
-		   # fi
 		    cd $tgt
 		    autoreconf -fvi
 		    ./configure --prefix=/usr \
@@ -92,18 +86,12 @@ Derleme
 
 	build(){
 		for tgt in ${uses[@]} ; do
-		    #if ! use $tgt ; then
-		     #   continue
-		    #fi
 		    make $jobs -C $tgt
 		done
 	}
 
 	package(){
 		for tgt in ${uses[@]} ; do
-		   # if ! use $tgt ; then
-		    #    continue
-		    #fi
 		    make $jobs -C $tgt install DESTDIR=$DESTDIR
 		done
 		# default grub config

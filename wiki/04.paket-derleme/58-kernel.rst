@@ -38,14 +38,12 @@ Debian Kernel
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
 	{
 	mkdir -p $SOURCEDIR
-
-		echo ""
 		# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/
 		cd $SOURCEDIR
 		wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/linux-image-6.10.6-amd64_6.10.6-1_amd64.deb
@@ -103,14 +101,12 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
-		cd $SOURCEDIR
-		
 		patch -Np1 -i $PACKAGEDIR/files/patch-$version
 		cp $PACKAGEDIR/files/config $SOURCEDIR/.config
 		make olddefconfig

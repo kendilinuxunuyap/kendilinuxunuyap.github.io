@@ -6,6 +6,10 @@ Live-boot paketi, kullanıcıların bir işletim sistemini kurmadan önce deneme
 Derleme
 --------
 
+Debian ortamında bu paketin derlenmesi için;
+
+- **sudo apt install po4a** komutuyla paketin kurulması gerekmektedir.
+
 .. code-block:: shell
 	
 	#!/usr/bin/env bash
@@ -36,19 +40,15 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
-	setup()
-	{
-		cd $SOURCEDIR
+	setup(){
+		echo ""
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $DESTDIR/usr/share/initramfs-tools/hooks/live
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

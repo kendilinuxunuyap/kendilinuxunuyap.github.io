@@ -39,12 +39,9 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
-		cd $SOURCEDIR
-		#cd ../$name-$version/$name
 	    cmake -DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib64 \
 		-DCMAKE_BUILD_TYPE=None \
@@ -52,11 +49,9 @@ Derleme
 		-W no-dev \
 		-B $BUILDDIR
 	}
-
 	build(){
 	    make -C $BUILDDIR
 	}
-
 	package(){
 	    make DESTDIR="$DESTDIR" install -C $BUILDDIR
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

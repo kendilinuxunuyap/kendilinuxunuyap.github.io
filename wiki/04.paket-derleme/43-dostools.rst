@@ -36,23 +36,17 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
+	setup(){
 		./autogen.sh
-		./configure --prefix=/usr \
-		    --libdir=/usr/lib64/ \
-		    --enable-compat-symlinks
+		./configure --prefix=/usr --libdir=/usr/lib64/ --enable-compat-symlinks
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

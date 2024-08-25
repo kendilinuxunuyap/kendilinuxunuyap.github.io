@@ -27,3 +27,7 @@ Bu kaynak kod aşağıdaki gibi derlenir:
 	meson setup builddir --prefix=/usr
 	ninja -C builddir
 	DESTDIR=$DESTDIR ninja -C builddir install
+	
+.. raw:: pdf
+
+   PageBreak

@@ -30,10 +30,8 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
     bash -c "echo '127.0.0.1 basitdagitim' >>  /home/$user/distro/build/etc/hosts"
     bash -c "echo 'basitdagitim' >  /home/$user/distro/build/etc/hostname"
     bash -c "echo 'nameserver 8.8.8.8' >  /home/$user/distro/build/etc/resolv.conf"
-
     echo root:x:0:0:root:/root:/bin/sh >  /home/$user/distro/build/etc/passwd
     chmod 755  /home/$user/distro/build/etc/passwd
-
     cp -prfv  /home/$user/distro/build/*   /home/$user/distro/rootfs/
 	
 Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için aşağıda verilen script şablon yapısını kullanacağız.
@@ -71,16 +69,12 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-	setup(){
-		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
+	setup(){		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
 	}
-	build(){
-		#Paketin derlenmesi
+	build(){		#Paketin derlenmesi
 	}
-	package(){
-		# Derlenen dosyaları yükleme öncesi ayar ve yükleme işleminin yapılması
+	package(){		# Derlenen dosyaları yükleme öncesi ayar ve yükleme işleminin yapılması
 	}
-
 	initsetup 	# initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
 	setup		# setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build		# build fonksiyonu çalışır ve kaynak dosyaları derlenir.
@@ -131,14 +125,10 @@ Yapıyı Oluşturan Script
 			cd $ROOTBUILDDIR #dizinine geçiyoruz
 			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-	setup(){
-			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
+	setup(){			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
 	}
-
-	build(){
-			echo ""
+	build(){			echo ""
 	}
-
 	package(){
 			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
 			var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \

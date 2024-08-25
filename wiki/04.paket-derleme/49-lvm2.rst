@@ -37,39 +37,19 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
-			cd $SOURCEDIR
-			./configure --prefix=/usr \
-			--libdir=/usr/lib64/  \
-			CONFIG_SHELL=/bin/bash \
-			--sbindir=/usr/bin \
-			--sysconfdir=/etc \
-			--localstatedir=/var \
-			--enable-cmdlib \
-			--enable-dmeventd \
-			--enable-lvmpolld \
-			--enable-pkgconfig \
-			--enable-readline \
-			--enable-udev_rules \
-			--enable-udev_sync \
-			--enable-write_install \
-			--disable-systemd \
-			--with-cache=internal \
-			--with-default-dm-run-dir=/run \
-			--with-default-locking-dir=/run/lock/lvm \
-			--with-default-pid-dir=/run \
-			--with-default-run-dir=/run/lvm \
-			--with-thin=internal \
-			--with-udev-prefix=/usr
+			./configure --prefix=/usr --libdir=/usr/lib64/  CONFIG_SHELL=/bin/bash --sbindir=/usr/bin \ 
+			--sysconfdir=/etc --localstatedir=/var \
+			--enable-cmdlib --enable-dmeventd --enable-lvmpolld --enable-pkgconfig --enable-readline \
+			--enable-udev_rules --enable-udev_sync --enable-write_install --disable-systemd \
+			--with-cache=internal --with-default-dm-run-dir=/run --with-default-locking-dir=/run/lock/lvm \
+			--with-default-pid-dir=/run --with-default-run-dir=/run/lvm --with-thin=internal --with-udev-prefix=/usr
 	}
-
 	build(){
 	    make
 	}
-
 	package() {
 	    make install DESTDIR=$DESTDIR
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

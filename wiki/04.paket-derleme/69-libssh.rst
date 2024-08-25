@@ -36,24 +36,14 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup() {
-	    cmake -S $SOURCEDIR -B $BUILDDIR \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_LIBDIR=/usr/lib64 \
-		-DWITH_EXAMPLES=NO \
-		-DBUILD_SHARED_LIBS=YES \
-		-DBUILD_STATIC_LIB=YES \
-		-DWITH_NACL=OFF \
-		-DWITH_GCRYPT=OFF \
-		-DWITH_MBEDTLS=OFF \
-		-DWITH_GSSAPI=OFF \
-		-DWITH_PCAP=OFF \
-		-DWITH_SERVER=ON \
-		-DWITH_SFTP=ON \
-		-DWITH_ZLIB=ON
+	    cmake -S $SOURCEDIR -B $BUILDDIR -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=/usr/lib64 \
+		-DWITH_EXAMPLES=NO -DBUILD_SHARED_LIBS=YES -DBUILD_STATIC_LIB=YES -DWITH_NACL=OFF \
+		-DWITH_GCRYPT=OFF -DWITH_MBEDTLS=OFF -DWITH_GSSAPI=OFF \
+		-DWITH_PCAP=OFF -DWITH_SERVER=ON -DWITH_SFTP=ON -DWITH_ZLIB=ON
 	}
 	build() {
 	    make -C $BUILDDIR

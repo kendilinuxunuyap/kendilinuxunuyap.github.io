@@ -49,12 +49,11 @@ komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
-		cd $SOURCEDIR
 		autoreconf -fiv      
 		./configure --prefix=/usr \
 		--libdir=/usr/lib64 \
@@ -96,13 +95,13 @@ komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 		echo -e "netdev:x:122:">>${DESTDIR}/etc/group
 		echo -e "dip:x:123:">>${DESTDIR}/etc/group
 
-		    chmod 644 ${DESTDIR}/etc/group
-		    chown root ${DESTDIR}/etc/group
-		    chgrp root ${DESTDIR}/etc/group
-		    else
-		    chmod 644 ${DESTDIR}/etc/group
-		    chown root ${DESTDIR}/etc/group
-		    chgrp root ${DESTDIR}/etc/group
+		chmod 644 ${DESTDIR}/etc/group
+		chown root ${DESTDIR}/etc/group
+		chgrp root ${DESTDIR}/etc/group
+		else
+		chmod 644 ${DESTDIR}/etc/group
+		chown root ${DESTDIR}/etc/group
+		chgrp root ${DESTDIR}/etc/group
 		fi
 
 		if [ ! -f ${DESTDIR}/etc/shadow ] ; then

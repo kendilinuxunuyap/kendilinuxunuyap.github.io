@@ -36,36 +36,21 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
 		cp -prfv $PACKAGEDIR/extras $SOURCEDIR/
-		cd $SOURCEDIR
-	    meson setup $BUILDDIR \
-		--sysconfdir=/etc \
-		--prefix=/ \
-		--libdir=/lib64 \
-		--includedir=/usr/include \
-		-Ddefault_library=both \
-		-Dzsh-completions=true \
-		-Dbash-completions=true \
-		-Dpam=true \
-		-Dselinux=disabled \
-		-Dpkgconfig=true
-
+	    meson setup $BUILDDIR --sysconfdir=/etc --prefix=/ --libdir=/lib64 --includedir=/usr/include \
+		-Ddefault_library=both -Dzsh-completions=true -Dbash-completions=true -Dpam=true -Dselinux=disabled -Dpkgconfig=true
 	}
-
 	build(){
-	    #ninja -C $BUILDDIR
 	    meson compile -C $BUILDDIR
 	}
-
 	package(){
 	    export DESTDIR=${DESTDIR}//
-	    #DESTDIR=$DESTDIR ninja -C $BUILDDIR install
 	    DESTDIR="$DESTDIR" meson install --no-rebuild -C $BUILDDIR
 	    
 	    # disable all services

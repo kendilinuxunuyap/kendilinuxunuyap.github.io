@@ -27,3 +27,7 @@ Bu kaynak kod aşağıdaki gibi derlenir:
 	cmake ..
 	make
 	make install
+	
+.. raw:: pdf
+
+   PageBreak

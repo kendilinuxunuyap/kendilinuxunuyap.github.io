@@ -42,22 +42,18 @@ Debian ortamında bu paketin derlenmesi için;
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-
-	    cmake ../${name}-${version} \
+	setup(){
+	    cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DBUILD_SHARED_LIBS=True
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		mkdir -p $DESTDIR/lib
 		mkdir -p $DESTDIR/lib/pkgconfig

@@ -39,13 +39,12 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
-		cd $SOURCEDIR
 		
 		patch -Np1 -i $PACKAGEDIR/files/patch-$version
 		cp $PACKAGEDIR/files/config $SOURCEDIR/.config

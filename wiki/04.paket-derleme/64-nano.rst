@@ -36,21 +36,16 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
+	setup(){
 		./configure --prefix=/usr
-		
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		cd $DESTDIR
 		mkdir -p $DESTDIR/lib

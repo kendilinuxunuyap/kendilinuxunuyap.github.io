@@ -43,12 +43,12 @@ Debian ortamında bu paketin derlenmesi için;
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
 	{
-		$SOURCEDIR/configure \
+			./configure \
 			--prefix=/usr \
 			--libdir=/lib64 \
 			--with-shared \
@@ -62,8 +62,6 @@ Debian ortamında bu paketin derlenmesi için;
 			--with-manpage-format=normal \
 			--with-xterm-kbs=del \
 			--with-pkg-config-libdir=/usr/lib64/pkgconfig
-			
-	    #    --without-ada
 	}
 	build()
 	{

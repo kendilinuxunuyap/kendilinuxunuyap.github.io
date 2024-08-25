@@ -37,28 +37,19 @@ Derleme
 		        director=$(find ./* -maxdepth 0 -type d)
 		        directorname=$(basename ${director})
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		   
-
+	setup()	{
 		    cp -prfv $PACKAGEDIR/files/* $SOURCEDIR/
-
-
-		    cd $SOURCEDIR
 		    patch -Np1 < $SOURCEDIR/patches/remove-zstd.patch
 		    patch -Np1 < $SOURCEDIR/patches/remove-logsave.patch
 		    patch -Np1 < $SOURCEDIR/patches/non-debian.patch
 	}
-	build()
-	{
+	build()	{
 		    echo ""
 	}
-	package()
-	{
-		    cd $SOURCEDIR
+	package()	{
 		    cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
 		    file=$(echo $line | cut -f1 -d" ")
 		    target=$(echo $line | cut -f2 -d" ")
@@ -90,6 +81,11 @@ Derleme
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+
+
+.. raw:: pdf
+
+   PageBreak
 
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/initramfs-tools/files.tar>`_
 

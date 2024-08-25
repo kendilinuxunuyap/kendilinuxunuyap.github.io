@@ -42,24 +42,16 @@ komutuyla paketin kurulması gerekmektedir.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
-    	./configure --prefix=/usr \
-        --libdir=/usr/lib64/ \
-        --sbindir=/usr/bin \
-        --disable-rpath \
-        --disable-device-mapper	
+	setup(){
+    	./configure --prefix=/usr --libdir=/usr/lib64/ --sbindir=/usr/bin --disable-rpath --disable-device-mapper	
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

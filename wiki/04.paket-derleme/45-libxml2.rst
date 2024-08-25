@@ -37,28 +37,17 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
+	setup(){
         ./autogen.sh
-       	./configure --prefix=/usr \
-			--libdir=/usr/lib64 \
-			--with-history \
-			--with-icu \
-			--with-legacy \
-			--with-threads
-
-
+       	./configure --prefix=/usr --libdir=/usr/lib64 --with-history --with-icu --with-legacy --with-threads
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		mkdir -p $DESTDIR/usr/lib64/python3.11
 		mv $DESTDIR/usr/lib/* $DESTDIR/usr/lib64/

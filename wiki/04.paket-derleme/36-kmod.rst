@@ -44,27 +44,17 @@ komutuyla paketin kurulması gerekmektedir.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
 	    touch libkmod/docs/gtk-doc.make
-	    $SOURCEDIR/configure --prefix=/usr \
-		--libdir=/usr/lib64/ \
-		--bindir=/bin \
-		--with-rootlibdir=/lib \
-			--with-zlib \
-			--with-openssl
+	    ./configure --prefix=/usr --libdir=/usr/lib64/ --bindir=/bin --with-rootlibdir=/lib --with-zlib --with-openssl
 	}
-
 	build(){
 	    make
 	}
-
 	package(){
 	    make install DESTDIR=$DESTDIR
-	    echo "Dizin :"
-	    pwd
 	    mkdir -p ${DESTDIR}/sbin
 	    for i in lsmod rmmod insmod modinfo modprobe depmod; do
 			ln -sf ../bin/kmod "$DESTDIR"/sbin/$i

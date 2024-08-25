@@ -36,17 +36,14 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
 	{
-	     cd $SOURCEDIR
-	     # kaynak dışında başka yerde derleme hatası verdiği için build dizininden source dizinine geçtik
-	     ./configure --prefix=/usr \
-	    	--libdir=/lib64 \
-		    --enable-shared \
-		    --enable-static \
+	    ./configure --prefix=/usr \
+	    --enable-shared \
+	    --enable-static \
 		--enable-pcre2-16 \
 		--enable-pcre2-32 \
 		--enable-jit \

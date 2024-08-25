@@ -36,14 +36,11 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	export CFLAGS="-static-libgcc -static-libstdc++ -fPIC"
-	#set FORCE_UNSAFE_CONFIGURE=1
 	setup(){
-
-	  	cd $SOURCEDIR
     	export FORCE_UNSAFE_CONFIGURE=1 
     	./configure --prefix=/usr \
         --libdir=/usr/lib64 \
@@ -51,14 +48,12 @@ Derleme
         --enable-largefile \
         --enable-single-binary=symlinks \
         --enable-no-install-program=groups,hostname,kill,uptime \
-        --without-selinux \
-        --without-openssl
+        --without-selinux --without-openssl
 	}
 
 	build(){
 	    make -j5 #-C $DESTDIR all
 	}
-
 	package(){
 	    make install DESTDIR=$DESTDIR
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

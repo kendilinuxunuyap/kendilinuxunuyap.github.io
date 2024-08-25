@@ -36,28 +36,17 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-	    cd $SOURCEDIR
-	    ./configure --prefix=/usr \
-		--sbindir=/usr/sbin \
-		--libdir=/usr/lib64 \
-		--enable-securedir=/usr/lib64/security \
-		--enable-static \
-		--enable-shared \
-		--disable-nls \
-		--disable-selinux \
-
-	}
-	build()
-	{
+	setup(){
+	    ./configure --prefix=/usr --sbindir=/usr/sbin --libdir=/usr/lib64 \
+		--enable-securedir=/usr/lib64/security --enable-static --enable-shared --disable-nls --disable-selinux
+		}
+	build(){
 		make
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		chmod +s "$DESTDIR"/usr/sbin/unix_chkpwd
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

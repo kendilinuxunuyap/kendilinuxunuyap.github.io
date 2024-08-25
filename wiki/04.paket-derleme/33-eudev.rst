@@ -44,23 +44,23 @@ komutuyla paketin kurulması gerekmektedir.
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
 	{
-		cp $PACKAGEDIR/files/eudev.hook $BUILDDIR
-		cp $PACKAGEDIR/files/eudev.init-bottom $BUILDDIR
-		cp $PACKAGEDIR/files/eudev.init-top $BUILDDIR
+		cp $PACKAGEDIR/files/eudev.hook $SOURCEDIR
+		cp $PACKAGEDIR/files/eudev.init-bottom $SOURCEDIR
+		cp $PACKAGEDIR/files/eudev.init-top $SOURCEDIR
 
-		$SOURCEDIR/configure --prefix=/usr \
+		./configure --prefix=/usr \
 		  	--bindir=/sbin          \
 		  	--sbindir=/sbin         \
 		   	--libdir=/lib64      \
 		   	--disable-manpages       \
 		   	--disable-static \
 		   	--disable-selinux \
-		    	--enable-modules \
+		   	--enable-modules \
 		   	--enable-kmod \
 		   	--sysconfdir=/etc \
 		   	--exec-prefix=/ \
@@ -68,7 +68,6 @@ komutuyla paketin kurulması gerekmektedir.
 			--with-rootrundir=/run \
 			--with-rootlibexecdir=/lib64/udev \
 			--enable-split-usr 
-		    	#--enable-blkid \
 	}
 	build()
 	{
@@ -81,9 +80,9 @@ komutuyla paketin kurulması gerekmektedir.
 	  	mkdir -p ${DESTDIR}/usr/share/initramfs-tools/scripts/init-{top,bottom}
 	  
 		
-		install $BUILDDIR/eudev.hook         ${DESTDIR}/usr/share/initramfs-tools/hooks/udev
-	    install $BUILDDIR/eudev.init-top         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-top/udev
-	    install $BUILDDIR/eudev.init-bottom         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-bottom/udev
+		install $SOURCEDIR/eudev.hook         ${DESTDIR}/usr/share/initramfs-tools/hooks/udev
+	    install $SOURCEDIR/eudev.init-top         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-top/udev
+	    install $SOURCEDIR/eudev.init-bottom         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-bottom/udev
 	    	
 	    cd ${DESTDIR}
 	    mkdir -p bin

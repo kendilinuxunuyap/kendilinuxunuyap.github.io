@@ -32,36 +32,29 @@ komutuyla paketin kurulması gerekmektedir.
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		        cd $ROOTBUILDDIR #dizinine geçiyoruz
-		wget ${source}
-		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		        dowloadfile=$(ls|head -1)
-		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		        director=$(find ./* -maxdepth 0 -type d)
-		        directorname=$(basename ${director})
-		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+			mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+			rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+			cd $ROOTBUILDDIR #dizinine geçiyoruz
+			wget ${source}
+			for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+			dowloadfile=$(ls|head -1)
+			filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+			if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+			director=$(find ./* -maxdepth 0 -type d)
+			directorname=$(basename ${director})
+			if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		  echo ""
+	setup()	{
+			cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
 	}
-	build()
-	{
-		    cp -prvf $PACKAGEDIR/files/ $SOURCEDIR
-		    cd $SOURCEDIR
+	build()	{
 		    patch -Np1 -i files/lfs64.patch
 		    make FTS_LDLIBS="-lfts"
 	}
-	package()
-	{
-		    cd $SOURCEDIR
+	package()	{
 		    make install DESTDIR=$DESTDIR
-		    #mv  ${DESTDIR}/lib  ${DESTDIR}/lib64
 		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir

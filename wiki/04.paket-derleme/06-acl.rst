@@ -1,9 +1,7 @@
 acl
 +++
 
-coreutils için gerekli olan paket.
-
-ACL (Access Control List), dosya sistemlerinde veya ağ cihazlarında erişim kontrolünü yönetmek için kullanılan bir mekanizmadır. ACL'ler, belirli kullanıcıların veya kullanıcı gruplarının belirli dosya veya kaynaklara erişim düzeylerini tanımlamak için kullanılır. Bu, dosyalara veya kaynaklara erişim izinlerini hassas bir şekilde kontrol etmeyi sağlar. Örneğin, bir dosyaya sadece belirli kullanıcıların yazma izni vermek için ACL'ler kullanılabilir. Bu şekilde, güvenlik ve erişim kontrolü daha ayrıntılı bir şekilde yapılabilmektedir. Linux sistemlerinde, ACL'leri yönetmek için setfacl ve getfacl gibi komutlar kullanılır. Bu komutlar sayesinde dosya veya dizinlerin ACL yapılandırmaları kolayca düzenlenebilir ve denetlenebilir.
+ACL (Access Control List), dosya sistemlerinde veya ağ cihazlarında erişim kontrolünü yönetmek için kullanılan bir mekanizmadır. ACL'ler, belirli kullanıcıların veya kullanıcı gruplarının belirli dosya veya kaynaklara erişim düzeylerini tanımlamak için kullanılır. Bu, dosyalara veya kaynaklara erişim izinlerini hassas bir şekilde kontrol etmeyi sağlar. Örneğin, bir dosyaya sadece belirli kullanıcıların yazma izni vermek için ACL'ler kullanılabilir. Bu şekilde, güvenlik ve erişim kontrolü daha ayrıntılı bir şekilde yapılabilmektedir.coreutils için gerekli olan paket.
 
 Derleme
 --------
@@ -41,17 +39,14 @@ Debian ortamında bu paketin derlenmesi için;
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 	setup(){
-	    cd $SOURCEDIR
-	    ./configure --prefix=/usr \
-		--libdir=/usr/lib64
+	    ./configure --prefix=/usr --libdir=/usr/lib64
 	}
 	build(){
 	     make -j5 #-C $DESTDIR all
 	}
-
 	package(){
 	    make install DESTDIR=$DESTDIR
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor

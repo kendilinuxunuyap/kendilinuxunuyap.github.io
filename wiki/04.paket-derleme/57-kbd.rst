@@ -38,14 +38,11 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
-
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
-		
-	    cd $SOURCEDIR
 	    autoreconf -fvi
 	    ./configure --prefix=/usr \
 	   	--sysconfdir=/etc \
@@ -54,7 +51,6 @@ Derleme
 	}
 
 	build(){
-
 	    make KEYCODES_PROGS=yes RESIZECONS_PROGS=yes
 	}
 

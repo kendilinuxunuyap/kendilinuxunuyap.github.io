@@ -9,3 +9,8 @@ Bu bölümde başlıca kullanılan derleme araçlarından söz edilecektir. Bu a
 - cmake
 - meson
 - python
+
+
+.. raw:: pdf
+
+   PageBreak

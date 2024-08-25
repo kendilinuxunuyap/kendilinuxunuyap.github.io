@@ -36,27 +36,16 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-		cd $SOURCEDIR
-    	./configure --prefix=/usr \
-         --libdir=/lib64/ \
-         --with-ncursesw
-	    # change default color blue to red
-	    cd $SOURCEDIR
-	  	#  sed -i "s/COLOR_BLUE/COLOR_RED/g" dlg_colors.h
-	  	#  sed -i "s/COLOR_CYAN/COLOR_MAGENTA/g" dlg_colors.h
-		
+	setup(){
+    	./configure --prefix=/usr --libdir=/lib64/ --with-ncursesw
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

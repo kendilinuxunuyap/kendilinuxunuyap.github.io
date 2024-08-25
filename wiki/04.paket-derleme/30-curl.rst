@@ -35,7 +35,7 @@ Derleme
 		        director=$(find ./* -maxdepth 0 -type d)
 		        directorname=$(basename ${director})
 		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup()
@@ -57,30 +57,20 @@ Derleme
 		    --without-libpsl
 		    --without-nghttp2
 		     
-		    #$(use_opt zstd --with-zstd --without-zstd)
-		    #$(use_opt zlib --with-zlib --without-zlib)
-		    #$(use_opt brotli --with-brotli --without-brotli)
-		    #$(use_opt libssh --with-libssh --without-libssh)
-		    #$(use_opt libidn2 --with-libidn2 --without-libidn2)
+		    #--without-zstd --without-zlib --without-brotli --without-libssh)
 		)
-
-		    cd $SOURCEDIR
 		    ./configure ${opts[@]} --with-openssl
-
-
 	}
-	build()
-	{
+	build(){
 		    make
 	}
-	package()
-	{
-		    make install DESTDIR=$DESTDIR
+	package(){
+			make install DESTDIR=$DESTDIR
 		    cd $DESTDIR
 		    for ver in 3 4.0.0 4.1.0 4.2.0 4.3.0 4.4.0 4.5.0 4.6.0 4.7.0; do
 		    ln -s $DESTDIR/lib/libcurl.so.4.8.0 $DESTDIR/lib/libcurl.so.${ver}
-		done
-		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+			done
+			${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

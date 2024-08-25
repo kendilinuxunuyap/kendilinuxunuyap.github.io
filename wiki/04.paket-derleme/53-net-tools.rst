@@ -36,15 +36,11 @@ Derleme
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
-	export BINDIR='/usr/bin' SBINDIR='/usr/bin'
-		cd $SOURCEDIR/
-	   #$SOURCEDIR/configure --prefix=/usr \
-	    #    --libdir=/usr/lib64/
-	    echo ""
+		export BINDIR='/usr/bin' SBINDIR='/usr/bin'
 	}
 
 	build(){
