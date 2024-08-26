@@ -1,9 +1,7 @@
 grub
 ++++
 
-GRUB (GRand Unified Bootloader), çoklu işletim sistemlerini destekleyen ve kullanıcıların sistemlerini başlatmalarını sağlayan bir önyükleyici yazılımıdır. Linux tabanlı sistemlerde yaygın olarak kullanılan GRUB, sistem açılışında gerekli olan çekirdek dosyalarını yükleyerek işletim sisteminin çalışmasını başlatır. GRUB, kullanıcıların farklı işletim sistemleri arasında seçim yapmalarına olanak tanırken, aynı zamanda gelişmiş yapılandırma seçenekleri sunar.
-
-GRUB'un temel özellikleri arasında, çoklu çekirdek desteği, ağ üzerinden önyükleme yapabilme yeteneği ve kullanıcı dostu bir arayüz bulunmaktadır. Örneğin, GRUB yapılandırma dosyası genellikle /boot/grub/grub.cfg konumunda bulunur ve burada önyükleme seçenekleri tanımlanır. 
+GRUB (GRand Unified Bootloader), çoklu işletim sistemlerini destekleyen ve kullanıcıların sistemlerini başlatmalarını sağlayan bir önyükleyici yazılımıdır. GRUB yapılandırma dosyası genellikle /boot/grub/grub.cfg konumunda bulunur ve burada önyükleme seçenekleri tanımlanır. 
 
 Derleme
 --------
@@ -23,7 +21,6 @@ Derleme
 	dontstrip=1
 	efi_dp=(efibootmgr)
 	ia32_dp=(efibootmgr)
-
 	unset CFLAGS
 	unset CXXFLAGS
 
@@ -34,8 +31,6 @@ Derleme
 		elif [[ "$1" == "bios" ]] ; then; echo -n "--with-platform=pc"
 		fi
 	}
-
-	
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -43,7 +38,6 @@ Derleme
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
