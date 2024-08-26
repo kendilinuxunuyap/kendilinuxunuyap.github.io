@@ -12,27 +12,27 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	# açık ekran tespit ediliyor
 	user=$(who | grep '('$display')' | awk '{print $1}')	#ekranı açan kullanıcı tespit ediliyor
 	mkdir -p  /home/$user/distro/build 	#Derleme dizini yoksa oluşturuluyor
-    mkdir -p   /home/$user/distro/rootfs  	#Sistemin oluşturlacağı dizin yoksa oluşturuluyor
-    rm -rf  /home/$user/distro/build/* #içeriği temizleniyor
-    cp -prfv files/*  /home/$user/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
-    cd  /home/$user/distro/build  #build geçiyoruz
-	
-    mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
-    var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
-	usr/local/{bin,etc,games,include,lib,sbin,share,src}
-    ln -s lib64 lib
-    cd var&&ln -s ../run run&&cd -
-    cd usr&&ln -s lib64 lib&&cd -
-    cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
+	mkdir -p   /home/$user/distro/rootfs  	#Sistemin oluşturlacağı dizin yoksa oluşturuluyor
+	rm -rf  /home/$user/distro/build/* #içeriği temizleniyor
+	cp -prfv files/*  /home/$user/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
+	cd  /home/$user/distro/build  #build geçiyoruz
 
-    bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >>  /home/$user/distro/build/etc/shell"
-    bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >>  /home/$user/distro/build/etc/fstab"
-    bash -c "echo '127.0.0.1 basitdagitim' >>  /home/$user/distro/build/etc/hosts"
-    bash -c "echo 'basitdagitim' >  /home/$user/distro/build/etc/hostname"
-    bash -c "echo 'nameserver 8.8.8.8' >  /home/$user/distro/build/etc/resolv.conf"
-    echo root:x:0:0:root:/root:/bin/sh >  /home/$user/distro/build/etc/passwd
-    chmod 755  /home/$user/distro/build/etc/passwd
-    cp -prfv  /home/$user/distro/build/*   /home/$user/distro/rootfs/
+	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+	var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
+	usr/local/{bin,etc,games,include,lib,sbin,share,src}
+	ln -s lib64 lib
+	cd var&&ln -s ../run run&&cd -
+	cd usr&&ln -s lib64 lib&&cd -
+	cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
+
+	bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >>  /home/$user/distro/build/etc/shell"
+	bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >>  /home/$user/distro/build/etc/fstab"
+	bash -c "echo '127.0.0.1 basitdagitim' >>  /home/$user/distro/build/etc/hosts"
+	bash -c "echo 'basitdagitim' >  /home/$user/distro/build/etc/hostname"
+	bash -c "echo 'nameserver 8.8.8.8' >  /home/$user/distro/build/etc/resolv.conf"
+	echo root:x:0:0:root:/root:/bin/sh >  /home/$user/distro/build/etc/passwd
+	chmod 755  /home/$user/distro/build/etc/passwd
+	cp -prfv  /home/$user/distro/build/*   /home/$user/distro/rootfs/
 	
 Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için aşağıda verilen script şablon yapısını kullanacağız.
 
@@ -68,17 +68,13 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-	setup(){		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması
-	}
-	build(){		#Paketin derlenmesi
-	}
-	package(){		# Derlenen dosyaları yükleme öncesi ayar ve yükleme işleminin yapılması
-	}
+	setup(){		#Derleme öncesi kaynak dosyaların sisteme göre ayarlanması	}
+	build(){		#Paketin derlenmesi	}
+	package(){		# Derlenen dosyaları yükleme öncesi ayar ve yükleme işleminin yapılması	}
 	initsetup 	# initsetup fonksiyonunu çalıştırır ve kaynak dosyayı inidirir
 	setup		# setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build		# build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package		# package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
-
 
 .. raw:: pdf
 
