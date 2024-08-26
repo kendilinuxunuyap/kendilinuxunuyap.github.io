@@ -1,7 +1,7 @@
 openrc
 ++++++
 
-OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla geliştirilmiş bir init sistemidir. Gentoo Linux gibi dağıtımlarda yaygın olarak kullanılmakta olup, sistemin daha esnek ve modüler bir şekilde yönetilmesine olanak tanır.
+OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla geliştirilmiş bir init sistemidir. 
 
 Derleme
 --------
