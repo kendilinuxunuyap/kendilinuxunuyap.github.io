@@ -8,7 +8,7 @@ Derleme
 
 Debian ortamında bu paketin derlenmesi için;
 
-- **sudo apt install libzstd-dev** 
+- **sudo apt install libzstd-dev libacl1-dev libacl1** 
 
 komutuyla paketin kurulması gerekmektedir.
 

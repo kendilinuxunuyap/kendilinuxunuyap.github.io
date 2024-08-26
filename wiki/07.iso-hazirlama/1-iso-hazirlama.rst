@@ -141,6 +141,8 @@ Artık sistemi açabilen ve tty açıp bize sunan bir yapı oluşturduk. Çalı�
 
 
  Tamamını kapsayan scriptimiz aşağıdadır.
+iso Scripti
+-----------
 
 .. code-block:: shell
 	
@@ -176,14 +178,15 @@ Artık sistemi açabilen ve tty açıp bize sunan bir yapı oluşturduk. Çalı�
 	
 	#### system chroot umount
 	for dir in dev dev/pts proc sys ; do    while umount -lf -R $rootfs/$dir 2>/dev/null ; do true; done done
-	#### Copy initramfs
-	cp -pf $rootfs/boot/initrd.img-* $distro/iso/boot/initrd.img
-	
+		
 	#************************iso *********************************
 	mkdir -p $distro/iso
 	mkdir -p $distro/iso/boot
 	mkdir -p $distro/iso/boot/grub
 	mkdir -p $distro/iso/live || true
+
+	#### Copy initramfs
+	cp -pf $rootfs/boot/initrd.img-* $distro/iso/boot/initrd.img
 
 	#### Copy kernel
 	cp -pf $rootfs/boot/vmlinuz-* $distro/iso/boot/vmlinuz

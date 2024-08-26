@@ -102,8 +102,8 @@ echo -e "\033[31mSistem yuklenmeye baslandi. Tahmini 3-5 dakika sürecektir.. Lu
 #echo "Sistem yuklenmeye baslandi. Tahmini 3-5 dakika sürecektir..Lutfen bekleyiniz....."
 #echo "........................................................................................................."
 echo -e "\033[32m...............................................................................................\033[0m"
-ls /kaynak/ | xargs -n1 -P$(nproc) -I% /usr/bin/rsync -ravhHAX --info=progress2 /kaynak/% /hedef/ &>/dev/null|| fallback
-#rsync -ravhHAX --info=progress2 /kaynak/% /hedef/|| fallback
+#ls /kaynak/ | xargs -n1 -P$(nproc) -I% /usr/bin/rsync -ravhHAX --info=progress2 /kaynak/% /hedef/ &>/dev/null|| fallback
+rsync -ravhHAX --progress --stats /kaynak/ /hedef/ &>/dev/null|| fallback
 echo -e "\033[32m...............................................................................................\033[0m"
 echo -e "\033[31mSistem yuklenmesi tamamlaniyor....\033[0m"
 echo -e "\033[32m...............................................................................................\033[0m"
