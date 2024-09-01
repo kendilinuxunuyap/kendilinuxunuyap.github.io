@@ -3,14 +3,14 @@ kernel
 
 Kernel, bilgisayar sistemlerinde işletim sisteminin kalbini oluşturan bir yazılım katmanıdır. Donanım kaynaklarını yönetir, sistem çağrılarını işler ve uygulama yazılımlarının donanım ile etkileşimini sağlar. Linux işletim sisteminde, kernel, çoklu görev yönetimi, bellek yönetimi, dosya sistemi erişimi ve ağ iletişimi gibi kritik işlevleri yerine getirir.
 
-Aşağıda nasıl derlendiği detaylıca anlatılmıştır. Derleme işlemi zaman ve tecrübe gerektirdiği için hazır derlenmiş olanı kullanacağız. Aslında debian, arch vb. dağıtımların kernelini derlemeden kullanabiliriz. Bir uyumsuzluk yaratmayacaktır. Bundan dolayı debian kernelini indirip kendi sistemimize yükleyen bir işlem yapacağız. Fakat derlemek isterseniz Derleme başlığı altın paylaşılan scripti kullanabilirsiniz. Debian kerneli için aşağıd scripti verilmiştir.
+Aşağıda nasıl derlendiği detaylıca anlatılmıştır. Derleme işlemi zaman ve tecrübe gerektirdiği için hazır derlenmiş olanı kullanacağız. Aslında debian, arch vb. dağıtımların kernelini derlemeden kullanabiliriz. Bir uyumsuzluk yaratmayacaktır. Bundan dolayı kendi derlediğimiz kernelini indirip kendi sistemimize yükleyen bir işlem yapacağız. Fakat derlemek isterseniz Derleme başlığı altında paylaşılan scripti kullanabilirsiniz. Kerneli hazırladığımız sistemem kurmak için aşağıda script verilmiştir.
 
 Debian Kernel
 ------------
 
 .. code-block:: shell
 	
-		#!/usr/bin/env bash
+	#!/usr/bin/env bash
 	version="6.10.6"
 	name="linux-image"
 	depends=""
@@ -43,15 +43,11 @@ Debian Kernel
 
 	setup()
 	{
-	mkdir -p $SOURCEDIR
-		# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/
+		mkdir -p $SOURCEDIR
 		cd $SOURCEDIR
-		wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/linux-image-6.10.6-amd64_6.10.6-1_amd64.deb
-		# ar x indirilen dosya
-		ar x image.deb
-		# tar -xf data.tar.xz
-		tar -xf data.tar.xz
-		# find ./ -iname "*" -exec unxz {} \; komutuyla xz açılır
+		wget -O kernel.bps https://github.com/basitdagitim/kly-binary-packages/raw/master/kernel/kernel-6.9.9.bps
+		tar -xf kernel.bps
+		tar -xf rootfs.tar.xz
 	}
 	build()
 	{
@@ -61,7 +57,7 @@ Debian Kernel
 	{
 		cd $SOURCEDIR
 		cp -prfv boot  ${DESTDIR}/
-		cp -prfv usr/lib/*  ${DESTDIR}/lib/
+		cp -prfv lib/*  ${DESTDIR}/lib/
 		find ${DESTDIR}/ -iname "*" -exec unxz {} \;
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}

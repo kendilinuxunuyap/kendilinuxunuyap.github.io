@@ -121,6 +121,7 @@ Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
 - sudo apt-get install pkgconf
 - sudo apt install patch
 - sudo apt install libtool
+- sudo apt install grub-pc grub-pc-bin
 
 Paketlerin derlenmesiniz **root** yetkisiyle yapınız.
 

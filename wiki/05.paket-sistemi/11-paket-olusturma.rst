@@ -37,28 +37,33 @@ Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilm
 	description="readline kütüphanesi"
 	source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 	groups="sys.apps"
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
+	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
+	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
+	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
+	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
+            wget ${source}
+            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
 		    director=$(find ./* -maxdepth 0 -type d)
 		    directorname=$(basename ${director})
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 	
 	setup(){
-		cp -prvf $PACKAGEDIR/files $BUILDDIR/
-		$SOURCEDIR/configure --prefix=/usr \
+		cp -prvf $PACKAGEDIR/files $SOURCEDIR/
+		./configure --prefix=/usr \
 			--libdir=/usr/lib64
 	}
 
@@ -69,7 +74,8 @@ Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilm
 	package(){
 		make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/usr/lib64/pkgconfig"
 		
-		install -Dm644 files/inputrc "$DESTDIR"/etc/inputrc
+		install -Dm644 $SOURCEDIR/files/inputrc "$DESTDIR"/etc/inputrc
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -172,11 +178,11 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	if [ ! -f "${paket}/bpsbuild" ]; then echo "Paket dosyası bulunamadı!"; exit; fi
 	echo "Paket : $paket"
 	source ${paket}/bpsbuild
-	ROOTBUILDDIR="$HOME/distro/build"
-	BUILDDIR="$HOME/distro/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="$HOME/distro/rootfs" #Paketin yükleneceği sistem konumu
+	ROOTBUILDDIR="/tmp/bps/build"
+	BUILDDIR="/tmp/bps/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="/tmp/bps/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd)
-	SOURCEDIR="$HOME/distro/build/${name}-${version}"
+	SOURCEDIR="/tmp/bps/build/${name}-${version}"
 	#1. madde, paketin indirilmesi
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
