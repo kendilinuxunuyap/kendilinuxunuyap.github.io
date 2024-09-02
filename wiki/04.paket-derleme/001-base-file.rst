@@ -1,8 +1,7 @@
 base-file
 +++++++++
 
-Bir sistem tasarımı için temel ayarlamalar, dosya ve dizin yapıları olması gerekmektedir.
-Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz. Sistemin ilk ve temel ayarları olduğundan dolayı **base-file** ismini kullandık. Aslında linux sisteminde temel paket **glibc** paketidir. **glibc** paketinin derlenip yüklenmesinden önce temel yapının oluşturulması gerektiği için **base-file** paketi oluşturduk. 
+Linux sistemimiz için temel ayarlamalar, dosya ve dizin yapıları olması gerekmektedir. Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz. Aslında linux sisteminde temel paket **glibc** paketidir. **glibc** paketinin derlenip yüklenmesinden önce temel yapının oluşturulması gerektiği için **base-file** paketi oluşturduk. 
 
 **base-file Komutları**
 -----------------------
@@ -80,21 +79,15 @@ Yukarıdaki kodları fonksiyonel hale getirmek için aşağıdaki şablon script
 
 Şablon içinde kullanılan bazı sabit bilgiler var. Bular;
 
-- ROOTBUILDDIR=" /home/$user/distro/build": Derleme konumu ev dizininde bulunan **distro/build** dizini.
-- BUILDDIR=" /home/$user/distro/build/build-${name}-${version}": Derleme yapılan paketin derleme konumu.
-- DESTDIR=" /home/$user/distro/rootfs": Derlenmiş paketin yükleneceği sistem konumu dizini.
+- ROOTBUILDDIR=" /home/$user/distro/build": Derleme konumu.
+- BUILDDIR=" /home/$user/distro/build/build-${name}-${version}": Derlenen paketin derleme konumu.
+- DESTDIR=" /home/$user/distro/rootfs": Derlennen paketin yükleme konumu.
 - PACKAGEDIR=$(pwd) : Derleme talimatının bulunduğu(build dosyası) konum.
-- SOURCEDIR=" /home/$user/distro/build/${name}-${version}": Derlenecek paketin kaynak kodlarının olduğu konum.
+- SOURCEDIR=" /home/$user/distro/build/${name}-${version}": Derlenen paketin kaynak kodlarının konumu.
 
 Derleme konumunu uzun uzun yazmak yerine sadece $ROOTBUILDDIR ifadesi kullanılıyor. Aslında bu işleme takma ad(alias) denir. Mesela kaynak kodların olduğu konumda bir şeyler yapmak istersek $SOURCEDIR ifadesinin kullanmamız yeterli olacaktır. Bu takma adlar tüm paketlerde geçerli olacak ifadelerdir.
 
-Şablon dosyasındaki her bir fonksiyonu aslında **base-file** için paylaşılan komutları adım adım yaptığımız işlemleri kapsamaktadır. Biz bu işlem adımlarını şablon dosyamızın ilgili fonksiyonlarına aşama aşama yaptığımız işlemleri ayrıştıracağız.
-
-
 **base-file** script dosyasına benzer yapıda diğer paketler içinde script dosyası oluşturulacaktır. Bu sayede her aşamayı tek tek yazma gibi iş yükü olmayacak ve paket derlenirken hangi fonksiyonda(initsetup, setup vb.) sorun yaşanırsa o fonksiyon üzerinden hata ayıklama yapılacaktır.
-
-
-Bu şekilde bir script dosyasına ileri aşamalarda daha yeni özellikler katma ve kontrol etmeye imkan sağlayacaktır. **base-file** scriptide dahil sonraki aşamalarda yapacağınız çalıştıracağınız script dosyaları bir dizin içinde sırasıyla(1-base-file vb) saklamanızı tavsiye ederim. Daha sonra bu işlemleri tekrarlamanız durumunda hangi sırayla paketleri derleyeceğinizi anlamanız ve hızlıca paketleri derlemenizi kolaylaştıracaktır.
 
 Yapıyı Oluşturan Script
 -----------------------
@@ -123,10 +116,8 @@ Yapıyı Oluşturan Script
 			cd $ROOTBUILDDIR #dizinine geçiyoruz
 			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-	setup(){			cp -prfv $PACKAGEDIR/files/* $BUILDDIR/
-	}
-	build(){			echo ""
-	}
+	setup(){	cp -prfv $PACKAGEDIR/files/* $BUILDDIR/	}
+	build(){			echo ""	}
 	package(){
 			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
 			var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
@@ -167,7 +158,7 @@ Paket Derleme Yöntemi
 **base-file** paketleri ilk paketler olmasından dolayı detaylıca anlatıldı. Bu paketten sonraki paketlerde **şablon script** dosyası yapında verilecektir. Script dosya altında ise ek dosyalar varsa **files.tar** şeklinde link olacaktır. Her paket için istediğiniz bir konumda bir dizin oluşturunuz. **files.tar** dosyasını oluşturulan dizin içinde açınız. Test amaçlı derleme yaptığım paketler ve **base-file** için yaptığımız dizin yapısı aşağıda gösterilmiştir.
 
 .. image:: /_static/images/base-file-0.png
-  	:width: 600
+  	:width: 300
 
 
 Derleme scripti için **build** dosyası oluşturup içine yapıştırın ve kaydedin. 
