@@ -28,25 +28,24 @@ lvm2 Kurma Scripti
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+ 		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
+	setup(){
 		mkdir -p $SOURCEDIR
 		cd $SOURCEDIR
-		wget -O lvm2.bps https://kendilinuxunuyap.github.io/_static/files/lvm2/lvm2-2_03_21.bps
+		wget -O lvm2.bps https://kendilinuxunuyap.github.io/_static/files/lvm2/lvm2-2_03_21.bps 				#dosya indiriliyor
 		# tar -xf lvm2.bps
 		tar -xf lvm2.bps
 		tar -xf rootfs.tar.xz
