@@ -1,33 +1,7 @@
 glibc
 +++++
 
-**glibc** dağıtımda sistemdeki bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. GNU C Library(glibc)'den farklı diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. **glibc** yerine alternatif olarak çeşitli avantajlarından dolayı kullanılabilir. **glibc** en çok tercih edilen ve uygulama (özgür olmayan) uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır. 
-
-
-glibc (GNU C Kütüphane) Linux sistemlerinde kullanılan bir C kütüphanesidir. Bu kütüphane, C programlama dilinin temel işlevlerini sağlar ve Linux çekirdeğiyle etkileşimde bulunur. **glibc** listemizdeki tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiiz pakettir.
-
-Derleme
--------
-
-.. code-block:: shell
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	mkdir -p  /home/$user/distro/build #derleme dizini yoksa oluşturuluyor
-	rm -rf /home/$user/distro/build/* #içeriği temizleniyor
-	cd /home/$user/distro/build #dizinine geçiyoruz
-	wget https://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz # glibc kaynak kodunu indiriyoruz.
-	tar -xvf glibc-2.38.tar.gz # glibc kaynak kodunu açıyoruz.
-	cd glibc-2.38
-	configure --prefix=/ --disable-werror # Derleme ayarları yapılıyor
-	make # glibc derleyelim.
-
-Yükleme
--------
-
-.. code-block:: shell
-
-	make install DESTDIR=/home/$user/distro/rootfs # Ev Dizinindeki /distro/rootfs dizinine glibc yükleyelim.
+**glibc** linux dağıtımlarında bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. **glibc** dışında diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. **glibc** en çok tercih edilen ve uygulama uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır. **glibc** listemizde derleyeceğimiz tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiz pakettir.
 
 glibc Script Dosyası
 --------------------
@@ -43,11 +17,9 @@ Debian ortamında bu paketin derlenmesi için;
 	depends=""
 	description="temel kütüphane"
 	source="https://ftp.gnu.org/gnu/libc/${name}-${version}.tar.gz"
-
 	groups="sys.base"
 	export CC="gcc"
 	export CXX="g++"
-	
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -61,7 +33,7 @@ Debian ortamında bu paketin derlenmesi için;
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
 		    cd $ROOTBUILDDIR #dizinine geçiyoruz
 		    wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		    for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
 		    dowloadfile=$(ls|head -1)
 		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
 		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
@@ -71,71 +43,44 @@ Debian ortamında bu paketin derlenmesi için;
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
 
-	setup()
-	{
-			cp -prvf $PACKAGEDIR/files $BUILDDIR/
-			opts=(	--prefix=/usr
-		            --mandir=/usr/share/man
-		            --infodir=/usr/share/info
-		            --enable-bind-now
-		            --enable-multi-arch
-		            --enable-stack-protector=strong
-		            --enable-stackguard-randomization
-		            --disable-crypt
-		            --disable-profile
-		            --disable-werror
-		            --enable-static-pie
-		            --enable-static-nss
-		            --disable-nscd)
-		            
+	setup()	{
+			cp -prvf $PACKAGEDIR/files $BUILDDIR/            
 			echo "slibdir=/lib64" >> configparms
 			echo "rtlddir=/lib64" >> configparms
-			$SOURCEDIR/configure ${opts[@]} \
-			--host=x86_64-pc-linux-gnu \
-			--libdir=/lib64 \
-			--libexecdir=/lib64/glibc
+			$SOURCEDIR/configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-bind-now \
+			--enable-multi-arch --enable-stack-protector=strong --enable-stackguard-randomization --disable-crypt --disable-profile --disable-werror --enable-static-pie --enable-static-nss--disable-nscd \
+			--host=x86_64-pc-linux-gnu --libdir=/lib64 --libexecdir=/lib64/glibc
 	}
-	build()
-	{
-		        make -j5 #-C $DESTDIR all
+	build(){
+		  	make -j5 #-C $DESTDIR all
 	}
-	package()
-	{
-		        #cd $SOURCEDIR
-		        # create symlink lib64 (gentoo compability)
+	package(){
 			mkdir -p ${DESTDIR}/lib64
 			cd $DESTDIR
 			ln -s lib64 lib
 			cd $BUILDDIR
-
 			make install DESTDIR=$DESTDIR
 
 			mkdir -p ${DESTDIR}/etc/ld.so.conf.d/ ${DESTDIR}/etc/sysconf.d/ ${DESTDIR}/bin
 			install $BUILDDIR/files/ld.so.conf ${DESTDIR}/etc/ld.so.conf
 			install $BUILDDIR/files/usr-support.conf ${DESTDIR}/etc/ld.so.conf.d/
 			install $BUILDDIR/files/x86_64-linux-gnu.conf ${DESTDIR}/etc/ld.so.conf.d/
-			# remove ld.so.cache file (this file must generated by ldconfig command from ymp)
-			rm -f ${DESTDIR}/etc/ld.so.cache
-			# install sysconf trigger
-
-			install $BUILDDIR/files/glibc.sysconf ${DESTDIR}/etc/sysconf.d/glibc
-			# install extra tools
-			install $BUILDDIR/files/locale-gen ${DESTDIR}/bin/locale-gen
+			
+			rm -f ${DESTDIR}/etc/ld.so.cache	# remove ld.so.cache file
+			install $BUILDDIR/files/glibc.sysconf ${DESTDIR}/etc/sysconf.d/glibc	# install sysconf trigger
+			install $BUILDDIR/files/locale-gen ${DESTDIR}/bin/locale-gen 	# install extra tools
 			install $BUILDDIR/files/revdep-rebuild ${DESTDIR}/bin/revdep-rebuild
-			# replace buggy turkish format with better one
-			install $BUILDDIR/files/tr_TR ${DESTDIR}/usr/share/i18n/locales/tr_TR
+			
+			install $BUILDDIR/files/tr_TR ${DESTDIR}/usr/share/i18n/locales/tr_TR # replace buggy turkish format with better one
 			# remove unused languages
 			for l in ku hy ; do
 		            rm -rf ${DESTDIR}/usr/lib/locale/${i}_*
 		            rm -rf ${DESTDIR}/usr/share/locale/${i}_*
 		            rm -rf ${DESTDIR}/usr/share/i18n/locales/${i}_*
 			done
-			# fix ldd shebang
-			sed -i "s|#!/bin/bash|#!/bin/sh|g" ${DESTDIR}/usr/bin/ldd
-
-	   		cd ${DESTDIR}/lib64/
-			mkdir -p x86_64-linux-gnu
-	   		cd x86_64-linux-gnu
+			sed -i "s|#!/bin/bash|#!/bin/sh|g" ${DESTDIR}/usr/bin/ldd	# fix ldd shebang
+	   		cd ${DESTDIR}/lib64/ &&mkdir -p x86_64-linux-gnu&&cd x86_64-linux-gnu
+	   		   
 		         while read -rd '' file; do
 		           ln -s $file $(basename "$file")
 	   		done< <(find "../"  -maxdepth 1 -type f -iname "*" -print0)
@@ -147,11 +92,7 @@ Debian ortamında bu paketin derlenmesi için;
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-
-
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc/files.tar>`_
-
-tar dosyasını indirdikten sonra **glibc** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. 
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/glibc/files.tar>`_ tar dosyasını indirdikten sonra **glibc** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. 
 
 Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra **build** scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları **glibc** dizinin içinde terminal açarak çalıştırınız.
 
@@ -160,33 +101,29 @@ Yukarı verilen script kodlarını **build** adında bir dosya oluşturup içine
 	chmod 755 build
 	sudo ./build
 
+.. raw:: pdf
 
+   PageBreak
 
 Test Etme
 ---------
 
-glibc kütüphanemizi **$HOME/distro/rootfs** komununa yükledik. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim.
-
-Aşağıdaki c kodumuzu derleyelim ve **$HOME/distro/rootfs** konumuna kopyalayalım. **$HOME/** (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.
-
+glibc kütüphanemizi **$HOME/distro/rootfs** komununa yüklendi. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim. Aşağıdaki c kodumuzu derleyelim ve **$HOME/distro/rootfs** konumuna kopyalayalım. **$HOME/** (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.
 
 .. code-block:: shell
 
 	#include<stdio.h>
-	void main()
-	{
+	void main(){
 	puts("Merhaba Dünya");
 	}
 
 Program Derleme
 ................
 
-Aşağıdaki komutlarla merhaba.c dosyası derlenir.
-
 .. code-block:: shell
 	
 	cd $HOME
-	gcc -o merhaba merhaba.c 
+	gcc -o merhaba merhaba.c #merhaba.c dosyası derlenir.
 
 Program Yükleme
 ...............

@@ -31,51 +31,30 @@ komutuyla paketin kurulması gerekmektedir.
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		        cd $ROOTBUILDDIR #dizinine geçiyoruz
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
 		wget ${source}
 		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		        dowloadfile=$(ls|head -1)
-		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		        director=$(find ./* -maxdepth 0 -type d)
-		        directorname=$(basename ${director})
-		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 		cd $SOURCEDIR/squashfs-tools
 	}
 
-	build()
-	{
-		local make_options=(
-		GZIP_SUPPORT=1
-		LZ4_SUPPORT=1
-		LZMA_XZ_SUPPORT=1
-		LZO_SUPPORT=1
-		XATTR_SUPPORT=1
-		XZ_SUPPORT=1
-		ZSTD_SUPPORT=1
-	  )
-	#    -C $name-$version/$name
-	  make "${make_options[@]}"
-
+	build(){
+		make GZIP_SUPPORT=1 LZ4_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZO_SUPPORT=1 XATTR_SUPPORT=1 XZ_SUPPORT=1 ZSTD_SUPPORT=1
 	}
-	package()
-	{
-		#make install DESTDIR=$DESTDIR
-		local make_options=(
-		INSTALL_PREFIX="$DESTDIR/usr"
-		INSTALL_MANPAGES_DIR='$(INSTALL_PREFIX)/share/man/man1'
-		install
-		
-	  )
-	   #-C $name-$version/name
-	  make "${make_options[@]}"
-	  install -vDm 644 $SOURCEDIR/{ACTIONS-README,CHANGES,"README-$version",USAGE*} -t "$DESTDIR/usr/share/doc/$name/"
+	package(){
+	  	make INSTALL_PREFIX="$DESTDIR/usr" INSTALL_MANPAGES_DIR='$(INSTALL_PREFIX)/share/man/man1' install
+	  	install -vDm 644 $SOURCEDIR/{ACTIONS-README,CHANGES,"README-$version",USAGE*} -t "$DESTDIR/usr/share/doc/$name/"
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
@@ -88,9 +67,6 @@ Paket adında(squashfs-tools) istediğiniz bir konumda bir dizin oluşturun ve d
 	
 	chmod 755 build
 	sudo ./build
-
-Paketler derlendikten sonra files dizini içindeki postinstall scriptinin çalıştırılması gerekmektedir.
-Bu dosya "$HOME/distro/rootfs" konumunda chroot ile çalıştırılmalıdır.
 
 .. raw:: pdf
 

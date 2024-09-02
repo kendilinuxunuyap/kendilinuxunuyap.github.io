@@ -8,11 +8,7 @@ OpenSSH, genellikle ssh, scp, sftp ve sshd gibi araçları içerir.
 Derleme
 --------
 
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libcrypt-dev** 
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libcrypt-dev** komutuyla paketin kurulması gerekmektedir.
 
 .. code-block:: shell
 	
@@ -23,7 +19,6 @@ komutuyla paketin kurulması gerekmektedir.
 	source="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
 	depends="zlib,libxcrypt,openssl,libmd,libssh"
 	group="net.misc"
-	
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -33,24 +28,23 @@ komutuyla paketin kurulması gerekmektedir.
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		        mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		        rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		        cd $ROOTBUILDDIR #dizinine geçiyoruz
-				wget ${source}
-				for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		        dowloadfile=$(ls|head -1)
-		        filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		        if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		        director=$(find ./* -maxdepth 0 -type d)
-		        directorname=$(basename ${director})
-		        if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		        mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 	setup(){
-		    cp -prfv $PACKAGEDIR/files $SOURCEDIR/
-			./configure --prefix=/usr --libdir=/usr/lib64/ --sysconfdir=/etc/ssh --without-pam --disable-strip \
-		    --with-ssl-engine --with-privsep-user=nobody --with-pid-dir=/run \
-		    --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
+		./configure --prefix=/usr --libdir=/usr/lib64/ --sysconfdir=/etc/ssh --without-pam --disable-strip \
+		    --with-ssl-engine --with-privsep-user=nobody --with-pid-dir=/run --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 	}
 	build(){
 		make
@@ -77,7 +71,7 @@ komutuyla paketin kurulması gerekmektedir.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openssh/files.tar>`_
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openssh/files.tar>`_ 
 
 tar dosyasını indirdikten sonra istediğiniz bir konumda **openssh** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
 
@@ -87,9 +81,6 @@ Paket adında(openssh) istediğiniz bir konumda bir dizin oluşturun ve dizin i�
 	
 	chmod 755 build
 	sudo ./build
-
-Paketler derlendikten sonra files dizini içindeki postinstall scriptinin çalıştırılması gerekmektedir.
-Bu dosya "$HOME/distro/rootfs" konumunda chroot ile çalıştırılmalıdır.
 
 .. raw:: pdf
 

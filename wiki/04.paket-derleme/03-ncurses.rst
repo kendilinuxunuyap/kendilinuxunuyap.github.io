@@ -46,29 +46,14 @@ Debian ortamında bu paketin derlenmesi için;
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
-			./configure \
-			--prefix=/usr \
-			--libdir=/lib64 \
-			--with-shared \
-			--disable-tic-depends \
-			--with-versioned-syms  \
-			--enable-widec \
-			--with-cxx-binding \
-			--with-cxx-shared \
-			--enable-pc-files \
-			--mandir=/usr/share/man \
-			--with-manpage-format=normal \
-			--with-xterm-kbs=del \
-			--with-pkg-config-libdir=/usr/lib64/pkgconfig
+	setup(){
+			./configure --prefix=/usr --libdir=/lib64 --with-shared --disable-tic-depends --with-versioned-syms  --enable-widec --with-cxx-binding \
+			--with-cxx-shared --enable-pc-files --mandir=/usr/share/man --with-manpage-format=normal --with-xterm-kbs=del --with-pkg-config-libdir=/usr/lib64/pkgconfig
 	}
-	build()
-	{
+	build(){
 		 make -j5 #-C $DESTDIR all 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		cd $DESTDIR/lib64
 		ln -s libncursesw.so.6 libtinfow.so.6

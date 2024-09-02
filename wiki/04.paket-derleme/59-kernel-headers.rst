@@ -18,7 +18,6 @@ Derleme
 	depends="kernel"
 	builddepend="rsync,bc,cpio,gettext,elfutils,pahole,perl,python,tar,xz-utils"
 	group="sys.kernel"
-	
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -41,40 +40,31 @@ Derleme
 		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
-
 	setup(){
-
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
-		
 		patch -Np1 -i $PACKAGEDIR/files/patch-$version
 		cp $PACKAGEDIR/files/config $SOURCEDIR/.config
 		make olddefconfig
-
 	}
-
 	build(){
 		make bzImage -j$(nproc)
 		make modules -j$(nproc)
 	}
 
 	package(){
-
-	    #-----------------------------
-	    arch="x86"
+		#-------------------------------------- 						install 			-------------------------------------
+		arch="x86"
 		kernelbuilddir="${DESTDIR}/lib/modules/${version}/build"
 		
 		# install bzImage
 		mkdir -p "$DESTDIR/boot"
 		install -Dm644 "$(make -s image_name)" "$DESTDIR/boot/vmlinuz-${version}"
 		#make INSTALL_PATH=$DESTDIR install ARCH=amd64
-
+		
 		# install modules
-		mkdir -p "${DESTDIR}/lib/modules/${version}"
-		mkdir -p "$DESTDIR/usr/src"
-		
+		mkdir -p ${DESTDIR}/lib/modules/${version}
+		mkdir -p $DESTDIR/usr/src
 		mkdir -p ${DESTDIR}/lib/modules/${version}/build
-		
-		
 		make INSTALL_MOD_PATH=$DESTDIR modules_install INSTALL_MOD_STRIP=1 -j$(nproc)
 		
 		rm "${DESTDIR}/lib/modules/${version}"/{source,build} || true
@@ -97,28 +87,23 @@ Derleme
 		
 		make headers_install INSTALL_HDR_PATH=$DESTDIR/usr
 		
-		# install headers
-	    	mkdir -p "$kernelbuilddir" "$kernelbuilddir/arch/$arch"
-	    	cp -v -t "$kernelbuilddir" -a include
+		#-------------------------------------- 					install headers				-------------------------------------
+		mkdir -p "$kernelbuilddir" "$kernelbuilddir/arch/$arch"
+		cp -v -t "$kernelbuilddir" -a include
 	   	cp -v -t "$kernelbuilddir/arch/$arch" -a arch/$arch/include
-	    	install -Dt "$kernelbuilddir/arch/$arch/kernel" -m644 arch/$arch/kernel/asm-offsets.*
-	    	install -Dt "$kernelbuilddir/drivers/md" -m644 drivers/md/*.h
-	    	install -Dt "$kernelbuilddir/net/mac80211" -m644 net/mac80211/*.h
-	    	install -Dt "$kernelbuilddir/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
-	    	install -Dt "$kernelbuilddir/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
-	    	install -Dt "$kernelbuilddir/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
-	    	install -Dt "$kernelbuilddir/drivers/media/tuners" -m644 drivers/media/tuners/*.h
-	    	# https://bugs.archlinux.org/task/71392
-	    	install -Dt "$kernelbuilddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
-
+		install -Dt "$kernelbuilddir/arch/$arch/kernel" -m644 arch/$arch/kernel/asm-offsets.*
+		install -Dt "$kernelbuilddir/drivers/md" -m644 drivers/md/*.h
+		install -Dt "$kernelbuilddir/net/mac80211" -m644 net/mac80211/*.h
+		install -Dt "$kernelbuilddir/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
+		install -Dt "$kernelbuilddir/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
+		install -Dt "$kernelbuilddir/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
+		install -Dt "$kernelbuilddir/drivers/media/tuners" -m644 drivers/media/tuners/*.h
+		install -Dt "$kernelbuilddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h 		# https://bugs.archlinux.org/task/71392
 		find . -name 'Kconfig*' -exec install -Dm644 {} "$kernelbuilddir/{}" \;
-		
-		# clearing
-		find -L "$kernelbuilddir" -type l -printf 'Removing %P\n' -delete
+		find -L "$kernelbuilddir" -type l -printf 'Removing %P\n' -delete					# clearing
 		find "$kernelbuilddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
-
-
-	if [[ -d "$kernelbuilddir" ]] ; then
+		#-------------------------------------- 					install 				-------------------------------------
+		if [[ -d "$kernelbuilddir" ]] ; then
 	    while read -rd '' file; do
 		case "$(file -Sib "$file")" in
 		    application/x-sharedlib\;*)      # Libraries (.so)
@@ -129,20 +114,16 @@ Derleme
 		        strip "$file" ;;
 		esac
 	    done < <(find "$kernelbuilddir" -type f -perm -u+x ! -name vmlinux -print0)
+		fi
 
-	fi
-
-	if [[ -f "$kernelbuilddir/vmlinux" ]] ; then
+		if [[ -f "$kernelbuilddir/vmlinux" ]] ; then
 	    echo "Stripping vmlinux..."
 	    strip "$kernelbuilddir/vmlinux"
-	fi
+		fi
 		
 		echo "Adding symlink..."
 		mkdir -p "$DESTDIR/usr/src"
 		ln -sr "$kernelbuilddir" "$DESTDIR/usr/src/linux"
-
-	    
-	    #------------------------------
 	    mv -vf System.map $DESTDIR/boot/System.map-$version
 	    find ${DESTDIR}/ -iname "*" -exec unxz {} \;
 	    depmod -b "$DESTDIR" -F $DESTDIR/boot/System.map-$version $version
