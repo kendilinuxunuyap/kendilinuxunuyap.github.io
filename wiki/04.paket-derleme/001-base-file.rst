@@ -34,7 +34,7 @@ Bu yapıyı oluşturduktan sonra sistemi bu yapının üzerine inşaa edeceğiz.
 	chmod 755  /home/$user/distro/build/etc/passwd
 	cp -prfv  /home/$user/distro/build/*   /home/$user/distro/rootfs/
 	
-Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için aşağıda verilen script şablon yapısını kullanacağız.
+Yukarıdaki kodları fonksiyonel hale getirmek için aşağıdaki şablon scripti kullanacağız.
 
 Şablon Script Yapısı
 --------------------
@@ -45,9 +45,7 @@ Bu komutlar yöntem olarak doğru olsada daha fonksiyonel hale getirmek için a�
 	version=""
 	name=""
 	depends=""
-	description=""
 	source=""
-	groups=""
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	# açık ekran tespit ediliyor
 	user=$(who | grep '('$display')' | awk '{print $1}')	#ekranı açan kullanıcı tespit ediliyor
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
