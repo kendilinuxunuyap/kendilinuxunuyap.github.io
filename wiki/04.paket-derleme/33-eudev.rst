@@ -47,38 +47,21 @@ komutuyla paketin kurulması gerekmektedir.
 		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
-	setup()
-	{
+	setup(){
 		cp $PACKAGEDIR/files/eudev.hook $SOURCEDIR
 		cp $PACKAGEDIR/files/eudev.init-bottom $SOURCEDIR
 		cp $PACKAGEDIR/files/eudev.init-top $SOURCEDIR
 
-		./configure --prefix=/usr \
-		  	--bindir=/sbin          \
-		  	--sbindir=/sbin         \
-		   	--libdir=/lib64      \
-		   	--disable-manpages       \
-		   	--disable-static \
-		   	--disable-selinux \
-		   	--enable-modules \
-		   	--enable-kmod \
-		   	--sysconfdir=/etc \
-		   	--exec-prefix=/ \
-			--with-rootprefix=/ \
-			--with-rootrundir=/run \
-			--with-rootlibexecdir=/lib64/udev \
-			--enable-split-usr 
+		./configure --prefix=/usr --bindir=/sbin --sbindir=/sbin --libdir=/lib64 --disable-manpages --disable-static --disable-selinux --enable-modules \
+		   	--enable-kmod --sysconfdir=/etc --exec-prefix=/ --with-rootprefix=/ --with-rootrundir=/run --with-rootlibexecdir=/lib64/udev --enable-split-usr 
 	}
-	build()
-	{
+	build(){
 		make 
 	}
-	package()
-	{
+	package(){
 		make install DESTDIR=$DESTDIR
 		mkdir -p ${DESTDIR}/usr/share/initramfs-tools/{hooks,scripts}
 	  	mkdir -p ${DESTDIR}/usr/share/initramfs-tools/scripts/init-{top,bottom}
-	  
 		
 		install $SOURCEDIR/eudev.hook         ${DESTDIR}/usr/share/initramfs-tools/hooks/udev
 	    install $SOURCEDIR/eudev.init-top         ${DESTDIR}/usr/share/initramfs-tools/scripts/init-top/udev
