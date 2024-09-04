@@ -33,6 +33,11 @@ Bu işlemler daha detaylandırılabilir. Bu işlemlerin detaylı olması paket s
 
 Bu işlemden sonra paket kurulmuş oldu.
 
+
+.. raw:: pdf
+
+   PageBreak
+
 **bps Paket Kurma Scripti Tasarlama**
 -------------------------------------
 Burada basit seviyede kurulum yapan script kullanılmıştır. Detaylandırıldıkça doküman güncellenecektir. Kurulum scripti aşağıda görülmektedir.

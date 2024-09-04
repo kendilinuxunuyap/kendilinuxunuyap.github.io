@@ -46,6 +46,10 @@ Bu örnekte paketlerin içindeki paket bilgisi içeren dosyaları uç uca ekledi
 Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik.
 
 
+.. raw:: pdf
+
+   PageBreak
+
 **bps Paket Liste İndexi Güncelleme**
 -------------------------------------
 

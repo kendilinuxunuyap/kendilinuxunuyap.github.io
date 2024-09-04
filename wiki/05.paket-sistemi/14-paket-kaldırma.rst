@@ -31,6 +31,12 @@ Daha sonra tekrar okuyup boş kalan dizinleri sildik.
 Son olarak palet listesi dosyamızı sildik.
 Bu işlem sonunda paket silinmiş oldu.
 
+
+.. raw:: pdf
+
+   PageBreak
+   
+
 **bps Paket Kaldırma Scripti Tasarlama**
 ----------------------------------------
 

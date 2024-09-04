@@ -47,11 +47,11 @@ Bazı dağıtımların kullandığı paket sistemeleri şunlardır.
 - apt: Debian dağıtımının kullandığı paket sistemi.
 - emerge :Gentoo dağıtımının kullandığı paket sistemi.
 
-
 **bps Paket Sistemi**
 ---------------------
 
 Bu dokümanda hazırlanan dağıtımın paket sistemi için ise bps(basit/basic/base paket sistemi) olarak ifade edeceğimiz paket sistemi adını kullandık. Bps paket sistemindeki beş temel işlemin nasıl yapılacağı ayrı başlıklar altında anlatılacaktır. Paket sistemi derlemeli bir dil yerine bash script ile yapılacaktır. Bu dokumanı takip eden kişi, bu dokümanda yazılanları anlaması için orta seviye bash script bilmesi gerekmektedir.
+
 
 .. raw:: pdf
 

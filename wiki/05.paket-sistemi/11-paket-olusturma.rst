@@ -19,10 +19,13 @@ Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma ama
   	:width: 600
 
 
+.. raw:: pdf
 
+   PageBreak
    
-**bps Paket Yapma**
--------------------
+
+**bps Paket Oluşturma**
+-----------------------
 
 bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Paket Derleme** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
 
