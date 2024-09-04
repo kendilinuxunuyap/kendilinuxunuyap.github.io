@@ -1,9 +1,7 @@
 kernel-headers
 ++++++++++++++
 
-Kernel-headers paketi, Linux çekirdeği ile kullanıcı alanı uygulamaları arasında bir köprü işlevi gören başlık dosyalarını barındırır. Bu dosyalar, sistem programcılarının ve geliştiricilerin, çekirdek işlevlerine erişim sağlamak için gerekli olan API'leri ve veri yapılarını tanımlar. Özellikle, sürücü geliştirme ve sistem yazılımları için kritik öneme sahiptir.
-Kernel headers debian kernel kullanmadığınız zaman derleyiniz.
-
+Kernel-headers paketi, Linux çekirdeği ile kullanıcı alanı uygulamaları arasında bir köprü işlevi gören başlık dosyalarını barındırır. Kernel headers debian kernel kullanmadığınız zaman derleyiniz.
 
 Derleme
 --------
@@ -25,7 +23,6 @@ Derleme
 	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
-
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
 		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
@@ -94,7 +91,7 @@ Derleme
 		find . -name 'Kconfig*' -exec install -Dm644 {} "$kernelbuilddir/{}" \;
 		find -L "$kernelbuilddir" -type l -printf 'Removing %P\n' -delete					# clearing
 		find "$kernelbuilddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
-		#-------------------------------------- 					install 							------------------------------------
+		#-------------------------------------- 					install 										------------------------------------
 		if [[ -d "$kernelbuilddir" ]] ; then
 	    while read -rd '' file; do
 		case "$(file -Sib "$file")" in
@@ -123,17 +120,12 @@ Derleme
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/kernel-headers/files.tar>`_
-
-tar dosyasını indirdikten sonra istediğiniz bir konumda **kernel-headers** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
-
-Paket adında(kernel-headers) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/kernel-headers/files.tar>`_ tar dosyasını indirdikten sonra istediğiniz bir konumda **kernel-headers** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
 
 
 .. code-block:: shell
 	
-	chmod 755 build
-	sudo ./build
+	chmod 755 build&&sudo ./build
   
 .. raw:: pdf
 
