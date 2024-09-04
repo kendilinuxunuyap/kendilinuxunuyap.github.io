@@ -17,7 +17,6 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-de
 	source="https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz"
 	depends="pam,libxcrypt,acl,attr"
 	group="sys.apps"
-	
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
 	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
 	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
@@ -53,7 +52,6 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-de
 	}
 	package(){
 	    make install DESTDIR=$DESTDIR
-	    # remove selinux stuff
 	    mkdir -p "${DESTDIR}/etc/default/"
 	    sed -i "/.*selinux.*/d" ${DESTDIR}/etc/pam.d/*
 	    install -vDm 600 $SOURCEDIR/files/useradd.defaults "${DESTDIR}/etc/default/useradd"

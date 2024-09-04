@@ -50,26 +50,21 @@ Derleme
 		make bzImage -j$(nproc)
 		make modules -j$(nproc)
 	}
-
 	package(){
 		#-------------------------------------- 						install 			-------------------------------------
 		arch="x86"
 		kernelbuilddir="${DESTDIR}/lib/modules/${version}/build"
-		
 		# install bzImage
 		mkdir -p "$DESTDIR/boot"
 		install -Dm644 "$(make -s image_name)" "$DESTDIR/boot/vmlinuz-${version}"
 		#make INSTALL_PATH=$DESTDIR install ARCH=amd64
-		
 		# install modules
 		mkdir -p ${DESTDIR}/lib/modules/${version}
 		mkdir -p $DESTDIR/usr/src
 		mkdir -p ${DESTDIR}/lib/modules/${version}/build
 		make INSTALL_MOD_PATH=$DESTDIR modules_install INSTALL_MOD_STRIP=1 -j$(nproc)
-		
 		rm "${DESTDIR}/lib/modules/${version}"/{source,build} || true
 		depmod --all --verbose --basedir="$DESTDIR" "${version}" || true
-		
 		# install build directories
 		install .config "$DESTDIR/boot/config-${version}"
 		install -Dt "$kernelbuilddir/kernel" -m644 kernel/Makefile
@@ -79,14 +74,11 @@ Derleme
 		mkdir -p "$kernelbuilddir"/{fs/xfs,mm}
 		ln -s "../../lib/modules/${version}/build" "$DESTDIR/usr/src/linux-headers-${version}"
 		install -Dt "$kernelbuilddir" -m644 Makefile Module.symvers System.map vmlinux
-
 		# install libc headers
 		mkdir -p "$DESTDIR/usr/include/linux"
 		cp -v -t "$DESTDIR/usr/include/" -a include/linux/
-		cp -v -t "$DESTDIR/usr/" -a tools/include
-		
+		cp -v -t "$DESTDIR/usr/" -a tools/include	
 		make headers_install INSTALL_HDR_PATH=$DESTDIR/usr
-		
 		#-------------------------------------- 					install headers				-------------------------------------
 		mkdir -p "$kernelbuilddir" "$kernelbuilddir/arch/$arch"
 		cp -v -t "$kernelbuilddir" -a include
@@ -102,7 +94,7 @@ Derleme
 		find . -name 'Kconfig*' -exec install -Dm644 {} "$kernelbuilddir/{}" \;
 		find -L "$kernelbuilddir" -type l -printf 'Removing %P\n' -delete					# clearing
 		find "$kernelbuilddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
-		#-------------------------------------- 					install 				-------------------------------------
+		#-------------------------------------- 					install 							------------------------------------
 		if [[ -d "$kernelbuilddir" ]] ; then
 	    while read -rd '' file; do
 		case "$(file -Sib "$file")" in
@@ -115,12 +107,10 @@ Derleme
 		esac
 	    done < <(find "$kernelbuilddir" -type f -perm -u+x ! -name vmlinux -print0)
 		fi
-
 		if [[ -f "$kernelbuilddir/vmlinux" ]] ; then
 	    echo "Stripping vmlinux..."
 	    strip "$kernelbuilddir/vmlinux"
 		fi
-		
 		echo "Adding symlink..."
 		mkdir -p "$DESTDIR/usr/src"
 		ln -sr "$kernelbuilddir" "$DESTDIR/usr/src/linux"
