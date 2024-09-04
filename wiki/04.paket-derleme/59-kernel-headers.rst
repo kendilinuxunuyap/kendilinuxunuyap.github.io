@@ -1,7 +1,7 @@
 kernel-headers
 ++++++++++++++
 
-Kernel-headers paketi, Linux çekirdeği ile kullanıcı alanı uygulamaları arasında bir köprü işlevi gören başlık dosyalarını barındırır. Kernel headers debian kernel kullanmadığınız zaman derleyiniz.
+Kernel-headers paketi, Linux çekirdeği başlık dosyalarını barındırır. Kernel-headers paketi derleme yaparsanız lazım olacaktır.
 
 Derleme
 --------
@@ -24,18 +24,18 @@ Derleme
 	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
@@ -105,10 +105,8 @@ Derleme
 	    done < <(find "$kernelbuilddir" -type f -perm -u+x ! -name vmlinux -print0)
 		fi
 		if [[ -f "$kernelbuilddir/vmlinux" ]] ; then
-	    echo "Stripping vmlinux..."
 	    strip "$kernelbuilddir/vmlinux"
 		fi
-		echo "Adding symlink..."
 		mkdir -p "$DESTDIR/usr/src"
 		ln -sr "$kernelbuilddir" "$DESTDIR/usr/src/linux"
 	    mv -vf System.map $DESTDIR/boot/System.map-$version
