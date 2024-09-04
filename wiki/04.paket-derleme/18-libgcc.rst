@@ -52,85 +52,34 @@ Derleme
 	  ;;
 	esac
 
-		 options=(
-	      --prefix=/usr
-	      --libexecdir=/usr/libexec
-	      --mandir=/usr/share/man
-	      --infodir=/usr/share/info
-	      --enable-languages=c,c++
-	      --with-linker-hash-style=gnu
-	      --with-system-zlib
-	      --enable-__cxa_atexit
-	      --enable-cet=auto
-	      --enable-checking=release
-	      --enable-clocale=gnu
-	      --enable-default-pie
-	      --enable-default-ssp
-	      --enable-gnu-indirect-function
-	      --enable-gnu-unique-object
-	      --enable-libstdcxx-backtrace
-	      --enable-link-serialization=1
-	      --enable-linker-build-id
-	      --enable-lto
-	      --disable-multilib
-	      --enable-plugin
-	      --enable-shared
-	      --enable-threads=posix
-	      --disable-libssp
-	      --disable-libstdcxx-pch
-	      --disable-werror
-	      --without-zstd
-	      --disable-nls
-	    )
 	    cd $SOURCEDIR
 	    mkdir build
 	    cd build
-	    ../configure ${options[@]} \
-		--libdir=/usr/lib64 \
-		--target=x86_64-pc-linux-gnu 
-
-		
+	    ../configure --prefix=/usr --libexecdir=/usr/libexec --mandir=/usr/share/man --infodir=/usr/share/info --enable-languages=c,c++ --with-linker-hash-style=gnu \
+	    --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie \
+	      --enable-default-ssp --enable-gnu-indirect-function--enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin \
+	      --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --without-zstd --disable-nls	--libdir=/usr/lib64 --target=x86_64-pc-linux-gnu 	
 	}
-	build()
-	{
+	build(){
 		cd $SOURCEDIR/build
 		make
 	}
-	package()
-	{
+	package(){
 		cd $SOURCEDIR/build
 		make install DESTDIR=${DESTDIR}
 	    	
-	    	mkdir -p ${DESTDIR}/usr/lib64/
-	    	ln -s gcc ${DESTDIR}/usr/bin/cc
-	    	ln -s g++ ${DESTDIR}/usr/bin/cxx
-	    	cd $DESTDIR
-	    	#find ./ -iname "*" -exec strip -s {} \;
-	    	 while read -rd '' file; do
+		mkdir -p ${DESTDIR}/usr/lib64/
+		ln -s gcc ${DESTDIR}/usr/bin/cc
+		ln -s g++ ${DESTDIR}/usr/bin/cxx
+		cd $DESTDIR
+		while read -rd '' file; do
 		case "$(file -Sib "$file")" in
 		    application/x-executable\;*)     # Binaries
 		        strip "$file" ;;
 		    application/x-pie-executable\;*) # Relocatable binaries
 		        strip "$file" ;;
 		esac
-	       
-	    done< <(find "./" -type f -iname "*" -print0)
-	    	 
-	}
-
-	yedek(){
-	 while read -rd '' file; do
-		case "$(file -Sib "$file")" in
-		    application/x-sharedlib\;*)      # Libraries (.so)
-		        strip "$file" ;;
-		    application/x-executable\;*)     # Binaries
-		        strip "$file" ;;
-		    application/x-pie-executable\;*) # Relocatable binaries
-		        strip "$file" ;;
-		esac
-	       
-	    done< <(find "./" -type f -iname "*" -print0)
-	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+	    done< <(find "./" -type f -iname "*" -print0)	 
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
