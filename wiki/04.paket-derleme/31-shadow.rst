@@ -6,18 +6,7 @@ Shadow paketi, Linux işletim sistemlerinde kullanıcı hesaplarının şifreler
 Derleme
 --------
 
-
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libreadline-dev** 
-- **sudo apt install libcap-dev**
-- sudo apt install libcap2-bin
-- sudo cp /sbin/capsh /bin/
-- sudo cp /sbin/getcap /bin/
-- sudo cp /sbin/getpcaps /bin/
-- sudo cp /sbin/setcap /bin/
-
-komutları çalıştırıldıktan sonra derleme yapılmalıdır.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-dev libcap-dev libcap2-bin** komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 
 .. code-block:: shell
 	
@@ -38,42 +27,30 @@ komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
 
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-            wget ${source}
-            for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
+		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		wget ${source}
+		for f in *\ *; do mv "$f" "${f// /}"; done #isimde boşluk varsa silme işlemi yapılıyor
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $SOURCEDIR
 	}
 
 	setup(){
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
 		autoreconf -fiv      
-		./configure --prefix=/usr \
-		--libdir=/usr/lib64 \
-		--sysconfdir=/etc \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--disable-account-tools-setuid \
-		--without-sssd \
-		--with-fcaps \
-		--with-libpam \
-		--without-group-name-max-length \
-		--with-bcrypt \
-		--with-yescrypt \
-		--without-selinux
+		./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc --bindir=/usr/bin --sbindir=/usr/sbin \
+		--disable-account-tools-setuid --without-sssd --with-fcaps --with-libpam --without-group-name-max-length --with-bcrypt --with-yescrypt --without-selinux
 	}
 
 	build(){
 	    make
 	}
-
 	package(){
 	    make install DESTDIR=$DESTDIR
 	    # remove selinux stuff
@@ -82,40 +59,13 @@ komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 	    install -vDm 600 $SOURCEDIR/files/useradd.defaults "${DESTDIR}/etc/default/useradd"
 	    install -vDm 600 $SOURCEDIR/files/system-auth "${DESTDIR}/etc/pam.d/system-auth"
 	    if [ ! -f ${DESTDIR}/etc/group ] ; then
-		echo -e "root:x:0:">${DESTDIR}/etc/group
-		echo -e "users:x:2:">>${DESTDIR}/etc/group
-		echo -e "tty:x:5:">>${DESTDIR}/etc/group
-		echo -e "disk:x:6:">>${DESTDIR}/etc/group
-		echo -e "dialout:x:20:">>${DESTDIR}/etc/group
-		echo -e "cdrom:x:24:">>${DESTDIR}/etc/group
-		echo -e "audio:x:29:">>${DESTDIR}/etc/group
-		echo -e "video:x:44:">>${DESTDIR}/etc/group
-		echo -e "wheel:x:120:">>${DESTDIR}/etc/group
-		echo -e "plugdev:x:121:">>${DESTDIR}/etc/group
-		echo -e "netdev:x:122:">>${DESTDIR}/etc/group
-		echo -e "dip:x:123:">>${DESTDIR}/etc/group
-
-		chmod 644 ${DESTDIR}/etc/group
-		chown root ${DESTDIR}/etc/group
-		chgrp root ${DESTDIR}/etc/group
-		else
-		chmod 644 ${DESTDIR}/etc/group
-		chown root ${DESTDIR}/etc/group
-		chgrp root ${DESTDIR}/etc/group
+ 		install -vDm 600 $SOURCEDIR/files/group "${DESTDIR}/etc/group"
 		fi
-
-		if [ ! -f ${DESTDIR}/etc/shadow ] ; then
-		    echo "root:*::0:::::" > ${DESTDIR}/etc/shadow
-		    chmod 600 ${DESTDIR}/etc/shadow
-		    chown root ${DESTDIR}/etc/shadow
-		    chgrp root ${DESTDIR}/etc/shadow
-		    else
-		    chmod 600 ${DESTDIR}/etc/shadow
-		    chown root ${DESTDIR}/etc/shadow
-		    chgrp root ${DESTDIR}/etc/shadow
-		fi
-
-
+		chmod 600 ${DESTDIR}/etc/shadow
+		chmod 644 ${DESTDIR}/etc/group
+		chown root ${DESTDIR}/etc/group  ${DESTDIR}/etc/shadow
+		chgrp root ${DESTDIR}/etc/group  ${DESTDIR}/etc/shadow
+		
 		if [ ! -f "${DESTDIR}/etc/passwd" ]; then
 			echo -e "root:x:0:0:root:/root:/bin/sh">${DESTDIR}/etc/passwd
 		fi
