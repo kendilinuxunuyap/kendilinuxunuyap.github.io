@@ -48,86 +48,19 @@ iso Scripti
 
 	### system chroot  bind/mount
 	for dir in dev dev/pts proc sys; do mount -o bind /$dir $rootfs/$dir; done
+	## paket listesi güncelleniyor
 	$rootfs/bin/bps -u $rootfs
-	#$rootfs/sbin/bps -ri base-file $rootfs
-	#rm -rf $rootfs/bin/bps
-	#mv $rootfs/sbin/bps $rootfs/bin/bps
-	$rootfs/bin/bps -ri glibc $rootfs
-	$rootfs/bin/bps -ri readline $rootfs
-	$rootfs/bin/bps -ri ncurses $rootfs
-	$rootfs/bin/bps -ri \bash $rootfs
-	$rootfs/bin/bps -ri openssl $rootfs
-	$rootfs/bin/bps -ri acl $rootfs
-	$rootfs/bin/bps -ri attr $rootfs
-	$rootfs/bin/bps -ri libcap $rootfs
-	$rootfs/bin/bps -ri libpcre2 $rootfs
-	$rootfs/bin/bps -ri gmp $rootfs
-	$rootfs/bin/bps -ri coreutils $rootfs
-	$rootfs/bin/bps -ri util-linux $rootfs
 
-	$rootfs/bin/bps -ri \grep $rootfs
-	$rootfs/bin/bps -ri \sed $rootfs
-	$rootfs/bin/bps -ri mpfr $rootfs #gawk depends
-	$rootfs/bin/bps -ri \gawk $rootfs
-	$rootfs/bin/bps -ri findutils $rootfs
-	$rootfs/bin/bps -ri libgcc $rootfs
-	$rootfs/bin/bps -ri libcap-ng $rootfs
-
-	$rootfs/bin/bps -ri sqlite $rootfs
-	$rootfs/bin/bps -ri \gzip $rootfs
-	$rootfs/bin/bps -ri xz-utils $rootfs
-	$rootfs/bin/bps -ri zstd $rootfs
-	$rootfs/bin/bps -ri \bzip2 $rootfs
-	$rootfs/bin/bps -ri \elfutils $rootfs
-	$rootfs/bin/bps -ri libselinux $rootfs #tar depends
-	$rootfs/bin/bps -ri \tar $rootfs
-	$rootfs/bin/bps -ri \zlib $rootfs #wget curl depends
-	$rootfs/bin/bps -ri brotli $rootfs #wget curl depends
-	$rootfs/bin/bps -ri curl $rootfs
-
-	$rootfs/bin/bps -ri shadow $rootfs
-
-	chroot $rootfs /bin/bps -ri \file
-	chroot $rootfs /bin/bps -ri eudev
-	chroot $rootfs /bin/bps -ri cpio
-	chroot $rootfs /bin/bps -ri libsepol
-	chroot $rootfs /bin/bps -ri kmod
-
-	chroot $rootfs /bin/bps -ri audit
-	chroot $rootfs /bin/bps -ri libxcrypt
-	chroot $rootfs /bin/bps -ri libnsl #pam depends
-	chroot $rootfs /bin/bps -ri pam
-	chroot $rootfs /bin/bps -ri libtirpc
-
-	chroot $rootfs /bin/bps -ri e2fsprogs
-	chroot $rootfs /bin/bps -ri dosfstools
-	chroot $rootfs /bin/bps -ri initramfs-tools
-
-
-	chroot $rootfs /bin/bps -ri libxml2
-	chroot $rootfs /bin/bps -ri expat
-	chroot $rootfs /bin/bps -ri libmd
-	chroot $rootfs /bin/bps -ri libaio
-	chroot $rootfs /bin/bps -ri lvm2
-	chroot $rootfs /bin/bps -ri popt
-	chroot $rootfs /bin/bps -ri icu
-
-	chroot $rootfs /bin/bps -ri iproute2
-	chroot $rootfs /bin/bps -ri net-tools 
-	chroot $rootfs /bin/bps -ri dhcp
-
-
-
-	for paket in openrc  rsync kbd busybox \
-			kernel kernel-headers \
-			live-boot live-config \
-			parted  nano grub \
-			dialog efibootmgr efivar libssh openssh
+	## paketler kuruluyor
+	for paket in glibc readline ncurses \bash openssl acl attr libcap libpcre2 gmp coreutils util-linux \grep \sed mpfr \gawk findutils libgcc libcap-ng \
+sqlite \gzip xz-utils zstd \bzip2 \elfutils libselinux \tar \zlib brotli curl shadow \file eudev cpio
+libsepol \
+kmod audit libxcrypt libnsl pam libtirpc e2fsprogs dosfstools  initramfs-tools libxml2 expat libmd libaio lvm2 popt icu iproute2 net-tools  dhcp \
+	openrc  rsync kbd busybox kernel kernel-headers live-boot live-config parted  nano grub dialog efibootmgr efivar libssh openssh
 	do
 	chroot $rootfs /bin/bps -ri $paket; 
 	#$rootfs/bin/bps -ri  $paket $rootfs
 	done
-
 
 	#### system chroot umount
 	for dir in dev dev/pts proc sys ; do    while umount -lf -R $rootfs/$dir 2>/dev/null ; do true; done done
@@ -155,7 +88,7 @@ iso Scripti
 	#### system chroot umount
 	for dir in dev dev/pts proc sys ; do    while umount -lf -R $rootfs/$dir 2>/dev/null ; do true; done done
 
-	#************************iso *********************************
+	#************************									iso 										*********************************
 	mkdir -p $distro/iso
 	mkdir -p $distro/iso/boot
 	mkdir -p $distro/iso/boot/grub

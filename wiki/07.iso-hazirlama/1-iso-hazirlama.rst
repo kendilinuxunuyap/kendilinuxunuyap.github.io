@@ -71,33 +71,36 @@ Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sist
 
 .. code-block:: shell
 
+	## --------------------------------------------- 		initrd.img oluşturma scripti		 ---------------------------------------------
 	rootfs="$HOME/distro/rootfs"
 	distro="$HOME/distro"
+	## Dizinler Oluşturuluyor
 	mkdir -p $rootfs/dev
 	mkdir -p $rootfs/sys
 	mkdir -p $rootfs/proc 
 	mkdir -p $rootfs/run
 	mkdir -p $rootfs/tmp
+	## Dizinler bağlanıyor
 	mount --bind /dev $rootfs/dev
 	mount --bind /sys $rootfs/sys
 	mount --bind /proc $rootfs/proc
 	mount --bind /run$rootfs/run
 	mount --bind /tmp $rootfs/tmp
 	
-	### update-initrd
+	### initrd.img oluşturuluyor/güncelleniyor
 	fname=$(basename $rootfs/boot/config*)
 	kversion=${fname:7}
 	mv $rootfs/boot/config* $rootfs/boot/config-$kversion
 	cp $rootfs/boot/config-$kversion $rootfs/etc/kernel-config
-	
 	chroot $rootfs update-initramfs -u -k $kversion
 	
+	## Dizin bağlantıları kaldırılıyor
 	umount -lf -R $rootfs/dev 2>/dev/null
 	umount -lf -R $rootfs/sys 2>/dev/null
 	umount -lf -R $rootfs/proc 2>/dev/null
 	umount -lf -R $rootfs/run 2>/dev/null
 	umount -lf -R $rootfs/tmp 2>/dev/null
-	#### Copy initramfs
+	#### initrd kopyalanıyor
 	cp -pf $rootfs/boot/initrd.img-* $distro/iso/boot/initrd.img	
 
 **vmlinuz Hazırlanması**
@@ -116,7 +119,7 @@ Kernelimizi iso dizinimize taşıyoruz.
 **filesystem.squashfs Hazırlama**
 ---------------------------------
 
-Sistemi **live** kullanma ve yükleme yapabilmek için yapılan sistemi **squashfs** dosya sıkıştırma yöntemiyle sıkılştırıyoruz. Bu dosyayı **$HOME/distro//iso/live/filesystem.squashfs** konumunda olmalı. Aşağıdaki komutlar dosyayı oluşturup **$HOME/distro//iso/live/filesystem.squashfs** konumuna taşımaktadır.
+Sistemi **live** kullanma ve yükleme yapabilmek için yapılan sistemi **squashfs** dosya sıkıştırma yöntemiyle sıkılştırıyoruz. Bu dosyayı **$HOME/distro/iso/live/filesystem.squashfs** konumunda olmalı. Aşağıdaki komutlar dosyayı oluşturup **$HOME/distro//iso/live/filesystem.squashfs** konumuna taşımaktadır.
 
 .. code-block:: shell
 
@@ -130,19 +133,28 @@ Sistemi **live** kullanma ve yükleme yapabilmek için yapılan sistemi **squash
 --------------------------------
 
 .. code-block:: shell
-
+	
+	cd $HOME/distro
 	grub-mkrescue iso/ -o distro.iso #iso doyamız oluşturulur.
 
-Artık sistemi açabilen ve tty açıp bize sunan bir yapı oluşturduk. Çalıştırmak için qemu kullanılabililir.
+**İsonun Test Edilmesi**
+------------------------ 
+
+isolarımız qemu veya virtualbox ile test edilebilir. Linux ortamında terminalden qemu kullanarak aşıdaki gibi test edebilirsiniz. Sistemde qemu paketinin kurulu olması gerekir.
+
+.. code-block:: shell
+	
+	**qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G** #komutuyla çalıştırıp test edebiliriz. 
 
 
-**qemu-system-x86_64 -cdrom distro.iso -m 1G** komutuyla çalıştırıp test edebiliriz. 
+.. raw:: pdf
 
+   PageBreak
+   
+iso Oluşturma Scripti
+---------------------
 
-
- Tamamını kapsayan scriptimiz aşağıdadır.
-iso Scripti
------------
+Sisteme giriş yaptığımız kullanıcının ev dizinindeki **distro/rootfs** disininden **distro/iso** dizinini kullanarak **distro** dizinine **distro.iso** dosyasını oluşturan scriptimiz aşağıdadır.
 
 .. code-block:: shell
 	
