@@ -58,7 +58,7 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 	paketname="name=\"${paket}\""
 	ROOTFS=$2
 	#echo "$paket"
-	indexpaket=$(cat /tmp/index.lst|grep $paketname)
+	indexpaket=$(cat /etc/bps/index.lst|grep $paketname)
 	name=""
 	version=""
 	depends=""
