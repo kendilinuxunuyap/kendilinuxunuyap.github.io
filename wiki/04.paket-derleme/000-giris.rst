@@ -58,7 +58,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 58- `kernel <./58-kernel.html>`_
    * - 9-  `libpcre2 <./09-libpcre2.html>`_
      - 34- `cpio <./34-cpio.html>`_
-     - 59- `kernel-headers <./59-kernel-headers.html>`_
+     - 59- `dialog <./59-dialog.html>`_
    * - 10- `gmp <./10-gmp.html>`_
      - 35- `libsepol <./35-libsepol.html>`_
      - 60- `live-boot <./60-live-boot.html>`_
@@ -83,15 +83,15 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
    * - 17- `findutils <./17-findutils.html>`_
      - 42- `e2fsprogs <./42-e2fsprogs.html>`_
      - 67- `efivar <./67-efibootmgr.html>`_
-   * - 18- `libgcc <./18-libgcc.html>`_
+   * - 18- `gcc <./18-gcc.html>`_
      - 43- `dostools <./43-dostools.html>`_
-     - 68- `dialog <./68-dialog.html>`_
+     - 68- `libssh <./68-libssh.html>`_
    * - 19- `libcap-ng <./19-libcap-ng.html>`_
      - 44- `initramfs-tools <./44-initramfs-tools.html>`_
-     - 69- `libssh <./69-libssh.html>`_
+     - 69- `openssh <./69-openssh.html>`_
    * - 20- `sqlite <./20-sqlite.html>`_
      - 45- `libxml2 <./45-libxml2.html>`_
-     - 70- `openssh <./70-openssh.html>`_
+     - 70- 
    * - 21- `gzip <./21-gzip.html>`_
      - 46- `expat <./46-expat.html>`_
      - 71- 
