@@ -1,5 +1,5 @@
 github Depo Yapma
------------------
++++++++++++++++++
 
 Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde tutabiliriz. Fakat bu çok kısıtlı bir sistem olmasına sebepp olacaktır. Paketleri bir internet ortamında bir yerde saklayarak, kurmak istediğimizde internet(uzak) üzwerinden kurulması daha doğru bir yöntemdir. Bu dokümanda hazırlanan paketler github üzerinde saklanacak şekilde anlatım yapılmakadır.
 
@@ -11,6 +11,7 @@ Github üzerinde depolamak için;
 - kly-binary-packages deposuna .github/workflows dizinini ouşturarak aşağıda verilen main.yml dosyasını oluşturunuz.
 - internet üzerinden kly-binary-packages reposunda settings->action->general->Workflow permissions->Read and write permissions  işaretlenmelidir.
 - Yapılan paketler github üzerinde gönderilmelidir.
+
 index Dosyası
 -------------
 
