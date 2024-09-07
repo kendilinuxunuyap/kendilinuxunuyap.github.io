@@ -51,7 +51,7 @@ Dokumanda örnek olarak verilen bps paket sistemi için yukarıdaki paket kaldı
 	#set -e
 	paket=$1
 	paketname="name=\"${paket}\""
-	indexpaket=$(cat /var/bps/index.lst|grep $paketname)
+	indexpaket=$(cat /var/lib/bps/index.lst|grep $paketname)
 	name=""
 	version=""
 	depends=""
@@ -69,13 +69,13 @@ Dokumanda örnek olarak verilen bps paket sistemi için yukarıdaki paket kaldı
 	echo "bağımlılık kontrolü yapılacak"
 	 
 	# Paketin file.lst dosyası içerisindeki dosyalar, dizinler kaldırılır.
-	cat /var/bps/${paket}-${version}.lst | while read dosya ; do if [[ -f "$dosya" ]] ; then rm -f "$dosya"; fi done
-	cat /var/bps/${paket}-${version}.lst  | while read dizin ; do if [[ -d "$dizin" ]] ; then rmdir "$dizin" || true; fi done
+	cat /var/lib/bps/${paket}-${version}.lst | while read dosya ; do if [[ -f "$dosya" ]] ; then rm -f "$dosya"; fi done
+	cat /var/lib/bps/${paket}-${version}.lst  | while read dizin ; do if [[ -d "$dizin" ]] ; then rmdir "$dizin" || true; fi done
 
-	#/var/bps/paket-version.lst dosyasından paket bilgisi kaldırılır.
-	rm -f /var/bps/${paket}-${version}.lst
-	#/var/bps/index.lst dosyasından ilgili paket satırı kaldırılır.
-	sed '/^name=\"${paket}\"/d' /var/bps/index.lst
+	#/var/lib/bps/paket-version.lst dosyasından paket bilgisi kaldırılır.
+	rm -f /var/lib/bps/${paket}-${version}.lst
+	#/var/lib/bps/index.lst dosyasından ilgili paket satırı kaldırılır.
+	sed '/^name=\"${paket}\"/d' /var/lib/bps/index.lst
 	
 Bağımlılıkları başka paketler kullanıyor mu kontrol edilir. Script içinde bu işlem yapılmamıştır. Daha sonra güncellenecektir.
 Bu örnekte paket listesini satır satır okuduk. Önce dosya olanları sildik.

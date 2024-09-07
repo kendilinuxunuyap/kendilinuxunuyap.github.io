@@ -10,7 +10,7 @@ Depoda olan paketlerin listesi yerelde tutulan index.lst dosyasındada olması g
 .. code-block:: shell
 	
 	#!/bin/sh
-	curl -O /etc/bps/index.lst https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst
+	curl -Lo /etc/bps/index.lst https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst
 
 **index.lst** dosyamızı github üzerinden indiren scriptimiz tek bir satırdan oluşmaktadır. Bu hali şimdilik ihtiyacımızı görecektir.
 Bu komut https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst adresindeki dosyayı index.lst dosyasını /etc/bps/index.lst konumuna indirecektir.
@@ -20,7 +20,7 @@ Fakat birden fazla depo(github repository) olması durumunda birazdah karmaşık
 .. code-block:: shell
 	
 	#!/bin/sh
-	curl -O /tmp/index.lst https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst
+	curl -Lo /tmp/index.lst https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst
 	target=""
 	if [ -n "${1}" ];then target="$1"; else target="/";fi
 	mkdir -p $target/etc/bps

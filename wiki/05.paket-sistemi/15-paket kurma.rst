@@ -64,9 +64,9 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 	depends=""
 	if [ -n "${indexpaket}" ]
 		then
-			namex=$(echo $indexpaket|cut -d":" -f1)
-			versionx=$(echo $indexpaket|cut -d":" -f2)
-			dependsx=$(echo $indexpaket|cut -d":" -f3)
+			namex=$(echo $indexpaket|cut -d"|" -f1)
+			versionx=$(echo $indexpaket|cut -d"|" -f2)
+			dependsx=$(echo $indexpaket|cut -d"\|" -f3)
 			name=${namex:6:-1}
 			version=${versionx:9:-1}
 			depends=${dependsx:9:-1}
@@ -79,6 +79,7 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 	mkdir -p /tmp/bps/kur
 	rm -rf /tmp/bps/kur/*
 	curl -Lo /tmp/bps/kur/${name}-${version}.tar.gz https://github.com/basitdagitim/kly-binary-packages/raw/master/${name}/${name}-${version}.bps
+	
 	mkdir -p /var/lib/bps
 	cd /tmp/bps/kur/
 
@@ -90,10 +91,10 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 	#3. adım  paketi kurma
 	cp -prfv rootfs/* $ROOTFS/
 
-	#4. adım name version depends /var/bps/index.lst eklenmesi
+	#4. adım name version depends /var/lib/bps/index.lst eklenmesi
 	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>var/bps/index.lst
-	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
-	cp file.index /var/bps/${name}-${version}.lst
+	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/lib/bps/ konumuna kopyalanması
+	cp file.index /var/lib/bps/${name}-${version}.lst
 
 
 
