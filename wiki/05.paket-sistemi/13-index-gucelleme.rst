@@ -99,10 +99,10 @@ Bu script bps paket dosyalarımızın olduğu dizinde tüm paketleri açarak iç
 .. code-block:: shell
 	
 	#!/bin/sh
-	curl -O /tmp/index.lst https://basitsadigitim.github.io/binary-package/index.lst
-	
+	curl -O /tmp/index.lst https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst
+
 **index.lst** dosyamızı github üzerinden indiren scriptimiz tek bir satırdan oluşmaktadır.
-Bu komut https://basitsadigitim.github.io/binary-package/index.lst adresindeki dosyayı index.lst dosyasını /tmp/index.lst konumuna indirecektir.
+Bu komut https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst adresindeki dosyayı index.lst dosyasını /tmp/index.lst konumuna indirecektir.
 
 
 .. raw:: pdf
