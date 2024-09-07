@@ -34,8 +34,8 @@ iso Scripti
 
 	bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $rootfs/etc/shell"
 	bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $rootfs/etc/fstab"
-	bash -c "echo '127.0.0.1 basitdagitim' >> $rootfs/etc/hosts"
-	bash -c "echo 'basitdagitim' > $rootfs/etc/hostname"
+	bash -c "echo '127.0.0.1 kly' >> $rootfs/etc/hosts"
+	bash -c "echo 'kly' > $rootfs/etc/hostname"
 	bash -c "echo 'nameserver 8.8.8.8' > $rootfs/etc/resolv.conf"
 
 	# paket adresi ekleniyor
