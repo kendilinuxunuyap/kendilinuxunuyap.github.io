@@ -44,6 +44,14 @@ Fakat birden fazla depo(github repository) olması durumunda birazdah karmaşık
 		
 	done < $target/etc/bps/sources.list
     
+*bpsupdate** Scriptini Kullanma
+...............................
+
+Script bir parametre almaktadır. Parametremiz --update veya -u olmalıdır. Bu scripti kullanarak /etc/bps/index.lst dosyasını github depomuzdaki paket listesiyle güncelleyecektir. 
+
+.. code-block:: shell
+	
+	./bpsupdate -u	
 
 
 .. raw:: pdf
