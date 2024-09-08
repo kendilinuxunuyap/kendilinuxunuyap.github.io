@@ -6,6 +6,7 @@ index Güncelleme
 Depoda olan paketlerin listesi yerelde tutulan index.lst dosyasındada olması gerekmetedir. Bu işlemi yapan bpsupdate dosya içeriği aşağıdadır.
 
 **bpsupdate** 
+-------------
 
 .. code-block:: shell
 	
@@ -44,8 +45,8 @@ Fakat birden fazla depo(github repository) olması durumunda birazdah karmaşık
 		
 	done < $target/etc/bps/sources.list
     
-*bpsupdate** Scriptini Kullanma
-...............................
+**bpsupdate** Kullanma
+----------------------
 
 Script bir parametre almaktadır. Parametremiz --update veya -u olmalıdır. Bu scripti kullanarak /etc/bps/index.lst dosyasını github depomuzdaki paket listesiyle güncelleyecektir. 
 
