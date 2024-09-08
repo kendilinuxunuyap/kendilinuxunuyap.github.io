@@ -1,6 +1,6 @@
 
-Yerel index Güncelleme
-++++++++++++++++++++++
+index Güncelleme
+++++++++++++++++
 
 İndex güncelleme uzak(internet) depodaki paketlerin index listesinin yerelde tutulan index dosyasıyla eşitlemek işlemidir.
 Depoda olan paketlerin listesi yerelde tutulan index.lst dosyasındada olması gerekmetedir. Bu işlemi yapan bpsupdate dosya içeriği aşağıdadır.
