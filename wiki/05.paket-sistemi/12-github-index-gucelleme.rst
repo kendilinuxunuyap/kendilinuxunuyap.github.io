@@ -44,8 +44,12 @@ Depo indexi paketlerin içinde yer alan paket bilgileri okunarak otomatik olarak
 	index t/test/test_2.0.zip b/bash/bash_1.0.zip ...
 
 Bu örnekte paketlerin içindeki paket bilgisi içeren dosyaları uç uca ekledik.
-Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik.
+Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik. Çıktısı aşağıdaki gibidir.
 
+.. code-block:: shell
+
+	Path: t/test/test_2.0.zip
+	Path: b/bash/bash_1.0.zip
 
 .. raw:: pdf
 
@@ -55,7 +59,7 @@ Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik.
 bps github Depo Yapma
 ---------------------
 
-Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde tutabiliriz. Fakat bu çok kısıtlı bir sistem olmasına sebep olacaktır. Paketleri bir internet ortamında bir yerde saklayarak, kurmak istediğimizde internet(uzak) üzwerinden kurulması daha doğru bir yöntemdir. Bu dağıtımda paketlerimizi github.com üzerinde oluşturulan bir repostory üzerinden çekilmektedir. İnternetteki paketlerimizin listesi her yeni paketi yükleme sırasında güncellenmektedir. Bu işlem github hesabı üzerinden yapılmaktadır. github hakkında temel işlemler için `tıklayınız.<../10.yardimci-konular/github.html>`_
+Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde tutabiliriz. Fakat bu çok kısıtlı bir sistem olmasına sebep olacaktır. Paketleri bir internet ortamında bir yerde saklayarak, kurmak istediğimizde internet(uzak) üzwerinden kurulması daha doğru bir yöntemdir. Bu dağıtımda paketlerimizi github.com üzerinde oluşturulan bir repostory üzerinden çekilmektedir. İnternetteki paketlerimizin listesi her yeni paketi yükleme sırasında güncellenmektedir. Bu işlem github hesabı üzerinden yapılmaktadır. github hakkında temel işlemler için `tıklayınız. <../10.yardimci-konular/github.html>`_
 
 **github üzerinde depolamak için;**
 
@@ -69,7 +73,7 @@ Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde t
 index Dosyası
 -------------
 
-Bu script bps paket dosyalarımızın olduğu dizinde tüm paketleri açarak içerisinden **bpsbuild** dosyalarını çıkartarak paketle ilgili bilgileri alıp **index.lst** dosyası oluşturmaktadır. istersek paketler local ortamdada index oluşturabiliriz. Bu dokümanda github üzerinde oluşturacak şekilde anlatılmıştır.Paket indeksi oluşturan **index.lst** dosyası aşağıdaki gibi olacaktır. Listede name, version ve depends(bağımlı olduğu paketler) bilgileri bulunmaktadır. Bilgilerin arasında **:** karekteri kullanılmıştır.
+Bu script bps paket dosyalarımızın olduğu dizinde tüm paketleri açarak içerisinden **bpsbuild** dosyalarını çıkartarak paketle ilgili bilgileri alıp **index.lst** dosyası oluşturmaktadır. istersek paketler local ortamdada index oluşturabiliriz. Bu dokümanda github üzerinde oluşturacak şekilde anlatılmıştır.Paket indeksi oluşturan **index.lst** dosyası aşağıdaki gibi olacaktır. Listede name, version ve depends(bağımlı olduğu paketler) bilgileri bulunmaktadır. Bilgilerin arasında **|** karekteri kullanılmıştır.
 
 .. code-block:: shell
 
@@ -106,12 +110,10 @@ https://github.com/basitdagitim/kly-binary-packages/releases/download/current/in
 
 .. code-block:: shell
 
-	name="glibc":version="2.38":depends=""
-	name="gmp":version="6.3.0":depends="glibc,readline,ncurses"
-	name="grub":version="2.06":depends="glibc,readline,ncurses"
-	name="kmod":version="31":depends="glibc,zlib"
-
-
+	name="acl"|version="2.3.1"|depends="attr"|acl
+	name="attr"|version="2.5.1"|depends=""|attr
+	name="audit"|version='3.1.1'|depends=""|audit
+	name="bash"|version="5.2.21"|depends="glibc,readline,ncurses"|bash
 
 main.yml
 --------
