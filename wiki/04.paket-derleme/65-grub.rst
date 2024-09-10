@@ -25,9 +25,9 @@ Derleme
 	unset CXXFLAGS
 
 	get_grub_opt(){ echo -n "--disable-efiemu "
-		if [[ "$1" == "efi" ]] ; then; echo -n "--with-platform=efi --target=x86_64"
-		elif [[ "$1" == "ia32" ]] ; then; echo -n "--with-platform=efi --target=i386"
-		elif [[ "$1" == "bios" ]] ; then; echo -n "--with-platform=pc"
+		if [[ "$1" == "efi" ]] ; then echo -n "--with-platform=efi --target=x86_64"
+		elif [[ "$1" == "ia32" ]] ; then echo -n "--with-platform=efi --target=i386"
+		elif [[ "$1" == "bios" ]] ; then echo -n "--with-platform=pc"
 		fi
 		}
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
@@ -61,7 +61,7 @@ Derleme
 		    cd ..
 		done
 	}
-	build(){for tgt in ${uses[@]} ; do make $jobs -C $tgt; done	}
+	build(){ for tgt in ${uses[@]} ; do make $jobs -C $tgt; done	}
 	package(){
 		for tgt in ${uses[@]} ; do make $jobs -C $tgt install DESTDIR=$DESTDIR; done
 		mkdir -p $DESTDIR/etc/default $DESTDIR/usr/bin/

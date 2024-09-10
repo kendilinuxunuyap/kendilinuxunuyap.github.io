@@ -14,7 +14,7 @@ lvm2 Kurma Scripti
 	name="lvm2"
 	version="2_03_21"
 	description="User-land utilities for LVM2 (device-mapper) software"
-	source="https://github.com/lvmteam/lvm2/archive/refs/tags/v$version.tar.gz"
+	source=""
 	depends="libaio"
 	builddepend=""
 	group="sys.fs"

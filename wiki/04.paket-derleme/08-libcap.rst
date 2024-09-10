@@ -48,11 +48,10 @@ Derleme
 	  GOFLAGS="-buildmode=pie -mod=readonly -modcacherw"
 	  GO_BUILD_FLAGS="-ldflags '-compressdwarf=false -linkmode=external'"
 	)
-	setup(){
-			cap_opts=("${_common_make_options[@]}" SUDO="" prefix=/usr KERNEL_HEADERS=include lib=lib64 sbindir=bin RAISE_SETFCAP=no #$(use_opt pam PAM_CAP=yes PAM_CAP=no) )
+	setup(){ echo ""   
 	}
 	build(){
-		make ${cap_opts[@]} DYNAMIC=yes
+        make "${_common_make_options[@]}" SUDO="" prefix=/usr KERNEL_HEADERS=include lib=lib64 sbindir=bin RAISE_SETFCAP=no  DYNAMIC=yes
 	}
 	package(){
 		make "${_common_make_options[@]}" DESTDIR="$DESTDIR" RAISE_SETFCAP=no prefix=/usr lib=lib64 sbindir=bin install

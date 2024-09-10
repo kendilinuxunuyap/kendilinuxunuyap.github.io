@@ -116,8 +116,10 @@ Yapıyı Oluşturan Script
 			cd $ROOTBUILDDIR #dizinine geçiyoruz
 			mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
 	}
-	setup(){	cp -prfv $PACKAGEDIR/files/* $BUILDDIR/	}
-	build(){			echo ""	}
+	setup(){	cp -prfv $PACKAGEDIR/files/* $BUILDDIR/	
+			}
+	build(){			echo ""	
+			}
 	package(){
 			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
 			var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \

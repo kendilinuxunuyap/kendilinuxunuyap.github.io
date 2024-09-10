@@ -51,23 +51,20 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-de
 	    make
 	}
 	package(){
-	    make install DESTDIR=$DESTDIR
-	    mkdir -p "${DESTDIR}/etc/default/"
-	    sed -i "/.*selinux.*/d" ${DESTDIR}/etc/pam.d/*
-	    install -vDm 600 $SOURCEDIR/files/useradd.defaults "${DESTDIR}/etc/default/useradd"
-	    install -vDm 600 $SOURCEDIR/files/system-auth "${DESTDIR}/etc/pam.d/system-auth"
-	    if [ ! -f ${DESTDIR}/etc/group ] ; then
- 		install -vDm 600 $SOURCEDIR/files/group "${DESTDIR}/etc/group"
-		fi
+		make install DESTDIR=$DESTDIR
+		mkdir -p "${DESTDIR}/etc" "${DESTDIR}/etc/default/"
+		sed -i "/.*selinux.*/d" ${DESTDIR}/etc/pam.d/*
+		install -vDm 600 $SOURCEDIR/files/useradd.defaults "${DESTDIR}/etc/default/useradd"
+		install -vDm 600 $SOURCEDIR/files/system-auth "${DESTDIR}/etc/pam.d/system-auth"
+		if [ ! -f ${DESTDIR}/etc/group ] ; then install -vDm 600 $SOURCEDIR/files/group "${DESTDIR}/etc/group"; fi
+		if [ ! -f ${DESTDIR}/etc/shadow ] ; then echo "root:*::0:::::" > ${DESTDIR}/etc/shadow; fi
 		chmod 600 ${DESTDIR}/etc/shadow
 		chmod 644 ${DESTDIR}/etc/group
 		chown root ${DESTDIR}/etc/group  ${DESTDIR}/etc/shadow
 		chgrp root ${DESTDIR}/etc/group  ${DESTDIR}/etc/shadow
-		
-		if [ ! -f "${DESTDIR}/etc/passwd" ]; then
-			echo -e "root:x:0:0:root:/root:/bin/sh">${DESTDIR}/etc/passwd
-		fi
-		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+
+		if [ ! -f "${DESTDIR}/etc/passwd" ]; then echo -e "root:x:0:0:root:/root:/bin/sh">${DESTDIR}/etc/passwd; fi
+		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.

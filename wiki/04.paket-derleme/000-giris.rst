@@ -79,10 +79,10 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 65- `grub <./65-grub.html>`_
    * - 16- `gawk <./16-gawk.html>`_
      - 41- `libtirpc <./41-libtirpc.html>`_
-     - 66- `efibootmgr <./66-efivar.html>`_
+     - 66- `efibootmgr <./66-efibootmgr.html>`_
    * - 17- `findutils <./17-findutils.html>`_
      - 42- `e2fsprogs <./42-e2fsprogs.html>`_
-     - 67- `efivar <./67-efibootmgr.html>`_
+     - 67- `efivar <./67-efivar.html>`_
    * - 18- `gcc <./18-gcc.html>`_
      - 43- `dostools <./43-dostools.html>`_
      - 68- `libssh <./68-libssh.html>`_

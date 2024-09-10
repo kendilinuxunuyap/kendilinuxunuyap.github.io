@@ -44,7 +44,7 @@ Debian Kernel
 	setup(){
 		mkdir -p $SOURCEDIR
 		cd $SOURCEDIR
-		wget -O kernel.bps https://github.com/basitdagitim/kly-binary-packages/raw/master/kernel/kernel-6.9.9.bps
+		wget -O kernel.bps https://github.com/basitdagitim/kly-binary-packages/raw/master/kernel/kernel-6.10.8.bps
 		tar -xf kernel.bps
 		tar -xf rootfs.tar.xz
 	}
