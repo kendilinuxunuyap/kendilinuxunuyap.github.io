@@ -17,7 +17,7 @@ komutuyla paketin kurulması gerekmektedir.
 	
 	#!/usr/bin/env bash
 	name="efibootmgr"
-	version="17"
+	version="16"
 	description="Linux user-space application to modify the Intel Extensible Firmware Interface (EFI) Boot Manager."
 	source="https://github.com/rhboot/efibootmgr/archive/refs/tags/$version.tar.gz"
 	depends="efivar,popt"

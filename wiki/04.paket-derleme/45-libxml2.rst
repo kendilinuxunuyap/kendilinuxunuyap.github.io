@@ -51,7 +51,6 @@ Derleme
 		make install DESTDIR=$DESTDIR
 		mkdir -p $DESTDIR/usr/lib64/python3.11
 		mv $DESTDIR/usr/lib/* $DESTDIR/usr/lib64/
-		rm -rf $DESTDIR/usr/lib
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
