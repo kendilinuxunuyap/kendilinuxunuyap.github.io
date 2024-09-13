@@ -130,7 +130,7 @@ Yapıyı Oluşturan Script
 			cd usr/lib64/x86_64-linux-gnu&&ln -s ../pkgconfig  pkgconfig&&cd -
 			bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >> $BUILDDIR/etc/shell"
 			bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >> $BUILDDIR/etc/fstab"
-			bash -c "echo '127.0.0.1 basitdagitim' >> $BUILDDIR/etc/hosts"
+			bash -c "echo '127.0.0.1 kly' >> $BUILDDIR/etc/hosts"
 			bash -c "echo 'kly' > $BUILDDIR/etc/hostname"
 			bash -c "echo 'nameserver 8.8.8.8' > $BUILDDIR/etc/resolv.conf"
 			echo root:x:0:0:root:/root:/bin/sh > $BUILDDIR/etc/passwd
