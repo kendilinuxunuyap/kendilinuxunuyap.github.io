@@ -91,7 +91,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 69- `openssh <./69-openssh.html>`_
    * - 20- `sqlite <./20-sqlite.html>`_
      - 45- `libxml2 <./45-libxml2.html>`_
-     - 70- 
+     - 70- `libbsd <./70-libbsd.html>`_
    * - 21- `gzip <./21-gzip.html>`_
      - 46- `expat <./46-expat.html>`_
      - 71- 

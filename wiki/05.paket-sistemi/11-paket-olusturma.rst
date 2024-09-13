@@ -254,7 +254,7 @@ Bu bilgilere göre readline paketi nasıl oluşturulur onu görelim. Paketlerimi
 	cd ..
 	./bpspaketle readline # bpspaketle dosyamızın bu konumda olduğu varsayılmıştır ve parametre olarak readline dizini verilmiştir.
 
-Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir.
+Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir. Burada anlatılan **bpspaketle** script dosyasını **/bin/** konumuna oluşturnuz ve **chmod 755 /bin/bpspaketle** komutuyla çalıştırma izni vermeliyiz. **bps** paket sistemi için yapılacak olan **bsppaketle, bpsupdate, bpskur, bpskaldir** scriptlerinide **/bin/** konumunda oluşturulmalı veya kopyalanmalı ve çalıştırma izni verilmeli.
 
 .. image:: /_static/images/bpspaketle-2.png
   	:width: 600
