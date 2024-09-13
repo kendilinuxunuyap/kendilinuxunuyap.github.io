@@ -75,7 +75,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 39- `libnsl <./39-libnsl.html>`_
      - 64- `nano <./64-nano.html>`_
    * - 15- `mpfr <./15-mpfr.html>`_
-     - 40- `pam <./40-pam.html>`_
+     - 40- `libbsd <./40-libbsd.html>`_
      - 65- `grub <./65-grub.html>`_
    * - 16- `gawk <./16-gawk.html>`_
      - 41- `libtirpc <./41-libtirpc.html>`_
@@ -91,7 +91,7 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 69- `openssh <./69-openssh.html>`_
    * - 20- `sqlite <./20-sqlite.html>`_
      - 45- `libxml2 <./45-libxml2.html>`_
-     - 70- `libbsd <./70-libbsd.html>`_
+     - 70- `pam <./70-pam.html>`_
    * - 21- `gzip <./21-gzip.html>`_
      - 46- `expat <./46-expat.html>`_
      - 71- 

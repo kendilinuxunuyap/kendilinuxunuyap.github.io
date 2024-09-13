@@ -51,8 +51,8 @@ Derleme
 	    for level in boot default nonetwork shutdown sysinit ; do
 	    mkdir -p ${DESTDIR}/etc/runlevels/$level
 	    done
-	    install  $SOURCEDIR/files/dhclient.init.d $DESTDIR/etc/init.d/dhclient
-	    install $SOURCEDIR/files/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
+		install -Dm755  $SOURCEDIR/files/dhclient.init.d $DESTDIR/etc/init.d/dhclient
+		install -Dm755  $SOURCEDIR/files/dhclient.init.d ${DESTDIR}/etc/runlevels/default/dhclient
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
