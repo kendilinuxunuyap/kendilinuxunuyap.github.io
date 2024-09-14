@@ -11,8 +11,10 @@ SquashFS, Linux işletim sistemlerinde sıkıştırılmış bir dosya sistemidir
 SquashFS Oluşturma
 ------------------
 
-#mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards 
-mksquashfs initrd $HOME/distro/filesystem.squashfs -comp xz -wildcards
+.. code-block:: shell
+
+	#mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards 
+	mksquashfs initrd $HOME/distro/filesystem.squashfs -comp xz -wildcards
 
 
 Cdrom Erişimi
@@ -24,13 +26,17 @@ Cdrom Erişimi
 
 Bu aygıt dosyası, kullanıcıların CD veya DVD'leri okumasına veya yazmasına olanak tanır. Örneğin, bir CD'yi okumak için aşağıdaki gibi bir komut kullanabilirsiniz:
 
-$ cat /dev/sr0
+.. code-block:: shell
+
+	$ cat /dev/sr0
 
 Cdrom Bağlama
 -------------
 
-mkdir cdrom
-mount /dev/sr0 /cdrom
+.. code-block:: shell
+
+	mkdir cdrom
+	mount /dev/sr0 /cdrom
 
 Bu işlem sonucunda cdrom bağlanmış olacaktır. iso dosyamızın içerisine erişebiliriz.
 
@@ -45,10 +51,11 @@ squashfs Bağlama
 
 squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekmektedir. eğer yüklemediyseniz
 
-modprobe loop #loop modülü yüklenir.
+.. code-block:: shell
 
-mkdir canli
-mount -t squashfs -o loop cdrom/live/filesystem.squashfs /canli
+	modprobe loop #loop modülü yüklenir.
+	mkdir canli
+	mount -t squashfs -o loop cdrom/live/filesystem.squashfs /canli
 
 squashfs Sistemine Geçiş
 ++++++++++++++++++++++++
@@ -57,9 +64,11 @@ Yukarıdaki adımlarda squashfs doayamızı /canli adında dizine bağlamış ol
 
 squashfs dosya sistemimize bağlanmak için;
 
-chroot canli /bin/bash
+.. code-block:: shell
 
-Buişlemin yerine exec komutuyla bağlanırsak sistemimiz id "1" değeriyle çalıştıracaktır. 
+	chroot canli /bin/bash
+
+Bu işlemin yerine exec komutuyla bağlanırsak sistemimiz id "1" değeriyle çalıştıracaktır. 
 Eğer sistemin bu dosya sistemiyle açılmasını istiyorsak exec ile çalıştırıp id=1 olmasına dikkat etmeliyiz.
 
 .. raw:: pdf

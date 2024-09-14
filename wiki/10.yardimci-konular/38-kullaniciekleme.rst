@@ -1,5 +1,6 @@
-adduser ve useradd Kullanımı
-++++++++++++++++++++++++++++
+Add User
+++++++++
+
 adduser ve useradd komutları, Linux işletim sisteminde kullanıcı hesapları oluşturmak için kullanılan iki farklı komuttur. Bu iki komut arasındaki temel farklar şunlardır:
 
 1. Kullanım Kolaylığı:
@@ -9,13 +10,12 @@ adduser ve useradd komutları, Linux işletim sisteminde kullanıcı hesapları 
 
 Örnek kullanım:
 
-language-bash
+.. code-block:: shell
 
-# adduser komutuyla kullanıcı oluşturma
-sudo adduser yeni_kullanici
-
-# useradd komutuyla kullanıcı oluşturma
-sudo useradd -m -s /bin/bash yeni_kullanici
+	# adduser komutuyla kullanıcı oluşturma
+	sudo adduser yeni_kullanici
+	# useradd komutuyla kullanıcı oluşturma
+	sudo useradd -m -s /bin/bash yeni_kullanici
 
 2. Varsayılan Davranışlar:
 
@@ -28,3 +28,8 @@ sudo useradd -m -s /bin/bash yeni_kullanici
     useradd ise daha esnek bir yapıya sahiptir ve kullanıcı oluşturma işlemini daha özelleştirilmiş bir şekilde gerçekleştirmenize olanak tanır.
 
 Sonuç olarak, genel olarak adduser komutu, kullanıcı dostu bir arayüz sunar ve standart kullanıcı oluşturma işlemleri için tercih edilirken, useradd komutu daha teknik detaylara hakim olan kullanıcılar tarafından tercih edilebilir. Her iki komut da kullanıcı yönetimi için önemli araçlardır ve ihtiyaca göre tercih edilmelidir.
+
+
+.. raw:: pdf
+
+   PageBreak

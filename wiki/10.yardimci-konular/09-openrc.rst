@@ -1,5 +1,5 @@
 OpenRC
-======
+++++++
 
 Openrc sistem açılışında çalışacak uygulamaları çalışrıran servis yöneticisidir.
 
@@ -97,5 +97,28 @@ Servis bağımlılıklarını belirtmek için ise **depend** fonksiyonu kullanı
 	  after dbus
 	}
 	...
+
+OpenRc Disk İşlemi
+^^^^^^^^^^^^^^^^^^
+
+Kullandığımız servis yöneticisi openrc ise **/etc/fstab** komunundaki dosyaya bakarak diske erişim sağlamaktadır. Bundan dolayı **fstab** dosyamızı aşağıdaki gibi yapılandırmalıyız.
+
+Fstab dosyası
+-------------
+
+Bu dosyayı doldurarak açılışta hangi disklerin bağlanacağını ayarlamalıyız. /etc/fstab dosyasını aşağıdakine uygun olarak doldurun.
+
+
+.. code-block:: shell
+
+	# <fs>                  <mountpoint>    <type>          <opts>          <dump/pass>
+	/dev/sda1       /boot   vfat    defaults,rw     0       1
+	/dev/sda2       /       ext4    defaults,rw     0       1
+
+
+
+.. raw:: pdf
+
+   PageBreak
 
 
