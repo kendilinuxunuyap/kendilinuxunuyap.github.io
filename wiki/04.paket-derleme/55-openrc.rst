@@ -4,7 +4,7 @@ openrc
 OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla geliştirilmiş bir init sistemidir. 
 
 Derleme
---------
+-------
 
 .. code-block:: shell
 	
@@ -91,7 +91,7 @@ Derleme
    
 Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openrc/files.tar>`_
 
-Bu extras dosyalarını indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openrc/extras.tar>`_
+Bu extras dosyalarını indirmek için `tıklayınız.. <https://kendilinuxunuyap.github.io/_static/files/openrc/extras.tar>`_
 
 tar dosyalarını indirdikten sonra istediğiniz bir konumda **openrc** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
 

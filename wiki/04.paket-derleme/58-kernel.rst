@@ -6,7 +6,7 @@ Kernel, bilgisayar sistemlerinde işletim sisteminin kalbini oluşturan bir yaz�
 Aşağıda nasıl derlendiği detaylıca anlatılmıştır. Derleme işlemi zaman ve tecrübe gerektirdiği için hazır derlenmiş olanı kullanacağız. Aslında debian, arch vb. dağıtımların kernelini derlemeden kullanabiliriz. Bir uyumsuzluk yaratmayacaktır. Bundan dolayı kendi derlediğimiz kernelini indirip kendi sistemimize yükleyen bir işlem yapacağız. Fakat derlemek isterseniz Derleme başlığı altında paylaşılan scripti kullanabilirsiniz. Kerneli hazırladığımız sistemem kurmak için aşağıda script verilmiştir.
 
 Debian Kernel
-------------
+-------------
 
 .. code-block:: shell
 	
@@ -69,7 +69,7 @@ Debian Kernel
    PageBreak
 
 Kernel Derleme
---------
+--------------
 
 .. code-block:: shell
 	
