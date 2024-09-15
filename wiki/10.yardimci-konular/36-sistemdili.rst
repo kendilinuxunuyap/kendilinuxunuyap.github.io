@@ -41,8 +41,8 @@ chmod 755 -R /lib64/locale/
 
 /etc/default/locale dosyasını root olarak bir metin editörü ile açın.
 
-Türkçe için : LANG=tr_TR.UTF-8
-İngilizce için : LANG=en_US.UTF-8
+- **Türkçe için :** LANG=tr_TR.UTF-8
+- **İngilizce için :** LANG=en_US.UTF-8
 
 Sistemi yeniden başlattığınızda seçtiğiniz dil aktif olacaktır.
 
@@ -52,9 +52,11 @@ Sistemi yeniden başlattığınızda seçtiğiniz dil aktif olacaktır.
 
 /etc/profile.d/locale.sh dosyanı oluşturun içeriğini aşağıdaki gibi ayarlayın.
 
-# Language settings
-export LANG="tr_TR.UTF-8"
-export LC_ALL="tr_TR.UTF-8"
+.. code-block:: shell
+
+	# Language settings
+	export LANG="tr_TR.UTF-8"
+	export LC_ALL="tr_TR.UTF-8"
 
 **/etc/profile.d/**  dizin erişim iznini 755 yapın.
 
@@ -63,15 +65,17 @@ export LC_ALL="tr_TR.UTF-8"
 
 **/etc/profile** dosya içeriğini  aşağıdaki gibi bir betik bulunmalıdır.
  /etc/profile dosyanının içerisinde aşağıdaki betik olmalıdır. Bu betik **/etc/profile.d** içerisinde betikler varsa tüm kullanıcalr için çalıştırılmasını sağlar.
- 
- if [ -d /etc/profile.d ]; then
-  for i in /etc/profile.d/*.sh; do
-    if [ -r $i ]; then
-      . $i
-    fi
-  done
-  unset i
-fi
+
+.. code-block:: shell
+
+	if [ -d /etc/profile.d ]; then
+	  for i in /etc/profile.d/*.sh; do
+		if [ -r $i ]; then
+		  . $i
+		fi
+	  done
+	  unset i
+	fi
 
 
 **3.Yöntem**
@@ -79,8 +83,10 @@ fi
 
 ayarlarını değiştirmek istediğimiz kullanıcı dizinideki **~/.profile** dosyasının içeriğine aşağıdaki kod satırını eklemeliyiz.
 
-export LANG="tr_TR.UTF-8"
-export LC_ALL="tr_TR.UTF-8"
+.. code-block:: shell
+	
+	export LANG="tr_TR.UTF-8"
+	export LC_ALL="tr_TR.UTF-8"
 
 
 .. raw:: pdf
