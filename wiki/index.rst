@@ -4,3 +4,4 @@ Dağıtım
 	:glob:
 
 	*/index
+	[0-9]*
