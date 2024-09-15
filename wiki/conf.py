@@ -10,12 +10,13 @@ project = 'distro Wiki'
 copyright = 'distro 2023'
 author = 'karahan'
 language = 'tr'
+version= '1.0'
 extensions = ['sphinx.ext.autodoc', 'rst2pdf.pdfbuilder']
 smartquotes = False
 
 # -- Options for PDF output --
 
-pdf_documents = [('index', u'rst2pdf', u'distro Dokümanı', u'distro Linux'),]
+pdf_documents = [('index', u'rst2pdf', u'Kendi Linux`unu Yap', u'KLY'),]
 pdf_stylesheets = ['style-main.yaml', 'tango']
 #pdf_stylesheets = ['sphinx', 'letter', 'draft']
 pdf_font_path = ['/usr/share/fonts', '/usr/share/texmf-dist/fonts/']
