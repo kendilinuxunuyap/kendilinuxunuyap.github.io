@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Paket Oluşturma &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/11.paket-sistemi/11-paket-olusturma.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Depo indexleme" href="12-github-index-gucelleme.html" />
+    <link rel="prev" title="Paket Sitemi" href="10-giris.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="paket-olusturma">
+<h1>Paket Oluşturma<a class="headerlink" href="#paket-olusturma" title="Permalink to this heading">¶</a></h1>
+<p>Paket sisteminde en önemli kısımlardan birisi paket oluşturmadır. Bu işlem paketin derlenmesi ve derlenmiş paketin belirli bir yapıyla saklanması olayıdır. Bu saklanan paket daha sonra ihtiyaç halinde uzaktan(internet üzerinden) ve yerelden istediğimiz sisteme kurma işlemidir. Bu başlıkta paketin derlenmesi ve saklanması(paket oluşturma) anlatılacaktır.</p>
+<p>Paket oluşturma işlemi sırayla şu aşamalardan oluşmaktadır.</p>
+<ol class="arabic simple">
+<li><p>Paketin indirilmesi</p></li>
+<li><p>Paketin derleme öncesi hazırlanması(configure)</p></li>
+<li><p>Paketin derlenmesi</p></li>
+<li><p>Derlenmiş paketin bir dizine yüklenmesi</p></li>
+<li><p>Yüklenen dizindeki dosya ve dizin yapısının konum listesini tutan file.index oluşturulması</p></li>
+<li><p>Derlenmiş paketin bir dizinin sıkıştırılması</p></li>
+<li><p>Sıkıştırılmış derlenmiş dizin, file.index ve derleme talimatının paket isim ve versiyonuyla tekrardan sıkıştırılması</p></li>
+</ol>
+<p>Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma amacıyla sırasıyla yapmamız gerekmektedir. 7. maddede anlatılan son sıkıştırılma öncesi yapı aşağıda gösterilmiştir.</p>
+<a class="reference internal image-reference" href="../_images/bpspaketle-0.png"><img alt="../_images/bpspaketle-0.png" src="../_images/bpspaketle-0.png" style="width: 600px;" /></a>
+<section id="bps-paket-olusturma">
+<h2><strong>bps Paket Oluşturma</strong><a class="headerlink" href="#bps-paket-olusturma" title="Permalink to this heading">¶</a></h2>
+<p>bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği <strong>Paket Derleme</strong> başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.</p>
+<p>Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilmiştir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nv">version</span><span class="o">=</span><span class="s2">&quot;8.2&quot;</span>
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;readline&quot;</span>
+<span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;glibc&quot;</span>
+<span class="nv">description</span><span class="o">=</span><span class="s2">&quot;readline kütüphanesi&quot;</span>
+<span class="nv">source</span><span class="o">=</span><span class="s2">&quot;https://ftp.gnu.org/pub/gnu/readline/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+<span class="nv">groups</span><span class="o">=</span><span class="s2">&quot;sys.apps&quot;</span>
+
+<span class="nv">display</span><span class="o">=</span><span class="s2">&quot;:</span><span class="k">$(</span>ls<span class="w"> </span>/tmp/.X11-unix/*<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s#/tmp/.X11-unix/X##&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">&quot;</span><span class="w">      </span><span class="c1">#Detect the name of the display in use</span>
+<span class="nv">user</span><span class="o">=</span><span class="k">$(</span>who<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;(&#39;</span><span class="nv">$display</span><span class="s1">&#39;)&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span><span class="w">    </span><span class="c1">#Detect the user using such display</span>
+<span class="nv">ROOTBUILDDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build&quot;</span><span class="w"> </span><span class="c1"># Derleme konumu</span>
+<span class="nv">BUILDDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build/build-</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1">#Derleme yapılan paketin derleme konumun</span>
+<span class="nv">DESTDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/rootfs&quot;</span><span class="w"> </span><span class="c1">#Paketin yükleneceği sistem konumu</span>
+<span class="nv">PACKAGEDIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span><span class="c1">#paketin derleme talimatının verildiği konum</span>
+<span class="nv">SOURCEDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1">#Paketin kaynak kodlarının olduğu konum</span>
+
+initsetup<span class="o">(){</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w">  </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+<span class="w">            </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="nv">$ROOTBUILDDIR</span>/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="w">            </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
+<span class="w">    </span>wget<span class="w"> </span><span class="si">${</span><span class="nv">source</span><span class="si">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>*<span class="se">\ </span>*<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>mv<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$f</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">f</span><span class="p">// /</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="c1">#isimde boşluk varsa silme işlemi yapılıyor</span>
+<span class="w">            </span><span class="nv">dowloadfile</span><span class="o">=</span><span class="k">$(</span>ls<span class="p">|</span>head<span class="w"> </span>-1<span class="k">)</span>
+<span class="w">            </span><span class="nv">filetype</span><span class="o">=</span><span class="k">$(</span>file<span class="w"> </span>-b<span class="w"> </span>--extension<span class="w"> </span><span class="nv">$dowloadfile</span><span class="p">|</span>cut<span class="w"> </span>-d<span class="s1">&#39;/&#39;</span><span class="w"> </span>-f1<span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">filetype</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;???&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>unzip<span class="w">  </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>tar<span class="w"> </span>-xvf<span class="w"> </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span><span class="nv">director</span><span class="o">=</span><span class="k">$(</span>find<span class="w"> </span>./*<span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">0</span><span class="w"> </span>-type<span class="w"> </span>d<span class="k">)</span>
+<span class="w">            </span><span class="nv">directorname</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="si">${</span><span class="nv">director</span><span class="si">}</span><span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">directorname</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>mv<span class="w"> </span><span class="nv">$directorname</span><span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$BUILDDIR</span><span class="o">&amp;&amp;</span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$DESTDIR</span><span class="o">&amp;&amp;</span><span class="nb">cd</span><span class="w"> </span><span class="nv">$SOURCEDIR</span>
+<span class="o">}</span>
+
+setup<span class="o">(){</span>
+<span class="w">        </span>cp<span class="w"> </span>-prvf<span class="w"> </span><span class="nv">$PACKAGEDIR</span>/files<span class="w"> </span><span class="nv">$SOURCEDIR</span>/
+<span class="w">        </span>./configure<span class="w"> </span>--prefix<span class="o">=</span>/usr<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--libdir<span class="o">=</span>/usr/lib64
+<span class="o">}</span>
+
+build<span class="o">(){</span>
+<span class="w">        </span>make<span class="w"> </span><span class="nv">SHLIB_LIBS</span><span class="o">=</span><span class="s2">&quot;-L/tools/lib -lncursesw&quot;</span>
+<span class="o">}</span>
+
+package<span class="o">(){</span>
+<span class="w">        </span>make<span class="w"> </span><span class="nv">SHLIB_LIBS</span><span class="o">=</span><span class="s2">&quot;-L/tools/lib -lncursesw&quot;</span><span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DESTDIR</span><span class="s2">&quot;</span><span class="w"> </span>install<span class="w"> </span><span class="nv">pkgconfigdir</span><span class="o">=</span><span class="s2">&quot;/usr/lib64/pkgconfig&quot;</span>
+
+<span class="w">        </span>install<span class="w"> </span>-Dm644<span class="w"> </span><span class="nv">$SOURCEDIR</span>/files/inputrc<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DESTDIR</span><span class="s2">&quot;</span>/etc/inputrc
+<span class="w">        </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/sbin/ldconfig<span class="w"> </span>-r<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span><span class="w">           </span><span class="c1"># sistem guncelleniyor</span>
+<span class="o">}</span>
+initsetup<span class="w">       </span><span class="c1"># initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir</span>
+setup<span class="w">           </span><span class="c1"># setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.</span>
+build<span class="w">           </span><span class="c1"># build fonksiyonu çalışır ve kaynak dosyaları derlenir.</span>
+package<span class="w">         </span><span class="c1"># package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.</span>
+</pre></div>
+</div>
+<p>Bu script readline kodunu internetten indirip derliyor ve kurulumu yapıyor. Aslında bu scriptle <strong>paketleme</strong>, <strong>paket kurma</strong> işlemini bir arada yapıyor. Bu işlem mantıklı gibi olsada paket sayısı arttıkça ve rutin yapılan işlemleri tekrar tekrar yapmak gibi işlem fazlalığına sebep olmaktadır.</p>
+<p>Bu sebeplerden dolayı <strong>readline</strong> paketleme scriptini yeniden düzenleyelim. Yeni düzenlenen halini  <strong>bpspaketle</strong> ve <strong>bpsbuild</strong> adlı script dosyaları olarak düzenleyeceğiz. Genel yapısı aşağıdaki gibi olacaktır. Script dosyasının yeniden bpspaketle ve bpsbuild şeklinde ayrıştırılmış hali resimde gözükmektedir. Devamında ise <strong>packageindex</strong> ve <strong>packagecompress</strong> fonksiyonları bpspaketle dosyasına eklenecektir.</p>
+<a class="reference internal image-reference" href="../_images/bpspaketle-1.png"><img alt="../_images/bpspaketle-1.png" src="../_images/bpspaketle-1.png" style="width: 600px;" /></a>
+</section>
+<section id="bpsbuild-dosyasi">
+<h2><strong>bpsbuild</strong> Dosyası<a class="headerlink" href="#bpsbuild-dosyasi" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>setup<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+build<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+package<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+</pre></div>
+</div>
+</section>
+<section id="bpspaketle-dosyasi">
+<h2><strong>bpspaketle</strong> Dosyası<a class="headerlink" href="#bpspaketle-dosyasi" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#genel değişkenler tanımlanır</span>
+initsetup<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+
+<span class="c1">#bpsbuild dosya fonksiyonları birleştiriliyor</span>
+<span class="nb">source</span><span class="w"> </span>bpsbuild<span class="w"> </span><span class="c1"># bu komutla setup build package fonsiyonları bpsbuild doyasından alınıp birleştiriliyor</span>
+
+packageindex<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+packagecompress<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+</pre></div>
+</div>
+<p>Aslında yukarıdaki <strong>bpspaketle</strong> ve <strong>bpsbuild</strong> adlı script dosyaları tek bir script dosyası olarak <strong>bpspaketle</strong> dosyası. İki dosyayı birleştiren <strong>source bpsbuild</strong> komutudur. <strong>bpspaketle</strong> dosyası aşağıdaki gibi düşünebiliriz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#genel değişkenler tanımlanır</span>
+initsetup<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+
+setup<span class="o">()</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon, &quot;source bpsbuild&quot; komutu sonucu gelen fonksiyon</span>
+build<span class="o">()</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon, &quot;source bpsbuild&quot; komutu sonucu gelen fonksiyon</span>
+package<span class="o">()</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon, &quot;source bpsbuild&quot; komutu sonucu gelen fonksiyon</span>
+
+packageindex<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+packagecompress<span class="o">()</span><span class="w"> </span><span class="o">{}</span>
+</pre></div>
+</div>
+<p>Bu şekilde ayrılmasının temel sebebi  <strong>bpspaketle</strong> scriptinde hep aynı işlemler yapılırken <strong>bpsbuild</strong> scriptindekiler her pakete göre değişmektedir. Böylece paket yapmak için ilgili pakete özel <strong>bpsbuild</strong> dosyası düzenlememiz yeterli olacaktır. <strong>bpspaketle</strong> dosyamızda <strong>bpsbuild</strong> scriptini kendisiyle birleştirip paketleme yapacaktır.</p>
+</section>
+<section id="bpsbuild-dosyamizin-son-hali">
+<h2><strong>bpsbuild</strong> Dosyamızın Son Hali<a class="headerlink" href="#bpsbuild-dosyamizin-son-hali" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nv">version</span><span class="o">=</span><span class="s2">&quot;8.2&quot;</span>
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;readline&quot;</span>
+<span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;glibc&quot;</span>
+<span class="nv">description</span><span class="o">=</span><span class="s2">&quot;readline kütüphanesi&quot;</span>
+<span class="nv">source</span><span class="o">=</span><span class="s2">&quot;https://ftp.gnu.org/pub/gnu/readline/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+<span class="nv">groups</span><span class="o">=</span><span class="s2">&quot;sys.apps&quot;</span>
+<span class="c1">#2. madde, derleme öncesi hazırlık</span>
+setup<span class="o">(){</span>
+<span class="w">        </span>cp<span class="w"> </span>-prvf<span class="w"> </span><span class="nv">$PACKAGEDIR</span>/files<span class="w"> </span><span class="nv">$BUILDDIR</span>/
+<span class="w">        </span><span class="nv">$SOURCEDIR</span>/configure<span class="w"> </span>--prefix<span class="o">=</span>/usr<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--libdir<span class="o">=</span>/usr/lib64
+<span class="o">}</span>
+<span class="c1">#3. madde, paketin derlenmesi</span>
+build<span class="o">(){</span>
+<span class="w">        </span>make<span class="w"> </span><span class="nv">SHLIB_LIBS</span><span class="o">=</span><span class="s2">&quot;-L/tools/lib -lncursesw&quot;</span>
+<span class="o">}</span>
+<span class="c1">#4. madde, derlenen paketin bir dizine yüklenmesi</span>
+package<span class="o">(){</span>
+<span class="w">        </span>make<span class="w"> </span><span class="nv">SHLIB_LIBS</span><span class="o">=</span><span class="s2">&quot;-L/tools/lib -lncursesw&quot;</span><span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DESTDIR</span><span class="s2">&quot;</span><span class="w"> </span>install<span class="w"> </span><span class="nv">pkgconfigdir</span><span class="o">=</span><span class="s2">&quot;/usr/lib64/pkgconfig&quot;</span>
+
+<span class="w">        </span>install<span class="w"> </span>-Dm644<span class="w"> </span>files/inputrc<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DESTDIR</span><span class="s2">&quot;</span>/etc/inputrc
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+<section id="bpspaketle-dosyamizin-son-hali">
+<h2><strong>bpspaketle</strong> Dosyamızın Son Hali<a class="headerlink" href="#bpspaketle-dosyamizin-son-hali" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nb">set</span><span class="w"> </span>-e
+<span class="nv">paket</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">dizin</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">paket</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Bir paket değil!&quot;</span><span class="p">;</span><span class="w"> </span>exit<span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">paket</span><span class="si">}</span><span class="s2">/bpsbuild&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Paket dosyası bulunamadı!&quot;</span><span class="p">;</span><span class="w"> </span>exit<span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Paket : </span><span class="nv">$paket</span><span class="s2">&quot;</span>
+<span class="nb">source</span><span class="w"> </span><span class="si">${</span><span class="nv">paket</span><span class="si">}</span>/bpsbuild
+<span class="nv">ROOTBUILDDIR</span><span class="o">=</span><span class="s2">&quot;/tmp/bps/build&quot;</span>
+<span class="nv">BUILDDIR</span><span class="o">=</span><span class="s2">&quot;/tmp/bps/build/build-</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1">#Derleme yapılan dizin</span>
+<span class="nv">DESTDIR</span><span class="o">=</span><span class="s2">&quot;/tmp/bps/rootfs&quot;</span><span class="w"> </span><span class="c1">#Paketin yükleneceği sistem konumu</span>
+<span class="nv">PACKAGEDIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+<span class="nv">SOURCEDIR</span><span class="o">=</span><span class="s2">&quot;/tmp/bps/build/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1">#1. madde, paketin indirilmesi</span>
+initsetup<span class="o">(){</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w">  </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+<span class="w">            </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="nv">$ROOTBUILDDIR</span>/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="w">            </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
+<span class="w">            </span>wget<span class="w"> </span><span class="si">${</span><span class="nv">source</span><span class="si">}</span>
+<span class="w">            </span><span class="nv">dowloadfile</span><span class="o">=</span><span class="k">$(</span>ls<span class="p">|</span>head<span class="w"> </span>-1<span class="k">)</span>
+<span class="w">            </span><span class="nv">filetype</span><span class="o">=</span><span class="k">$(</span>file<span class="w"> </span>-b<span class="w"> </span>--extension<span class="w"> </span><span class="nv">$dowloadfile</span><span class="p">|</span>cut<span class="w"> </span>-d<span class="s1">&#39;/&#39;</span><span class="w"> </span>-f1<span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">filetype</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;???&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>unzip<span class="w">  </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>tar<span class="w"> </span>-xvf<span class="w"> </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span><span class="nv">director</span><span class="o">=</span><span class="k">$(</span>find<span class="w"> </span>./*<span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">0</span><span class="w"> </span>-type<span class="w"> </span>d<span class="k">)</span>
+<span class="w">            </span><span class="nv">directorname</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="si">${</span><span class="nv">director</span><span class="si">}</span><span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">directorname</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>mv<span class="w"> </span><span class="nv">$directorname</span><span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$BUILDDIR</span><span class="o">&amp;&amp;</span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$DESTDIR</span><span class="o">&amp;&amp;</span><span class="nb">cd</span><span class="w"> </span><span class="nv">$BUILDDIR</span>
+<span class="o">}</span>
+
+
+<span class="c1">#6. madde, paketlenecek dosların listesini tutan file.index dosyası oluşturulur</span>
+packageindex<span class="o">()</span>
+<span class="w">        </span>rm<span class="w"> </span>-rf<span class="w"> </span>file.index
+<span class="w">        </span><span class="nb">cd</span><span class="w"> </span>/tmp/bps/build/rootfs-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+<span class="w">        </span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>file_name<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">file_name</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="si">${</span><span class="nv">file_name</span><span class="p">:</span><span class="nv">1</span><span class="si">}</span>&gt;&gt;../file.index<span class="p">;</span><span class="w"> </span><span class="k">fi</span><span class="w"> </span><span class="k">done</span>
+<span class="w">        </span>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>l<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>file_name<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-L<span class="w"> </span><span class="si">${</span><span class="nv">file_name</span><span class="si">}</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="si">${</span><span class="nv">file_name</span><span class="p">:</span><span class="nv">1</span><span class="si">}</span>&gt;&gt;../file.index<span class="p">;</span><span class="w"> </span><span class="k">fi</span><span class="w"> </span><span class="k">done</span>
+<span class="o">}</span>
+
+<span class="c1"># paket dosyası oluşturulur;</span>
+<span class="c1"># kurulacak data rootfs.tar.xz, file.index ve bpsbuild dosyaları tek bir dosya olarak tar.gz dosyası olarak  hazırlanıyor.</span>
+
+<span class="c1">#7. madde, tar.gz dosyası olarak hazırlanan dosya bps ismiyle değiştirilip paketimiz hazırlanır.</span>
+packagecompress<span class="o">()</span>
+<span class="o">{</span>
+<span class="nb">cd</span><span class="w"> </span>/tmp/bps/build/rootfs-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>
+tar<span class="w"> </span>-cf<span class="w"> </span>../rootfs.tar<span class="w"> </span>./*
+<span class="nb">cd</span><span class="w"> </span>/tmp/bps/build/
+xz<span class="w"> </span>-9<span class="w"> </span>rootfs.tar
+tar<span class="w"> </span>-cvzf<span class="w"> </span>paket-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz<span class="w"> </span>rootfs.tar.xz<span class="w"> </span>file.index<span class="w"> </span>bpsbuild
+cp<span class="w"> </span>paket-<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.tar.gz<span class="w"> </span><span class="si">${</span><span class="nv">dizin</span><span class="si">}</span>/<span class="si">${</span><span class="nv">paket</span><span class="si">}</span>/<span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span>.bps
+<span class="o">}</span>
+
+<span class="c1"># fonksiyonlar aşağıdaki sırayla çalışacaktır.</span>
+
+initsetup<span class="w"> </span><span class="c1">#bu dosya içindeki fonksiyon (indirilmesi)</span>
+setup<span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon (derleme öncesi hazırlık)</span>
+build<span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon (derleme)</span>
+package<span class="w"> </span><span class="c1">#bpsbuild dosyasından gelen fonksiyon (derlenen paketin dizine yüklenemesi)</span>
+packageindex<span class="w"> </span><span class="c1">#bu dosya içindeki fonksiyon (dizine yüklelen paketin indexlenmesi)</span>
+packagecompress<span class="w"> </span><span class="c1">#bu dosya içindeki fonksiyon (index.lst, derleme talimatı ve dizinin sıkıştırılmas)</span>
+</pre></div>
+</div>
+<p>Burada <strong>readline</strong> paketini örnek alarak <strong>bpspaketle</strong> dosyasının ve <strong>bpsbuild</strong> dosyasının nasıl hazırlandığı anlatıldı.
+Diğer paketler için sadece hazırlanacak pakete uygun şekilde <strong>bpsbuild</strong> dosyası hazırlayacağız. <strong>bpspaketle</strong>  dosyamızda değişiklik yapmayacağız. Artık  <strong>bpspaketle</strong>  dosyası paketimizi oluşturan script <strong>bpsbuild</strong> ise hazırlanacak paketin bilgilerini bulunduran script doyasıdır.</p>
+</section>
+<section id="paket-yapma">
+<h2><strong>Paket Yapma</strong><a class="headerlink" href="#paket-yapma" title="Permalink to this heading">¶</a></h2>
+<p>Bu bilgilere göre readline paketi nasıl oluşturulur onu görelim. Paketlerimizi oluşturacağımız bir dizin oluşturarak aşağıdaki işlemleri yapalım. Burada yine <strong>readline</strong> paketi anlatılacaktır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>readline
+<span class="nb">cd</span><span class="w"> </span>readline
+<span class="c1">#readline için hazırlanan bpsbuild dosyası bu konuma oluşturulur ve içeriği readline için oluşturduğumuz bpsbuild dosyası bu konuma kopyalayın</span>
+<span class="nb">cd</span><span class="w"> </span>..
+./bpspaketle<span class="w"> </span>readline<span class="w"> </span><span class="c1"># bpspaketle dosyamızın bu konumda olduğu varsayılmıştır ve parametre olarak readline dizini verilmiştir.</span>
+</pre></div>
+</div>
+<p>Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir. Burada anlatılan <strong>bpspaketle</strong> script dosyasını <strong>/bin/</strong> konumuna oluşturnuz ve <strong>chmod 755 /bin/bpspaketle</strong> komutuyla çalıştırma izni vermeliyiz. <strong>bps</strong> paket sistemi için yapılacak olan <strong>bsppaketle, bpsupdate, bpskur, bpskaldir</strong> scriptlerinide <strong>/bin/</strong> konumunda oluşturulmalı veya kopyalanmalı ve çalıştırma izni verilmeli.</p>
+<a class="reference internal image-reference" href="../_images/bpspaketle-2.png"><img alt="../_images/bpspaketle-2.png" src="../_images/bpspaketle-2.png" style="width: 600px;" /></a>
+<p>Artık sisteme kurulum için ikili dosya, kütüphaneleri ve dizinleri barındıran paketimiz oluşturuldu. Bu paketi sistemimize nasıl kurarız? konusu <strong>Paket Kurma</strong> başlığı altında anlatılacaktır.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Paket Sistemi</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="10-giris.html"><strong>Paket Sitemi</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Paket Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bps-paket-olusturma"><strong>bps Paket Oluşturma</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpsbuild-dosyasi"><strong>bpsbuild</strong> Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpspaketle-dosyasi"><strong>bpspaketle</strong> Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpsbuild-dosyamizin-son-hali"><strong>bpsbuild</strong> Dosyamızın Son Hali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpspaketle-dosyamizin-son-hali"><strong>bpspaketle</strong> Dosyamızın Son Hali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paket-yapma"><strong>Paket Yapma</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12-github-index-gucelleme.html">Depo indexleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-yerel-index-guncelleme.html">index Güncelleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-paket%20kurma.html">Paket Kurma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-paket-kald%C4%B1rma.html">Paket Kaldırma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../12.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.sistem-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.X-derleme/index.html">X Pencere Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1-about.html">Hakkımda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-contact.html">İletişim</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/11.paket-sistemi/11-paket-olusturma.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

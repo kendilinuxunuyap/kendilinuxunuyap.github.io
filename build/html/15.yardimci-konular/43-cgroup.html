@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>cgroup &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/15.yardimci-konular/43-cgroup.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="user-dirs" href="45-userdirs.html" />
+    <link rel="prev" title="Terminal Yönlendirmesi" href="42-userdetect.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="cgroup">
+<h1>cgroup<a class="headerlink" href="#cgroup" title="Permalink to this heading">¶</a></h1>
+<p>Cgroup, Linux çekirdeği tarafından sağlanan bir özellik olup, sistem kaynaklarını gruplar halinde yönetmemize olanak tanır. Bu, özellikle sunucu ortamlarında ve konteyner teknolojilerinde oldukça faydalıdır. Cgroup sayesinde, belirli bir grup süreç için kaynakları sınırlayabilir, izleyebilir ve yönetebilirsiniz.</p>
+<section id="cgroup-un-temel-ozellikleri">
+<h2>Cgroup'un Temel Özellikleri<a class="headerlink" href="#cgroup-un-temel-ozellikleri" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Kaynak Sınırlama:</strong> Cgroup, belirli bir grup süreç için CPU, bellek, disk ve ağ gibi kaynakları sınırlamanıza olanak tanır. Örneğin, bir uygulamanın bellek kullanımını 512 MB ile sınırlamak istiyorsanız, cgroup kullanarak bunu kolayca yapabilirsiniz.</p></li>
+<li><p><strong>Kaynak İzleme:</strong> Cgroup, süreçlerin kaynak kullanımını izlemek için de kullanılabilir. Bu, sistem yöneticilerinin hangi süreçlerin ne kadar kaynak kullandığını görmesine yardımcı olur.</p></li>
+<li><p><strong>Hiyerarşi:</strong> Cgroup, hiyerarşik bir yapıya sahiptir. Yani, bir cgroup içinde başka cgroup'lar oluşturabilirsiniz. Bu, daha karmaşık kaynak yönetimi senaryoları için faydalıdır.</p></li>
+</ul>
+</section>
+<section id="cgroup-kullanimi">
+<h2>Cgroup Kullanımı<a class="headerlink" href="#cgroup-kullanimi" title="Permalink to this heading">¶</a></h2>
+<p>Cgroup kullanmaya başlamak için öncelikle sisteminizde cgroup'un etkin olduğundan emin olmalısınız. Genellikle modern Linux dağıtımlarında cgroup varsayılan olarak aktiftir. Cgroup ile çalışmak için aşağıdaki adımları izleyebilirsiniz:
+1. Cgroup Oluşturma</p>
+<p>Öncelikle, bir cgroup oluşturmalısınız. Bunun için terminalde aşağıdaki komutu kullanabilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>mkdir<span class="w"> </span>/sys/fs/cgroup/memory/my_cgroup
+</pre></div>
+</div>
+<p>Bu komut, &quot;my_cgroup&quot; adında bir bellek cgroup'u oluşturur.</p>
+<ol class="arabic simple" start="2">
+<li><p>Kaynak Sınırlama</p></li>
+</ol>
+<p>Oluşturduğunuz cgroup'a bellek sınırı eklemek için şu komutu kullanabilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>512M<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/sys/fs/cgroup/memory/my_cgroup/memory.limit_in_bytes
+</pre></div>
+</div>
+<p>Bu komut, &quot;my_cgroup&quot; için bellek sınırını 512 MB olarak ayarlar.</p>
+<ol class="arabic simple" start="3">
+<li><p>Süreç Ekleme</p></li>
+</ol>
+<p>Artık bir cgroup oluşturduğunuza göre, bu cgroup'a süreç ekleyebilirsiniz. Bunun için, eklemek istediğiniz sürecin PID'sini öğrenin ve aşağıdaki komutu kullanın:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>&lt;PID&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/sys/fs/cgroup/memory/my_cgroup/cgroup.procs
+</pre></div>
+</div>
+<p>Burada &lt;PID&gt; kısmını eklemek istediğiniz sürecin PID'si ile değiştirin.</p>
+<ol class="arabic simple" start="4">
+<li><p>İzleme</p></li>
+</ol>
+<p>Cgroup'un kaynak kullanımını izlemek için aşağıdaki komutu kullanabilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>/sys/fs/cgroup/memory/my_cgroup/memory.usage_in_bytes
+</pre></div>
+</div>
+<p>Bu komut, &quot;my_cgroup&quot; içindeki süreçlerin toplam bellek kullanımını gösterir.</p>
+</section>
+<section id="cgroup-un-avantajlari">
+<h2>Cgroup'un Avantajları<a class="headerlink" href="#cgroup-un-avantajlari" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Kaynak Yönetimi:</strong> Sunucu kaynaklarını daha verimli bir şekilde yönetmenizi sağlar.</p></li>
+<li><p><strong>Performans İyileştirmesi:</strong> Süreçlerin kaynak kullanımını sınırlayarak sistemin genel performansını artırabilir.</p></li>
+<li><p><strong>Güvenlik:</strong> Belirli süreçlerin diğer süreçlerin kaynaklarına erişimini kısıtlayarak güvenliği artırır.</p></li>
+</ul>
+</section>
+<section id="sonuc">
+<h2>Sonuç<a class="headerlink" href="#sonuc" title="Permalink to this heading">¶</a></h2>
+<p>Cgroup, Linux sistemlerinde kaynak yönetimi için güçlü bir araçtır. Özellikle sunucu ve konteyner ortamlarında, kaynakları etkili bir şekilde yönetmek ve izlemek için vazgeçilmezdir. Yukarıda bahsedilen adımları takip ederek, cgroup ile kaynak yönetimi yapmaya başlayabilirsiniz. Unutmayın, her zaman sistem kaynaklarınızı izlemek ve gerektiğinde ayarlamalar yapmak önemlidir.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.sistem-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.X-derleme/index.html">X Pencere Sistemi</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-chroot.html">Chroot Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-busybox.html">busybox Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09-openrc.html">OpenRC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html">Qemu Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html">Live Sistem Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html#modul-yazma">Modul Yazma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sfdisk.html">sfdisk Nedir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="36-sistemdili.html">Sistem Dili Değiştirme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="37-yerelayarlar.html">Kullanıcı Sistem Ayarları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="38-kullaniciekleme.html">Add User</a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-github.html">github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="42-userdetect.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">cgroup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cgroup-un-temel-ozellikleri">Cgroup'un Temel Özellikleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cgroup-kullanimi">Cgroup Kullanımı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cgroup-un-avantajlari">Cgroup'un Avantajları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sonuc">Sonuç</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="45-userdirs.html">user-dirs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="48-ld.html">ld(linker)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../1-about.html">Hakkımda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-contact.html">İletişim</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/15.yardimci-konular/43-cgroup.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,65 @@
+make
+++++
+
+Bu derleme yöntemi aşağıda gösterilen örnekteki gibi kullanılır.
+
+.. code-block:: shell
+
+	$ ./configure --prefix=/usr
+	$ make
+	$ make install
+
+Bu örnekte ilk satırda kullanılan configure komutu **autotools** paketinden gelmektedir.
+Eğer configure dosyası yerine **configure.ac** varsa önce **autoreconf -fvi** çalıştırılmalıdır. Bu komut configure dosyamızı üretir.
+**configure** komutunun devamında **--prefix** dışında başka parametreleride olabilir. Bu paramatreleri "Read.me" dosyası içerisinde bulunabilir veya **configure --help** komutu kaynak kodların olduğu konumda kullanılarak görülebilir.
+
+Örneğin aşağıdaki gibi bir C dosyamız olsun:
+
+.. code-block:: C
+
+	#include <stdio.h>
+	int main(){
+	    puts("Hello World");
+	    return 0;
+	}
+
+configure.ac dosyamızın içeriği aşağıdaki gibi olsun:
+
+.. code-block:: C
+
+	# initialize the process
+	AC_INIT([hello], [0.01])
+	# make config headers
+	AC_CONFIG_HEADERS([config.h])
+	#Auxiliary files go here
+	AC_CONFIG_AUX_DIR([build-aux])
+	# init automake
+	AM_INIT_AUTOMAKE([1.11])
+	#configure and create "Makefile"
+	AC_CONFIG_FILES([Makefile])
+	#find and probe C compiler
+	AC_PROG_CC
+	#End
+	AC_OUTPUT
+
+makefile.am dosyamızın içeriği aşağıdaki gibi olsun:
+
+.. code-block:: makefile
+
+	#list of programs to be installed in bin directory
+	bin_PROGRAMS = hello
+	#sources for targets
+	hello_SOURCES = hello.c
+
+Bu kaynak kod aşağıdaki gibi derlenir:
+
+.. code-block:: shell
+
+	$ autoreconf -fvi
+	$ ./configure --prefix=/usr
+	$ make
+	$ make install
+	
+.. raw:: pdf
+
+   PageBreak

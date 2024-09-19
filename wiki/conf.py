@@ -21,13 +21,13 @@ pdf_stylesheets = ['style-main.yaml', 'tango']
 #pdf_stylesheets = ['sphinx', 'letter', 'draft']
 pdf_font_path = ['/usr/share/fonts', '/usr/share/texmf-dist/fonts/']
 pdf_style_path = [ '.', 'wiki/_static']
-pdf_use_coverpage = True
-pdf_use_toc = True
+pdf_use_coverpage = False
+pdf_use_toc = False
 pdf_default_dpi = 96
 pdf_compressed = True
 pdf_language = "tr_TR"
 pdf_fit_mode = "shrink"
-pdf_cover = "wiki/_static/cover.png"
+
 # -- Options for HTML output --
 
 html_baseurl = 'https://kendilinuxunuyap.github.io/'

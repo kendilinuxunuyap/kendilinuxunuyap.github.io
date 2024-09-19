@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>&lt;no title&gt; &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/index.html" />
+    <link rel="index" title="Dizin" href="genindex.html" />
+    <link rel="search" title="Ara" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="00.kapak/index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01.giris/index.html">Temel Kavramlar</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03.on-hazirlik/index.html">Ön Hazırlık</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03.on-hazirlik/10.ortaminhazirlanmasi.html">Dağıtım Ortamın Hazırlanması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html">Minimal Dağıtım Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#dizinlerin-olusturulmasi"><strong>Dizinlerin Oluşturulması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-rootfs-busybox"><strong>$HOME/distro/rootfs/busybox</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-rootfs-init"><strong>$HOME/distro/rootfs/init</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-iso-boot-initrd-img"><strong>$HOME/distro/iso/boot/initrd.img</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-iso-boot-vmlinuz"><strong>$HOME/distro/iso/boot/vmlinuz</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-iso-boot-grub-grub-cfg"><strong>$HOME/distro/iso/boot/grub/grub.cfg</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#home-distro-distro-iso"><strong>$HOME/distro/distro.iso</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="03.on-hazirlik/30.minimal-sistem.html#dagitimin-test-edilmesi"><strong>Dağıtımın Test Edilmesi</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="05.derleme-araclari/index.html">Derleme Araçları</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="05.derleme-araclari/0.derleme-ara%C3%A7lar%C4%B1.html">Derleme araçları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.derleme-araclari/1.make.html">make</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.derleme-araclari/2.cmake.html">cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.derleme-araclari/3.meson.html">meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05.derleme-araclari/4.python.html">python</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="09.paket-derleme/index.html">Paket Derleme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/000-giris.html">Temel Paketler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/001-base-file.html">base-file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/001-base-file.html#base-file-komutlari"><strong>base-file Komutları</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/001-base-file.html#sablon-script-yapisi">Şablon Script Yapısı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/001-base-file.html#yapiyi-olusturan-script">Yapıyı Oluşturan Script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/001-base-file.html#paket-derleme-yontemi">Paket Derleme Yöntemi</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/01-glibc.html">glibc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/01-glibc.html#glibc-script-dosyasi">glibc Script Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/01-glibc.html#test-etme">Test Etme</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="09.paket-derleme/01-glibc.html#program-derleme">Program Derleme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.paket-derleme/01-glibc.html#program-yukleme">Program Yükleme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.paket-derleme/01-glibc.html#programi-test-etme">Programı Test Etme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.paket-derleme/01-glibc.html#hata-cozumu">Hata Çözümü</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/02-readline.html">readline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/02-readline.html#derleme">Derleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/02-readline.html#program-yazma">Program Yazma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/02-readline.html#program-derleme">Program Derleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/02-readline.html#program-test-etme">Program Test Etme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/03-ncurses.html">ncurses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/03-ncurses.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/04-bash.html">bash</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/04-bash.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/05-openssl.html">openssl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/05-openssl.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/06-acl.html">acl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/06-acl.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/07-attr.html">attr</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/07-attr.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/08-libcap.html">libcap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/08-libcap.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/09-libpcre2.html">libpcre2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/09-libpcre2.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/10-gmp.html">gmp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/10-gmp.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/11-coreutils.html">coreutils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/11-coreutils.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/12-util-linux.html">util-linux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/12-util-linux.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/13-grep.html">grep</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/13-grep.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/14-sed.html">sed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/14-sed.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/15-mpfr.html">mpfr</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/15-mpfr.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/16-gawk.html">gawk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/16-gawk.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/17-findutils.html">findutils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/17-findutils.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/18-gcc.html">gcc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/18-gcc.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/19-libcap-ng.html">libcap-ng</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/19-libcap-ng.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/20-sqlite.html">sqlite</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/20-sqlite.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/21-gzip.html">gzip</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/21-gzip.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/22-xz-utils.html">xz-utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/22-xz-utils.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/23-zstd.html">zstd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/23-zstd.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/24-bzip2.html">bzip2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/24-bzip2.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/25-elfutils.html">elfutils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/25-elfutils.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/26-libselinux.html">libselinux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/26-libselinux.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/27-tar.html">tar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/27-tar.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/28-zlib.html">zlib</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/28-zlib.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/29-brotli.html">brotli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/29-brotli.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/30-curl.html">curl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/30-curl.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/31-shadow.html">shadow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/31-shadow.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/32-file.html">file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/32-file.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/33-eudev.html">eudev</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/33-eudev.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/34-cpio.html">cpio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/34-cpio.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/35-libsepol.html">libsepol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/35-libsepol.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/36-kmod.html">kmod</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/36-kmod.html#derleme">Derleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/36-kmod.html#kmod-komutlari">kmod Komutları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/36-kmod.html#test-edilmesi">Test Edilmesi</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/37-audit.html">audit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/37-audit.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/38-libxcrypt.html">libxcrypt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/38-libxcrypt.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/39-libnsl.html">libnsl</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/39-libnsl.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/40-libbsd.html">libbsd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/40-libbsd.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/41-libtirpc.html">libtirpc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/41-libtirpc.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/42-e2fsprogs.html">e2fsprogs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/42-e2fsprogs.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/43-dostools.html">dostools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/43-dostools.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html">initramfs-tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#derleme">Derleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#etc-initramfs-tools-modules"><strong>/etc/initramfs-tools/modules</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#initramfs-tools-ayarlari"><strong>initramfs-tools Ayarları</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#initrd-olusturma-guncelleme"><strong>initrd Oluşturma/Güncelleme</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#initrd-acilma-sureci"><strong>initrd açılma Süreci</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/44-initramfs-tools.html#initrd-script-icerigi"><strong>initrd script İçeriği</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/45-libxml2.html">libxml2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/45-libxml2.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/46-expat.html">expat</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/46-expat.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/47-libmd.html">libmd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/47-libmd.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/48-libaio.html">libaio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/48-libaio.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/49-lvm2.html">lvm2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/49-lvm2.html#lvm2-kurma-scripti">lvm2 Kurma Scripti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/49-lvm2.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/50-popt.html">popt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/50-popt.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/51-icu.html">icu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/51-icu.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/52-iproute2.html">iproute2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/52-iproute2.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/53-net-tools.html">net-tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/53-net-tools.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/54-dhcp.html">dhcp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/54-dhcp.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/55-openrc.html">openrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/55-openrc.html#derleme">Derleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/55-openrc.html#calistirilmasi">Çalıştırılması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/55-openrc.html#basit-kullanim">Basit kullanım</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/56-rsync.html">rsync</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/56-rsync.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/57-kbd.html">kbd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/57-kbd.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/58-kernel.html">kernel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/58-kernel.html#debian-kernel">Debian Kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/58-kernel.html#kernel-derleme">Kernel Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/59-dialog.html">dialog</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/59-dialog.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/60-live-boot.html">live-boot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/60-live-boot.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/61-live-config.html">live-config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/61-live-config.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/62-parted.html">parted</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/62-parted.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/63-busybox.html">busybox</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/63-busybox.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/64-nano.html">nano</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/64-nano.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/65-grub.html">grub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/65-grub.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/66-efibootmgr.html">efibootmgr</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/66-efibootmgr.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/67-efivar.html">efivar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/67-efivar.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/68-libssh.html">libssh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/68-libssh.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/69-openssh.html">openssh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/69-openssh.html#derleme">Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="09.paket-derleme/70-pam.html">pam</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="09.paket-derleme/70-pam.html#derleme">Derleme</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="11.paket-sistemi/index.html">Paket Sistemi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/10-giris.html"><strong>Paket Sitemi</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/10-giris.html#binary-paket-sistemi"><strong>Binary Paket Sistemi</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/10-giris.html#source-paket-sistemi"><strong>Source Paket Sistemi</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/10-giris.html#paket-sisteminin-temel-yapisi"><strong>Paket sisteminin temel yapısı</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/10-giris.html#bps-paket-sistemi"><strong>bps Paket Sistemi</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html">Paket Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#bps-paket-olusturma"><strong>bps Paket Oluşturma</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#bpsbuild-dosyasi"><strong>bpsbuild</strong> Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#bpspaketle-dosyasi"><strong>bpspaketle</strong> Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#bpsbuild-dosyamizin-son-hali"><strong>bpsbuild</strong> Dosyamızın Son Hali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#bpspaketle-dosyamizin-son-hali"><strong>bpspaketle</strong> Dosyamızın Son Hali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/11-paket-olusturma.html#paket-yapma"><strong>Paket Yapma</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/12-github-index-gucelleme.html">Depo indexleme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/12-github-index-gucelleme.html#bps-github-depo-yapma">bps github Depo Yapma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/12-github-index-gucelleme.html#index-dosyasi">index Dosyası</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="11.paket-sistemi/12-github-index-gucelleme.html#index-lst-icerigi">index.lst İçeriği</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/12-github-index-gucelleme.html#main-yml">main.yml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/13-yerel-index-guncelleme.html">index Güncelleme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/13-yerel-index-guncelleme.html#bpsupdate"><strong>bpsupdate</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/13-yerel-index-guncelleme.html#bpsupdate-kullanma"><strong>bpsupdate</strong> Kullanma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/15-paket%20kurma.html">Paket Kurma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/15-paket%20kurma.html#bps-paket-kurma-scripti-tasarlama"><strong>bps Paket Kurma Scripti Tasarlama</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="11.paket-sistemi/15-paket%20kurma.html#bpskur-scripti"><strong>bpskur</strong> Scripti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.paket-sistemi/15-paket%20kurma.html#bpskur-scriptini-kullanma"><strong>bpskur</strong> Scriptini Kullanma</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11.paket-sistemi/16-paket-kald%C4%B1rma.html">Paket Kaldırma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="11.paket-sistemi/16-paket-kald%C4%B1rma.html#bps-paket-kaldirma-scripti-tasarlama"><strong>bps Paket Kaldırma Scripti Tasarlama</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="11.paket-sistemi/16-paket-kald%C4%B1rma.html#bpskaldir-scripti"><strong>bpskaldir</strong> scripti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.paket-sistemi/16-paket-kald%C4%B1rma.html#bpskaldir-kullanma"><strong>bpskaldir</strong> Kullanma</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="12.iso-hazirlama/index.html">iso Hazırlama</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html">İso Hazırlama</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#grub-cfg-hazirlama"><strong>grub.cfg Hazırlama</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#initrd-img-hazirlanmasi"><strong>initrd.img Hazırlanması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#initrd-olusturma-guncelleme"><strong>initrd Oluşturma/Güncelleme</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#vmlinuz-hazirlanmasi"><strong>vmlinuz Hazırlanması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#filesystem-squashfs-hazirlama"><strong>filesystem.squashfs Hazırlama</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#iso-dosyasinin-olusturulmasi"><strong>İso Dosyasının Oluşturulması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#isonun-test-edilmesi"><strong>İsonun Test Edilmesi</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/1-iso-hazirlama.html#iso-olusturma-scripti">iso Oluşturma Scripti</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12.iso-hazirlama/2-bps-iso-yapma.html">bps ile İso Yapma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12.iso-hazirlama/2-bps-iso-yapma.html#iso-scripti">iso Scripti</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="13.sistem-kurulumu/index.html">Sistem Kurulumu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="13.sistem-kurulumu/1-sistem-kurma.html"><strong>Sistem Kurma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html">Tek Bölüm Kurulum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html#disk-hazirlanmali-legacy">Disk Hazırlanmalı(legacy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html#dosya-sistemini-kopyalama">Dosya sistemini kopyalama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html#bootloader-kurulumu">Bootloader kurulumu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html#grub-kuralim">Grub Kuralım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/2-tek-bolum-sistem-kurulum.html#grub-yapilandirmasi">Grub yapılandırması</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html">İki Bölüm Kurulum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#disk-hazirlanmali">Disk Hazırlanmalı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#e2fsprogs-paketi">e2fsprogs Paketi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#dosya-sistemini-kopyalama">Dosya sistemini kopyalama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#bootloader-kurulumu">Bootloader kurulumu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#grub-kuralim">Grub Kuralım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/3-iki-bolum-sistem-kurulum.html#grub-yapilandirmasi">Grub yapılandırması</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html">Uefi Sistem Kurulumu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#uefi-legacy-tespiti">Uefi - Legacy tespiti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#disk-hazirlanmali">Disk Hazırlanmalı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#e2fsprogs-paketi">e2fsprogs Paketi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#dosya-sistemini-kopyalama">Dosya sistemini kopyalama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#bootloader-kurulumu">Bootloader kurulumu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#grub-kuralim">Grub Kuralım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="13.sistem-kurulumu/4-uefi-sistem-kurulum.html#grub-yapilandirmasi">Grub yapılandırması</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="14.X-derleme/index.html">X Pencere Sistemi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="14.X-derleme/10-giris.html"><strong>X Pencere Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14.X-derleme/11-xderleme.html"><strong>X Pencere Derleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html"><strong>Xorg Çalıştırma</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html#xorg-yapilandirma-dosyasi">Xorg Yapılandırma Dosyası</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html#xwrapper-config">Xwrapper.config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html#kullaninici-ayari">Kullanınıcı Ayarı</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html#xorg-u-elle-baslatma">Xorg'u Elle Başlatma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.X-derleme/13-xorg-calistirma.html#xorg-u-durdurma">Xorg'u Durdurma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="14.X-derleme/14-xorg-debug.html"><strong>Xorg Hata ayıklama</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="14.X-derleme/14-xorg-debug.html#hata-ayiklama">Hata Ayıklama</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="14.X-derleme/15-paketlistesi.html"><strong>X Paketleri</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="15.yardimci-konular/index.html">Yardımcı Konular</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/01-chroot.html">Chroot Nedir?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#bagimlilik-scripti">Bağımlılık Scripti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#basit-sistem-olusturma">Basit Sistem Oluşturma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#sistem-dizinin-olustrulmasi">Sistem Dizinin Oluştrulması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#ls-komutu">ls Komutu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#rmdir-komutu">rmdir Komutu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#mkdir-komutu">mkdir Komutu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#bash-komutu">bash Komutu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/01-chroot.html#chroot-sistemde-calisma">chroot Sistemde Çalışma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/02-busybox.html">busybox Nedir?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/02-busybox.html#busybox-derleme">Busybox Derleme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/09-openrc.html">OpenRC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#kurulum">Kurulum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#calistirilmasi">Çalıştırılması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#basit-kullanim">Basit kullanım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#servis-dosyasi">Servis dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#openrc-disk-islemi">OpenRc Disk İşlemi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="15.yardimci-konular/09-openrc.html#fstab-dosyasi">Fstab dosyası</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/10-qemu.html">Qemu Kullanımı</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#qemu-nedir">Qemu Nedir?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#sisteme-kurulum">Sisteme Kurulum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#sistem-hizlandirilmasi">Sistem Hızlandırılması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#boot-menu-acma">Boot Menu Açma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#uefi-kurulum-icin">Uefi kurulum için:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#qemu-host-erisimi">qemu Host Erişimi:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#vmlinuz-ve-initrd">vmlinuz ve initrd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#qemu-terminal-yonlendirmesi">qemu Terminal Yönlendirmesi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/10-qemu.html#diskteki-sistemin-acilisini-terminale-yonlendirme">Diskteki Sistemin Açılışını Terminale Yönlendirme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html">Live Sistem Oluşturma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#squashfs-nedir">SquashFS Nedir?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#squashfs-olusturma">SquashFS Oluşturma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#cdrom-erisimi">Cdrom Erişimi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#cdrom-baglama">Cdrom Bağlama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#squashfs-dosyasini-bulma">squashfs Dosyasını Bulma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#squashfs-baglama">squashfs Bağlama</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/11-liveolusturma.html#squashfs-sistemine-gecis">squashfs Sistemine Geçiş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html">kmod Nedir?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html#modul-yazma">Modul Yazma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html#hello-c-dosyamiz">hello.c dosyamız</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html#makefile-dosyamiz">Makefile dosyamız</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html#modulun-derlenmesi-ve-eklenip-kaldirilmasi">modülün derlenmesi ve eklenip kaldırılması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/13-modul-kmod.html#not">Not:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html">sfdisk Nedir</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#disk-bolumlerini-goruntuleme"><strong>Disk Bölümlerini Görüntüleme:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#disk-bolumleri-olusturma"><strong>Disk Bölümleri Oluşturma:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#disk-bolumlerini-silme"><strong>Disk Bölümlerini Silme:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#disk-etiketi-belirleme"><strong>Disk Etiketi Belirleme</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#bazi-ornekler"><strong>Bazı Örnekler</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#ornek1"><strong>Örnek1:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#ornek2"><strong>Örnek2:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#ornek3"><strong>Örnek3:</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/14-sfdisk.html#ornek4"><strong>Örnek4:</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/30-strip.html">strip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/36-sistemdili.html">Sistem Dili Değiştirme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/36-sistemdili.html#yontem"><strong>1. Yöntem</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/36-sistemdili.html#id1"><strong>2. Yöntem</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/36-sistemdili.html#profile"><strong>profile</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/36-sistemdili.html#id2"><strong>3.Yöntem</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/37-yerelayarlar.html">Kullanıcı Sistem Ayarları</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/37-yerelayarlar.html#profile-dosyasi">Profile Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/37-yerelayarlar.html#profile">** profile**</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/38-kullaniciekleme.html">Add User</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/39-github.html">github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/42-userdetect.html">Terminal Yönlendirmesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/43-cgroup.html">cgroup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/43-cgroup.html#cgroup-un-temel-ozellikleri">Cgroup'un Temel Özellikleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/43-cgroup.html#cgroup-kullanimi">Cgroup Kullanımı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/43-cgroup.html#cgroup-un-avantajlari">Cgroup'un Avantajları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/43-cgroup.html#sonuc">Sonuç</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/45-userdirs.html">user-dirs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15.yardimci-konular/48-ld.html">ld(linker)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="15.yardimci-konular/48-ld.html#linker-turleri">Linker Türleri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1-about.html">Hakkımda</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-contact.html">İletişim</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.sistem-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.X-derleme/index.html">X Pencere Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1-about.html">Hakkımda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-contact.html">İletişim</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

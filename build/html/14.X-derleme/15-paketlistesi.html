@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>X Paketleri &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/14.X-derleme/15-paketlistesi.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Yardımcı Konular" href="../15.yardimci-konular/index.html" />
+    <link rel="prev" title="Xorg Hata ayıklama" href="14-xorg-debug.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="x-paketleri">
+<h1><strong>X Paketleri</strong><a class="headerlink" href="#x-paketleri" title="Permalink to this heading">¶</a></h1>
+<p>x11 derlemek için maddeler halinde verilen adreslerin içinde bulunanan paketlerin son versiyonları derlenmelidir.
+Bu paketler birbirine bağımlı paketlerdir.  Bundan dolayı aşağıda verdiğim sıralamaya göre derlenmelidir.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/xcb/">https://www.x.org/releases/individual/xcb/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/util/">https://www.x.org/releases/individual/util/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/proto/">https://www.x.org/releases/individual/proto/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/driver/">https://www.x.org/releases/individual/driver/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/lib/">https://www.x.org/releases/individual/lib/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/xserver/">https://www.x.org/releases/individual/xserver/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/font/">https://www.x.org/releases/individual/font/</a></p></li>
+<li><p><a class="reference external" href="https://www.x.org/releases/individual/app/">https://www.x.org/releases/individual/app/</a></p></li>
+</ul>
+<p>Bunların dışında x11 pencere sisteminin en önemli paketleri şunlardır;</p>
+<ol class="arabic simple">
+<li><p>mesa : <a class="reference external" href="https://gitlab.freedesktop.org/mesa/mesa/-/tags">https://gitlab.freedesktop.org/mesa/mesa/-/tags</a></p></li>
+<li><p>llvm : <a class="reference external" href="https://github.com/llvm/llvm-project/tags">https://github.com/llvm/llvm-project/tags</a></p></li>
+<li><p>cairo: <a class="reference external" href="https://gitlab.freedesktop.org/cairo/cairo/-/tags">https://gitlab.freedesktop.org/cairo/cairo/-/tags</a></p></li>
+</ol>
+<p>Tüm paketleri derlesek bile <strong>mesa,llvm,cairo</strong> paketleri düzgün ve uyumlu versiyonları olmadığı zaman X penceremiz açılmayacaktır.</p>
+<p>Buradaki tüm paketler ve bağımlılıkları derlendikten sonra <strong>Xorg:0</strong> şeklinde elle çalıştırarak hata ayıklama yapılmalıdır.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html">Paket Derleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.sistem-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">X Pencere Sistemi</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="10-giris.html"><strong>X Pencere Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-xderleme.html"><strong>X Pencere Derleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-xorg-calistirma.html"><strong>Xorg Çalıştırma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-xorg-debug.html"><strong>Xorg Hata ayıklama</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>X Paketleri</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1-about.html">Hakkımda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-contact.html">İletişim</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/14.X-derleme/15-paketlistesi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>glibc &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/09.paket-derleme/01-glibc.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="readline" href="02-readline.html" />
+    <link rel="prev" title="base-file" href="001-base-file.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="glibc">
+<h1>glibc<a class="headerlink" href="#glibc" title="Permalink to this heading">¶</a></h1>
+<p><strong>glibc</strong> linux dağıtımlarında bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. <strong>glibc</strong> dışında diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. <strong>glibc</strong> en çok tercih edilen ve uygulama uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır. <strong>glibc</strong> listemizde derleyeceğimiz tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiz pakettir.</p>
+<section id="glibc-script-dosyasi">
+<h2>glibc Script Dosyası<a class="headerlink" href="#glibc-script-dosyasi" title="Permalink to this heading">¶</a></h2>
+<p>Debian ortamında bu paketin derlenmesi için;
+<strong>sudo apt install make bison gawk diffutils gcc gettext grep perl sed texinfo libtool</strong> komutuyla paketin kurulması gerekmektedir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<span class="nv">version</span><span class="o">=</span><span class="s2">&quot;2.39&quot;</span>
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;glibc&quot;</span>
+<span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">description</span><span class="o">=</span><span class="s2">&quot;temel kütüphane&quot;</span>
+<span class="nv">source</span><span class="o">=</span><span class="s2">&quot;https://ftp.gnu.org/gnu/libc/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+<span class="nv">groups</span><span class="o">=</span><span class="s2">&quot;sys.base&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CC</span><span class="o">=</span><span class="s2">&quot;gcc&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">&quot;g++&quot;</span>
+<span class="nv">display</span><span class="o">=</span><span class="s2">&quot;:</span><span class="k">$(</span>ls<span class="w"> </span>/tmp/.X11-unix/*<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s#/tmp/.X11-unix/X##&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">&quot;</span><span class="w">      </span><span class="c1">#Detect the name of the display in use</span>
+<span class="nv">user</span><span class="o">=</span><span class="k">$(</span>who<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;(&#39;</span><span class="nv">$display</span><span class="s1">&#39;)&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span><span class="w">    </span><span class="c1">#Detect the user using such display</span>
+<span class="nv">ROOTBUILDDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build&quot;</span><span class="w"> </span><span class="c1"># Derleme konumu</span>
+<span class="nv">BUILDDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build/build-</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1">#Derleme yapılan paketin derleme konumun</span>
+<span class="nv">DESTDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/rootfs&quot;</span><span class="w"> </span><span class="c1">#Paketin yükleneceği sistem konumu</span>
+<span class="nv">PACKAGEDIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span><span class="c1">#paketin derleme talimatının verildiği konum</span>
+<span class="nv">SOURCEDIR</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro/build/</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1">#Paketin kaynak kodlarının olduğu konum</span>
+
+initsetup<span class="o">(){</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w">  </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#derleme dizini yoksa oluşturuluyor</span>
+<span class="w">            </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="nv">$ROOTBUILDDIR</span>/*<span class="w"> </span><span class="c1">#içeriği temizleniyor</span>
+<span class="w">            </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$ROOTBUILDDIR</span><span class="w"> </span><span class="c1">#dizinine geçiyoruz</span>
+<span class="w">            </span>wget<span class="w"> </span><span class="si">${</span><span class="nv">source</span><span class="si">}</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>*<span class="se">\ </span>*<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>mv<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$f</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">f</span><span class="p">// /</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="c1">#isimde boşluk varsa silme işlemi yapılıyor</span>
+<span class="w">            </span><span class="nv">dowloadfile</span><span class="o">=</span><span class="k">$(</span>ls<span class="p">|</span>head<span class="w"> </span>-1<span class="k">)</span>
+<span class="w">            </span><span class="nv">filetype</span><span class="o">=</span><span class="k">$(</span>file<span class="w"> </span>-b<span class="w"> </span>--extension<span class="w"> </span><span class="nv">$dowloadfile</span><span class="p">|</span>cut<span class="w"> </span>-d<span class="s1">&#39;/&#39;</span><span class="w"> </span>-f1<span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">filetype</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;???&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>unzip<span class="w">  </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>tar<span class="w"> </span>-xvf<span class="w"> </span><span class="si">${</span><span class="nv">dowloadfile</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span><span class="nv">director</span><span class="o">=</span><span class="k">$(</span>find<span class="w"> </span>./*<span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">0</span><span class="w"> </span>-type<span class="w"> </span>d<span class="k">)</span>
+<span class="w">            </span><span class="nv">directorname</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="si">${</span><span class="nv">director</span><span class="si">}</span><span class="k">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">directorname</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>mv<span class="w"> </span><span class="nv">$directorname</span><span class="w"> </span><span class="si">${</span><span class="nv">name</span><span class="si">}</span>-<span class="si">${</span><span class="nv">version</span><span class="si">}</span><span class="p">;</span><span class="k">fi</span>
+<span class="w">            </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$BUILDDIR</span><span class="o">&amp;&amp;</span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$DESTDIR</span><span class="o">&amp;&amp;</span><span class="nb">cd</span><span class="w"> </span><span class="nv">$BUILDDIR</span>
+<span class="o">}</span>
+
+setup<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">                </span>cp<span class="w"> </span>-prvf<span class="w"> </span><span class="nv">$PACKAGEDIR</span>/files<span class="w"> </span><span class="nv">$BUILDDIR</span>/
+<span class="w">                </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;slibdir=/lib64&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>configparms
+<span class="w">                </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;rtlddir=/lib64&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>configparms
+<span class="w">                </span><span class="nv">$SOURCEDIR</span>/configure<span class="w"> </span>--prefix<span class="o">=</span>/usr<span class="w"> </span>--mandir<span class="o">=</span>/usr/share/man<span class="w"> </span>--infodir<span class="o">=</span>/usr/share/info<span class="w"> </span>--enable-bind-now<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--enable-multi-arch<span class="w"> </span>--enable-stack-protector<span class="o">=</span>strong<span class="w"> </span>--enable-stackguard-randomization<span class="w"> </span>--disable-crypt<span class="w"> </span>--disable-profile<span class="w"> </span>--disable-werror<span class="w"> </span>--enable-static-pie<span class="w"> </span>--enable-static-nss--disable-nscd<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--host<span class="o">=</span>x86_64-pc-linux-gnu<span class="w"> </span>--libdir<span class="o">=</span>/lib64<span class="w"> </span>--libexecdir<span class="o">=</span>/lib64/glibc
+<span class="o">}</span>
+build<span class="o">(){</span>
+<span class="w">                </span>make<span class="w"> </span>-j5<span class="w"> </span><span class="c1">#-C $DESTDIR all</span>
+<span class="o">}</span>
+package<span class="o">(){</span>
+<span class="w">                </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/lib64
+<span class="w">                </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$DESTDIR</span>
+<span class="w">                </span>ln<span class="w"> </span>-s<span class="w"> </span>lib64<span class="w"> </span>lib
+<span class="w">                </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$BUILDDIR</span>
+<span class="w">                </span>make<span class="w"> </span>install<span class="w"> </span><span class="nv">DESTDIR</span><span class="o">=</span><span class="nv">$DESTDIR</span>
+
+<span class="w">                </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/ld.so.conf.d/<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/sysconf.d/<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/bin
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/ld.so.conf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/ld.so.conf
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/usr-support.conf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/ld.so.conf.d/
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/x86_64-linux-gnu.conf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/ld.so.conf.d/
+
+<span class="w">                </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/ld.so.cache<span class="w">        </span><span class="c1"># remove ld.so.cache file</span>
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/glibc.sysconf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/etc/sysconf.d/glibc<span class="w">    </span><span class="c1"># install sysconf trigger</span>
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/locale-gen<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/bin/locale-gen<span class="w">    </span><span class="c1"># install extra tools</span>
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/revdep-rebuild<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/bin/revdep-rebuild
+
+<span class="w">                </span>install<span class="w"> </span><span class="nv">$BUILDDIR</span>/files/tr_TR<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/usr/share/i18n/locales/tr_TR<span class="w"> </span><span class="c1"># replace buggy turkish format with better one</span>
+<span class="w">                </span><span class="c1"># remove unused languages</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>ku<span class="w"> </span>hy<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">                    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/usr/lib/locale/<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_*
+<span class="w">                    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/usr/share/locale/<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_*
+<span class="w">                    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/usr/share/i18n/locales/<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_*
+<span class="w">                </span><span class="k">done</span>
+<span class="w">                </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s|#!/bin/bash|#!/bin/sh|g&quot;</span><span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/usr/bin/ldd<span class="w">       </span><span class="c1"># fix ldd shebang</span>
+<span class="w">                </span><span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/lib64/<span class="w"> </span><span class="o">&amp;&amp;</span>mkdir<span class="w"> </span>-p<span class="w"> </span>x86_64-linux-gnu<span class="o">&amp;&amp;</span><span class="nb">cd</span><span class="w"> </span>x86_64-linux-gnu
+
+<span class="w">                 </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>-rd<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>file<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">                   </span>ln<span class="w"> </span>-s<span class="w"> </span><span class="nv">$file</span><span class="w"> </span><span class="k">$(</span>basename<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span><span class="k">)</span>
+<span class="w">                </span><span class="k">done</span>&lt;<span class="w"> </span>&lt;<span class="o">(</span>find<span class="w"> </span><span class="s2">&quot;../&quot;</span><span class="w">  </span>-maxdepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-iname<span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="w"> </span>-print0<span class="o">)</span>
+<span class="w">                </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span>/sbin/ldconfig<span class="w"> </span>-r<span class="w"> </span><span class="si">${</span><span class="nv">DESTDIR</span><span class="si">}</span><span class="w">           </span><span class="c1"># sistem guncelleniyor</span>
+<span class="o">}</span>
+
+initsetup<span class="w">       </span><span class="c1"># initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir</span>
+setup<span class="w">           </span><span class="c1"># setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.</span>
+build<span class="w">           </span><span class="c1"># build fonksiyonu çalışır ve kaynak dosyaları derlenir.</span>
+package<span class="w">         </span><span class="c1"># package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.</span>
+</pre></div>
+</div>
+<p>Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için <a class="reference external" href="https://kendilinuxunuyap.github.io/_static/files/glibc/files.tar">tıklayınız.</a> tar dosyasını indirdikten sonra <strong>glibc</strong> adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.</p>
+<p>Yukarı verilen script kodlarını <strong>build</strong> adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra <strong>build</strong> scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları <strong>glibc</strong> dizinin içinde terminal açarak çalıştırınız.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>build
+sudo<span class="w"> </span>./build
+</pre></div>
+</div>
+</section>
+<section id="test-etme">
+<h2>Test Etme<a class="headerlink" href="#test-etme" title="Permalink to this heading">¶</a></h2>
+<p>glibc kütüphanemizi <strong>$HOME/distro/rootfs</strong> komununa yüklendi. Şimdi bu kütüphanenin çalışıp çalışmadığını test edelim. Aşağıdaki c kodumuzu derleyelim ve <strong>$HOME/distro/rootfs</strong> konumuna kopyalayalım. <strong>$HOME/</strong> (ev dizinimiz) konumuna dosyamızı oluşturup aşağıdaki kodu içine yazalım.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#include&lt;stdio.h&gt;</span>
+void<span class="w"> </span>main<span class="o">(){</span>
+puts<span class="o">(</span><span class="s2">&quot;Merhaba Dünya&quot;</span><span class="o">)</span><span class="p">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<section id="program-derleme">
+<h3>Program Derleme<a class="headerlink" href="#program-derleme" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>
+gcc<span class="w"> </span>-o<span class="w"> </span>merhaba<span class="w"> </span>merhaba.c<span class="w"> </span><span class="c1">#merhaba.c dosyası derlenir.</span>
+</pre></div>
+</div>
+</section>
+<section id="program-yukleme">
+<h3>Program Yükleme<a class="headerlink" href="#program-yukleme" title="Permalink to this heading">¶</a></h3>
+<p>Derlenen çalışabilir merhaba dosyamızı <strong>glibc</strong> kütüphanemizin olduğu dizine yükleyelim.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>merhaba<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/merhaba<span class="w"> </span><span class="c1"># derlenen merhaba ikili dosyası $HOME/distro/rootfs/ konumuna kopyalandı.</span>
+</pre></div>
+</div>
+</section>
+<section id="programi-test-etme">
+<h3>Programı Test Etme<a class="headerlink" href="#programi-test-etme" title="Permalink to this heading">¶</a></h3>
+<p><strong>glibc</strong> kütüphanemizin olduğu dizin dağıtımızın ana dizini oluyor.  <strong>$HOME/distro/rootfs/</strong> konumuna <strong>chroot</strong> ile erişelim.</p>
+<p>Aşağıdaki gibi çalıştırdığımızda bir hata alacağız.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/<span class="w"> </span>/merhaba
+chroot:<span class="w"> </span>failed<span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span><span class="nb">command</span><span class="w"> </span>‘/merhaba’:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
+</pre></div>
+</div>
+</section>
+<section id="hata-cozumu">
+<h3>Hata Çözümü<a class="headerlink" href="#hata-cozumu" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># üstteki hatanın çözümü sembolik bağ oluşturmak.</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/
+ln<span class="w"> </span>-s<span class="w"> </span>lib<span class="w"> </span>lib64
+</pre></div>
+</div>
+<p>#merhaba dosyamızı tekrar chroot ile çalıştıralım. Aşağıda görüldüğü gibi hatasız çalışacaktır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>chroot<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs/<span class="w"> </span>/merhaba
+Merhaba<span class="w"> </span>Dünya
+</pre></div>
+</div>
+<p><strong>Merhaba Dünya</strong> mesajını gördüğümüzde glibc kütüphanemizin  ve merhaba çalışabilir dosyamızın çalıştığını anlıyoruz.
+Bu aşamadan sonra <strong>Temel Paketler</strong> listemizde bulunan paketleri kodlarından derleyerek <strong>$HOME/distro/rootfs/</strong> dağıtım dizinimize yüklemeliyiz.</p>
+<p>Derlemede <strong>glibc</strong> kütüphanesinin derlemesine benzer bir yol izlenecektir. <strong>glibc</strong> temel kütüphane olması ve ilk derlediğimiz paket olduğu için detaylıca anlatılmıştır. Diğer paketlerimizde de <strong>glibc</strong> için paylaşılan script dosyası gibi dosyalar hazırlayıp derlenecektir.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/0-kapak.html">KENDİ LİNUX'UNU YAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/1-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03.on-hazirlik/index.html">Ön Hazırlık</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05.derleme-araclari/index.html">Derleme Araçları</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Paket Derleme</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="000-giris.html">Temel Paketler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="001-base-file.html">base-file</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">glibc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#glibc-script-dosyasi">glibc Script Dosyası</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-etme">Test Etme</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#program-derleme">Program Derleme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#program-yukleme">Program Yükleme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#programi-test-etme">Programı Test Etme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hata-cozumu">Hata Çözümü</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="02-readline.html">readline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ncurses.html">ncurses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-bash.html">bash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-openssl.html">openssl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-acl.html">acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-attr.html">attr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-libcap.html">libcap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09-libpcre2.html">libpcre2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-gmp.html">gmp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-coreutils.html">coreutils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-util-linux.html">util-linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-grep.html">grep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14-sed.html">sed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-mpfr.html">mpfr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-gawk.html">gawk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="17-findutils.html">findutils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="18-gcc.html">gcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19-libcap-ng.html">libcap-ng</a></li>
+<li class="toctree-l2"><a class="reference internal" href="20-sqlite.html">sqlite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="21-gzip.html">gzip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="22-xz-utils.html">xz-utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="23-zstd.html">zstd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="24-bzip2.html">bzip2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="25-elfutils.html">elfutils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="26-libselinux.html">libselinux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="27-tar.html">tar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="28-zlib.html">zlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="29-brotli.html">brotli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-curl.html">curl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="31-shadow.html">shadow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="32-file.html">file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="33-eudev.html">eudev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="34-cpio.html">cpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="35-libsepol.html">libsepol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="36-kmod.html">kmod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="37-audit.html">audit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="38-libxcrypt.html">libxcrypt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-libnsl.html">libnsl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="40-libbsd.html">libbsd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="41-libtirpc.html">libtirpc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="42-e2fsprogs.html">e2fsprogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="43-dostools.html">dostools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="44-initramfs-tools.html">initramfs-tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="45-libxml2.html">libxml2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="46-expat.html">expat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="47-libmd.html">libmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="48-libaio.html">libaio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="49-lvm2.html">lvm2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="50-popt.html">popt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="51-icu.html">icu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="52-iproute2.html">iproute2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="53-net-tools.html">net-tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="54-dhcp.html">dhcp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="55-openrc.html">openrc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56-rsync.html">rsync</a></li>
+<li class="toctree-l2"><a class="reference internal" href="57-kbd.html">kbd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="58-kernel.html">kernel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="59-dialog.html">dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="60-live-boot.html">live-boot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="61-live-config.html">live-config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="62-parted.html">parted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="63-busybox.html">busybox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="64-nano.html">nano</a></li>
+<li class="toctree-l2"><a class="reference internal" href="65-grub.html">grub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="66-efibootmgr.html">efibootmgr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="67-efivar.html">efivar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="68-libssh.html">libssh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="69-openssh.html">openssh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="70-pam.html">pam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../11.paket-sistemi/index.html">Paket Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.iso-hazirlama/index.html">iso Hazırlama</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.sistem-kurulumu/index.html">Sistem Kurulumu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14.X-derleme/index.html">X Pencere Sistemi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1-about.html">Hakkımda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-contact.html">İletişim</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/09.paket-derleme/01-glibc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
