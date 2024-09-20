@@ -1,12 +1,3 @@
-###################     
-KENDİ LİNUX'UNU YAP
-###################
-
-
-
 .. image:: /_static/logo.png
-  :width: 500
-  
-.. raw:: pdf
-
-   PageBreak 
+  :width: 1000
+  :align: center

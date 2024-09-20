@@ -1,26 +1,28 @@
 İçindekiler
 ===========
 
-3 ...... :ref:`giris`
+.. list-table::
+   :widths: 60 10
 
-3 ...... :ref:`onhazirlik`
-
-8 ...... :ref:`derlemearaclari`
-
-13 ..... :ref:`paketderleme`
-
-98 ..... :ref:`paketsistemi`
-
-113 .... :ref:`isohazirlama`
-
-117 .... :ref:`sistemkurulumu`
-
-126 .... :ref:`xderleme`
-
-131 .... :ref:`yardimcikonular`
-
-
-
+   * - 1- :ref:`giris`
+     - 3
+   * - 2- :ref:`onhazirlik`
+     - 3
+   * - 3- :ref:`derlemearaclari`
+     - 8
+   * - 4- :ref:`paketderleme`
+     - 13
+   * - 5- :ref:`paketsistemi`
+     - 98
+   * - 6- :ref:`isohazirlama`
+     - 113
+   * - 7- :ref:`sistemkurulumu`
+     - 117
+   * - 8- :ref:`xderleme`
+     - 126
+   * - 9- :ref:`yardimcikonular`
+     - 131
+ 
 .. raw:: pdf
 
    PageBreak
