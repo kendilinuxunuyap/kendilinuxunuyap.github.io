@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+version="0.142"
+name="initramfs-tools"
+depends="glibc,readline,ncurses"
+description="initramfs  generate sağlayan paket"
+source="https://salsa.debian.org/kernel-team/initramfs-tools/-/archive/v$version/initramfs-tools-v$version.tar.gz"
+groups="sys.fs"
+setup()
+{	
+	mkdir -p /tmp/bps/build/conf-hooks.d
+	cp ${dizin}/${paket}/conf-hooks.d/* /tmp/bps/build/conf-hooks.d/
+	mkdir -p /tmp/bps/build/patches
+	cp ${dizin}/${paket}/patches/* /tmp/bps/build/patches/
+	cp ${dizin}/${paket}/initramfs-tools.sysconf /tmp/bps/build/initramfs-tools.sysconf
+	cp ${dizin}/${paket}/zzz-busybox /tmp/bps/build/zzz-busybox
+	#cp ${dizin}/${paket}/fsck /tmp/bps/build/fsck
+	cp ${dizin}/${paket}/modules /tmp/bps/build/modules
+
+	
+	cd $SOURCEDIR
+	patch -Np1 < ../patches/remove-zstd.patch
+    	patch -Np1 < ../patches/remove-logsave.patch
+    	patch -Np1 < ../patches/non-debian.patch
+}
+build()
+{
+	echo ""
+}
+package()
+{
+	cd $SOURCEDIR
+	cat debian/*.install | sed "s/\t/ /g" | tr -s " " | while read line ; do
+        file=$(echo $line | cut -f1 -d" ")
+        target=$(echo $line | cut -f2 -d" ")
+        mkdir -p ${DESTDIR}/$target
+        cp -prvf $file ${DESTDIR}/$target/
+    	done
+    	# install mkinitramfs
+    	cp -pvf mkinitramfs ${DESTDIR}/usr/sbin/mkinitramfs
+    	sed -i "s/@BUSYBOX_PACKAGES@/busybox/g" ${DESTDIR}/usr/sbin/mkinitramfs
+    	sed -i "s/@BUSYBOX_MIN_VERSION@/1.22.0/g" ${DESTDIR}/usr/sbin/mkinitramfs
+    	# Remove debian stuff
+    	rm -rvf ${DESTDIR}/etc/kernel
+    	# install sysconf
+    	mkdir -p ${DESTDIR}/etc/sysconf.d
+    	install ../initramfs-tools.sysconf ${DESTDIR}/etc/sysconf.d/initramfs-tools
+    	
+
+    	install ../zzz-busybox ${DESTDIR}/usr/share/initramfs-tools/hooks/
+    	install ../modules ${DESTDIR}/usr/share/initramfs-tools/
+    	install ../modules ${DESTDIR}/etc/initramfs-tools/
+    	
+    	mkdir -p ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d
+    	install ../conf-hooks.d/busybox ${DESTDIR}/usr/share/initramfs-tools/conf-hooks.d/
+ 
+    	
+    	mkdir -p ${DESTDIR}/etc/initramfs-tools/scripts
+    	
+  }
+
+
