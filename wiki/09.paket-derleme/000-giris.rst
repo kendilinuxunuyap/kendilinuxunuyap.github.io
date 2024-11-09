@@ -103,10 +103,9 @@ Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
      - 73-    
    * - 24- `bzip2 <./24-bzip2.html>`_
      - 49- `lvm2 <./49-lvm2.html>`_
-     - 74-   
-
-
-Listede bulunan  **bash** paketinin sorunsuz çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli. Listede bulunan tüm paketlerin bağımlılıkları eksiksizdir.
+     - 74-
+      
+Bir linux paketinin sorunsuz çalışabilmesi için bağımlı olduğu paketlerin önceden derlenmiş olması gerekir. Örneğin  **bash** paketinin sorunsuz çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli.
 Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.
 
 Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
@@ -123,7 +122,7 @@ Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
 - sudo apt install libtool
 - sudo apt install grub-pc grub-pc-bin
 
-Paketlerin derlenmesiniz **root** yetkisiyle yapınız.
+Paketlerin derlenmesini **root** yetkisiyle yapınız.
 
 
 .. raw:: pdf

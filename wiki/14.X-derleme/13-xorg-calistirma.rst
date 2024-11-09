@@ -27,7 +27,8 @@ Xwrapper.config
 Kullanınıcı Ayarı
 .................
  
-Kullanıcının tty ve wheel grubunda olması lazım ayrıca **/dev/tty*** dosyalarının grub ve izinleri ayarlanmalıdır. 
+Kullanıcının tty ve wheel grubunda olması lazım ayrıca **/dev/tty*** dosyalarının grub ve izinleri ayarlanmalıdır.
+
 .. code-block:: shell
 	
 	chmod 620 /dev/tty*

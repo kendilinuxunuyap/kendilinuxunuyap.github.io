@@ -27,8 +27,8 @@ Açık kaynak, geliştirilen uygulamanın kodlarının herkes tarafından ulaş�
 GNU/Linux, kerneli, GNU uygulamaları ve yardımcı kütühanelerin bir araya getirilmesiyle olşuturulan uygulamalar bütününe dağıtım denilmektedir. Genellikle bu oluşan yapıya doğru bir ifade olmasada Linux denilmekte. Dağıtımların aşağıdaki gibi türleri kullanılmaktadır.
 
 1. Önceden derlenmiş Linux Kerneli, GNU uygulamalarını bir araya getirip dağıtım oluşturma.
-1. Hazır bir dağıtımı değiştirip dağıtma
-2. Paket sistemi olan dağıtım oluşturup dağıtma
+2. Hazır bir dağıtımı değiştirip dağıtma
+3. Paket sistemi olan dağıtım oluşturup dağıtma
 
 **Yazılım Bağımlılığı**
 -----------------------
