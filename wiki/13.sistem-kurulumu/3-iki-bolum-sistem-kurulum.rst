@@ -2,10 +2,9 @@
 +++++++++++++++++
 
 Bu bölümde **Ext4** dosya sistemine grub kullanarak kurulum anlatılacaktır.
-Anlatım boyunca **/dev/sda** diski üzerinden örnekleme yapılmıştır. Siz kendi diskinize göre düzenleyebilirsiniz.
+Anlatım boyunca **/dev/sda** diski kullanılarak anlatılacaktır. Sisteminizdeki diskinize göre düzenleyiniz.
 Diskler üzerinde işlem yapabilmek için evdev veya udevd servisi çalışıyor olmalı.
 Disk ve isoya erişim için aşağıdaki modüllerin yüklü olduğundan emin olun.
-
 
 - loop
 - squashfs
@@ -17,9 +16,10 @@ Disk Hazırlanmalı
 Öncelikle **cfdisk** veya **fdisk** komutları ile diski bölümlendirelim. Ben bu anlatımda **cfdisk** kullanacağım.
 
 0. cfdisk komutuyla disk bölümlendirilmeli.
+
 .. code-block:: shell
 		
-	$ cfdisk /dev/sda
+	cfdisk /dev/sda
 
 1. gpt seçilmeli
 2. 512 MB type vfat alan(sda1)
@@ -31,8 +31,8 @@ Disk Hazırlanmalı
 
 .. code-block:: shell
 
-	$ mkfs.vfat /dev/sda1
-	$ mkfs.ext4 /dev/sda2
+	mkfs.vfat /dev/sda1
+	mkfs.ext4 /dev/sda2
 		
 e2fsprogs Paketi
 ----------------
@@ -43,113 +43,103 @@ Eğer /boot bölümünü ayırmayacaksanız grub yüklenirken **unknown filesyst
 
 .. code-block:: shell
 
-	$ e2fsck -f /dev/sda2
-	$ tune2fs -O ^metadata_csum /dev/sda2
+	e2fsck -f /dev/sda2
+	tune2fs -O ^metadata_csum /dev/sda2
 
-Dosya sistemini kopyalama
--------------------------
+Dosya Sistemini Kopyalama
+--------------------------
 
 Kurulum medyası **/cdrom** dizinine bağlanır.
 Kurulacak sistemin imajını bir dizine bağlayalım.
 
 .. code-block:: shell
 		
-	$ mkdir -p cdrom
-	$ mkdir -p source
-	$ mount -t iso9660 -o loop /dev/sr0 /cdrom/
-	$ mount -t squashfs -o loop /cdrom/live/filesystem.squashfs /source
+	mkdir -p cdrom
+	mkdir -p kaynak
+	mount -t iso9660 -o loop /dev/sr0 /cdrom/
+	mount -t squashfs -o loop /cdrom/live/filesystem.squashfs /kaynak
 
 Şimdi de disk bölümümüzü bağlayalım.
 
 .. code-block:: shell
 
-	$ mkdir -p target
-	$ mkdir -p /target/boot
-	$ mount /dev/sda2 /target
-	$ mount -t vfat /dev/sda1 /target/boot
+	mkdir -p hedef
+	mkdir -p /hedef/boot
+	mount /dev/sda2 /hedef
+	mount -t vfat /dev/sda1 /hedef/boot
 
 Ardından dosyaları kopyalayalım.
 
 .. code-block:: shell
 
-	# -p dosya izinlerini korur
-	# -r alt dizinlerle beraber kopyalar
-	# -f soru sormayı kapatır
-	# -v detaylı çıktıları gösterir
-	$ cp -prfv /source/* /target
+	# -prfv alt zinlerle beraber dosyanın özniteliklerini koruyarak kopyalar
+	cp -prfv /kaynak/* /hedef
+	sync #diske yazılan bilgiler senkronize edildi.
 
-Daha sonra diski senkronize edelim.
-
-.. code-block:: shell
-
-	$ sync
-
-
-Bootloader kurulumu
--------------------
+grub Yapılandırılması
+---------------------
 
 grub kurulumu yapmak için grub paketinin kurulu olduğundan emin olun.
 
 .. code-block:: shell
 
-	$ mkdir -p /target/dev
-	$ mkdir -p /target/sys
-	$ mkdir -p /target/proc 
-	$ mkdir -p /target/run
-	$ mkdir -p /target/tmp
-	$ mount --bind /dev /target/dev
-	$ mount --bind /sys /target/sys
-	$ mount --bind /proc /target/proc
-	$ mount --bind /run /target/run
-	$ mount --bind /tmp /target/tmp
+	mkdir -p /hedef/dev
+	mkdir -p /hedef/sys
+	mkdir -p /hedef/proc 
+	mkdir -p /hedef/run
+	mkdir -p /hedef/tmp
+	mount --bind /dev /hedef/dev
+	mount --bind /sys /hedef/sys
+	mount --bind /proc /hedef/proc
+	mount --bind /run /hedef/run
+	mount --bind /tmp /hedef/tmp
 
 	# Bunun yerine aşağıdaki gibi de girilebilir.
 	for dir in /dev /sys /proc /run /tmp ; do
-	mount --bind /$dir /target/$dir
+	mount --bind /$dir /hedef/$dir
 	done
-	$ chroot /target
+	
+	#chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
 
 
-Grub Kuralım
+Grub Kurulumu
 -------------
 
 .. code-block:: shell
 
 	# kurulu sistemden bağımsız çalışması için --removable kullanılır.
-	$ grub-install --removable --boot-directory=/boot --efi-directory=/boot /dev/sda
+	grub-install --removable --boot-directory=/boot --efi-directory=/boot /dev/sda
 
-Grub yapılandırması
--------------------
+grub.cfg Yapılandırması
+-----------------------
 
-1. /boot bölümünde initrd.img-<çekirdek-sürümü> dosyamızın olduğundan emin olalım.
-2. /boot bölümünde vmlinuz-<çekirdek-sürümü>  kernel dosyamızın olduğundan emin olalım.
+1. /boot bölümünde initrd.img-**kernel-version** dosyamızın olduğundan emin olalım.
+2. /boot bölümünde vmlinuz-**kernel-version** kernel dosyamızın olduğundan emin olalım.
 3. /boot/grub/grub.cfg konumunda dostamızı oluşturalım(vi, touch veya nano ile).
 4. dev/sda2 diskimizim uuid değerimizi bulalım.
 
 .. code-block:: shell
 
-	$ blkid | grep /dev/sda2
-	/dev/sda2: UUID="..." BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="..."
+	blkid | grep /dev/sda2
+	/dev/sda2: UUID="?????" BLOCK_SIZE="xxxxx" TYPE="xxxxx" PARTUUID="xxxxx"
+	uname -r
+	6.1.0-25-amd64 #kernel versiyonu
 
-Şimdi aşağıdaki gibi bir yapılandırma dosyası yazalım ve /boot/grub/grub.cfg dosyasına kaydedelim.
-Burada uuid değerini ve çekirdek sürümünü düzenleyin.
+Diskimizimin uuid değerine göre /boot/grub/grub.cfg dosyasını aşağıdaki gibi düzenleyip kaydedelim.
+Burada uuid değerini ve kernel versiyonunu düzenleyelim.
 
 .. code-block:: shell
 
-	linux /vmlinuz-<çekirdek-sürümü>	root=UUID=<uuid-değeri> rw quiet
-	initrd /initrd.img-<çekirdek-sürümü>
+	linux /boot/vmlinuz-kernel-version	root=UUID= ????? rw quiet
+	initrd /boot/initrd.img-kernel-version
 	boot
 
 
-Ayrıca otomatik yapılandırma da oluşturabiliriz.
+grub.cfg dosyasını elle düzenlemek yerine aşğıdaki komutla otomatik yapılandırılabilir.
 
 .. code-block:: shell
 
-	$ grub-mkconfig -o /boot/grub/grub.cfg
-
-**Not:** Disk bölümü konumu yerine **UUID="<uuid-değeri>"** şeklinde yazmanızı öneririm.
-Bölüm adları değişebilirken uuid değerleri değişmez.
-
+	grub-mkconfig -o /boot/grub/grub.cfg
 
 .. raw:: pdf
 

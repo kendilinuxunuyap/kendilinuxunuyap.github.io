@@ -30,62 +30,6 @@ Kernele modul yükleme kaldırma için kmod aracı kullanılmaktadır. kmaod ara
 
 **depmod:** /lib/modules dizinindeki modüllerin listesini günceller. Fakat başka bir dizinde ise basedir=konum şeklinde belirtmek gerekir. konum dizininde /lib/modules/** şeklinde kalsörler olmalıdır.
 
-
-Modul Yazma
------------
-
-hello.c dosyamız
-................
-
-	.. code-block:: shell
-
-		#include <linux/module.h>
-		#include <linux/kernel.h>
-		#include <linux/init.h>
-		MODULE_DESCRIPTION("Hello World examples");
-		MODULE_LICENSE("GPL");
-		MODULE_AUTHOR("Bayram");
-		static int __init hello_init(void)
-		{
-		printk(KERN_INFO "Hello world!\n");
-		return 0;
-		}
-		static void __exit hello_cleanup(void)
-		{
-		printk(KERN_INFO "remove module.\n");
-		}
-		module_init(hello_init);
-		module_exit(hello_cleanup);
-
-
-Makefile dosyamız
------------------
-
-	.. code-block:: shell
-
-		obj-m+=my_module.o
-		all:
-		    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
-		clean:
-		    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
-
-modülün derlenmesi ve eklenip kaldırılması
-------------------------------------------
-
-	.. code-block:: shell
-
-		make
-
-		insmod my_modul.ko // modül kernele eklendi.
-
-		lsmod | grep my_modul //modül yüklendi mi kontrol ediliyor.
-
-		rmmod my_modul // modül kernelden çıkartılıyor.
-
-Not:
-----
-dmesg ile log kısmında eklendiğinde Hello Word yazısını ve  kaldırıldığında modul ismini görebiliriz.
-
 .. raw:: pdf
 
    PageBreak

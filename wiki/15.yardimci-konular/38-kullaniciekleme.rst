@@ -1,33 +1,31 @@
-Add User
-++++++++
+Kullanıcı Ekleme
+++++++++++++++++
 
-adduser ve useradd komutları, Linux işletim sisteminde kullanıcı hesapları oluşturmak için kullanılan iki farklı komuttur. Bu iki komut arasındaki temel farklar şunlardır:
+linux sistemlerine kullanıcı eklemek için iki farklı komut bulunur. Bu komutlar adduser ve useradd komutlarıdır.
 
-1. Kullanım Kolaylığı:
 
-    adduser, interaktif bir arayüz sağlar ve kullanıcı oluşturma işlemi sırasında bir dizi soru sorarak kullanıcı dostu bir yaklaşım sunar.
-    useradd ise daha düşük seviyeli bir komuttur ve tüm parametreleri elle belirtmenizi gerektirir. Bu nedenle, kullanımı daha teknik ve karmaşıktır.
+**adduser:**
+------------
 
-Örnek kullanım:
+Kullanıcı dostu bir arayüz sunar. Birçok aşamayı bizim adımıza yapar. Temelde useradd komutunu kullanarak yazılan bir script olarak düşünebiliriz.
 
 .. code-block:: shell
 
 	# adduser komutuyla kullanıcı oluşturma
 	sudo adduser yeni_kullanici
+
+**useradd:** 
+------------
+
+Kullanıcıdan tüm parametreleri girmesini ister.  Bu sebepten çok tercih edilmemektedir. Fakat özel bir şekilde kullanıcı oluşturulmak istenildiğinde tercih edilir. Bu dokümanda kurulum aşamalarında useradd komutu kullanıldı.
+
+
+.. code-block:: shell
+
 	# useradd komutuyla kullanıcı oluşturma
-	sudo useradd -m -s /bin/bash yeni_kullanici
-
-2. Varsayılan Davranışlar:
-
-    adduser, varsayılan olarak kullanıcı için ev dizini oluşturur ve gerekli ayarları yapar.
-    useradd ise temel bir kullanıcı hesabı oluşturur ancak ek parametreler belirtilmediği sürece ek işlemleri gerçekleştirmez.
-
-3. Güvenlik ve Uyumluluk:
-
-    adduser, kullanıcı oluştururken bazı güvenlik kontrolleri yapar ve sistem uyumluluğunu sağlamak için ek adımlar atar.
-    useradd ise daha esnek bir yapıya sahiptir ve kullanıcı oluşturma işlemini daha özelleştirilmiş bir şekilde gerçekleştirmenize olanak tanır.
-
-Sonuç olarak, genel olarak adduser komutu, kullanıcı dostu bir arayüz sunar ve standart kullanıcı oluşturma işlemleri için tercih edilirken, useradd komutu daha teknik detaylara hakim olan kullanıcılar tarafından tercih edilebilir. Her iki komut da kullanıcı yönetimi için önemli araçlardır ve ihtiyaca göre tercih edilmelidir.
+	sudo useradd -m -s /bin/bash yeni_kullanici -d /home/yeni_kullanici
+	# -s/bin/bash : kullanıcının kullanacağı shell belirtiliyor.
+	# -d /home/yeni_kullanici : home dizinine oluşturulacak kullanıcı dizini belirtiyoruz
 
 
 .. raw:: pdf

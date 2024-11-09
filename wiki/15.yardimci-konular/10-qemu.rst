@@ -1,25 +1,8 @@
 Qemu Kullanımı
 ++++++++++++++
 
-.. image:: /_static/images/0-qemu.png
-  	:width: 100
+qemu açık kaynaklı Virtual Box, Vmware benzeri sanallaştırma aracıdır. 
 
-Qemu Nedir?
------------
-
-Açık kaynaklı sanallaştırma aracıdır. 
-
-Kaynak dosyalarından kurulum için;
-
-.. code-block:: shell
-
-	git clone https://gitlab.com/qemu-project/qemu.git
-	cd qemu
-	./configure
-	make
-	sudo make install
-	
-	
 Sisteme Kurulum
 ---------------
 
@@ -28,24 +11,15 @@ Sisteme Kurulum
 	sudo apt update
 	sudo apt install qemu-system-x86  qemu-utils
 
-* 30GB bir disk oluşturup etahta.iso dosyamızı 2GB ramdan oluşan bir makina çalıştıralım.
+qemu Kullanımı
+--------------
 	
 .. code-block:: shell
 
 	qemu-img create disk.img 30G #30GB disk oluşturuldu.
-	qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G -cdrom etahta.iso 
-
-* Oluşturulan sanal disk ve 2GB ram ile açma.
-	
-.. code-block:: shell
-
-	qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G #sadece disk ile çalıştırılıyor
-
-* Sistemi etahta.iso dosyamızı 2GB ramdan oluşan bir makina olarak çalıştıralım.
-	
-.. code-block:: shell
-	
-	qemu-system-x86_64 -m 2G -cdrom etahta.iso          #sadece iso doayası ile çalıştırma
+	qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G -cdrom etahta.iso
+	#qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G #sadece disk ile çalıştırılıyor
+	#qemu-system-x86_64 -m 2G -cdrom etahta.iso          #sadece iso doayası ile çalıştırma
 
 Sistem Hızlandırılması
 ----------------------

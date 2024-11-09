@@ -19,7 +19,7 @@ Bunların dışında x11 pencere sisteminin en önemli paketleri şunlardır;
 2. llvm	: https://github.com/llvm/llvm-project/tags
 3. cairo: https://gitlab.freedesktop.org/cairo/cairo/-/tags
 
-Tüm paketleri derlesek bile **mesa,llvm,cairo** paketleri düzgün ve uyumlu versiyonları olmadığı zaman X penceremiz açılmayacaktır.
+Tüm paketleri derlesek bile **mesa, llvm, cairo** paketleri düzgün ve uyumlu versiyonları olmadığı zaman X penceremiz açılmayacaktır.
 
 Buradaki tüm paketler ve bağımlılıkları derlendikten sonra **Xorg:0** şeklinde elle çalıştırarak hata ayıklama yapılmalıdır. 
 

@@ -12,22 +12,23 @@ chroot komutu çalışan sistem üzerinde belirli bir klasöre root yetkisi veri
     - Kullanıcıya sadece kendisine verilen alanda sınırsız yetki verme vb.
 
 .. image:: /_static/images/chroot-1.png
-  :width: 400
+  :width: 600
+  :height: 300
 
 
 Yukarıdaki resimde user1 altında wrk dizini altına yeni bir sistem kurulmuş gibi yapılandırmayı gerçekleştirmiş.
 
-**/home/user1/wrk** dizinindeki sistem üzerinde sisteme erişmek için;
+**/home/etapadmin/test** dizinindeki sistem üzerinde sisteme erişmek için;
 
 .. code-block:: shell
 
-	sudo chroot /home/user1/wrk #sisteme erişim yapıldı.
+	sudo chroot /home/etapadmin/test #sisteme erişim yapıldı.
 	
-**/home/user1/wrk** dizinindeki sistem üzerinde sistemi silmek için;
+**/home/etapadmin/test** dizinindeki sistem üzerinde sistemi silmek için;
 
 .. code-block:: shell
 
-	sudo rm -rf /home/user1/wrk #sistem silindi
+	sudo rm -rf /home/etapadmin/test #sistem silindi
 
 .. raw:: pdf
 
@@ -154,6 +155,7 @@ chroot Sistemde Çalışma
 
 Kaynak:
 https://stackoverflow.com/questions/64838052/how-to-delete-n-characters-appended-to-ldd-list
+https://app.diagrams.net/
 
 .. raw:: pdf
 

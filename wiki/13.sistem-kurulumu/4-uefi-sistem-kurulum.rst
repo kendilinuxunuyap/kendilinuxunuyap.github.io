@@ -2,7 +2,7 @@ Uefi Sistem Kurulumu
 ++++++++++++++++++++
 
 Bu bölümde **Ext4** dosya sistemine grub kullanarak kurulum anlatılacaktır.
-Anlatım boyunca **/dev/sda** diski üzerinden örnekleme yapılmıştır. Siz kendi diskinize göre düzenleyebilirsiniz.
+Anlatım boyunca **/dev/sda** diski kullanılarak anlatılacaktır. Sisteminizdeki diskinize göre düzenleyiniz.
 Diskler üzerinde işlem yapabilmek için evdev veya udevd servisi çalışıyor olmalı.
 Disk ve isoya erişim için aşağıdaki modüllerin yüklü olduğundan emin olun.
 
@@ -71,73 +71,68 @@ Kurulacak sistemin imajını bir dizine bağlayalım.
 .. code-block:: shell
 		
 	$ mkdir -p cdrom
-	$ mkdir -p source
+	$ mkdir -p kaynak
 	$ mount -t iso9660 -o loop /dev/sr0 /cdrom/
-	$ mount -t squashfs -o loop /cdrom/live/filesystem.squashfs /source
+	$ mount -t squashfs -o loop /cdrom/live/filesystem.squashfs /kaynak
 
 Şimdi de disk bölümümüzü bağlayalım.
 
 .. code-block:: shell
 
-	$ mkdir -p target || true
-	$ mkdir -p /target/boot || true
-	$ mkdir -p /target/boot/efi || true
-	$ mount /dev/sda2 /target || true
-	$ mount /dev/sda1 /target/boot/efi
+	$ mkdir -p hedef || true
+	$ mkdir -p /hedef/boot || true
+	$ mkdir -p /hedef/boot/efi || true
+	$ mount /dev/sda2 /hedef || true
+	$ mount /dev/sda1 /hedef/boot/efi
 
 Ardından dosyaları kopyalayalım.
 
 .. code-block:: shell
 
-	# -p dosya izinlerini korur
-	# -r alt dizinlerle beraber kopyalar
-	# -f soru sormayı kapatır
-	# -v detaylı çıktıları gösterir
-	$ cp -prfv /source/* /target
+	# -prfv alt zinlerle beraber dosyanın özniteliklerini koruyarak kopyalar
+	cp -prfv /kaynak/* /hedef
+	sync #diske yazılan bilgiler senkronize edildi.
 
-Daha sonra diski senkronize edelim.
-
-.. code-block:: shell
-
-	$ sync
-
-
-Bootloader kurulumu
--------------------
+grub Yapılandırılması
+---------------------
 
 grub kurulumu yapmak için grub paketinini kurulu olduğundan emin olun.
 
 .. code-block:: shell
 
-	$ mkdir -p /target/dev
-	$ mkdir -p /target/sys
-	$ mkdir -p /target/proc 
-	$ mkdir -p /target/run
-	$ mkdir -p /target/tmp
-	$ mount --bind /dev /target/dev
-	$ mount --bind /sys /target/sys
-	$ mount --bind /proc /target/proc
-	$ mount --bind /run /target/run
-	$ mount --bind /tmp /target/tmp
-	#efi alan bağlanıyor. Eğer uefi aktif edilmişse kernel **/sys/firmware/efi** tarafından budizinler ve dosyalar oluşuyor. 
-	#sistem uefi değise **/sys/firmware/efi** konumunda dosyalar olmayacaktır.
-	$ if [[ -d /sys/firmware/efi ]] ; then
-    		mount --bind /sys/firmware/efi/efivars /target/sys/firmware/efi/efivars
+	mkdir -p /hedef/dev
+	mkdir -p /hedef/sys
+	mkdir -p /hedef/proc 
+	mkdir -p /hedef/run
+	mkdir -p /hedef/tmp
+	mount --bind /dev /hedef/dev
+	mount --bind /sys /hedef/sys
+	mount --bind /proc /hedef/proc
+	mount --bind /run /hedef/run
+	mount --bind /tmp /hedef/tmp
+	
+	#efi alan bağlanıyor. 
+	#Eğer uefi ise kernel tarafından /sys/firmware/efi dizin ve dosyaları oluşuyor. 
+	#sistem uefi değilse /sys/firmware/efi dosya ve dizini olmayacaktır.
+	 if [[ -d /sys/firmware/efi ]] ; then
+    		mount --bind /sys/firmware/efi/efivars /hedef/sys/firmware/efi/efivars
 	  fi
 		
 	# Bunun yerine aşağıdaki gibi de girilebilir.
 	for dir in /dev /sys /proc /run /tmp ; do
-		mount --bind /$dir /target/$dir
+		mount --bind /$dir /hedef/$dir
 	done
-	$ chroot /target
+	
+	#chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
 
 Şimdi de uefi kullandığımız için efivar bağlayalım.
+
 .. code-block:: shell
 
 	$ mount -t efivarfs efivarfs /sys/firmware/efi/efivarfs
 	
-Grub Kuralım
-.............
+Grub Kurulumu
+-------------
 
 .. code-block:: shell
 
@@ -146,38 +141,35 @@ Grub Kuralım
 	# kurulu sistemden bağımsız çalışması için --removable kullanılır.
 	$ grub-install --removable --boot-directory=/boot --efi-directory=/boot --target=x86_64-efi /dev/sda
 
-Grub yapılandırması
--------------------
+grub.cfg Yapılandırması
+-----------------------
 
-1. /boot bölümünde initrd.img-<çekirdek-sürümü> dosyamızın olduğundan emin olalım.
-2. /boot bölümünde vmlinuz-<çekirdek-sürümü>  kernel dosyamızın olduğundan emin olalım.
+1. /boot bölümünde initrd.img-**kernel-version** dosyamızın olduğundan emin olalım.
+2. /boot bölümünde vmlinuz-**kernel-version**  kernel dosyamızın olduğundan emin olalım.
 3. /boot/grub/grub.cfg konumunda dostamızı oluşturalım(vi, touch veya nano ile).
 4. dev/sda2 diskimizim uuid değerimizi bulalım.
 
 .. code-block:: shell
 
-	$ blkid | grep /dev/sda2
-	/dev/sda2: UUID="..." BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="..."
+	blkid | grep /dev/sda2
+	/dev/sda2: UUID="?????" BLOCK_SIZE="xxxxx" TYPE="xxxxx" PARTUUID="xxxxx"
+	uname -r
+	6.1.0-25-amd64 #kernel versiyonu
 
-Şimdi aşağıdaki gibi bir yapılandırma dosyası yazalım ve /boot/grub/grub.cfg dosyasına kaydedelim.
-Burada uuid değerini ve çekirdek sürümünü düzenleyin.
+Diskimizimin uuid değerine göre /boot/grub/grub.cfg dosyasını aşağıdaki gibi düzenleyip kaydedelim.
+Burada uuid değerini ve kernel versiyonunu düzenleyelim.
 
 .. code-block:: shell
 
-	linux /vmlinuz-<çekirdek-sürümü>	root=UUID=<uuid-değeri> rw quiet
-	initrd /initrd.img-<çekirdek-sürümü>
+	linux /boot/vmlinuz-kernel-version	root=UUID= ????? rw quiet
+	initrd /boot/initrd.img-kernel-version
 	boot
 
-
-Ayrıca otomatik yapılandırma da oluşturabiliriz.
+grub.cfg dosyasını elle düzenlemek yerine aşğıdaki komutla otomatik yapılandırılabilir.
 
 .. code-block:: shell
 
 	$ grub-mkconfig -o /boot/grub/grub.cfg
-
-**Not:** Disk bölümü konumu yerine **UUID="<uuid-değeri>"** şeklinde yazmanızı öneririm.
-Bölüm adları değişebilirken uuid değerleri değişmez.
-
 
 .. raw:: pdf
 

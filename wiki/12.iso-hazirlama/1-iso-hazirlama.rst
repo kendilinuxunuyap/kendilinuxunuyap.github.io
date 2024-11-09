@@ -3,7 +3,7 @@
 
 Önceki bölümlerde paketler derlendi. Bu paketler oturum açtığınız kullanıcı ev dizinde **$HOME/distro/rootfs** konumunda olacaktır. Burada **$HOME** açık olan kullanıcı neyse onun konumunu verecektir. Örneğin kullanıcı adımız **bd** olsun. Bu durumda **$HOME** değeri **/home/bd/** olacaktır. Bu örneğimize göre **$HOME/distro/rootfs** ifadesi aslında **/home/bd/distro/rootfs** dir.
 
-İso hazırlama işlemini yazımızın başında minimal iso yapma anlatılmıştı. Burada da benzer yol izlenecek. Sistemimin yani oluşacak **iso** dosyasının yapısı aşağıdaki gibi olacaktır. Buradaki dört dsyanunda nasıl hazırlanacağı ayrı ayrı anlatılacak ve en son hepsini kapsayan iso yapma scriptimizi vereceğiz.
+İso hazırlama işlemini yazımızın başında minimal iso yapma anlatılmıştı. Burada da benzer yol izlenecek. Sistemimin yani oluşacak **iso** dosyasının yapısı aşağıdaki gibi olacaktır. Buradaki dört dosyanında nasıl hazırlanacağı ayrı ayrı anlatılacak ve en son hepsini kapsayan iso yapma scriptimizi vereceğiz.
 
 .. code-block:: shell
 	
@@ -15,7 +15,7 @@
 **grub.cfg Hazırlama**
 ----------------------
 
- Sistemin açılmasını sağlayan dosyalardan birisi **grub.cfg** dosyasıdır. Genel olarak grub.cfg dosyası aşağıdaki gibi olmalıdır.
+Sistemin açılmasını sağlayan dosyalardan birisi **grub.cfg** dosyasıdır. Genel olarak grub.cfg dosyası aşağıdaki gibi olmalıdır.
 
 .. code-block:: shell
 
@@ -23,9 +23,10 @@
 	initrd /boot/initrd.img
 	boot
 
+Bu sistem için grub.cfg dosyası aşağıdaki gibi düzenlendi. Burada dikkat edilmesi gereken menü seçeneklerinde **live** ifadesi kulllanılması. Ayrıca sistemimizin servis yönetici ile başlatılmasını istediğimiz için **linux /boot/vmlinuz boot=live init=/sbin/openrc-init net.ifnames=0 biosdevname=0** sistemi canlı açılmasını sağlıyor.
 
- Bu sistem için grub.cfg dosyası aşağıdaki gibi düzenlendi. Burada dikkat edilmesi gereken menü seçeneklerinde **live** ifadesi kulllanılması. Ayrıca sistemimizin servis yönetici ile başlatılmasını istediğimiz için **linux /boot/vmlinuz boot=live init=/sbin/openrc-init net.ifnames=0 biosdevname=0** sistemi canlı açılmasını sağlıyor.
- Kurulum için ise canlı(**live**) açıp kurulum yapmasını sağlayan satırımız **linux /boot/vmlinuz boot=live init=/bin/kur quiet** dır.
+Kurulum için ise canlı(**live**) açıp kurulum yapmasını sağlayan satırımız **linux /boot/vmlinuz boot=live init=/bin/kur quiet** dır.
+
 
 .. code-block:: shell
 
@@ -54,12 +55,8 @@
 	echo '}' >> $HOME/distro/iso/boot/grub/grub.cfg
 
 
-**initrd.img Hazırlanması**
----------------------------
-
-
-**initrd Oluşturma/Güncelleme**
--------------------------------
+**initrd.img Oluşturma/Güncelleme**
+-----------------------------------
 
 Sistemin initrd.img dosyasının güncellenmesi/oluşturulması için çalıştığınız sistemde  aşağıdaki komutlarla yapılabilir. 
 
@@ -71,7 +68,7 @@ Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sist
 
 .. code-block:: shell
 
-	## --------------------------------------------- 		initrd.img oluşturma scripti		 ---------------------------------------------
+	## ------ 		initrd.img oluşturma scripti		 --------
 	rootfs="$HOME/distro/rootfs"
 	distro="$HOME/distro"
 	## Dizinler Oluşturuluyor

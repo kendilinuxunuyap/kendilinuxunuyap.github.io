@@ -1,12 +1,8 @@
 Live Sistem Oluşturma
 +++++++++++++++++++++
 
-Canlı sistem oluşturma veya ram üzerinden çalışan sistem hazırlamak için SquashFS dosya sisteminde dağıtım sıkıştırılmalıdır. Bu bağlamda SquashFS dosya sistemi ve sıkıştıma nasıl yapılır bu dokümanda anlatılmaktadır.
-
-SquashFS Nedir?
----------------
-
-SquashFS, Linux işletim sistemlerinde sıkıştırılmış bir dosya sistemidir. Bu dosya sistemi, sıkıştırma algoritması kullanarak dosyaları sıkıştırır ve ardından salt okunur bir dosya sistemine dönüştürür. SquashFS, özellikle gömülü sistemlerde ve Linux dağıtımlarında kullanılan bir dosya sistemidir.
+Canlı sistem oluşturma veya ram üzerinden çalışan sistem hazırlamak için SquashFS dosya sisteminde dağıtım sıkıştırılmalıdır. 
+SquashFS, Linux işletim sistemlerinde sıkıştırılmış bir dosya sistemidir. Sistemimizi sıkıştırır ve ardından salt okunur bir dosya sistemine dönüştürür.
 
 SquashFS Oluşturma
 ------------------
@@ -20,11 +16,7 @@ SquashFS Oluşturma
 Cdrom Erişimi
 -------------
 
-/dev/sr0, Linux işletim sistemlerinde bir CD veya DVD sürücüsünü temsil eden bir aygıt dosyasıdır. Bu dosya, CD veya DVD sürücüsünün fiziksel cihazını temsil eder ve kullanıcıların bu sürücüye erişmesini sağlar.
-
-/dev/sr0 dosyası, Linux'un aygıt dosyası sistemi olan /dev dizininde bulunur. Bu dosya, Linux çekirdeği tarafından otomatik olarak oluşturulur ve sürücüye bağlı olarak farklı bir isim alabilir. Örneğin, ikinci bir CD veya DVD sürücüsü /dev/sr1 olarak adlandırılabilir.
-
-Bu aygıt dosyası, kullanıcıların CD veya DVD'leri okumasına veya yazmasına olanak tanır. Örneğin, bir CD'yi okumak için aşağıdaki gibi bir komut kullanabilirsiniz:
+Cd veya Dvd aygıtı linux sistemlerinde /dev/sr0 aygıt dosyası olarak erişilir. Cd içeriği üzerinde okuma yazmak için aşağıdaki komutu kullanabiliriz.
 
 .. code-block:: shell
 
@@ -41,15 +33,15 @@ Cdrom Bağlama
 Bu işlem sonucunda cdrom bağlanmış olacaktır. iso dosyamızın içerisine erişebiliriz.
 
 squashfs Dosyasını Bulma
---------------------------
+-------------------------
 
 Genellikle isoların içine squashfs dosyası oluşturlur. Bu sayede live yükleme yapılabilir. 
-Örneğin /live/filesystem.squashfs benim imajlarımda böyle konumlandırıyorum.
+Örneğin /live/filesystem.squashfs imaj dosyalarında konumudur.
 
 squashfs Bağlama
 ----------------
 
-squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekmektedir. eğer yüklemediyseniz
+squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekmektedir. Eğer yüklemediyseniz;
 
 .. code-block:: shell
 

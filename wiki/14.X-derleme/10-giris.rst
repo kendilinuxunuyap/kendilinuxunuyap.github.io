@@ -1,11 +1,11 @@
 **X Pencere Nedir?**
 ++++++++++++++++++++
 
-X Pencere Sistemi, grafik kullanıcı arayüzü (GUI) uygulamalarının çalışmasını sağlayan bir sistemdir. Linux ve Unix tabanlı işletim sistemlerinde yaygın olarak kullanılır.
+Gnu/Linux sistemlerinde, grafik kullanıcı arayüzü **X Pencere Sistemi** olarak bilinmektedir.Linux tabanlı işletim sistemlerinde yaygın olarak kullanılır.
 
-X Pencere Sistemi, kullanıcıların grafiksel arayüzler aracılığıyla etkileşimde bulunmasını sağlayan bir altyapıdır. 1984 yılında MIT tarafından geliştirilen bu sistem, ağ üzerinden grafiksel uygulamaların çalıştırılmasına olanak tanır. X, istemci-sunucu mimarisi ile çalışır; burada istemciler, grafiksel uygulamalar iken, sunucu ise ekran, klavye ve fare gibi giriş/çıkış aygıtlarını yönetir.
+X pencere sistemi, istemci-sunucu modelinde yapılandırılmıştır. Gui uygulamaları istemci durumundadır. Ekran, klavye ve fare gibi giriş/çıkış aygıtlar ise sunucu tarafından yönetilir.
 
-X Pencere Sistemi, çoklu pencere yönetimi, ekran paylaşımı ve uzaktan erişim gibi özellikler sunar. Örneğin, bir X istemcisi, başka bir makinedeki X sunucusunda çalışabilir. Bu, kullanıcıların farklı sistemlerdeki uygulamalara erişimini kolaylaştırır. X11 protokolü, bu sistemin temelini oluşturur ve geniş bir uygulama yelpazesine destek verir.
+X Pencere Sistemi, çoklu görev paylaşımı, ekran paylaşımı gibi özellikler sunar.
 
 Aşağıda basit bir X uygulaması örneği verilmiştir:
 
@@ -13,8 +13,46 @@ Aşağıda basit bir X uygulaması örneği verilmiştir:
 
 	xterm
 
-Bu komut, X Pencere Sistemi altında bir terminal penceresi açar. X Pencere Sistemi, modern Linux dağıtımlarında genellikle GNOME veya KDE gibi masaüstü ortamları ile birlikte kullanılır.
+Bu komut, X Pencere Sistemi altında bir terminal penceresi açar.
 
+**X Pencere Derleme**
+---------------------
+
+X Pencere sistemini derlemek için öncelikle gerekli bağımlılıkların kurulu olduğundan emin olmalısınız. Aşağıdaki adımları izleyerek X Pencere'yi derleyebilirsiniz:
+
+    Gerekli Paketleri Yükleyin: Gerekli kütüphaneleri ve araçları yüklemek için terminalde aşağıdaki komutu çalıştırın:
+
+.. code-block:: shell
+
+	sudo apt-get install build-essential xorg-dev
+
+Kaynak Kodunu İndirin: X Pencere kaynak kodunu resmi web sitesinden indirin. Örneğin:
+
+.. code-block:: shell
+
+	wget https://www.x.org/archive/individual/xserver/xorg-server-1.20.13.tar.gz
+	tar -xzf xorg-server-1.20.13.tar.gz
+	cd xorg-server-1.20.13
+
+Yapılandırma: Yapılandırma dosyasını oluşturmak için ./configure komutunu kullanın:
+
+.. code-block:: shell
+
+	./configure
+
+Derleme: Derleme işlemini başlatmak için:
+
+.. code-block:: shell
+
+	make
+
+Kurulum: Derleme tamamlandıktan sonra, X Pencere'yi kurmak için:
+
+.. code-block:: shell
+
+	sudo make install
+
+Bu adımları takip ederek X Pencere sistemini başarıyla derleyebilir ve kurabilirsiniz. Herhangi bir hata ile karşılaşırsanız, hata mesajlarını dikkatlice inceleyerek gerekli düzeltmeleri yapmalısınız.
 
 .. raw:: pdf
 
