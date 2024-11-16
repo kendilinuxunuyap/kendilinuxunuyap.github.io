@@ -78,7 +78,7 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 	mkdir -p $target/tmp/kly/kur
 	rm -rf $target/tmp/kly/kur/*
 	curl -Lo $target/tmp/kly/kur/${name}-${version}.tar.gz \
-	https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${name}/${name}-${version}.bps
+	https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${name}/${name}-${version}.kly
 	mkdir -p $target/var/lib/kly
 	cd $target/tmp/kly/kur/
 	# 2. adım paketi açma
