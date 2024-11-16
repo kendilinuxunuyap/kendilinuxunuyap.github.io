@@ -45,9 +45,9 @@ lvm2 Kurma Scripti
 	setup(){
 		mkdir -p $SOURCEDIR
 		cd $SOURCEDIR
-		wget -O lvm2.bps https://kendilinuxunuyap.github.io/_static/files/lvm2/lvm2-2_03_21.bps 				#dosya indiriliyor
-		# tar -xf lvm2.bps
-		tar -xf lvm2.bps
+		wget -O lvm2.kly https://kendilinuxunuyap.github.io/_static/files/lvm2/lvm2-2_03_21.kly 				#dosya indiriliyor
+		# tar -xf lvm2.kly
+		tar -xf lvm2.kly
 		tar -xf rootfs.tar.xz
 	}
 	build(){

@@ -1,7 +1,7 @@
-bps ile İso Yapma
+kly ile İso Yapma
 +++++++++++++++++
 
-Dağıtımlarda, dağıtıma ait paket sistemini kullanarak iso hazırlanabilir. Bu dokümanda paket sistemi(bps) önceki bölümde anlatılmıştı. **bsp** paket sistemini kullanarak bir iso nasıl oluşturulur aşağıda verilmiştir. Burada anlatılan iso yapma scripti **Debian** vb. dağıtımlarda da benzer bir yapıdadır. Başka dağıtımlarda iso hazırlayan(deneyimi olan) geliştiriciler iso yapma aşamalırını benzer yapıda olduğunu göreceklerdir.
+Dağıtımlarda, dağıtıma ait paket sistemini kullanarak iso hazırlanabilir. Bu dokümanda paket sistemi(kly) önceki bölümde anlatılmıştı. **kly** paket sistemini kullanarak bir iso nasıl oluşturulur aşağıda verilmiştir. Burada anlatılan iso yapma scripti **Debian** vb. dağıtımlarda da benzer bir yapıdadır. Başka dağıtımlarda iso hazırlayan(deneyimi olan) geliştiriciler iso yapma aşamalırını benzer yapıda olduğunu göreceklerdir.
 
 iso Scripti
 -----------
@@ -24,7 +24,7 @@ iso Scripti
 
 	# temel dizinler ve dosyalar oluşturuluyor
 	cd $rootfs/
-	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/kly tmp tmp/kly/kur \
 	var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 	usr/local/{bin,etc,games,include,lib,sbin,share,src}
 	ln -s lib64 lib
@@ -39,9 +39,9 @@ iso Scripti
 	bash -c "echo 'nameserver 8.8.8.8' > $rootfs/etc/resolv.conf"
 
 	# paket adresi ekleniyor
-	echo "basitdagitim/kly-binary-packages">$rootfs/etc/bps/sources.list
+	echo "kendilinuxunuyap/kly-binary-packages">$rootfs/etc/kly/sources.list
 
-	### installing bps package in rootfs
+	### installing kly package in rootfs
 
 	echo root:x:0:0:root:/root:/bin/sh > $rootfs/etc/passwd 
 	chmod 755 $rootfs/etc/passwd
@@ -49,7 +49,7 @@ iso Scripti
 	### system chroot  bind/mount
 	for dir in dev dev/pts proc sys; do mount -o bind /$dir $rootfs/$dir; done
 	## paket listesi güncelleniyor
-	$rootfs/bin/bps -u $rootfs
+	$rootfs/bin/kly -u $rootfs
 
 	## paketler kuruluyor
 	for paket in glibc readline ncurses \bash openssl acl attr libcap libpcre2 gmp coreutils util-linux \grep \sed mpfr \gawk findutils libgcc libcap-ng \
@@ -57,8 +57,8 @@ iso Scripti
 	kmod audit libxcrypt libnsl pam libtirpc e2fsprogs dosfstools  initramfs-tools libxml2 expat libmd libaio lvm2 popt icu iproute2 net-tools  dhcp \
 	openrc  rsync kbd busybox kernel kernel-headers live-boot live-config parted  nano grub dialog efibootmgr efivar libssh openssh
 	do
-	chroot $rootfs /bin/bps -ri $paket; 
-	#$rootfs/bin/bps -ri  $paket $rootfs
+	chroot $rootfs /bin/kly -ri $paket; 
+	#$rootfs/bin/kly -ri  $paket $rootfs
 	done
 
 	#### system chroot umount

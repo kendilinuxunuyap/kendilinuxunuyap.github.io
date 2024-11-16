@@ -61,7 +61,7 @@ Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde t
 
 **github üzerinde depolamak için;**
 
-- github hesabı açılır(basitdagitim)
+- github hesabı açılır(kendilinuxunuyap)
 - github repository oluşturulur(kly-binary-packages)
 - kly-binary-packages deposuna aşağıda verilen index dosyasını oluşturunuz.
 - kly-binary-packages deposuna .github/workflows dizinini ouşturarak aşağıda verilen main.yml dosyasını oluşturunuz.
@@ -104,7 +104,7 @@ Bu script kly paket dosyalarımızın olduğu dizinde tüm paketleri açarak iç
 index.lst İçeriği
 -----------------
 
-https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst adresinde bulunan dosya aşağıdaki gibi liste oluşturacaktır.
+https://github.com/kendilinuxunuyap/kly-binary-packages/releases/download/current/index.lst adresinde bulunan dosya aşağıdaki gibi liste oluşturacaktır.
 
 .. code-block:: shell
 

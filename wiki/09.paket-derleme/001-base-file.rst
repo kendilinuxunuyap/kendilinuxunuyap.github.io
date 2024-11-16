@@ -16,7 +16,7 @@ Linux sistemimiz için temel ayarlamalar, dosya ve dizin yapıları olması gere
 	cp -prfv files/*  /home/$user/distro/build/ # Ek dosyalar kopyalanıyor. Ek dosyalar aşağıda verilmiştir.
 	cd  /home/$user/distro/build  #build geçiyoruz
 
-	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+	mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/kly tmp tmp/kly/kur \
 	var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 	usr/local/{bin,etc,games,include,lib,sbin,share,src}
 	ln -s lib64 lib
@@ -26,8 +26,8 @@ Linux sistemimiz için temel ayarlamalar, dosya ve dizin yapıları olması gere
 
 	bash -c "echo -e \"/bin/sh \n/bin/bash \n/bin/rbash \n/bin/dash\" >>  /home/$user/distro/build/etc/shell"
 	bash -c "echo 'tmpfs /tmp tmpfs rw,nodev,nosuid 0 0' >>  /home/$user/distro/build/etc/fstab"
-	bash -c "echo '127.0.0.1 basitdagitim' >>  /home/$user/distro/build/etc/hosts"
-	bash -c "echo 'basitdagitim' >  /home/$user/distro/build/etc/hostname"
+	bash -c "echo '127.0.0.1 kly' >>  /home/$user/distro/build/etc/hosts"
+	bash -c "echo 'kly' >  /home/$user/distro/build/etc/hostname"
 	bash -c "echo 'nameserver 8.8.8.8' >  /home/$user/distro/build/etc/resolv.conf"
 	echo root:x:0:0:root:/root:/bin/sh >  /home/$user/distro/build/etc/passwd
 	chmod 755  /home/$user/distro/build/etc/passwd
@@ -121,7 +121,7 @@ Yapıyı Oluşturan Script
 	build(){			echo ""	
 			}
 	package(){
-			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/bps tmp tmp/bps/kur \
+			mkdir  -p bin dev etc home lib64 proc root run sbin sys usr var etc/kly tmp tmp/kly/kur \
 			var/log  var/tmp usr/lib64/x86_64-linux-gnu usr/lib64/pkgconfig \
 			usr/local/{bin,etc,games,include,lib,sbin,share,src}
 			ln -s lib64 lib
