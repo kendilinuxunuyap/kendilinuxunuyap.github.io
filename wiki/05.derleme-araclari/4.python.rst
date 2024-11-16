@@ -21,8 +21,8 @@ Python ile paket derlemek için genellikle **setuptools** ve **distutils** gibi 
 Ardından, terminalde projenizin bulunduğu dizine giderek aşağıdaki komutu çalıştırarak paketi derleyebilirsiniz:
 
 .. code-block:: shell
-	
-	DESTDIR=/ #yükleme konumu
+	# yükleme konumu
+	DESTDIR=/
 	python3 -m build
 	python3 -m installer --destdir="$DESTDIR" dist/*.whl
 

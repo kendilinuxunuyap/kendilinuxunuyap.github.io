@@ -60,7 +60,8 @@ Ardından dosyaları kopyalayalım.
 
 	# -prfv alt zinlerle beraber dosyanın özniteliklerini koruyarak kopyalar
 	cp -prfv /kaynak/* /hedef
-	sync #diske yazılan bilgiler senkronize edildi.
+	# diske yazılan bilgiler senkronize edildi.
+	sync 
 
 Bootloader kurulumu
 --------------------
@@ -108,8 +109,9 @@ grub.cfg Yapılandırılması
 
 	blkid | grep /dev/sda2
 	/dev/sda2: UUID="?????" BLOCK_SIZE="xxxxx" TYPE="xxxxx" PARTUUID="xxxxx"
+	# kernel versiyonu
 	uname -r
-	6.1.0-25-amd64 #kernel versiyonu
+	6.1.0-25-amd64
 
 Diskimizimin uuid değerine göre /boot/grub/grub.cfg dosyasını aşağıdaki gibi düzenleyip kaydedelim.
 Burada uuid değerini ve kernel versiyonunu düzenleyelim.

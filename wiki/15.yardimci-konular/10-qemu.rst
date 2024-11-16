@@ -16,10 +16,11 @@ qemu Kullanımı
 	
 .. code-block:: shell
 
-	qemu-img create disk.img 30G #30GB disk oluşturuldu.
+	# 30GB disk oluşturuldu.
+	qemu-img create disk.img 30G
 	qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G -cdrom etahta.iso
-	#qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G #sadece disk ile çalıştırılıyor
-	#qemu-system-x86_64 -m 2G -cdrom etahta.iso          #sadece iso doayası ile çalıştırma
+	# qemu-system-x86_64 --enable-kvm -hda disk.img -m 2G #sadece disk ile çalıştırılıyor
+	# qemu-system-x86_64 -m 2G -cdrom etahta.iso          #sadece iso doayası ile çalıştırma
 
 Sistem Hızlandırılması
 ----------------------

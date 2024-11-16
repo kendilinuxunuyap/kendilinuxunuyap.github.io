@@ -62,7 +62,8 @@ Sistemin initrd.img dosyasının güncellenmesi/oluşturulması için çalışt�
 
 .. code-block:: shell
 
-	/usr/sbin/update-initramfs -u -k $(uname -r) #initrd günceller
+	 # initrd günceller
+	/usr/sbin/update-initramfs -u -k $(uname -r)
 
 Eğer bir dizin içinde bir sisteme initrd oluşturlacaksa, yani chroot ile sisteme erişiliyorsa yukarıdaki komut yeterli olmayacaktır. chroot öncesinde sistemin **dev sys proc run** dizinlerinin  bağlanılması gerekmektedir. Dizindeki sistemimizin dizin konumu **/$HOME/distro/rootfs** olsun. Buna göre aşağıda sisteme yukarıdaki komutu çalıştırmadan önce çalıştırılması gereken komutlar aşağıda verilmiştir. Dikkat edilmesi gereken en önemli noktalardan biriside bu komutlar **root** yetkisiyle çalıştırılmalıdır.
 
@@ -132,7 +133,8 @@ Sistemi **live** kullanma ve yükleme yapabilmek için yapılan sistemi **squash
 .. code-block:: shell
 	
 	cd $HOME/distro
-	grub-mkrescue iso/ -o distro.iso #iso doyamız oluşturulur.
+	# iso doyamız oluşturulur.
+	grub-mkrescue iso/ -o distro.iso 
 
 **İsonun Test Edilmesi**
 ------------------------ 
@@ -141,7 +143,8 @@ isolarımız qemu veya virtualbox ile test edilebilir. Linux ortamında terminal
 
 .. code-block:: shell
 	
-	**qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G** #komutuyla çalıştırıp test edebiliriz. 
+	# qemu ile isonun test edilmesi. 
+	qemu-system-x86_64 -cdrom $HOME/distro/distro.iso -m 1G
 
 
 .. raw:: pdf
@@ -156,8 +159,10 @@ Sisteme giriş yaptığımız kullanıcının ev dizinindeki **distro/rootfs** d
 .. code-block:: shell
 	
 	#!/bin/bash
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
+	# Detect the name of the display in use
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
+	# Detect the user using such display
+	user=$(who | grep '('$display')' | awk '{print $1}')
 
 	distro="/home/$user/distro"
 	rootfs="/home/$user/distro/rootfs"

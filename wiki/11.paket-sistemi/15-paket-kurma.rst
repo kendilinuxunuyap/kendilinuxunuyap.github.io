@@ -4,7 +4,7 @@ Paket Kurma
 Hazırlanan dağıtımda paketlerin kurulması için  sırasıyla aşağıdaki işlem adımları yapılmalıdır.
 
 1. Paketin indirilmesi
-2. İndirilen paketin /tmp/bps/kur/ konumunda açılması
+2. İndirilen paketin /tmp/kly/kur/ konumunda açılması
 3. Açılan paket dosyalarının / konumuna yüklenmesi(kopyalanması)
 
 	- Paketin bağımlı olduğu paketler varmı kontrol edilir
@@ -38,7 +38,7 @@ Bu işlemden sonra paket kurulmuş oldu.
 
    PageBreak
 
-**bps Paket Kurma Scripti Tasarlama**
+**kly Paket Kurma Scripti Tasarlama**
 -------------------------------------
 Burada basit seviyede kurulum yapan script kullanılmıştır. Detaylandırıldıkça doküman güncellenecektir. Kurulum scripti aşağıda görülmektedir.
 
@@ -47,65 +47,63 @@ Daha sonra istenirse silinebilmesi için paket içeriğinde dosyaların listesi 
 Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 
 
-**bpskur** Scripti
-..................
+**klykur** Scripti
+------------------
 
 .. code-block:: shell
 	
 	#!/bin/sh
-	#set -e
 	paket=$1
 	paketname="name=\"${paket}\""
-	ROOTFS=$2
-	#echo "$paket"
-	indexpaket=$(cat /etc/bps/index.lst|grep $paketname)
+	target=$2
+	if [ -n "${2}" ];then target="$2"; else target="/";fi
+	mkdir -p $target
+	indexpaket=$(cat $target/etc/kly/index.lst|grep $paketname)
 	name=""
 	version=""
 	depends=""
 	if [ -n "${indexpaket}" ]
-		then
-			namex=$(echo $indexpaket|cut -d"|" -f1)
-			versionx=$(echo $indexpaket|cut -d"|" -f2)
-			dependsx=$(echo $indexpaket|cut -d"\|" -f3)
-			name=${namex:6:-1}
-			version=${versionx:9:-1}
-			depends=${dependsx:9:-1}
-		else
-		echo "***********Paket Bulunamadı**********"; exit
+	then
+	namex=$(echo $indexpaket|cut -d"|" -f1)
+	versionx=$(echo $indexpaket|cut -d"|" -f2)
+	dependsx=$(echo $indexpaket|cut -d"\|" -f3)
+	name=${namex:6:-1}
+	version=${versionx:9:-1}
+	depends=${dependsx:9:-1}
+	else
+	echo "***********Paket Bulunamadı**********"; exit
 	fi
-
 	# 1. adım paketi indirme
-	mkdir -p /tmp/bps
-	mkdir -p /tmp/bps/kur
-	rm -rf /tmp/bps/kur/*
-	curl -Lo /tmp/bps/kur/${name}-${version}.tar.gz https://github.com/basitdagitim/kly-binary-packages/raw/master/${name}/${name}-${version}.bps
-	
-	mkdir -p /var/lib/bps
-	cd /tmp/bps/kur/
-
-	#2. adım paketi açma
+	mkdir -p $target/tmp/kly
+	mkdir -p $target/tmp/kly/kur
+	rm -rf $target/tmp/kly/kur/*
+	curl -Lo $target/tmp/kly/kur/${name}-${version}.tar.gz \
+	https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${name}/${name}-${version}.bps
+	mkdir -p $target/var/lib/kly
+	cd $target/tmp/kly/kur/
+	# 2. adım paketi açma
 	tar -xf ${name}-${version}.tar.gz
 	mkdir -p rootfs
 	tar -xf rootfs.tar.xz -C rootfs
-
-	#3. adım  paketi kurma
-	cp -prfv rootfs/* $ROOTFS/
-
-	#4. adım name version depends /var/lib/bps/index.lst eklenmesi
-	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>var/bps/index.lst
-	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/lib/bps/ konumuna kopyalanması
-	cp file.index /var/lib/bps/${name}-${version}.lst
-
-
-
-**bpskur** Scriptini Kullanma
-.............................
+	# 3. adım paketi kurma
+	cp -prfv rootfs/* $target/
+	# 4. adım name version depends /var/lib/kly/index.lst eklenmesi
+	touch $target/var/lib/kly/index.lst
+	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/kly/index.lst
+	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan
+	# file index dosyanının /var/lib/kly/ konumuna kopyalanması
+	cp file.index $target/var/lib/kly/${name}-${version}.lst
+	
+**klykur** Scriptini Kullanma
+-----------------------------
 
 Script iki parametre almaktadır. İlk parametre paket adı. İkinci parametremiz ise nereye kuracağını belirten hedef olmalıdır. Bu scripti kullanarak readline paketi aşağıdaki gibi kurulabilir. 
 
 .. code-block:: shell
 	
-	./bpskur readline /	
+	./klykur readline /home/user1/testiso
+	# /home/user1/testiso konumu hazırladığımız dağıtım konumudur.
+	# kendi siteminize uygun konum belirleyiniz. 
 
 .. raw:: pdf
 

@@ -23,7 +23,8 @@ Bu kaynak kod aşağıdaki gibi derlenir:
 
 .. code-block:: shell
 	
-	DESTDIR=/ #paketin yükleneceği konum
+	# paketin yükleneceği konum
+	DESTDIR=/
 	meson setup builddir --prefix=/usr
 	ninja -C builddir
 	DESTDIR=$DESTDIR ninja -C builddir install

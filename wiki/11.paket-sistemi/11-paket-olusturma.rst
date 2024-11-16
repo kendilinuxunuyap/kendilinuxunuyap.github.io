@@ -15,7 +15,7 @@ Paket oluşturma işlemi sırayla şu aşamalardan oluşmaktadır.
 
 Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma amacıyla sırasıyla yapmamız gerekmektedir. 7. maddede anlatılan son sıkıştırılma öncesi yapı aşağıda gösterilmiştir.
 
-.. image:: /_static/images/bpspaketle-0.png
+.. image:: /_static/images/klypaketle-0.png
   	:width: 600
 
 
@@ -24,10 +24,10 @@ Burada maddeler halinde anlatılan işlem adımlarını bir paket oluşturma ama
    PageBreak
    
 
-**bps Paket Oluşturma**
+**kly Paket Oluşturma**
 -----------------------
 
-bps paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Paket Derleme** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
+kly paket sisteminin temel parçalarından en önemlisi paket oluşturma uygulamasıdır. Dokümanda temel paketlerin nasıl derlendiği **Paket Derleme** başlığı altında anlatılmıştı. Bir paket üzerinden(readline) örneklendirerek paketimizi oluşturacak scriptimizi yazalım.
 
 Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilmiştir.
 
@@ -88,13 +88,9 @@ Dokümanda readline paketi nasıl derleneceği aşağıdaki script olarak verilm
 
 Bu script readline kodunu internetten indirip derliyor ve kurulumu yapıyor. Aslında bu scriptle **paketleme**, **paket kurma** işlemini bir arada yapıyor. Bu işlem mantıklı gibi olsada paket sayısı arttıkça ve rutin yapılan işlemleri tekrar tekrar yapmak gibi işlem fazlalığına sebep olmaktadır.
 
-Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Yeni düzenlenen halini  **bpspaketle** ve **bpsbuild** adlı script dosyaları olarak düzenleyeceğiz. Genel yapısı aşağıdaki gibi olacaktır. Script dosyasının yeniden bpspaketle ve bpsbuild şeklinde ayrıştırılmış hali resimde gözükmektedir. Devamında ise **packageindex** ve **packagecompress** fonksiyonları bpspaketle dosyasına eklenecektir.
+Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Yeni düzenlenen halini  **klypaketle** ve **klybuild** adlı script dosyaları olarak düzenleyeceğiz. Genel yapısı aşağıdaki gibi olacaktır. Devamında ise **packageindex** ve **packagecompress** fonksiyonları klypaketle dosyasına eklenecektir.
 
-.. image:: /_static/images/bpspaketle-1.png
-  	:width: 600
-
-
-**bpsbuild** Dosyası
+**klybuild** Dosyası
 --------------------
 
 .. code-block:: shell
@@ -103,7 +99,7 @@ Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Y
 	build()	{}
 	package() {}
 
-**bpspaketle** Dosyası
+**klypaketle** Dosyası
 ----------------------
 
 .. code-block:: shell
@@ -111,33 +107,29 @@ Bu sebeplerden dolayı **readline** paketleme scriptini yeniden düzenleyelim. Y
 	#genel değişkenler tanımlanır
 	initsetup() {}
 	
-	#bpsbuild dosya fonksiyonları birleştiriliyor
-	source bpsbuild # bu komutla setup build package fonsiyonları bpsbuild doyasından alınıp birleştiriliyor
+	#klybuild dosya fonksiyonları birleştiriliyor
+	source klybuild # bu komutla setup build package fonsiyonları klybuild doyasından alınıp birleştiriliyor
 	
 	packageindex() {}
 	packagecompress() {}
 
-.. raw:: pdf
-
-   PageBreak
-   
-Aslında yukarıdaki **bpspaketle** ve **bpsbuild** adlı script dosyaları tek bir script dosyası olarak **bpspaketle** dosyası. İki dosyayı birleştiren **source bpsbuild** komutudur. **bpspaketle** dosyası aşağıdaki gibi düşünebiliriz.
+Aslında yukarıdaki **klypaketle** ve **klybuild** adlı script dosyaları tek bir script dosyası olarak **klypaketle** dosyası. İki dosyayı birleştiren **source klybuild** komutudur. **klypaketle** dosyası aşağıdaki gibi düşünebiliriz.
 
 .. code-block:: shell
 	
 	#genel değişkenler tanımlanır
 	initsetup() {}
 	
-	setup()	{} #bpsbuild dosyasından gelen fonksiyon, "source bpsbuild" komutu sonucu gelen fonksiyon
-	build()	{} #bpsbuild dosyasından gelen fonksiyon, "source bpsbuild" komutu sonucu gelen fonksiyon
-	package() {} #bpsbuild dosyasından gelen fonksiyon, "source bpsbuild" komutu sonucu gelen fonksiyon
+	setup()	{} #klybuild dosyasından gelen fonksiyon, "source klybuild" komutu sonucu gelen fonksiyon
+	build()	{} #klybuild dosyasından gelen fonksiyon, "source klybuild" komutu sonucu gelen fonksiyon
+	package() {} #klybuild dosyasından gelen fonksiyon, "source klybuild" komutu sonucu gelen fonksiyon
 	
 	packageindex() {}
 	packagecompress() {}
 
-Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı işlemler yapılırken **bpsbuild** scriptindekiler her pakete göre değişmektedir. Böylece paket yapmak için ilgili pakete özel **bpsbuild** dosyası düzenlememiz yeterli olacaktır. **bpspaketle** dosyamızda **bpsbuild** scriptini kendisiyle birleştirip paketleme yapacaktır.
+Bu şekilde ayrılmasının temel sebebi  **klypaketle** scriptinde hep aynı işlemler yapılırken **klybuild** scriptindekiler her pakete göre değişmektedir. Böylece paket yapmak için ilgili pakete özel **klybuild** dosyası düzenlememiz yeterli olacaktır. **klypaketle** dosyamızda **klybuild** scriptini kendisiyle birleştirip paketleme yapacaktır.
 
-**bpsbuild** Dosyamızın Son Hali
+**klybuild** Dosyamızın Son Hali
 ----------------------------------
 
 .. code-block:: shell
@@ -168,7 +160,7 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 
 
 
-**bpspaketle** Dosyamızın Son Hali
+**klypaketle** Dosyamızın Son Hali
 ----------------------------------
 
 .. code-block:: shell
@@ -178,63 +170,66 @@ Bu şekilde ayrılmasının temel sebebi  **bpspaketle** scriptinde hep aynı i�
 	paket=$1
 	dizin=$(pwd)
 	if [ ! -d ${paket} ]; then echo "Bir paket değil!"; exit; fi
-	if [ ! -f "${paket}/bpsbuild" ]; then echo "Paket dosyası bulunamadı!"; exit; fi
+	if [ ! -f "${paket}/klybuild" ]; then echo "Paket dosyası bulunamadı!"; exit; fi
 	echo "Paket : $paket"
-	source ${paket}/bpsbuild
-	ROOTBUILDDIR="/tmp/bps/build"
-	BUILDDIR="/tmp/bps/build/build-${name}-${version}" #Derleme yapılan dizin
-	DESTDIR="/tmp/bps/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd)
-	SOURCEDIR="/tmp/bps/build/${name}-${version}"
-	#1. madde, paketin indirilmesi
+	source ${paket}/klybuild
+	ROOTBUILDDIR="/tmp/kly/build"
+	BUILDDIR="/tmp/kly/build/build-${name}-${version}" #Derleme yapılan dizin
+	DESTDIR="/tmp/kly/build/rootfs-${name}-${version}" #Paketin yükleneceği sistem konumu
+	PACKAGEDIR="$dizin/$paket"
+	SOURCEDIR="/tmp/kly/build/${name}-${version}"
+	# 1. madde, paketin indirilmesi
 	initsetup(){
-		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-		    rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-		    cd $ROOTBUILDDIR #dizinine geçiyoruz
-		    wget ${source}
-		    dowloadfile=$(ls|head -1)
-		    filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-		    if [ "${filetype}" == "???" ]; then unzip  ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-		    director=$(find ./* -maxdepth 0 -type d)
-		    directorname=$(basename ${director})
-		    if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-		    mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+	mkdir -p $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+	rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+	cd $ROOTBUILDDIR #dizinine geçiyoruz
+	if [ -n "${source}" ]
+	then
+	wget ${source}
+	dowloadfile=$(ls|head -1)
+	filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+	if [ "${filetype}" == "???" ]; then unzip ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+	director=$(find ./* -maxdepth 0 -type d)
+	directorname=$(basename ${director})
+	if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+	fi
+	mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+	cp $PACKAGEDIR/klybuild $ROOTBUILDDIR/
 	}
-
-
-	#6. madde, paketlenecek dosların listesini tutan file.index dosyası oluşturulur
-	packageindex() 
-		rm -rf file.index
-		cd /tmp/bps/build/rootfs-${name}-${version}
-		find . -type f | while IFS= read file_name; do if [ -f ${file_name} ]; then echo ${file_name:1}>>../file.index; fi done
-		find . -type l | while IFS= read file_name; do if [ -L ${file_name} ]; then echo ${file_name:1}>>../file.index; fi done
-	}
-
-	# paket dosyası oluşturulur;
-	# kurulacak data rootfs.tar.xz, file.index ve bpsbuild dosyaları tek bir dosya olarak tar.gz dosyası olarak  hazırlanıyor.
-	
-	#7. madde, tar.gz dosyası olarak hazırlanan dosya bps ismiyle değiştirilip paketimiz hazırlanır.
-	packagecompress() 
+	# 6. madde, paketlenecek dosların listesini tutan file.index dosyası oluşturulur
+	packageindex()
 	{
-	cd /tmp/bps/build/rootfs-${name}-${version}
-	tar -cf ../rootfs.tar ./*
-	cd /tmp/bps/build/
-	xz -9 rootfs.tar
-	tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index bpsbuild
-	cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.bps
+	rm -rf file.index
+	cd /tmp/kly/build/rootfs-${name}-${version}
+	find . -type f | while IFS= read file_name; do
+	if [ -f ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
+	done
+	find . -type l | while IFS= read file_name; do
+	if [ -L ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
+	done
 	}
-
+	# paket dosyası oluşturulur;
+	# rootfs.tar.xz, file.index ve klybuild dosyaları tar.gz dosyası olarak hazırlanıyor.
+	# 7. madde, tar.gz dosyası olarak hazırlanan dosya kly ismiyle değiştirilip paketimiz hazırlanır.
+	packagecompress()
+	{
+	cd /tmp/kly/build/rootfs-${name}-${version}
+	tar -cf ../rootfs.tar ./*
+	cd /tmp/kly/build/
+	xz -9 rootfs.tar
+	tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index klybuild
+	cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.kly
+	}
 	# fonksiyonlar aşağıdaki sırayla çalışacaktır.
-	
 	initsetup #bu dosya içindeki fonksiyon (indirilmesi)
-	setup #bpsbuild dosyasından gelen fonksiyon (derleme öncesi hazırlık)
-	build #bpsbuild dosyasından gelen fonksiyon (derleme)
-	package #bpsbuild dosyasından gelen fonksiyon (derlenen paketin dizine yüklenemesi)
+	setup #klybuild dosyasından gelen fonksiyon (derleme öncesi hazırlık)
+	build #klybuild dosyasından gelen fonksiyon (derleme)
+	package #klybuild dosyasından gelen fonksiyon (derlenen paketin dizine yüklenemesi)
 	packageindex #bu dosya içindeki fonksiyon (dizine yüklelen paketin indexlenmesi)
 	packagecompress #bu dosya içindeki fonksiyon (index.lst, derleme talimatı ve dizinin sıkıştırılmas)
 
-Burada **readline** paketini örnek alarak **bpspaketle** dosyasının ve **bpsbuild** dosyasının nasıl hazırlandığı anlatıldı.
-Diğer paketler için sadece hazırlanacak pakete uygun şekilde **bpsbuild** dosyası hazırlayacağız. **bpspaketle**  dosyamızda değişiklik yapmayacağız. Artık  **bpspaketle**  dosyası paketimizi oluşturan script **bpsbuild** ise hazırlanacak paketin bilgilerini bulunduran script doyasıdır.
+Burada **readline** paketini örnek alarak **klypaketle** dosyasının ve **klybuild** dosyasının nasıl hazırlandığı anlatıldı.
+Diğer paketler için sadece hazırlanacak pakete uygun şekilde **klybuild** dosyası hazırlayacağız. **klypaketle**  dosyamızda değişiklik yapmayacağız. Artık  **klypaketle**  dosyası paketimizi oluşturan script **klybuild** ise hazırlanacak paketin bilgilerini bulunduran script doyasıdır.
 
 
 .. raw:: pdf
@@ -251,13 +246,14 @@ Bu bilgilere göre readline paketi nasıl oluşturulur onu görelim. Paketlerimi
 
 	mkdir readline
 	cd readline
-	#readline için hazırlanan bpsbuild dosyası bu konuma oluşturulur ve içeriği readline için oluşturduğumuz bpsbuild dosyası bu konuma kopyalayın
+	# readline için hazırlanan klybuild dosyası, readline dizininin içine kopyalayın
 	cd ..
-	./bpspaketle readline # bpspaketle dosyamızın bu konumda olduğu varsayılmıştır ve parametre olarak readline dizini verilmiştir.
+	# klypaketle dosyamıza parametre olarak readline dizini verilmiştir.
+	./klypaketle readline 
 
-Komut çalışınca readline/readline-8.1.bps dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir. Burada anlatılan **bpspaketle** script dosyasını **/bin/** konumuna oluşturnuz ve **chmod 755 /bin/bpspaketle** komutuyla çalıştırma izni vermeliyiz. **bps** paket sistemi için yapılacak olan **bsppaketle, bpsupdate, bpskur, bpskaldir** scriptlerinide **/bin/** konumunda oluşturulmalı veya kopyalanmalı ve çalıştırma izni verilmeli.
+Komut çalışınca readline/readline-8.1.kly dosyası oluşacaktır. Aşağıda resimde nasıl yapıldığı gösterilmiştir. Burada anlatılan **klypaketle** script dosyasını **/bin/** konumuna oluşturnuz ve **chmod 755 /bin/klypaketle** komutuyla çalıştırma izni vermeliyiz. **kly** paket sistemi için yapılacak olan **bsppaketle, klyupdate, klykur, klykaldir** scriptlerinide **/bin/** konumunda oluşturulmalı veya kopyalanmalı ve çalıştırma izni verilmeli.
 
-.. image:: /_static/images/bpspaketle-2.png
+.. image:: /_static/images/klypaketle-2.png
   	:width: 600
 
 Artık sisteme kurulum için ikili dosya, kütüphaneleri ve dizinleri barındıran paketimiz oluşturuldu. Bu paketi sistemimize nasıl kurarız? konusu **Paket Kurma** başlığı altında anlatılacaktır.

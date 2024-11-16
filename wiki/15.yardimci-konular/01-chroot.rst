@@ -13,7 +13,7 @@ chroot komutu çalışan sistem üzerinde belirli bir klasöre root yetkisi veri
 
 .. image:: /_static/images/chroot-1.png
   :width: 600
-  :height: 300
+  :height: 400
 
 
 Yukarıdaki resimde user1 altında wrk dizini altına yeni bir sistem kurulmuş gibi yapılandırmayı gerçekleştirmiş.
@@ -22,13 +22,15 @@ Yukarıdaki resimde user1 altında wrk dizini altına yeni bir sistem kurulmuş 
 
 .. code-block:: shell
 
-	sudo chroot /home/etapadmin/test #sisteme erişim yapıldı.
+	# sisteme erişim yapıldı.
+	sudo chroot /home/etapadmin/test 
 	
 **/home/etapadmin/test** dizinindeki sistem üzerinde sistemi silmek için;
 
 .. code-block:: shell
 
-	sudo rm -rf /home/etapadmin/test #sistem silindi
+	# sistem silindi
+	sudo rm -rf /home/etapadmin/test
 
 .. raw:: pdf
 
@@ -85,7 +87,8 @@ Sistem Dizinin Oluşturulması
 
 .. code-block:: shell
 
-	mkdir /home/etapadmin/test/ #ev dizinine test dizini oluşturuldu.
+	# ev dizinine test dizini oluşturuldu.
+	mkdir /home/etapadmin/test/
 	
 /home/etapadmin/ dizinine **Bağımlılık Scripti** kodunu **lddscripts.sh** oluşturalım.
 
@@ -94,7 +97,8 @@ ls Komutu
 
 .. code-block:: shell
 
-	bash lddscripts.sh /bin/ls /home/etapadmin/test/ #komutu ile ls komutunu ve bağımlılığı kopyalandı.
+	# ls komutu ve bağımlılığı kopyalandı.
+	bash lddscripts.sh /bin/ls /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-3.png
   :width: 600
@@ -106,7 +110,8 @@ rmdir Komutu
 
 .. code-block:: shell
 
-	bash lddscripts.sh /bin/rmdir /home/etapadmin/test/ #komutu ile rmdir komutunu ve bağımlılığı kopyalandı.
+	# rmdir komutu ve bağımlılığı kopyalandı.
+	bash lddscripts.sh /bin/rmdir /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-4.png
   :width: 600
@@ -121,7 +126,8 @@ mkdir Komutu
 
 .. code-block:: shell
 
-	bash lddscripts.sh /bin/mkdir /home/etapadmin/test/ #komutu ile mkdir komutunu ve bağımlılığı kopyalandı.
+	# mkdir komutu ve bağımlılığı kopyalandı.
+	bash lddscripts.sh /bin/mkdir /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-5.png
   :width: 600
@@ -131,7 +137,8 @@ bash Komutu
 
 .. code-block:: shell
 
-	bash lddscripts.sh /bin/bash /home/etapadmin/test/ #komutu ile bash komutunu ve bağımlılığı kopyalandı.
+	# bash komutu ve bağımlılığı kopyalandı.
+	bash lddscripts.sh /bin/bash /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-6.png
   :width: 600
@@ -147,11 +154,8 @@ chroot Sistemde Çalışma
 .. image:: /_static/images/chroot-7.png
   :width: 600
 
-- **abc** dizini oluşturuldu.   
-- **abc** dizini silindi.
-- **pwd** komutuyla konum öğrenildi. 
-- **ldd** komutu sistemimizde olmadığından hata verdi.
-- Çıkış için ise ***exit*** komutu kullanılarak sistemden çıkıldı.
+- **abc** dizini oluşturuldu, **abc** dizini silindi, **pwd** komutuyla konum öğrenildi, **ldd** komutu sistemimizde olmadığından hata verdi.
+- Çıkış için ise **exit** komutu kullanılarak sistemden çıkıldı.
 
 Kaynak:
 https://stackoverflow.com/questions/64838052/how-to-delete-n-characters-appended-to-ldd-list

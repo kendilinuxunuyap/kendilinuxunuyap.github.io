@@ -5,26 +5,24 @@ Depo paketlerimizin olduğu alandır. Paketler genel olarak;
 
 1. Sıkıştırılmış bir dosyadır
 2. İçerisinde sisteme yüklenecek derlenmiş paket dizini(sıkıştırılmış olur genelde)
-3. Sisteme yüklenecek derlenmiş paket dizini içindeki dosyaların ve dizinleri konumu ve listesi(file.LST)
+3. Sisteme yüklenecek derlenmiş paket dizini içindeki dosyaların ve dizinleri konumu ve listesi(file.lst)
 4. Paket derleme talimatı.
 
 Depoada ne kadar paket varsa bunların isimleri sürüm numaraları gibi bilgiler ile adreslerini liste halinde oluşturma işlemine **depo indexleme** denir.
 Depo indexlenirken genellikle bilgiler **paket derleme talimatı** dosyasından alınır.
 Paketlerin listesi oluşturlduktan sonra paketler kurulurken, silinirken ve güncellenirken bu listeden yararlanılır.
 
-.. code-block:: yaml
+.. code-block:: c
 
-	Name: bash
-	Version: 1.0
-	Dependencies: glibc, ncurses, readline
-	Path: b/bash/bash_1.0.zip
+	paket_adi: bash
+	paket_versiyonu: 1.0
+	paket_bagimliliklari: glibc, ncurses, readline
+	paket_konumu: b/bash/bash_1.0.zip
 	
-	Name: test
-	Version: 1.1
-	Dependencies:
-	Path: t/test/test_2.0.zip
-	
-	...
+	paket_adi: test
+	paket_versiyonu: 1.1
+	paket_bagimliliklari:
+	paket_konumu: t/test/test_2.0.zip
 
 Yukarıdaki örnekte paket adı bilgisi sürüm bilgisi ve bağımılılıklar gibi bilgiler ile paketin sunucu içerisindeki konumu yer almaktadır.
 Depo indexi paketlerin içinde yer alan paket bilgileri okunarak otomatik olarak oluşturulur.
@@ -37,26 +35,26 @@ Depo indexi paketlerin içinde yer alan paket bilgileri okunarak otomatik olarak
 	    > index.txt
 	    for i in $@ ; do
 	        unzip -p $i build >> index.txt
-	        echo "Path: $i" >> index.txt
+	        echo "Paket_Konumu: $i" >> index.txt
 	    done
 	}
 	
-	index t/test/test_2.0.zip b/bash/bash_1.0.zip ...
+	index t/test/test_2.0.zip b/bash/bash_1.0.zip
 
 Bu örnekte paketlerin içindeki paket bilgisi içeren dosyaları uç uca ekledik.
 Buna ek olarak paketin nerede olduğunu anlamak için paket konumunu da ekledik. Çıktısı aşağıdaki gibidir.
 
 .. code-block:: shell
 
-	Path: t/test/test_2.0.zip
-	Path: b/bash/bash_1.0.zip
+	Paket_Konumu: t/test/test_2.0.zip
+	Paket_Konumu: b/bash/bash_1.0.zip
 
 .. raw:: pdf
 
    PageBreak
 
 
-bps github Depo Yapma
+kly github Depo Yapma
 ---------------------
 
 Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde tutabiliriz. Fakat bu çok kısıtlı bir sistem olmasına sebep olacaktır. Paketleri bir internet ortamında bir yerde saklayarak, kurmak istediğimizde internet(uzak) üzwerinden kurulması daha doğru bir yöntemdir. Bu dağıtımda paketlerimizi github.com üzerinde oluşturulan bir repostory üzerinden çekilmektedir. İnternetteki paketlerimizin listesi her yeni paketi yükleme sırasında güncellenmektedir. Bu işlem github hesabı üzerinden yapılmaktadır. github hakkında temel işlemler için `tıklayınız. <../10.yardimci-konular/39-github.html>`_
@@ -73,18 +71,18 @@ Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde t
 index Dosyası
 -------------
 
-Bu script bps paket dosyalarımızın olduğu dizinde tüm paketleri açarak içerisinden **bpsbuild** dosyalarını çıkartarak paketle ilgili bilgileri alıp **index.lst** dosyası oluşturmaktadır. istersek paketler local ortamdada index oluşturabiliriz. Bu dokümanda github üzerinde oluşturacak şekilde anlatılmıştır.Paket indeksi oluşturan **index.lst** dosyası aşağıdaki gibi olacaktır. Listede name, version ve depends(bağımlı olduğu paketler) bilgileri bulunmaktadır. Bilgilerin arasında **|** karekteri kullanılmıştır.
+Bu script kly paket dosyalarımızın olduğu dizinde tüm paketleri açarak içerisinden **klybuild** dosyalarını çıkartarak paketle ilgili bilgileri alıp **index.lst** dosyası oluşturmaktadır. istersek paketler local ortamdada index oluşturabiliriz. Bu dokümanda github üzerinde oluşturacak şekilde anlatılmıştır.Paket indeksi oluşturan **index.lst** dosyası aşağıdaki gibi olacaktır. Listede name, version ve depends(bağımlı olduğu paketler) bilgileri bulunmaktadır. Bilgilerin arasında **|** karekteri kullanılmıştır.
 
 .. code-block:: shell
 
 	#!/bin/sh
 	#set -ex
 	mkdir /output -p
-	mkdir -p /bpssource
+	mkdir -p /klysource
 	>index.lst
-	find * -type f -name *.bps |
+	find * -type f -name *.kly |
 			while IFS= read file_name; do
-				dosya="$(dirname $file_name)/bpsbuild"
+				dosya="$(dirname $file_name)/klybuild"
 				version=$(cat $dosya|grep version=)
 				name=$(cat $dosya|grep name=)
 				depends=$(cat $dosya|grep depends=)
@@ -93,18 +91,18 @@ Bu script bps paket dosyalarımızın olduğu dizinde tüm paketleri açarak iç
 	cp -rf index.lst /output
 
 	# *****************************source files******************************
-	cp -prfv ./* /bpssource/
+	cp -prfv ./* /klysource/
 
-	find /bpssource/* -type f -name *.bps |
+	find /klysource/* -type f -name *.kly |
 			while IFS= read file_name; do
 			rm -rf "$file_name"
 			done
-	tar -cf /output/bpssourcepackage.tar /bpssource/
-	rm -rf /bpssource
+	tar -cf /output/klysourcepackage.tar /klysource/
+	rm -rf /klysource
 
 
 index.lst İçeriği
-.................
+-----------------
 
 https://github.com/basitdagitim/kly-binary-packages/releases/download/current/index.lst adresinde bulunan dosya aşağıdaki gibi liste oluşturacaktır.
 

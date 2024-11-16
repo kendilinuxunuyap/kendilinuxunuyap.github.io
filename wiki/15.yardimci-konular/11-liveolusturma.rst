@@ -9,7 +9,7 @@ SquashFS Oluşturma
 
 .. code-block:: shell
 
-	#mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards 
+	# mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards 
 	mksquashfs initrd $HOME/distro/filesystem.squashfs -comp xz -wildcards
 
 
@@ -20,7 +20,7 @@ Cd veya Dvd aygıtı linux sistemlerinde /dev/sr0 aygıt dosyası olarak erişil
 
 .. code-block:: shell
 
-	$ cat /dev/sr0
+	cat /dev/sr0
 
 Cdrom Bağlama
 -------------
@@ -45,7 +45,8 @@ squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekme
 
 .. code-block:: shell
 
-	modprobe loop #loop modülü yüklenir.
+	# loop modülü yüklenir.
+	modprobe loop 
 	mkdir canli
 	mount -t squashfs -o loop cdrom/live/filesystem.squashfs /canli
 

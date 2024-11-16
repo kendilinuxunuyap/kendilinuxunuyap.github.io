@@ -79,11 +79,11 @@ Kurulacak sistemin imajını bir dizine bağlayalım.
 
 .. code-block:: shell
 
-	$ mkdir -p hedef || true
-	$ mkdir -p /hedef/boot || true
-	$ mkdir -p /hedef/boot/efi || true
-	$ mount /dev/sda2 /hedef || true
-	$ mount /dev/sda1 /hedef/boot/efi
+	mkdir -p hedef || true
+	mkdir -p /hedef/boot || true
+	mkdir -p /hedef/boot/efi || true
+	mount /dev/sda2 /hedef || true
+	mount /dev/sda1 /hedef/boot/efi
 
 Ardından dosyaları kopyalayalım.
 
@@ -91,7 +91,8 @@ Ardından dosyaları kopyalayalım.
 
 	# -prfv alt zinlerle beraber dosyanın özniteliklerini koruyarak kopyalar
 	cp -prfv /kaynak/* /hedef
-	sync #diske yazılan bilgiler senkronize edildi.
+	# diske yazılan bilgiler senkronize edildi.
+	sync
 
 grub Yapılandırılması
 ---------------------
@@ -111,9 +112,9 @@ grub kurulumu yapmak için grub paketinini kurulu olduğundan emin olun.
 	mount --bind /run /hedef/run
 	mount --bind /tmp /hedef/tmp
 	
-	#efi alan bağlanıyor. 
-	#Eğer uefi ise kernel tarafından /sys/firmware/efi dizin ve dosyaları oluşuyor. 
-	#sistem uefi değilse /sys/firmware/efi dosya ve dizini olmayacaktır.
+	# efi alan bağlanıyor. 
+	# Eğer uefi ise kernel tarafından /sys/firmware/efi dizin ve dosyaları oluşuyor. 
+	# sistem uefi değilse /sys/firmware/efi dosya ve dizini olmayacaktır.
 	 if [[ -d /sys/firmware/efi ]] ; then
     		mount --bind /sys/firmware/efi/efivars /hedef/sys/firmware/efi/efivars
 	  fi
@@ -123,13 +124,13 @@ grub kurulumu yapmak için grub paketinini kurulu olduğundan emin olun.
 		mount --bind /$dir /hedef/$dir
 	done
 	
-	#chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
+	# chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
 
 Şimdi de uefi kullandığımız için efivar bağlayalım.
 
 .. code-block:: shell
 
-	$ mount -t efivarfs efivarfs /sys/firmware/efi/efivarfs
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivarfs
 	
 Grub Kurulumu
 -------------
@@ -139,7 +140,7 @@ Grub Kurulumu
 	# biz /boot ayırdığımız ve efi bölümü olarak kullanacağız.
 	# uefi kullanmayanlar --efi-directory belirtmemeliler.
 	# kurulu sistemden bağımsız çalışması için --removable kullanılır.
-	$ grub-install --removable --boot-directory=/boot --efi-directory=/boot --target=x86_64-efi /dev/sda
+	grub-install --removable --boot-directory=/boot --efi-directory=/boot --target=x86_64-efi /dev/sda
 
 grub.cfg Yapılandırması
 -----------------------
@@ -153,8 +154,9 @@ grub.cfg Yapılandırması
 
 	blkid | grep /dev/sda2
 	/dev/sda2: UUID="?????" BLOCK_SIZE="xxxxx" TYPE="xxxxx" PARTUUID="xxxxx"
+	# kernel versiyonu
 	uname -r
-	6.1.0-25-amd64 #kernel versiyonu
+	6.1.0-25-amd64
 
 Diskimizimin uuid değerine göre /boot/grub/grub.cfg dosyasını aşağıdaki gibi düzenleyip kaydedelim.
 Burada uuid değerini ve kernel versiyonunu düzenleyelim.
@@ -169,7 +171,7 @@ grub.cfg dosyasını elle düzenlemek yerine aşğıdaki komutla otomatik yapıl
 
 .. code-block:: shell
 
-	$ grub-mkconfig -o /boot/grub/grub.cfg
+	grub-mkconfig -o /boot/grub/grub.cfg
 
 .. raw:: pdf
 

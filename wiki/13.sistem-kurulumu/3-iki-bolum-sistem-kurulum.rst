@@ -74,7 +74,8 @@ Ardından dosyaları kopyalayalım.
 
 	# -prfv alt zinlerle beraber dosyanın özniteliklerini koruyarak kopyalar
 	cp -prfv /kaynak/* /hedef
-	sync #diske yazılan bilgiler senkronize edildi.
+	# diske yazılan bilgiler senkronize edildi.
+	sync
 
 grub Yapılandırılması
 ---------------------
@@ -99,7 +100,7 @@ grub kurulumu yapmak için grub paketinin kurulu olduğundan emin olun.
 	mount --bind /$dir /hedef/$dir
 	done
 	
-	#chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
+	# chroot /hedef komutuyla hazırladığımız sisteme bağlanıyoruz.
 
 
 Grub Kurulumu
@@ -122,8 +123,9 @@ grub.cfg Yapılandırması
 
 	blkid | grep /dev/sda2
 	/dev/sda2: UUID="?????" BLOCK_SIZE="xxxxx" TYPE="xxxxx" PARTUUID="xxxxx"
+	# kernel versiyonu
 	uname -r
-	6.1.0-25-amd64 #kernel versiyonu
+	6.1.0-25-amd64
 
 Diskimizimin uuid değerine göre /boot/grub/grub.cfg dosyasını aşağıdaki gibi düzenleyip kaydedelim.
 Burada uuid değerini ve kernel versiyonunu düzenleyelim.

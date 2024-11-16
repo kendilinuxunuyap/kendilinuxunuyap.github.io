@@ -10,10 +10,10 @@ Kaynak koddan derlemek için aşağıdaki adımları izlemelisiniz:
 
 .. code-block:: shell
 
-	$ git clone https://github.com/OpenRC/openrc
-	$ cd openrc
-	$ meson setup build --prefix=/usr
-	$ ninja -C build install
+	git clone https://github.com/OpenRC/openrc
+	cd openrc
+	meson setup build --prefix=/usr
+	ninja -C build install
 
 Çalıştırılması
 --------------
@@ -29,18 +29,18 @@ Servis etkinleştirip devre dışı hale getirmek için **rc-update** komutu kul
 .. code-block:: shell
 
 	# servis etkinleştirmek için
-	$ rc-update add udhcpc boot
+	rc-update add udhcpc boot
 	# servisi devre dışı yapmak için
-	$ rc-update del udhcpc boot
+	rc-update del udhcpc boot
 	# Burada udhcpc servis adı boot ise runlevel adıdır.
 
 Servisleri başlatıp durdurmak için ise **rc-service** komutu kullanılır.
 
 .. code-block:: shell
 
-	$ rc-service udhcpc start
+	rc-service udhcpc start
 	# veya şu şekilde de çalıştırılabilir.
-	$ /etc/init.d/udhcpc start
+	/etc/init.d/udhcpc start
 
 Servislerin durmunu öğrenmek için **rc-status** komutu kullanılır. Ayrıca
 sistemdeki servislerin sonraki açılışta hangisinin başlatılacağını öğrenmek için
@@ -49,18 +49,18 @@ ise parametresiz olarak **rc-update** kullanabilirsiniz.
 .. code-block:: shell
 
 	# şu an hangi servislerin çalıştığını gösterir
-	$ rc-status
+	rc-status
 	# sonraki açılışta hangi servislerin çalışacağını gösterir
-	$ rc-update
+	rc-update
 
 Sistemi kapatmak veya yeniden başlatmak için **openrc-shutdown** komutunu kullanabilirsiniz.
 
 .. code-block:: shell
 
 	# kapatmak için
-	$ openrc-shutdown -p 0
+	openrc-shutdown -p 0
 	# yeniden başlatmak için
-	$ openrc-shutdown -r 0
+	openrc-shutdown -r 0
 
 
 Servis dosyası
