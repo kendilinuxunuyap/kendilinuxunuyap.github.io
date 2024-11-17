@@ -13,36 +13,13 @@ Debian sisteminde /etc/apt/source.list gibi bir yapı bulunmaktadır. Bu dosya i
 .. code-block:: shell
 	
 	#!/bin/sh
-	target=""
-	if [ -n "${1}" ];then target="$1"; else target="/";fi
+	target="$1"
 	mkdir -p $target/etc/kly -p $target/tmp
-	touch $target/etc/kly/sources.list
 	rm -rf $target/etc/kly/index.lst
 	rm -rf $target/tmp/temp.lst
-
-	curl -Lo $target/tmp/index.lst \
+	curl -Lo $target/etc/kly/index.lst \
 	https://github.com/kendilinuxunuyap/kly-binary-packages/releases/download/current/index.lst
-
-	while IFS= read -r adres
-	do
-	rm -rf $target/tmp/temp.lst 1>$target/dev/null 2>$target/dev/null
-	github_adres=$(echo $adres|cut -d"/" -f1)
-	binary_package_adres=$(echo $adres|cut -d"/" -f2)
-	#echo $github_adres
-	#echo $binary_package_adres
-	curl -Lo $target/tmp/temp.lst \
-	"https://github.com/${github_adres}/${binary_package_adres}/releases/download/current/index.lst"
-	if [ ! -f "$target/tmp/temp.lst" ];
-	then
-	echo "Paket adresleri hatalı $target/etc/kly/sources.list dosya içeriğini kontrol ediniz!";
-	continue;
-	fi
-	while IFS= read -r liste
-	do
-	echo "${liste}|https://github.com/${adres}/raw/master/">>$target/etc/kly/index.lst
-	done < $target/tmp/temp.lst
-	done < $target/etc/kly/sources.list
-	 
+		 
 **klyupdate** Kullanma
 ----------------------
 

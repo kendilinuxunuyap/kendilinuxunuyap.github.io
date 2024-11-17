@@ -53,46 +53,38 @@ Bu dosya ayrıca paketin bütünlüğünü kontrol etmek için de kullanılır.
 .. code-block:: shell
 	
 	#!/bin/sh
-	paket=$1
-	paketname="name=\"${paket}\""
+	name="name=\"${1}\""
 	target=$2
-	if [ -n "${2}" ];then target="$2"; else target="/";fi
 	mkdir -p $target
-	indexpaket=$(cat $target/etc/kly/index.lst|grep $paketname)
-	name=""
-	version=""
-	depends=""
-	if [ -n "${indexpaket}" ]
-	then
-	namex=$(echo $indexpaket|cut -d"|" -f1)
-	versionx=$(echo $indexpaket|cut -d"|" -f2)
-	dependsx=$(echo $indexpaket|cut -d"\|" -f3)
-	name=${namex:6:-1}
-	version=${versionx:9:-1}
-	depends=${dependsx:9:-1}
-	else
+	paket=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f2)
+	version=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f4)
+	depends=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f6)
+	# index dosyamızda paket aranıyor
+	if [ ! -n "${paket}" ]; then
 	echo "***********Paket Bulunamadı**********"; exit
 	fi
+
 	# 1. adım paketi indirme
-	mkdir -p $target/tmp/kly
-	mkdir -p $target/tmp/kly/kur
+	mkdir -p $target/tmp/kly $target/tmp/kly/kur
 	rm -rf $target/tmp/kly/kur/*
-	curl -Lo $target/tmp/kly/kur/${name}-${version}.tar.gz \
-	https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${name}/${name}-${version}.kly
+	curl -Lo $target/tmp/kly/kur/${paket}-${version}.tar.gz \
+	https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${paket}/${paket}-${version}.kly
 	mkdir -p $target/var/lib/kly
 	cd $target/tmp/kly/kur/
+
 	# 2. adım paketi açma
-	tar -xf ${name}-${version}.tar.gz
+	tar -xf ${paket}-${version}.tar.gz
 	mkdir -p rootfs
 	tar -xf rootfs.tar.xz -C rootfs
+
 	# 3. adım paketi kurma
 	cp -prfv rootfs/* $target/
+
 	# 4. adım name version depends /var/lib/kly/index.lst eklenmesi
-	touch $target/var/lib/kly/index.lst
-	echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/kly/index.lst
+	echo "name=\"${paket}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/kly/index.lst
 	# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan
 	# file index dosyanının /var/lib/kly/ konumuna kopyalanması
-	cp file.index $target/var/lib/kly/${name}-${version}.lst
+	cp file.index $target/var/lib/kly/${paket}-${version}.lst
 	
 **klykur** Scriptini Kullanma
 -----------------------------

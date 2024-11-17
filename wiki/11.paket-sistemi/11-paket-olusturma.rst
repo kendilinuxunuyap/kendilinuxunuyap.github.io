@@ -169,8 +169,6 @@ Bu şekilde ayrılmasının temel sebebi  **klypaketle** scriptinde hep aynı i�
 	set -e
 	paket=$1
 	dizin=$(pwd)
-	if [ ! -d ${paket} ]; then echo "Bir paket değil!"; exit; fi
-	if [ ! -f "${paket}/klybuild" ]; then echo "Paket dosyası bulunamadı!"; exit; fi
 	echo "Paket : $paket"
 	source ${paket}/klybuild
 	ROOTBUILDDIR="/tmp/kly/build"
@@ -180,45 +178,45 @@ Bu şekilde ayrılmasının temel sebebi  **klypaketle** scriptinde hep aynı i�
 	SOURCEDIR="/tmp/kly/build/${name}-${version}"
 	# 1. madde, paketin indirilmesi
 	initsetup(){
-	mkdir -p $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
-	rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
-	cd $ROOTBUILDDIR #dizinine geçiyoruz
-	if [ -n "${source}" ]
-	then
-	wget ${source}
-	dowloadfile=$(ls|head -1)
-	filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
-	if [ "${filetype}" == "???" ]; then unzip ${dowloadfile}; else tar -xvf ${dowloadfile};fi
-	director=$(find ./* -maxdepth 0 -type d)
-	directorname=$(basename ${director})
-	if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
-	fi
-	mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
-	cp $PACKAGEDIR/klybuild $ROOTBUILDDIR/
+		mkdir -p $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
+		rm -rf $ROOTBUILDDIR/* #içeriği temizleniyor
+		cd $ROOTBUILDDIR #dizinine geçiyoruz
+		if [ -n "${source}" ]
+		then
+		wget ${source}
+		dowloadfile=$(ls|head -1)
+		filetype=$(file -b --extension $dowloadfile|cut -d'/' -f1)
+		if [ "${filetype}" == "???" ]; then unzip ${dowloadfile}; else tar -xvf ${dowloadfile};fi
+		director=$(find ./* -maxdepth 0 -type d)
+		directorname=$(basename ${director})
+		if [ "${directorname}" != "${name}-${version}" ]; then mv $directorname ${name}-${version};fi
+		fi
+		mkdir -p $BUILDDIR&&mkdir -p $DESTDIR&&cd $BUILDDIR
+		cp $PACKAGEDIR/klybuild $ROOTBUILDDIR/
 	}
 	# 6. madde, paketlenecek dosların listesini tutan file.index dosyası oluşturulur
 	packageindex()
 	{
-	rm -rf file.index
-	cd /tmp/kly/build/rootfs-${name}-${version}
-	find . -type f | while IFS= read file_name; do
-	if [ -f ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
-	done
-	find . -type l | while IFS= read file_name; do
-	if [ -L ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
-	done
+		rm -rf file.index
+		cd /tmp/kly/build/rootfs-${name}-${version}
+		find . -type f | while IFS= read file_name; do
+		if [ -f ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
+		done
+		find . -type l | while IFS= read file_name; do
+		if [ -L ${file_name} ]; then echo ${file_name:1}>>../file.index; fi
+		done
 	}
 	# paket dosyası oluşturulur;
 	# rootfs.tar.xz, file.index ve klybuild dosyaları tar.gz dosyası olarak hazırlanıyor.
 	# 7. madde, tar.gz dosyası olarak hazırlanan dosya kly ismiyle değiştirilip paketimiz hazırlanır.
 	packagecompress()
 	{
-	cd /tmp/kly/build/rootfs-${name}-${version}
-	tar -cf ../rootfs.tar ./*
-	cd /tmp/kly/build/
-	xz -9 rootfs.tar
-	tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index klybuild
-	cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.kly
+		cd /tmp/kly/build/rootfs-${name}-${version}
+		tar -cf ../rootfs.tar ./*
+		cd /tmp/kly/build/
+		xz -9 rootfs.tar
+		tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index klybuild
+		cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.kly
 	}
 	# fonksiyonlar aşağıdaki sırayla çalışacaktır.
 	initsetup #bu dosya içindeki fonksiyon (indirilmesi)
@@ -227,7 +225,7 @@ Bu şekilde ayrılmasının temel sebebi  **klypaketle** scriptinde hep aynı i�
 	package #klybuild dosyasından gelen fonksiyon (derlenen paketin dizine yüklenemesi)
 	packageindex #bu dosya içindeki fonksiyon (dizine yüklelen paketin indexlenmesi)
 	packagecompress #bu dosya içindeki fonksiyon (index.lst, derleme talimatı ve dizinin sıkıştırılmas)
-
+	
 Burada **readline** paketini örnek alarak **klypaketle** dosyasının ve **klybuild** dosyasının nasıl hazırlandığı anlatıldı.
 Diğer paketler için sadece hazırlanacak pakete uygun şekilde **klybuild** dosyası hazırlayacağız. **klypaketle**  dosyamızda değişiklik yapmayacağız. Artık  **klypaketle**  dosyası paketimizi oluşturan script **klybuild** ise hazırlanacak paketin bilgilerini bulunduran script doyasıdır.
 

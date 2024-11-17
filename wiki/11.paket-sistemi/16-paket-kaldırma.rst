@@ -48,44 +48,33 @@ Dokumanda örnek olarak verilen kly paket sistemi için yukarıdaki paket kaldı
 .. code-block:: shell
 	
 	#!/bin/sh
-	#set -e
-	paket=$1
-	paketname="name=\"${paket}\""
+	name="name=\"${1}\""
 	target=$2
-	if [ -n "${2}" ];then target="$2"; else target="/";fi
 	mkdir -p $target
-
-	indexpaket=$(cat $target/var/lib/kly/index.lst|grep $paketname)
-	name=""
-	version=""
-	depends=""
-	if [ -n "${indexpaket}" ]; then
-	namex=$(echo $indexpaket|cut -d":" -f1)
-	versionx=$(echo $indexpaket|cut -d":" -f2)
-	dependsx=$(echo $indexpaket|cut -d":" -f3)
-	name=${namex:6:-1}
-	version=${versionx:9:-1}
-	depends=${dependsx:9:-1}
-	else
-	echo "***********Paket Bulunamadı**********"; exit
+	paket=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f2)
+	version=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f4)
+	depends=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f6)
+	# index dosyamızda paket aranıyor
+	if [ ! -n "${paket}" ]; then
+		echo "***********Paket Bulunamadı**********"; exit
 	fi
 	# Bağımlılıkları başka paketler kullanıyor mu kontrol edilir
+	# Başka paketler kullanılıyorsa silinmemeli. Bu işlemin kodları yazılmadı.
 	echo "${paket}-${version} bağımlılık kontrolü yapılacak"
-	# Paketin file.lst dosyası içerisindeki dosyalar, dizinler kaldırılır.
-	cat $target/var/lib/kly/${paket}-${version}.lst | while read dosya ;
-	do
-	if [[ -f "$target/$dosya" ]] ; then rm -f "$target/$dosya"; fi
-	done
-	cat $target/var/lib/kly/${paket}-${version}.lst | while read dizin ;
-	do
-	if [[ -d "$target/$dizin" ]] ; then rmdir "$target/$dizin" || true; fi
-	done
+
+	# Paketin file.lst dosyası içerisindeki dosyalar kaldırılır.
+	if [ -f "$target/var/lib/kly/${paket}-${version}.lst" ]; then
+		cat $target/var/lib/kly/${paket}-${version}.lst | while read dosya ;
+		do
+			if [[ -f "$target/$dosya" ]] ; then rm -f "$target/$dosya"; fi
+		done
+	fi
 	# /var/lib/kly/paket-version.lst dosyasından paket bilgisi kaldırılır.
 	rm -f $target/var/lib/kly/${paket}-${version}.lst
+
 	# /var/lib/kly/index.lst dosyasından ilgili paket satırı kaldırılır.
 	sed -i "/name=\"${paket}\"/d" $target/var/lib/kly/index.lst
-	# sistem guncelleniyor
-	$target/sbin/ldconfig
+
 	echo "********** ${paket}-${version}  Paketi Kaldırıldı **********"
 		
 Bu örnekte paket listesini satır satır okuduk. Önce dosya olanları sildik. Daha sonra tekrar okuyup boş kalan dizinleri sildik.
