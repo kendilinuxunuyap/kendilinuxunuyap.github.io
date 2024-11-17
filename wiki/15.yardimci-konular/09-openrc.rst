@@ -1,28 +1,16 @@
 OpenRC
 ++++++
 
-Openrc sistem açılışında çalışacak uygulamaları çalışrıran servis yöneticisidir.
+Openrc sistem açılışında çalışacak uygulamaları çalıştıran servis yöneticisidir.
 
-Kurulum
--------
-
-Kaynak koddan derlemek için aşağıdaki adımları izlemelisiniz:
-
-.. code-block:: shell
-
-	git clone https://github.com/OpenRC/openrc
-	cd openrc
-	meson setup build --prefix=/usr
-	ninja -C build install
-
-Çalıştırılması
---------------
+**Çalıştırılması**
+------------------
 
 Openrc servis yönetiminin çalışması için boot parametrelerine yazılması gerekmektedir. 
 **/boot/grub.cfg** içindeki **linux /vmlinuz init=/usr/sbin/openrc-init root=/dev/sdax** olan satırda **init=/usr/sbin/openrc-init** yazılması gerekmektedir. Artık sistem openrc servis yöneticisi tarafından uygulamalar çalıştırılacak ve sistem hazır hale getirilecek.
 
-Basit kullanım
---------------
+**openrc Kullanımı**
+--------------------
 
 Servis etkinleştirip devre dışı hale getirmek için **rc-update** komutu kullanılır. Aşağıda **udhcpc** internet servisi örnek olarak gösterilmiştir. **/etc/init.d/** konumunda **udhcpc** dosyamızın olması gerekmektedir.
 
@@ -33,6 +21,10 @@ Servis etkinleştirip devre dışı hale getirmek için **rc-update** komutu kul
 	# servisi devre dışı yapmak için
 	rc-update del udhcpc boot
 	# Burada udhcpc servis adı boot ise runlevel adıdır.
+
+Elle **/etc/runlevels/** altında bulunan **boot**, **default**,  **nonetwork**, **shutdown**, **sysinit** dizinlerine **/etc/init.d/** dizininin altındaki dosyaları **ln** komutuyla kısayol yaparsak **rc-update add** komutunun yaptığı görevi yapmış oluruz. Kısayolu silersek **rc-update del** komutunun görevini yapmış oluruz.
+
+**/etc/runlevels/** altında bulunan **boot**, **default**,  **nonetwork**, **shutdown**, **sysinit** dizinler servis dosyalarımızın hangi sırayla çalışacağını belirleyen dizinlerdir. Mesela **boot** dizini ilk açılış sırasında çalışcak olan servis dosyalarının konulacağı dizindir.
 
 Servisleri başlatıp durdurmak için ise **rc-service** komutu kullanılır.
 
@@ -62,9 +54,12 @@ Sistemi kapatmak veya yeniden başlatmak için **openrc-shutdown** komutunu kull
 	# yeniden başlatmak için
 	openrc-shutdown -r 0
 
+.. raw:: pdf
 
-Servis dosyası
---------------
+   PageBreak
+
+**Servis Dosyası**
+------------------
 
 Openrc servis dosyaları basit birer **bash** betiğidir. Bu betikler **openrc-run** komutu ile çalıştırılır ve çeşitli fonksiyonlardan oluşabilir. Servis dosyaları **/etc/init.d** içerisinde bulunur. Servisleri ayarlamak için ise **/etc/conf.d** içerisine aynı isimle ayar dosyası oluşturabiliriz.
 

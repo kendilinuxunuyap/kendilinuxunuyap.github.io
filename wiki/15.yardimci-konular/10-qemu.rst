@@ -46,13 +46,11 @@ qemu-system-x86_64 --enable-kvm -bios /usr/share/ovmf/OVMF.fd -cdrom distro.iso 
 qemu Host Erişimi:
 ------------------
 
-kendi ipsi:10.0.2.15 
-
-ana bilgisayar 10.0.0.2 olarak ayarlıyor.
+istemci bilgisayar ip'si:10.0.2.15 ve ana bilgisayar 10.0.0.2 olarak ayarlıyor.
 
 vmlinuz ve initrd
 -----------------
-Daha sonra da qemu kullanarak test edelim.
+qemu ile vmlinuz ve initrd.img dosyaları iso olmadan test edilebilir.
 
 .. code-block:: shell
 
