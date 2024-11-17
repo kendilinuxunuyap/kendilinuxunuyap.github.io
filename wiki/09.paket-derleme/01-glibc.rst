@@ -1,7 +1,7 @@
 glibc
 +++++
 
-**glibc** linux dağıtımlarında bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. **glibc** dışında diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. **glibc** en çok tercih edilen ve uygulama uyumluluğu bulunduğu için bu dokümanda glibc üzerinden anlatım yapılacaktıdır. **glibc** listemizde derleyeceğimiz tüm paketlerin çalışması için temel kütüphanedir. Bundan dolayı ilk olarak derleyeceğiz pakettir.
+**glibc** linux dağıtımlarında bütün uygulamaların çalışmasını sağlayan en temel C kütüphanesidir. **glibc** dışında diğer C standart kütüphaneler şunlardır: Bionic libc, dietlibc, EGLIBC, klibc, musl, Newlib ve uClibc. **glibc** temel kütüphane olduğu için ilk bu paketi derleyeceğiz.
 
 glibc Script Dosyası
 --------------------
@@ -48,8 +48,8 @@ Debian ortamında bu paketin derlenmesi için;
 			echo "slibdir=/lib64" >> configparms
 			echo "rtlddir=/lib64" >> configparms
 			$SOURCEDIR/configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --enable-bind-now \
-			--enable-multi-arch --enable-stack-protector=strong --enable-stackguard-randomization --disable-crypt --disable-profile --disable-werror --enable-static-pie --enable-static-nss--disable-nscd \
-			--host=x86_64-pc-linux-gnu --libdir=/lib64 --libexecdir=/lib64/glibc
+			--enable-multi-arch --enable-stack-protector=strong --enable-stackguard-randomization --disable-crypt --disable-profile --disable-werror --enable-static-pie \
+			--enable-static-nss--disable-nscd --host=x86_64-pc-linux-gnu --libdir=/lib64 --libexecdir=/lib64/glibc
 	}
 	build(){
 		  	make -j5 #-C $DESTDIR all
@@ -65,19 +65,10 @@ Debian ortamında bu paketin derlenmesi için;
 			install $BUILDDIR/files/ld.so.conf ${DESTDIR}/etc/ld.so.conf
 			install $BUILDDIR/files/usr-support.conf ${DESTDIR}/etc/ld.so.conf.d/
 			install $BUILDDIR/files/x86_64-linux-gnu.conf ${DESTDIR}/etc/ld.so.conf.d/
-			
 			rm -f ${DESTDIR}/etc/ld.so.cache	# remove ld.so.cache file
-			install $BUILDDIR/files/glibc.sysconf ${DESTDIR}/etc/sysconf.d/glibc	# install sysconf trigger
 			install $BUILDDIR/files/locale-gen ${DESTDIR}/bin/locale-gen 	# install extra tools
 			install $BUILDDIR/files/revdep-rebuild ${DESTDIR}/bin/revdep-rebuild
-			
 			install $BUILDDIR/files/tr_TR ${DESTDIR}/usr/share/i18n/locales/tr_TR # replace buggy turkish format with better one
-			# remove unused languages
-			for l in ku hy ; do
-		            rm -rf ${DESTDIR}/usr/lib/locale/${i}_*
-		            rm -rf ${DESTDIR}/usr/share/locale/${i}_*
-		            rm -rf ${DESTDIR}/usr/share/i18n/locales/${i}_*
-			done
 			sed -i "s|#!/bin/bash|#!/bin/sh|g" ${DESTDIR}/usr/bin/ldd	# fix ldd shebang
 	   		cd ${DESTDIR}/lib64/ &&mkdir -p x86_64-linux-gnu&&cd x86_64-linux-gnu
 	   		   
