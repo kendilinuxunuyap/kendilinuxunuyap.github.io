@@ -116,13 +116,8 @@ Derleme
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/kernel-headers/files.tar>`_ tar dosyasını indirdikten sonra istediğiniz bir konumda **kernel-headers** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
+**Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
 
-
-.. code-block:: shell
-	
-	chmod 755 build&&sudo ./build
-  
 .. raw:: pdf
 
    PageBreak

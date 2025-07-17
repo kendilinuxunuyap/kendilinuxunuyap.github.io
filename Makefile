@@ -16,5 +16,12 @@ BUILDDIR      = build
 #
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+
+# PDF target using rst2pdf
+#pdf:
+	#@echo "Generating PDF with rst2pdf..."
+	#@rst2pdf "$(SOURCEDIR)" -s mytheme.style -o "$(BUILDDIR)/output.pdf"
+
+
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

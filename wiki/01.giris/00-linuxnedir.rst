@@ -1,39 +1,34 @@
-**Temel Kavramlar**
-+++++++++++++++++++
+Bu dokümanda, bir cihazı açan, kendini kurulabilen ve kullanıcıyla etkileşime giren bir sistemin nasıl tasarlanacağı anlatılmaktadır. Adımları uygularken ve araştırmalarınız sırasında sıkça karşılaşacağınız temel kavramları https://tr.wikipedia.org/wiki/Linux adresini inceleyip basit bir dille açıklayarak ilerleyelim. 
 
-**Linux Nedir?**
-----------------
+Linux Nedir?
+============
 
-Linux; Geliştirilmesi Linus Torvalds tarafından başlatılmış açık kaynaklı bir işletim sistemidir. GPL2(Genel Kamu Lisansı)'ye bağlı kalarak geliştirilmesi devam etmektedir. Linux bilgisayarlar, tablet, telefon ve birçok cihazda kullanılmaktadır. Linux çekirdeği kullanılarak oluşturulan sistemlere genellikle Linux denilmektedir. Doğrusu GNU/Linux ifadesidir.
+Linux, Linus Torvalds’ın öncülüğünde geliştirilen ve tamamen açık kaynak kodlu bir çekirdek mimarisidir. Unutulmamalıdır ki Linux ifadesi, teknik olarak sadece çekirdek bileşenine karşılık gelir. Tam bir işletim sistemi deneyimi için GNU araç seti ve kütüphanelerle birleştirilir. Bu birleşime **GNU/Linux** denir. Bugün Linux, bilgisayarlar, telefonlar, sunucular ve birçok farklı cihazda yaygın olarak kullanılmaktadır.
 
-**GPL Nedir?**
---------------
+GPL Nedir?
+==========
 
-Yazılımları özgür şekilde kullanmak için lisans şartlardıdır.
+GPL (Genel Kamu Lisansı), yazılımların özgürce kullanılmasına, değiştirilmesine ve paylaşılmasına izin veren bir lisanstır. Bu lisans sayesinde herkes yazılımların kaynak koduna erişebilir ve kendi ihtiyaçlarına göre düzenleyebilir.
 
-**GNU Nedir?**
---------------
+GNU Nedir?
+==========
 
-GNU yazılımlara özgürce kullanmayı hedefyen işbirliğini temel alan özgür yazılım tasarısıdır. Kısaca yazılımı al, kullan, değiştir dağıt gibi felsefeyi benimsemiştir. Linux kerneli GNU GPLv2 lisansıyla dağıtılmakta ve kullanılmakdtadır. GNU açılımı (GNU Unix değildir). Günümüzde kullanığımız linux işletim sistemi diye bilinen  sistemler aslında GNU/Linux işletim sistemidir.
+**GNU**, özgür yazılım hareketinin bir parçası olarak başlatılmış bir projedir. Kısaltması “GNU’s Not Unix” (GNU Unix değildir) anlamına gelir. GNU araçları, Linux çekirdeğiyle birleşerek bugün kullandığımız GNU/Linux sistemlerini oluşturur.
 
-**Açık Kaynak Nedir?**
-----------------------
+Açık Kaynak Nedir?
+==================
 
-Açık kaynak, geliştirilen uygulamanın kodlarının herkes tarafından ulaşılabildiği ve GPL vb. lisanlara bağlı kalarak kullanabildiği kodlar bütünüdür. Kodlar bir çok yazılımcı tarafından erişildiiği ve kullanıldığı için defalarca kontrol edilmekte, hatalar tespit edilerek geliştiricisiine geri dönüt sağlamaktadır. Bu durum çok hızlı şekilde hatasız ve güvenilir kodlar oluşmaktadır. Genellikle github, gitlab benzeri ortamlarda paşlaşılmaktadır. 
+Açık kaynak, bir yazılımın kaynak kodlarının herkesin erişimine açık olmasıdır. Böylece isteyen herkes kodları inceleyebilir, geliştirebilir ve başkalarıyla paylaşabilir. Bu yaklaşım, yazılımların daha hızlı gelişmesini ve daha güvenli hale gelmesini sağlar.
 
-**Dağıtım Nedir ve Türleri**
-----------------------------
+Dağıtım Nedir?
+==============
 
-GNU/Linux, kerneli, GNU uygulamaları ve yardımcı kütühanelerin bir araya getirilmesiyle olşuturulan uygulamalar bütününe dağıtım denilmektedir. Genellikle bu oluşan yapıya doğru bir ifade olmasada Linux denilmekte. Dağıtımların aşağıdaki gibi türleri kullanılmaktadır.
+Bir GNU/Linux dağıtımı; Linux çekirdeği, GNU araçları, kütüphaneler ve çeşitli uygulamaların bir araya gelmesiyle oluşan tam bir işletim sistemidir. Farklı dağıtımlar, farklı ihtiyaçlara göre şekillendirilir ve özelleştirilir.
 
-1. Önceden derlenmiş Linux Kerneli, GNU uygulamalarını bir araya getirip dağıtım oluşturma.
-2. Hazır bir dağıtımı değiştirip dağıtma
-3. Paket sistemi olan dağıtım oluşturup dağıtma
+Yazılım Bağımsızlığı
+====================
 
-**Yazılım Bağımlılığı**
------------------------
-
-Herkes tarafından erişilebilen ve lisanslarına bağlı kalarak kullanılabilen, sahiplenilebilen yazılımlar bağımsız uygulamalar geliştirmemizi sağlar. Bu özellikleri sağlayan yazılımlar açık kanak yazılımlarıdır. Açık kaynak yazılımlar sayesinde geliştiriciler, şirketler, ülkeler bir kurum veya kuruluşa bağımlı oldan yazılım ihtiyaçlarını karşılayabilmektedir. Bundan dolayı yazılım bağımsızlığı maliyet, güvenlik, ağır lisans şatları ve yeni yazılımları geliştirme engellerini büyük ölçüde kaldırmaktadır. 
+Açık kaynak yazılımlar, kullanıcıların bir şirkete bağlı kalmadan yazılım geliştirmesine ve kullanmasına imkan tanır. Bu sayede lisans maliyetleri ortadan kalkar, güvenlik artar ve yazılımlar daha esnek bir şekilde geliştirilebilir.
 
 
 .. raw:: pdf

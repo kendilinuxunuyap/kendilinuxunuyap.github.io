@@ -1,3 +1,4 @@
+.. _openssh:
 openssh
 +++++++
 
@@ -5,27 +6,26 @@ OpenSSH, Secure Shell (SSH) protokolünü uygulayan bir yazılım paketidir ve g
 
 OpenSSH, genellikle ssh, scp, sftp ve sshd gibi araçları içerir. 
 
-Derleme
---------
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libssh2-1-dev libcrypt-dev** komutuyla paketlerin kurulması gerekmektedir.
 
-Debian ortamında bu paketin derlenmesi için; **sudo apt install libcrypt-dev** komutuyla paketin kurulması gerekmektedir.
-
-.. code-block:: shell
+.. code-block:: bash
 	
+	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="openssh"
 	version="9.6p1"
 	description="OpenBSD ssh server & client"
 	source="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
 	depends="zlib,libxcrypt,openssl,libmd,libssh"
-	group="net.misc"
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
-	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -1)"  # Display adı
+	user=$(who | grep "(${display})" | awk '{print $1}')                      # Display kullanıcısı
+
+	ROOT="/home/$user/distro"
+	ROOTBUILDDIR="$ROOT/build"                # Derleme dizini
+	BUILDDIR="$ROOT/build/build-${name}-${version}" # Alt dizin
+	DESTDIR="$ROOT/rootfs"                     # Yükleme dizini
+	PACKAGEDIR=$(pwd)                          # Paket dizini
+	SOURCEDIR="$ROOT/build/${name}-${version}" # Kaynak dizini
 
 	initsetup(){
 		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -44,14 +44,15 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libcrypt-dev**
 	setup(){
 		cp -prfv $PACKAGEDIR/files $SOURCEDIR/
 		./configure --prefix=/usr --libdir=/usr/lib64/ --sysconfdir=/etc/ssh --without-pam --disable-strip \
-		    --with-ssl-engine --with-privsep-user=nobody --with-pid-dir=/run --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+		    --with-ssl-engine --with-privsep-user=nobody --with-pid-dir=/run  \
+		    --with-default-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 	}
 	build(){
 		make
 	}
 	package(){
 		make install DESTDIR=$DESTDIR
-		mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
+		mkdir -p "$DESTDIR"/etc/{passwd,group,init,conf}.d
 		install -m755 -D $SOURCEDIR/files/sshd.initd "$DESTDIR"/etc/init.d/sshd
 		install $SOURCEDIR/files/sshd.initd  ${DESTDIR}/etc/runlevels/default/sshd
 		install -m755 -D $SOURCEDIR/files/sshd.confd "$DESTDIR"/etc/conf.d/sshd
@@ -63,24 +64,15 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libcrypt-dev**
 		chmod 755  ${DESTDIR}/var/empty
 		echo "nobody:!:65534:" >>  ${DESTDIR}/etc/group
 		echo "nobody:!:65534:65534::/var/empty:/usr/sbin/nologin" >>  ${DESTDIR}/etc/passwd
-		sed -i "/PermitRootLogin/d" /etc/ssh/sshd_config
-		echo -e "\nPermitRootLogin yes">> /etc/ssh/sshd_config
+		sed -i "/PermitRootLogin/d" ${DESTDIR}/etc/ssh/sshd_config
+		echo -e "\nPermitRootLogin yes">> ${DESTDIR}/etc/ssh/sshd_config
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openssh/files.tar>`_ 
-
-tar dosyasını indirdikten sonra istediğiniz bir konumda **openssh** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
-
-Paket adında(openssh) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+Ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/openssh/files.tar>`_  **Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
 
 .. raw:: pdf
 

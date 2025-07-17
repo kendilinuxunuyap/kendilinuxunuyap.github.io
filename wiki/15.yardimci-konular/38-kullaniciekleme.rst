@@ -1,5 +1,5 @@
-Kullanıcı Ekleme
-++++++++++++++++
+**Kullanıcı Ekleme**
+++++++++++++++++++++
 
 linux sistemlerine kullanıcı eklemek için iki farklı komut bulunur. Bu komutlar adduser ve useradd komutlarıdır.
 

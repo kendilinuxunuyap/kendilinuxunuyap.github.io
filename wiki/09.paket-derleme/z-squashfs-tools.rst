@@ -61,12 +61,7 @@ komutuyla paketin kurulması gerekmektedir.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 	
-Paket adında(squashfs-tools) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+**Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
 
 .. raw:: pdf
 

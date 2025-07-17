@@ -1,29 +1,29 @@
+.. _shadow:
 shadow
 ++++++
 
 Shadow paketi, Linux işletim sistemlerinde kullanıcı hesaplarının şifrelerini güvenli bir şekilde saklamak için kullanılan bir mekanizmadır. Bu paket, kullanıcı bilgilerini ve şifrelerini içeren dosyaların yönetiminde önemli bir rol oynamaktadır.
 
-Derleme
---------
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-dev libcap-dev libcap2-bin libpam0g-dev** komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 
-Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-dev libcap-dev libcap2-bin** komutları çalıştırıldıktan sonra derleme yapılmalıdır.
-
-.. code-block:: shell
+.. code-block:: bash
 	
+	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="shadow"
 	version="4.13"
 	description="Password and account management tool suite with support for shadow files and PAM"
 	source="https://github.com/shadow-maint/shadow/releases/download/$version/shadow-$version.tar.xz"
 	depends="pam,libxcrypt,acl,attr"
-	group="sys.apps"
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
-	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -1)"  # Display adı
+	user=$(who | grep "(${display})" | awk '{print $1}')                      # Display kullanıcısı
+
+	ROOT="/home/$user/distro"
+	ROOTBUILDDIR="$ROOT/build"                # Derleme dizini
+	BUILDDIR="$ROOT/build/build-${name}-${version}" # Alt dizin
+	DESTDIR="$ROOT/rootfs"                     # Yükleme dizini
+	PACKAGEDIR=$(pwd)                          # Paket dizini
+	SOURCEDIR="$ROOT/build/${name}-${version}" # Kaynak dizini
 
 	initsetup(){
 		mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -41,10 +41,13 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-de
 	}
 
 	setup(){
+		tempPath="${PATH}"
+		export PATH=$PATH:/usr/sbin/
 		cp -prvf $PACKAGEDIR/files/ $SOURCEDIR/
 		autoreconf -fiv      
 		./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc --bindir=/usr/bin --sbindir=/usr/sbin \
-		--disable-account-tools-setuid --without-sssd --with-fcaps --with-libpam --without-group-name-max-length --with-bcrypt --with-yescrypt --without-selinux
+		--disable-account-tools-setuid --without-sssd --with-fcaps --with-libpam --without-group-name-max-length \
+		--with-bcrypt --with-yescrypt --without-selinux
 	}
 
 	build(){
@@ -64,24 +67,15 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-de
 		chgrp root ${DESTDIR}/etc/group  ${DESTDIR}/etc/shadow
 
 		if [ ! -f "${DESTDIR}/etc/passwd" ]; then echo -e "root:x:0:0:root:/root:/bin/sh">${DESTDIR}/etc/passwd; fi
-		    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
+		export PATH="$tempPath"
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
 	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
 	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-Yukarıdaki kodların sorunsuz çalışabilmesi için ek dosyayalara ihtiyaç vardır. Bu ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/shadow/files.tar>`_
-
-tar dosyasını indirdikten sonra istediğiniz bir konumda **shadow** adında bir dizin oluşturun ve tar dosyasını oluşturulan dizin içinde açınınız.
-
-Paket adında(shadow) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+Ek dosyaları indirmek için `tıklayınız. <https://kendilinuxunuyap.github.io/_static/files/shadow/files.tar>`_ **Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
   
 .. raw:: pdf
 

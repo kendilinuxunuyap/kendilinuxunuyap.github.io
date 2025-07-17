@@ -6,24 +6,24 @@
 
    * - 1- :ref:`giris`
      - 5
-   * - 2- :ref:`onhazirlik`
+   * - 3- :ref:`temelsistem`
      - 6
-   * - 2- :ref:`derlemeturleri`
-     - 7
-   * - 3- :ref:`derlemearaclari`
-     - 8
-   * - 3- :ref:`minimalsistem`
-     - 13
    * - 4- :ref:`paketderleme`
-     - 18
-   * - 5- :ref:`paketsistemi`
-     - 104
+     - 9
    * - 6- :ref:`isohazirlama`
-     - 119
+     - 94
    * - 7- :ref:`sistemkurulumu`
-     - 124
+     - 101
+   * - 8- :ref:`sistemcalistirma-inceleme`
+     - 104
+   * - 5- :ref:`paketsistemi`
+     - 109
    * - 9- :ref:`yardimcikonular`
-     - 133
+     - 120
+   * - 10- :ref:`kaynaklar`
+     - 140
+   * - 11- :ref:`gelistiricimesaji`
+     - 141
  
 .. raw:: pdf
 

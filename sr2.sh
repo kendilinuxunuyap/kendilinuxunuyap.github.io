@@ -2,7 +2,7 @@
 #sudo apt install librsvg2-*
 #sudo apt install pandoc
 directory="$1"
->total.rst
+
 for i in $(find $directory -type f -name \*.rst|sort)
 do
 
@@ -18,5 +18,5 @@ fi
 
 
 done
-pandoc temp.rst -o "${directory}.docx"
-
+#pandoc temp.rst -o "${directory}.docx"
+#rst2pdf wiki/index.rst -s mytheme.style -o build/output.pdf

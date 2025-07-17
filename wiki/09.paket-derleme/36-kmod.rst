@@ -1,7 +1,10 @@
+.. _kmod:
 kmod
 ++++
 
-Bash, Linux ve diğer Unix tabanlı işletim sistemlerinde kullanılan bir kabuk programlama dilidir. Kullanıcıların komutlar vererek işletim sistemini yönetmelerine olanak tanır. Bash, kullanıcıların işlemleri otomatikleştirmesine ve betik dosyaları oluşturmasına olanak tanır. Özellikle sistem yöneticileri ve geliştiriciler arasında yaygın olarak kullanılan güçlü bir araçtır.
+Linux çekirdeği ile donanım arasındaki haberleşmeyi sağlayan kod parçalarıdır. Bu kod parçalarını kernele eklediğimizde kerneli tekrardan derlememiz gerekmektedir. Her kod ekleme ve her kod çıkartma işleminden sonra kernel derlemek ciddi bir iş yükü ve karmaşa oluşturacaktır.
+
+Bu sorunların çözümü için modul vardır. Moduller kernele istediğimiz kod parçalarını ekleme ya da çıkartma yapabilmemizi sağlar. Bu işlemleri yaparken kernel derleme işlemi yapmamıza gerek yoktur. Bu süreçleri yöneten uygulamalarının bulunduğu pakettir.
 
 Derleme
 --------
@@ -12,25 +15,24 @@ Debian ortamında bu paketin derlenmesi için;
 
 komutuyla paketin kurulması gerekmektedir.
 
-.. code-block:: shell
+.. code-block:: bash
 	
+	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="kmod"
 	version="32"
 	description="library and tools for managing linux kernel modules"
 	source="https://mirrors.edge.kernel.org/pub/linux/utils/kernel/kmod/kmod-$version.tar.xz"
 	depends="zlib,xz-utils"
-	group=(sys.apps)
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -1)"  # Display adı
+	user=$(who | grep "(${display})" | awk '{print $1}')                      # Display kullanıcısı
 
-	export PATH=$HOME:$PATH
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
-	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	ROOT="/home/$user/distro"
+	ROOTBUILDDIR="$ROOT/build"                # Derleme dizini
+	BUILDDIR="$ROOT/build/build-${name}-${version}" # Alt dizin
+	DESTDIR="$ROOT/rootfs"                     # Yükleme dizini
+	PACKAGEDIR=$(pwd)                          # Paket dizini
+	SOURCEDIR="$ROOT/build/${name}-${version}" # Kaynak dizini
 
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -70,33 +72,8 @@ komutuyla paketin kurulması gerekmektedir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 
-Paket adında(kmod) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+**Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
  
-Linux çekirdeği ile donanım arasındaki haberleşmeyi sağlayan kod parçalarıdır. Bu kod parçalarını kernele eklediğimizde kerneli tekrardan derlememiz gerekmektedir. Her kod ekleme ve her kod çıkartma işleminden sonra kernel derlemek ciddi bir iş yükü ve karmaşa oluşturacaktır.
-
-Bu sorunların çözümü için modul vardır. Moduller kernele istediğimiz kod parçalarını ekleme ya da çıkartma yapabilmemizi sağlar. Bu işlemleri yaparken kernel derleme işlemi yapmamıza gerek yoktur.
-
-kmod Komutları
---------------
-
-- **lsmod :** yüklü modulleri listeler
-- **insmod:** tek bir modul yükler
-- **rmmod:** tek bir modul siler
-- **modinfo:** modul hakkında bilgi alınır 
-- **modprobe:** insmod komutunun aynısı fakat daha işlevseldir. module ait bağımlı olduğu modülleride yüklemektedir. modprobe  modülü /lib/modules/ dizini altında aramaktadır.
-- **depmod:** /lib/modules dizinindeki modüllerin listesini günceller. Fakat başka bir dizinde ise basedir=konum şeklinde belirtmek gerekir. konum dizininde /lib/modules/** şeklinde kalsörler olmalıdır.
-
-Test Edilmesi
--------------
-
-Bir modül eklendiğinde veya çıkartıldığında modülle ilgili mesajları dmesg logları ile görebiliriz.
-
 .. raw:: pdf
 
    PageBreak

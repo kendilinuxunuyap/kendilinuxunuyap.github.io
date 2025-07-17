@@ -1,14 +1,20 @@
-Yazar
-+++++
+**Yazar**
++++++++++
 - Bayram KARAHAN
 - Celalettin AKARSU
-- Ali Rıza  KESKİN
 
-Paket Derleme
-+++++++++++++
+**Paket Derleme**
++++++++++++++++++
 - Bayram KARAHAN
 - Celalettin AKARSU
-- Ali Rıza  KESKİN
+
+
+**İletişim**
+++++++++++++
+
+- https://github.com/kendilinuxunuyap
+- https://kendilinuxunuyap.github.io
+- kendilinuxunuyap@gmail.com
 
 
 .. raw:: pdf

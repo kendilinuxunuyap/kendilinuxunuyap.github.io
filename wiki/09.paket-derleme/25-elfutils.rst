@@ -1,30 +1,34 @@
+.. _elfutils:
 elfutils
 ++++++++
 
 elfutils, ELF dosyalarının oluşturulması, düzenlenmesi ve incelenmesi için gerekli araçları sağlayan bir yazılım paketidir. Bu paket, özellikle derleyiciler ve bağlantı editörleri tarafından üretilen ikili dosyaların yapısını anlamak ve analiz etmek için kullanılır.
 
-Paket, readelf, objdump, eu-strip gibi araçları içerir. Örneğin, readelf komutu, bir ELF dosyasının içeriğini detaylı bir şekilde görüntülemeye olanak tanırken, objdump ise ikili dosyaların iç yapısını analiz etmek için kullanılır. Bu araçlar, geliştiricilerin yazılımlarını optimize etmelerine ve hata ayıklama süreçlerini kolaylaştırmalarına yardımcı olur.
+Paket, readelf, objdump, eu-strip gibi araçları içerir. Örneğin, readelf komutu, bir ELF dosyasının içeriğini detaylı bir şekilde görüntülemeye olanak tanırken, objdump ise ikili dosyaların iç yapısını analiz etmek için kullanılır. Bu araçlar, geliştiricilerin yazılımlarını optimize etmelerine ve hata ayıklama süreçlerini kolaylaştırmalarına yardımcı olur. 
+
+Derleme öncesi  **sudo apt install libbz2-dev liblzma-dev** komutuyla paketin yüklenmesi gerekir.
 
 Derleme
 --------
 
-.. code-block:: shell
+.. code-block:: bash
 	
+	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="elfutils"
 	version="0.190"
 	description="Libraries/utilities to handle ELF objects (drop in replacement for libelf)"
 	source="https://sourceware.org/elfutils/ftp/${version}/elfutils-${version}.tar.bz2"
 	depends="bzip2,xz-utils,zstd,zlib"
-	group="dev.libs"
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
-	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -1)"  # Display adı
+	user=$(who | grep "(${display})" | awk '{print $1}')                      # Display kullanıcısı
+
+	ROOT="/home/$user/distro"
+	ROOTBUILDDIR="$ROOT/build"                # Derleme dizini
+	BUILDDIR="$ROOT/build/build-${name}-${version}" # Alt dizin
+	DESTDIR="$ROOT/rootfs"                     # Yükleme dizini
+	PACKAGEDIR=$(pwd)                          # Paket dizini
+	SOURCEDIR="$ROOT/build/${name}-${version}" # Kaynak dizini
 
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -42,8 +46,8 @@ Derleme
 	}
 	setup(){
 	    ./configure --prefix=/usr --libdir=/usr/lib64 \
-			--enable-shared --disable-debuginfod --enable-libdebuginfod=dummy \
-			--disable-thread-safety --disable-valgrind --disable-nls --program-prefix="eu-" --with-bzlib --with-lzma 
+			--enable-shared --disable-debuginfod --enable-libdebuginfod=dummy --disable-thread-safety \
+			--disable-valgrind --disable-nls --program-prefix="eu-" --with-bzlib --with-lzma 
 	}
 	build(){
 	    make
@@ -52,19 +56,12 @@ Derleme
 	    make install DESTDIR=$DESTDIR
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
-	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
-	setup           # setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
-	build           # build fonksiyonu çalışır ve kaynak dosyaları derlenir.
-	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
+	initsetup	#initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir
+	setup		#setup fonksiyonu çalışır ve derleme öncesi kaynak dosyaların ayalanması sağlanır.
+	build		#build fonksiyonu çalışır ve kaynak dosyaları derlenir.
+	package		#package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
-
-Paket adında(elfutils) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+**Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
   
 .. raw:: pdf
 

@@ -1,35 +1,30 @@
+.. _rsync:
 rsync
 +++++
 
 rsync, dosya transferi ve senkronizasyonu için geliştirilmiş bir yazılımdır. Temel işlevi, yerel veya uzak sistemler arasında dosyaların ve dizinlerin hızlı ve verimli bir şekilde kopyalanmasını sağlamaktır. rsync, yalnızca değişen verileri transfer ederek bant genişliği kullanımını optimize eder. Bu özellik, büyük dosyaların veya dizinlerin güncellenmesi gerektiğinde önemli bir avantaj sunar.
 
-Derleme
---------
-
-Debian ortamında bu paketin derlenmesi için;
-
-- **sudo apt install libzstd-dev libacl1-dev libacl1** 
-
-komutuyla paketin kurulması gerekmektedir.
+Debian ortamında bu paketin derlenmesi için; **sudo apt install libzstd-dev libacl1-dev libacl1 libssl-dev** komutuyla paketlerin kurulması gerekmektedir.
 
 
-.. code-block:: shell
+.. code-block:: bash
 	
+	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	version="3.2.7"
 	name="rsync"
 	depends="glibc,acl,openssl"
 	description="shell ve network copy"
 	source="https://download.samba.org/pub/rsync/src/${name}-${version}.tar.gz"
-	groups="net.misc"
-	
-	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"	#Detect the name of the display in use
-	user=$(who | grep '('$display')' | awk '{print $1}')	#Detect the user using such display
-	ROOTBUILDDIR="/home/$user/distro/build" # Derleme konumu
-	BUILDDIR="/home/$user/distro/build/build-${name}-${version}" #Derleme yapılan paketin derleme konumun
-	DESTDIR="/home/$user/distro/rootfs" #Paketin yükleneceği sistem konumu
-	PACKAGEDIR=$(pwd) #paketin derleme talimatının verildiği konum
-	SOURCEDIR="/home/$user/distro/build/${name}-${version}" #Paketin kaynak kodlarının olduğu konum
+	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -1)"  # Display adı
+	user=$(who | grep "(${display})" | awk '{print $1}')                      # Display kullanıcısı
+
+	ROOT="/home/$user/distro"
+	ROOTBUILDDIR="$ROOT/build"                # Derleme dizini
+	BUILDDIR="$ROOT/build/build-${name}-${version}" # Alt dizin
+	DESTDIR="$ROOT/rootfs"                     # Yükleme dizini
+	PACKAGEDIR=$(pwd)                          # Paket dizini
+	SOURCEDIR="$ROOT/build/${name}-${version}" # Kaynak dizini
 
 	initsetup(){
 		    mkdir -p  $ROOTBUILDDIR #derleme dizini yoksa oluşturuluyor
@@ -47,7 +42,8 @@ komutuyla paketin kurulması gerekmektedir.
 	}
 
 	setup(){
-		./configure --prefix=/usr --libdir=/lib64/ --with-included-popt --with-included-zlib --disable-xxhash --disable-lz4
+		./configure --prefix=/usr --libdir=/lib64/ --with-included-popt --with-included-zlib \
+		--disable-xxhash --disable-lz4 --enable-acl-support
 	}
 	build(){
 		make 
@@ -63,13 +59,7 @@ komutuyla paketin kurulması gerekmektedir.
 	package         # package fonksiyonu çalışır, yükleme öncesi ayarlamalar yapılır ve yüklenir.
 
 
-Paket adında(rsync) istediğiniz bir konumda bir dizin oluşturun ve dizin içine giriniz. Yukarı verilen script kodlarını build adında bir dosya oluşturup içine kopyalayın ve kaydedin. Daha sonra build scriptini çalıştırın. Nasıl çalıştırılacağı aşağıdaki komutlarla gösterilmiştir. Aşağıda gösterilen komutları paket için oluşturulan dizinin içinde terminal açarak çalıştırınız.
-
-
-.. code-block:: shell
-	
-	chmod 755 build
-	sudo ./build
+**Paket Derleme Yöntemi** konusunda anlatıldığı gibi derleme işlemini yapınız.
   
 .. raw:: pdf
 

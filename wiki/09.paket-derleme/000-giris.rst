@@ -1,130 +1,183 @@
-Temel Paketler
-++++++++++++++
+Bir önceki bölümde, temel bir sistem hazırlamayı adım adım öğrenmiştik. O çalışmada, temel işlevselliğe sahip, kendi kendine açılabilen, küçük ama işlevsel bir Linux ortamı kurduk. Bu süreç, hepimiz için oldukça öğretici ve motive ediciydi. Şimdi ise bu yolculuğu bir adım daha ileri taşıyoruz!
 
-Bir önceki bölümde minimal bir sistemi **busybox** yardımıyla tasarladık. Minimal sistem tasarımımızda temel bir sistemin nasıl hazırlandığını anlatmaya çalıştık. Eğer aşamaları takip ederek yaptığımızda kendisini açabilen bir sistem olduğunu görmekteyiz. Minimal sistemde kullanılan **busybox** aslında bizim işlerimiz çok kolaylaştırdı. Şimdi ise **busybox** ile yapabileceğimiz işlemleri kısaca şöyle sıralayabiliriz.
+Artık daha güçlü, daha esnek ve daha geniş özelliklere sahip bir sistem inşa etmenin zamanı geldi. Bu bölümde, **GNU araçlarıyla** nasıl bir dağıtım hazırlayabileceğimizi detaylı şekilde anlatacağız. Peki neden busybox'la yetinmeyip GNU araçlarına geçiyoruz? İşte tam da burada kararımızın nedenlerini birlikte keşfedelim.
 
-- Temel linux komutlarının(ls, cp, mkdir vs.) yerine busybox kullanabilir.
-- Çeşitli sıkıştırma formatları(zip, tar, cpio vb.) yerine busybox kullanabilir.
-- İnternete bağlanabililir(udhcpc).
-- Dosya indirebilir(wget, curl vb.)
-- Log(raporlama) tutabilir.
-- Modülleri yönetebilir(kmod, modprobe,insmod vb.)
+BusyBox: Küçük Dev ama Sınırlı
+-------------------------------
 
-Bu bölümde **busybox** ile yaptımız işleri yapan paketleri derleyeceğiz. **busybox** yapamadığımız bazı işlemleri(ssh vb.) yapan paketlerde olacak. Tasarlayacağımız sistemde genel olarak şunlar yapılabilecek.
+**BusyBox**, bize temel sistem oluşturmada büyük kolaylık sağladı. Tek bir binary ile onlarca temel komutu çalıştırabildik, disk alanından tasarruf ettik ve bağımlılıklarla uğraşmadık. Busybox özellikle gömülü sistemlerde ve kurtarma ortamlarında adeta bir hayat kurtarıcı.
 
-- Temel linux komutları kullanılacak
-- Bash kabuğu ile tty ortamı olacak
-- Sıkıştırma formatları kullanılabilecek
-- Modüller yönetilebilecek
-- initrd oluşturabilecek
-- grub kurabilecek
-- Sistemi kurabilecek
-- Sistemi live olarak açabilecek
-- İnternete bağlanılabilecek
-- ssh bağlantısı ile uzaktan yönetilebilecek
-- Metin düzenleyici editör olacak
+Avantajlar (Artıları)
+......................
 
-Bu yapıda bir dağıtım için aşağıdaki paketlere ihtiyacımız olacak.
+- **Küçük boyut**, **Taşınabilirlik** : Tek binary ile onlarca komut.
+- **Düşük bağımlılık**: Ekstra kütüphane gerektirmez.
+- **Kolay kurulum**: Derlemesi ve kurulumu oldukça basit.
+- **Çok amaçlı kullanım**: Tek dosyada tüm temel araçlar.
+
+Dezavantajlar (Eksileri)
+.........................
+
+- **Sınırlı özellikler**: Gelişmiş parametre seçenekleri yok.
+- **Standart dışı davranışlar**, **Script uyumsuzluğu**: GNU araçlarıyla tam uyumlu değil. Karmaşık bash scriptleri çalışmayabilir.
+- **Performans sınırlamaları**: Büyük veri işlemlerinde yetersiz.
+- **Hata ayıklama zorlukları**: Detaylı debug için yetersiz.
+
+İşte bu nedenle, artık GNU araçlarıyla donatılmış daha güçlü bir sistem hazırlama zamanı geldi.
+
+Yeni Hedef: Tam Teşekküllü Bir Linux Dağıtımı
+----------------------------------------------
+
+Bu yolculukta, aşağıdaki yeteneklere sahip bir sistem kurmayı hedefliyoruz:
+
+- Temel **Linux komutlarını** eksiksiz şekilde çalıştırabilmek
+- **Bash kabuğu** ile tam işlevli bir TTY ortamı sunmak
+- Farklı **sıkıştırma formatlarıyla** dosya işlemleri yapmak
+- **Kernel modüllerini** yönetebilmek
+- **Initrd** (Initial RAM Disk) oluşturabilmek
+- **GRUB** ile sistem önyüklemesi yapabilmek
+- Sistemi hem **kurulabilir** hem de **live (canlı)** modda çalıştırabilmek
+- **İnternete bağlanabilir** olmak
+- **SSH** ile uzaktan yönetim imkanı sağlamak
+- Metin düzenlemek için bir **editör (nano)** sunmak
+
+.. raw:: pdf
+
+   PageBreak
+   
+**Kurulum Dizini: Dağıtımın Oluşacağı Yer**
+-------------------------------------------
+
+Dağıtım sürecinde tüm çalışma dosyalarımızı saklayacağımız bir hedef dizin belirlemeliyiz.
+
+Bu doküman boyunca varsayılan çalışma dizini olarak şunu kullanacağız:
+
+``$HOME/distro/rootfs``
+
+Burada **$HOME** ne demek?  
+Bu, Linux ortamında aktif olan kullanıcının ev dizinini ifade eden standart bir değişkendir. Örneğin, sistemde giriş yapan kullanıcı adınız **uzman** ise; **$HOME = /home/uzman** konumunu belirtir.Bu sayede doküman boyunca paylaşılan tüm komutlarda **$HOME** ifadesi sizin kendi kullanıcı dizininize göre otomatik olarak uyarlanacak.
+
+Artık ortam hazır!
+
+Ortamın hazırlanmasından sonra bazı konuları bilmemiz gerelmektedir. Bunlar; 
+
+1. Derleme(Dinamik/Static) 
+2. chroot Kullanımı 
+3. Kernel/Modül Derleme
+4. İso Oluşturma
+5. Canlı Sistem Oluşturma Kullanma
+6. qemu Kullanmı
+7. cfdisk Kullanımı
+8. Canlı Sistemden Kurulum Yapma
+
+
+Burada liste halinde verilen konu başlıkları bu dokümanın **Yardımcı Konular** bölümünde anlatılmaktadır. 
+
+Bundan sonraki adımlarda kendi dağıtımımızı şekillendirmeye başlayacağız!
+
+.. raw:: pdf
+
+   PageBreak
+
+
+İşte Tüm Bu Yapı İçin İhtiyacımız Olan Paketler
+-----------------------------------------------
 
 .. list-table::
    :widths: 25 25 50
 
-   * - 0- `base-file <./001-base-file.html>`_
-     - 25- `elfutils <./25-elfutils.html>`_
-     - 50- `popt <./50-popt.html>`_
-   * - 1- `glibc <./01-glibc.html>`_
-     - 26- `libselinux <./26-libselinux.html>`_
-     - 51- `icu <./51-icu.html>`_
-   * - 2- `readline <./02-readline.html>`_
-     - 27- `tar <./27-tar.html>`_
-     - 52- `iproute2 <./52-iproute2.html>`_
-   * - 3- `ncurses <./03-ncurses.html>`_
-     - 28- `zlib <./28-zlib.html>`_
-     - 53- `net-tools <./53-net-tools.html>`_
-   * - 4- `bash <./04-bash.html>`_
-     - 29- `brotli <./29-brotli.html>`_
-     - 54- `dhcp <./54-dhcp.html>`_
-   * - 5- `openssl <./05-openssl.html>`_
-     - 30- `curl <./30-curl.html>`_
-     - 55- `openrc <./55-openrc.html>`_
-   * - 6- `acl <./06-acl.html>`_
-     - 31- `shadow <./31-shadow.html>`_
-     - 56- `rsync <./56-rsync.html>`_
-   * - 7- `attr <./07-attr.html>`_
-     - 32- `file <./32-file.html>`_
-     - 57- `kbd <./57-kbd.html>`_
-   * - 8- `libcap <./08-libcap.html>`_
-     - 33- `eudev <./33-eudev.html>`_
-     - 58- `kernel <./58-kernel.html>`_
-   * - 9-  `libpcre2 <./09-libpcre2.html>`_
-     - 34- `cpio <./34-cpio.html>`_
-     - 59- `dialog <./59-dialog.html>`_
-   * - 10- `gmp <./10-gmp.html>`_
-     - 35- `libsepol <./35-libsepol.html>`_
-     - 60- `live-boot <./60-live-boot.html>`_
-   * - 11- `coreutils <./11-coreutils.html>`_
-     - 36- `kmod <./36-kmod.html>`_
-     - 61- `live-config <./61-live-config.html>`_
-   * - 12- `util-linux <./12-util-linux.html>`_
-     - 37- `audit <./37-audit.html>`_
-     - 62- `parted <./62-parted.html>`_
-   * - 13- `grep <./13-grep.html>`_
-     - 38- `libxcrypt <./38-libxcrypt.html>`_
-     - 63- `busybox <./63-busybox.html>`_
-   * - 14- `sed <./14-sed.html>`_
-     - 39- `libnsl <./39-libnsl.html>`_
-     - 64- `nano <./64-nano.html>`_
-   * - 15- `mpfr <./15-mpfr.html>`_
-     - 40- `libbsd <./40-libbsd.html>`_
-     - 65- `grub <./65-grub.html>`_
-   * - 16- `gawk <./16-gawk.html>`_
-     - 41- `libtirpc <./41-libtirpc.html>`_
-     - 66- `efibootmgr <./66-efibootmgr.html>`_
-   * - 17- `findutils <./17-findutils.html>`_
-     - 42- `e2fsprogs <./42-e2fsprogs.html>`_
-     - 67- `efivar <./67-efivar.html>`_
-   * - 18- `gcc <./18-gcc.html>`_
-     - 43- `dostools <./43-dostools.html>`_
-     - 68- `libssh <./68-libssh.html>`_
-   * - 19- `libcap-ng <./19-libcap-ng.html>`_
-     - 44- `initramfs-tools <./44-initramfs-tools.html>`_
-     - 69- `openssh <./69-openssh.html>`_
-   * - 20- `sqlite <./20-sqlite.html>`_
-     - 45- `libxml2 <./45-libxml2.html>`_
-     - 70- `pam <./70-pam.html>`_
-   * - 21- `gzip <./21-gzip.html>`_
-     - 46- `expat <./46-expat.html>`_
+   * - 0- :ref:`base-file`
+     - 25- :ref:`elfutils`
+     - 50- :ref:`popt`
+   * - 1- :ref:`glibc`
+     - 26- :ref:`libselinux`
+     - 51- :ref:`icu`
+   * - 2- :ref:`readline`
+     - 27- :ref:`tar`
+     - 52- :ref:`iproute2`
+   * - 3- :ref:`ncurses`
+     - 28- :ref:`zlib`
+     - 53- :ref:`net-tools`
+   * - 4- :ref:`bash`
+     - 29- :ref:`brotli`
+     - 54- :ref:`dhcp`
+   * - 5- :ref:`openssl`
+     - 30- :ref:`curl`
+     - 55- :ref:`openrc`
+   * - 6- :ref:`acl`
+     - 31- :ref:`shadow`
+     - 56- :ref:`rsync`
+   * - 7- :ref:`attr`
+     - 32- :ref:`file`
+     - 57- :ref:`kbd`
+   * - 8- :ref:`libcap`
+     - 33- :ref:`eudev`
+     - 58- :ref:`kernel`
+   * - 9-  :ref:`libpcre2`
+     - 34- :ref:`cpio`
+     - 59- :ref:`dialog`
+   * - 10- :ref:`gmp`
+     - 35- :ref:`libsepol`
+     - 60- :ref:`live-boot`
+   * - 11- :ref:`coreutils`
+     - 36- :ref:`kmod`
+     - 61- :ref:`live-config`
+   * - 12- :ref:`util-linux`
+     - 37- :ref:`audit`
+     - 62- :ref:`parted`
+   * - 13- :ref:`grep`
+     - 38- :ref:`libxcrypt`
+     - 63- :ref:`busybox`
+   * - 14- :ref:`sed`
+     - 39- :ref:`libnsl`
+     - 64- :ref:`nano`
+   * - 15- :ref:`mpfr`
+     - 40- :ref:`libbsd`
+     - 65- :ref:`grub`
+   * - 16- :ref:`gawk`
+     - 41- :ref:`libtirpc`
+     - 66- :ref:`efibootmgr`
+   * - 17- :ref:`findutils`
+     - 42- :ref:`e2fsprogs`
+     - 67- :ref:`efivar`
+   * - 18- :ref:`gcc`
+     - 43- :ref:`dosfstools`
+     - 68- :ref:`libssh`
+   * - 19- :ref:`libcap-ng`
+     - 44- :ref:`initramfs-tools`
+     - 69- :ref:`openssh`
+   * - 20- :ref:`sqlite`
+     - 45- :ref:`libxml2`
+     - 70- :ref:`pam`
+   * - 21- :ref:`gzip`
+     - 46- :ref:`expat`
      - 71- 
-   * - 22- `xz-utils <./22-xz-utils.html>`_
-     - 47- `libmd <./47-libmd.html>`_
+   * - 22- :ref:`xz-utils`
+     - 47- :ref:`libmd`
      - 72- 
-   * - 23- `zstd <./23-zstd.html>`_
-     - 48- `libaio <./48-libaio.html>`_
+   * - 23- :ref:`zstd`
+     - 48- :ref:`libaio`
      - 73-    
-   * - 24- `bzip2 <./24-bzip2.html>`_
-     - 49- `lvm2 <./49-lvm2.html>`_
+   * - 24- :ref:`bzip2`
+     - 49- :ref:`lvm2`
      - 74-
-      
-Bir linux paketinin sorunsuz çalışabilmesi için bağımlı olduğu paketlerin önceden derlenmiş olması gerekir. Örneğin  **bash** paketinin sorunsuz çalışabilmesi için **readline** ve **ncurses** kütüphaneleri gerekli. **readline** ve **ncurses** kütüphanelerinin çalışabilmesi içinde **glibc** kütüphanesi gerekli.
-Listede bulunan paketler sırasıyla nasıl derleneceği ayrı başlıklar altında anlatılacaktır.
 
-Paketlere başlamadan önce şu paketleri kurmanızı tavsiye ederim.
+Bağımlılıklar Zinciri: Doğru Sıralama Şart!
+-------------------------------------------
 
-- sudo apt-get install autoconf
-- sudo apt-get install automake
-- sudo apt-get install autotools-dev
-- sudo apt-get install make
-- sudo apt-get install meson
-- sudo apt-get install cmake
-- sudo apt-get install ninja-build
-- sudo apt-get install pkgconf
-- sudo apt install patch
-- sudo apt install libtool
-- sudo apt install grub-pc grub-pc-bin
+Linux paketinin sorunsuz çalışabilmesi için **bağımlı olduğu tüm paketlerin önceden derlenmiş olması gerekir**. Örneğin; **bash** paketini çalıştırmak için: **readline** ve **ncurses** paketleri gereklidir. **readline** ve **ncurses** için ise **glibc** paketi gereklidir. Bu sayfadaki liste bağımlılıklarına göre sıralandı. Liste sırasına göre ilerlemek oldukça önemlidir. Her paketin derleme aşaması, ayrı başlıklar altında detaylı bir şekilde anlatılacaktır.
 
-Paketlerin derlenmesini **root** yetkisiyle yapınız.
+Hazırlık: Gerekli Derleme Araçlarını Kurun!
+-------------------------------------------
 
+Paket derleme işlemine başlamadan önce, aşağıdaki temel araçları sisteminize kurmalısınız.
 
+.. code-block:: bash
+
+	sudo apt update
+	sudo apt-get install debootstrap xorriso mtools make squashfs-tools gcc wget unzip xz-utils tar zstd fakeroot \ 
+	autoconf automake autotools-dev make meson cmake ninja-build pkgconf patch libtool grub-pc grub-pc-bin 
+	
 .. raw:: pdf
 
    PageBreak

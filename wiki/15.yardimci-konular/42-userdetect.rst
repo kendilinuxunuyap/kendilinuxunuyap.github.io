@@ -1,5 +1,5 @@
-X11 Kullanıcısının Tespiti
-++++++++++++++++++++++++++
+**X11 Kullanıcısının Tespiti**
+++++++++++++++++++++++++++++++
 
 Linux ortamında masaütündeyken sudo ile script çalıştırıldığında masaütünü açtığımız kullanıcının tespiti aşağıdaki kodla yapılabilir.
 
@@ -22,3 +22,5 @@ Linux ortamında masaütündeyken sudo ile script çalıştırıldığında masa
 .. raw:: pdf
 
    PageBreak
+
+

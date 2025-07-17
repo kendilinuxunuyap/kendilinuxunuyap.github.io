@@ -1,6 +1,6 @@
 .. _githubbilgi:
-github
-++++++
+**github**
+++++++++++
 
 GitHub üzerinde yeni bir depo açmak oldukça basit bir işlemdir. Aşağıdaki adımları takip ederek hızlıca kendi deponuzu oluşturabilirsiniz:
 
