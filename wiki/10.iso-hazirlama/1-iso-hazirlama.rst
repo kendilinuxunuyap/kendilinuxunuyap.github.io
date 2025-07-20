@@ -165,24 +165,23 @@ Bu dokümanda anlatılan paketleri kurulduğu **/home/$user/distro/rootfs** dizi
 .. code-block:: shell
 
 	#!/bin/bash
+	#--------------------------------------------------------------------------------------------------------------------
 	tepmPath="${PATH}"
 	export PATH=$PATH:/sbin/
 	display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
 	user=$(who | grep '('$display')' | awk '{print $1}') # Kullanıcı&ekran bul
 	distro="/home/$user/distro"; rootfs="$distro/rootfs"; rm -rf "$distro/iso"
-
+	
 	echo "[+] $rootfs dizininin izinleri düzenleniyor..."
-	chown -R root:root ${rootfs}/bin ${rootfs}/sbin ${rootfs}/usr/bin ${rootfs}/usr/sbin 	#sahibi root:root olsun
-	chown -R root:root ${rootfs}/var ${rootfs}/run ${rootfs}/root 	#sahibi root:root olsun
+	chown -R root:root ${rootfs}/bin ${rootfs}/sbin ${rootfs}/usr/bin ${rootfs}/usr/sbin #sahibi root:root olsun
+	chown -R root:root ${rootfs}/var ${rootfs}/run ${rootfs}/root	#sahibi root:root olsun
 	find ${rootfs} -type d -exec chmod 755 {} \;	# Tüm dizinlere 755 ver
-	chmod 600 ${rootfs}/etc/shadow etc/gshadow 2>/dev/null # Hassas dosyaları ayarla
+	chmod 600 ${rootfs}/etc/shadow etc/gshadow 2>/dev/null 	# Hassas dosyaları ayarla
 	chmod 1777 ${rootfs}/tmp # /tmp için sticky bit
-	echo "[+] $rootfs dizininden iso oluşturuluyor..."
-
-
-	# chroot ortamı için gerekli bind işlemleri
-	for dir in dev dev/pts proc sys; do mount -o bind /$dir $rootfs/$dir; done
-	# Root parolası ve live kullanıcı eklenmesi
+	echo "[+] $rootfs dizininden iso oluşturuluyor..."	# chroot ortamı için gerekli bind işlemleri
+	for dir in dev dev/pts proc sys; do mount -o bind /$dir $rootfs/$dir; done	
+	
+	# root ve live kullanıcı eklenmesi
 	chroot $rootfs echo -e "1\n1\n"|chroot $rootfs passwd root
 	chroot $rootfs userdel -r live
 	chroot $rootfs useradd live -m -s /bin/sh -d /home/live
@@ -192,11 +191,9 @@ Bu dokümanda anlatılan paketleri kurulduğu **/home/$user/distro/rootfs** dizi
 	chmod 700 ${rootfs}/home/live
 	chown root:root ${rootfs}/root
 	chmod 700 ${rootfs}/root
-
 	for grp in users tty wheel cdrom audio dip video plugdev netdev; do
 	chroot $rootfs usermod -aG $grp live || true
 	done
-
 	# agetty ayarları
 	sed -i "/agetty_options/d" $rootfs/etc/conf.d/agetty
 	echo -e "\nagetty_options=\"-l /usr/bin/login\"" >> $rootfs/etc/conf.d/agetty
@@ -206,17 +203,14 @@ Bu dokümanda anlatılan paketleri kurulduğu **/home/$user/distro/rootfs** dizi
 	mv $rootfs/boot/config* $rootfs/boot/config-$kversion
 	cp $rootfs/boot/config-$kversion $rootfs/etc/kernel-config
 	chroot $rootfs update-initramfs -u -k $kversion
-
 	# chroot bind dizinlerini ayır
 	for dir in dev dev/pts proc sys ; do
 	while umount -lf -R $rootfs/$dir 2>/dev/null ; do true; done
 	done
-
 	# ISO dizin yapısını oluştur
 	mkdir -p "$distro/iso/boot/grub" "$distro/iso/live"
 	cp -pf $rootfs/boot/initrd.img-* $distro/iso/boot/initrd.img # initrd.img
 	cp -pf $rootfs/boot/vmlinuz-* $distro/iso/boot/vmlinuz # vmlinuz kopyala
-
 	mksquashfs $rootfs $distro/filesystem.squashfs -comp xz -wildcards # squashfs
 	mv $distro/filesystem.squashfs $distro/iso/live/filesystem.squashfs
 	# grub.cfg dosyasını yaz
@@ -232,8 +226,7 @@ Bu dokümanda anlatılan paketleri kurulduğu **/home/$user/distro/rootfs** dizi
 	initrd /boot/initrd.img
 	}
 	EOF
-	grub-mkrescue $distro/iso/ -o $distro/kly.iso
-	#iso oluşturuluyor
+	grub-mkrescue $distro/iso/ -o $distro/kly.iso	#iso oluşturuluyor
 	export PATH="${tempPath}"
 	
 Kaynaklar::
