@@ -613,7 +613,7 @@ kly_help()
      echo " -u,  --update		: package index update.	use: kly -u	"
      echo " -c,  --create		: create kly package.	use: kly -c	packagedirectory target(default=/)"
      echo " -i,  --install		: package install.	use: kly -i	packagename target(default=/)"
-     echo " -ri,  --reinstall		: package install.	use: kly -ri	packagename target(default=/)"
+     echo " -ri,  --reinstall	: package install.	use: kly -ri	packagename target(default=/)"
      echo " -pi	          	: packagefile install.	use: kly -pi	packagefile target"
      echo " -r,  --remove 		: package remove.	use: kly -r	packagename  target(default=/)"
      echo " -h,  --help   		: kly help"

@@ -1,0 +1,5 @@
+#!/bin/sh
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+sed -i "/glib-compile-schemas/d" /bin/install-remove-to-do
+echo -e "\nglib-compile-schemas /usr/share/glib-2.0/schemas/">>/bin/install-remove-to-do
