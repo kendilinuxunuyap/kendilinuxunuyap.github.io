@@ -12,7 +12,7 @@ Derleme
 	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="coreutils"
-	version="9.5"
+	version="9.7"
 	description="The basic file, shell and text manipulation utilities of the GNU operating system"
 	source="https://ftp.gnu.org/gnu/coreutils/coreutils-$version.tar.xz"
 	depends="acl,attr,gmp,libcap,openssl"

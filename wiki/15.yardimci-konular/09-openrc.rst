@@ -76,11 +76,22 @@ Servisleri ayarlamak için ise **/etc/conf.d** içerisine aynı isimle ayar dosy
 Çalıştırılacak komut, komut parametreleri ve **pidfile** dosyamızı aşağıdaki gibi belirtebiliriz.
 
 .. code-block:: shell
-
+	
+	
     description="Ornek servis"
+    name="ornek-servis"
     command=/usr/bin/ornek-servis
     command_args=--parametre
     pidfile=/run/ornek-servis.pid
+    command_background=true
+    start_stop_daemon_args="--quiet"
+    output_log="/var/log/ornek-servis.log"
+    error_log="/var/log/ornek-servis.err"
+    
+    
+Eğer bu scriptin sadece boot sırasında bir kere çalışması yetiyorsa, o zaman **command_background=true** ayarını kaldırın.
+OpenRC aslında "oneshot" türü servisleri destekler. Böyle bir senaryoda **pidfile=/run/ornek-servis.pid** gerek yok.
+Mesajların gözükmemesi için **start_stop_daemon_args="--quiet"** kullanılır.
 
 Bununla birlikte **start**, **stop**, **status**, **reload**, **start_pre**, **stop_pre** gibi fonksiyonlar da yazabiliriz.
 

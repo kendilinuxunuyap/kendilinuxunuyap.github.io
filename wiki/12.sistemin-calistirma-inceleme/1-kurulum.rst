@@ -6,6 +6,8 @@ Yaptığımız sistem ISO haline dönüştürüldü ve artık **test etme** ile 
 
 Oluşturulan ISO dosyası ``$distro/kly.iso`` konumunda yer almakta olup, bu konum ``$HOME/distro/kly.iso`` dizinine karşılık gelmektedir.
 
+Bu dokümanda anlatılan paketlerin **kly Paket Sistemiyle** hazırlanmış **Temel Sistem** isosu hazırlandı. İsoyu https://github.com/kendilinuxunuyap/kly-base-distro/releases/download/current/kly-base-distro.iso adresinden indirebilirsiniz.
+
 Şimdi hazırlanan ISO’yu **QEMU** veya **VirtualBox** kullanarak çalıştıralım. Ekran görüntüleri aşağıda verilmiştir.
 
 **Canlı(live) Sistem Kullanımı**
@@ -13,11 +15,11 @@ Oluşturulan ISO dosyası ``$distro/kly.iso`` konumunda yer almakta olup, bu kon
 
 .. image:: /_static/images/iso-20.png
   :width: 600
-  :height: 250
+  :height: 100
 
 .. image:: /_static/images/iso-21.png
   :width: 600
-  :height: 300
+  :height: 350
 
 Canlı(live) sistem çalıştırıldığında overlay live bir sistemin açıldığını görmekteyiz. Canlı(live) sistemde kullanıcı adları ve parolaları;
 
@@ -28,9 +30,39 @@ Canlı(live) sistem çalıştırıldığında overlay live bir sistemin açıld�
 
    PageBreak
    
-
 **Sistem Kurulumu**
 -------------------
+
+Hazırlanan ISO ile birlikte, farklı kurulum araçları da gelebilir. Bu araçlar, çeşitli kurulum yöntemlerini destekleyebilir. En sık kullanılan kurulum yöntemleri şunlardır:
+
+1. Tek bölüme sistem kurulumu
+2. UEFI sistem kurulumu (boot + sistem)
+
+Bu bölümde, tek bölüm kurulum ve boot + sistem şeklinde iki farklı kurulum yöntemi sırayla anlatılacaktır. Anlatılan yöntemler, farklı kullanıcı senaryolarına cevap verebilecek şekilde tasarlanmıştır.
+
+Ancak dikkat edilmesi gereken önemli bir nokta şudur: Her yöntemi ayrı ayrı son kullanıcıya seçenek olarak sunmak, özellikle tecrübesiz kullanıcılar için kafa karıştırıcı olabilir. Örneğin:
+
+- Kullanıcı, kurulum sırasında **EFI** seçeneğini işaretlediğinde fakat sistem aslında **Legacy BIOS** ise, ya da tam tersi durumda, yanlış seçim yapabilir.
+- Ayrıca, **sda** ve **nvme** diskler arasında farklı kurulum senaryoları gerekebilir.
+
+Bu nedenle hazırlanan kurulum sistemi, aşağıdaki tüm olası senaryolara otomatik cevap verecek şekilde tasarlanmıştır:
+
+- **Legacy BIOS → sd*** disk tipi
+- **Legacy BIOS → nvme*** disk tipi (**desteklenmemektedir**)
+- **UEFI → sd*** disk tipi
+- **UEFI → nvme*** disk tipi
+
+     
+.. note::
+
+   Bu senaryolara göre hazırlanan kurulum scripti, **dialog** aracı kullanılarak oluşturulmuştur. İlgili kurulum scriptleri, **base-file** paketinin içindeki **files.rar** arşivinde yer almaktadır. 
+   
+   Bu bölümde, sadece **Legacy BIOS** ve **UEFI** sistem kurulumunun genel adımları anlatılacaktır. Bu yöntemleri kendi ihtiyaçlarınıza göre düzenleyerek kullanabilirsiniz.
+
+.. raw:: pdf
+
+   PageBreak
+   
 
 Sistemin kurulumu için resimlerde görünen sıraya göre seçimler yapmalıyız.
 

@@ -49,6 +49,8 @@ Debian ortamında bu paketin derlenmesi için; **sudo apt install po4a** komutuy
 		make install DESTDIR=$DESTDIR
 		sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" \
 		$DESTDIR/usr/share/initramfs-tools/hooks/live
+		sed -i 's|cp -a "\${FILE}" "\${DESTDIR}/\${FILE}"|cp -r --no-preserve=ownership "\${FILE}" \
+		"\${DESTDIR}/\${FILE}"|g' $DESTDIR/usr/share/initramfs-tools/hooks/live
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir

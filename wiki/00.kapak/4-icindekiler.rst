@@ -6,24 +6,22 @@
 
    * - 1- :ref:`giris`
      - 5
-   * - 3- :ref:`temelsistem`
+   * - 2- :ref:`temelsistem`
      - 6
-   * - 4- :ref:`paketderleme`
+   * - 3- :ref:`paketderleme`
      - 9
-   * - 6- :ref:`isohazirlama`
+   * - 4- :ref:`isohazirlama`
      - 94
-   * - 7- :ref:`sistemkurulumu`
-     - 101
-   * - 8- :ref:`sistemcalistirma-inceleme`
+   * - 5- :ref:`sistemcalistirma-inceleme`
+     - 98
+   * - 6- :ref:`paketsistemi`
      - 104
-   * - 5- :ref:`paketsistemi`
-     - 109
-   * - 9- :ref:`yardimcikonular`
-     - 120
-   * - 10- :ref:`kaynaklar`
-     - 140
-   * - 11- :ref:`gelistiricimesaji`
-     - 141
+   * - 7- :ref:`yardimcikonular`
+     - 115
+   * - 8- :ref:`kaynaklar`
+     - 137
+   * - 9- :ref:`gelistiricimesaji`
+     - 138
  
 .. raw:: pdf
 
