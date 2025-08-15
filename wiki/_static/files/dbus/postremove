@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sed -i "/messagebus/d" /etc/group
+sed -i "/messagebus/d" /etc/passwd
+
+rc-update del dbus default
+rc-service dbus stop

@@ -1,0 +1,4 @@
+# Configuration for /etc/init.d/dbus
+
+# Additional arguments to pass to dbus-daemon.
+#command_args=

@@ -12,7 +12,7 @@ Derleme
 	#--------------------------------------------------------------------------------------------------------------------
 	#!/usr/bin/env bash
 	name="icu"
-	version="74-2"
+	version="72-1"
 	description="icu International Components for Unicode"
 	source=("https://github.com/unicode-org/icu/releases/download/release-${version}/icu4c-74_2-src.tgz")
 	depends=()

@@ -58,11 +58,14 @@ Derleme
 	package(){
 		mkdir -p $DESTDIR/bin
 		install busybox ${DESTDIR}/bin/busybox
-		mkdir -p ${DESTDIR}/usr/share/udhcpc/ ${DESTDIR}/etc/init.d/
-		# install udhcpc script and service	
-		install $SOURCEDIR/files/udhcpc.script ${DESTDIR}/usr/share/udhcpc/default.script
-		install $SOURCEDIR/files/udhcpc.openrc ${DESTDIR}/etc/init.d/udhcpc
+		# install udhcpc script and service
+	 	mkdir -p ${DESTDIR}/usr/share/udhcpc/ ${DESTDIR}/etc/init.d/
+		install ../files/udhcpc.script ${DESTDIR}/usr/share/udhcpc/default.script
+		install ../files/udhcpc.openrc ${DESTDIR}/etc/init.d/udhcpc
 		cd $DESTDIR/bin&&ln -s busybox hostname
+		cd $DESTDIR/bin&&ln -s busybox udhcpc
+		cd $DESTDIR/bin&&ln -s busybox ps
+		cd $DESTDIR/bin&&ln -s busybox which
 		${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup       # initsetup fonksiyonunu çalıştırır ve kaynak dosyayı indirir

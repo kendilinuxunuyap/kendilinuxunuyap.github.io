@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sed -i "/polkitd/d" /etc/group
+sed -i "/polkitd/d" /etc/passwd
+rc-update del polkit default
+rc-service polkit stop

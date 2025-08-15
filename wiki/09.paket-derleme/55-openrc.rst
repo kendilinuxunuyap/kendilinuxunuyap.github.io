@@ -46,38 +46,40 @@ OpenRC, sistem başlangıcını ve hizmetlerin yönetimini sağlamak amacıyla g
 		meson compile -C $BUILDDIR
 	}
 	package(){
-	    export DESTDIR=${DESTDIR}
-	    DESTDIR="$DESTDIR" meson install --no-rebuild -C $BUILDDIR
-	    cd "$DESTDIR/sbin"
-	    mkdir -p "$DESTDIR/sbin"
-	    cd "$DESTDIR/sbin"
-	    ln -s ../usr/sbin/openrc-init openrc-init
-	    ln -s ../usr/sbin/openrc-run openrc-run
-	    ln -s ../usr/sbin/openrc-shutdown shutdown
-	    cd $SOURCEDIR
-	    rm -f ${DESTDIR}/etc/runlevels/*/*	    # disable all services
-	    rm ${DESTDIR}//etc/init.d/functions.sh
-	    ln -s ../../usr/lib/rc/sh/functions.sh ${DESTDIR}/etc/init.d/functions.sh
-	    mkdir -p ${DESTDIR}/usr ${DESTDIR}/sbin
-	    mv ${DESTDIR}/{,usr}/share	    # move /share to /usr/share
-	    install $SOURCEDIR/files/reboot ${DESTDIR}/sbin/reboot	    # reboot and poweroff script
-	    install $SOURCEDIR/files/poweroff ${DESTDIR}/sbin/poweroff
-	    ln -s openrc-shutdown ${DESTDIR}/sbin/shutdown
-	    mkdir -p ${DESTDIR}/usr/libexec
-	    install $SOURCEDIR/extras/disable-secondary-gpu.sh ${DESTDIR}/usr/libexec/disable-secondary-gpu
-	    install $SOURCEDIR/extras/disable-secondary-gpu.initd ${DESTDIR}/etc/init.d
-	    install $SOURCEDIR/extras/backlight-restore.initd ${DESTDIR}/etc/init.d
-	    install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/init.d/0modules
-	    for level in boot default nonetwork shutdown sysinit ; do
-	    mkdir -p ${DESTDIR}/etc/runlevels/$level
-	    done
-	    touch ${DESTDIR}/etc/fstab
-	    install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/init.d/0modules
-	    install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/runlevels/default/0modules
-	    install ${DESTDIR}/etc/init.d/hostname ${DESTDIR}/etc/runlevels/default/hostname
-	    cd ${DESTDIR}/etc/init.d/
-	    ln -s agetty agetty.tty1
-	    install ${DESTDIR}/etc/init.d/agetty.tty1 ${DESTDIR}/etc/runlevels/default/agetty.tty1
+		DESTDIR="$DESTDIR" meson install --no-rebuild -C $BUILDDIR
+		mkdir -p "$DESTDIR/sbin"; cd "$DESTDIR/sbin"
+		ln -s ../usr/sbin/openrc-init openrc-init
+		ln -s ../usr/sbin/openrc-run openrc-run
+		ln -s ../usr/sbin/openrc-shutdown shutdown
+		cd $SOURCEDIR
+		rm -f ${DESTDIR}/etc/runlevels/*/*	    # disable all services
+		rm ${DESTDIR}//etc/init.d/functions.sh
+		ln -s ../../usr/lib/rc/sh/functions.sh ${DESTDIR}/etc/init.d/functions.sh
+		mkdir -p ${DESTDIR}/usr ${DESTDIR}/sbin
+		mv ${DESTDIR}/{,usr}/share	    # move /share to /usr/share
+		install $SOURCEDIR/files/reboot ${DESTDIR}/sbin/reboot	    # reboot and poweroff script
+		install $SOURCEDIR/files/poweroff ${DESTDIR}/sbin/poweroff
+		ln -s openrc-shutdown ${DESTDIR}/sbin/shutdown
+		mkdir -p ${DESTDIR}/usr/libexec
+		install $SOURCEDIR/extras/disable-secondary-gpu.sh ${DESTDIR}/usr/libexec/disable-secondary-gpu
+		install $SOURCEDIR/extras/disable-secondary-gpu.initd ${DESTDIR}/etc/init.d
+		install $SOURCEDIR/extras/backlight-restore.initd ${DESTDIR}/etc/init.d
+		install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/init.d/0modules
+		for level in boot default nonetwork shutdown sysinit ; do
+		mkdir -p ${DESTDIR}/etc/runlevels/$level
+		done
+		touch ${DESTDIR}/etc/fstab
+		install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/init.d/0modules
+		install $SOURCEDIR/files/0modules.init.d ${DESTDIR}/etc/runlevels/default/0modules
+		install ${DESTDIR}/etc/init.d/hostname ${DESTDIR}/etc/runlevels/default/hostname
+		cd ${DESTDIR}/etc/init.d/
+		ln -s agetty agetty.tty1
+		install ${DESTDIR}/etc/init.d/agetty.tty1 ${DESTDIR}/etc/runlevels/default/agetty.tty1
+		
+		install $SOURCEDIR/files/rootfspermit.init.d ${DESTDIR}/etc/init.d/rootfspermit
+		install $SOURCEDIR/files/rootfspermit.local.d ${DESTDIR}/etc/local.d/rootfspermit
+		cd ${DESTDIR}/etc/runlevels/default
+		ln -s ../../init.d/rootfspermit rootfspermit
 	    ${DESTDIR}/sbin/ldconfig -r ${DESTDIR}           # sistem guncelleniyor
 	}
 	initsetup;	setup;	build;	package;
