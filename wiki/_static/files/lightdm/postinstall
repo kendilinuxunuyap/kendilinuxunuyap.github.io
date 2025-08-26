@@ -1,0 +1,13 @@
+#!/bin/bash
+sed -i "/lightdm/d" /etc/group
+sed -i "/lightdm/d" /etc/passwd
+
+echo "lightdm:x:118:" >> /etc/group
+echo "lightdm:x:108:118:Lightdm Display Manager:/var/lib/lightdm-data/:/bin/false" >>/etc/passwd
+
+#rc-update add lightdm default
+#rc-service lightdm start
+
+
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+

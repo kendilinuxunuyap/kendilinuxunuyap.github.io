@@ -18,5 +18,5 @@ fi
 
 
 done
-#pandoc temp.rst -o "${directory}.docx"
-#rst2pdf wiki/index.rst -s mytheme.style -o build/output.pdf
+pandoc temp.rst -o kitap.docx
+rst2pdf wiki/index.rst -o build/output.pdf
