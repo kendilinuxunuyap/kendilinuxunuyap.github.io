@@ -12,12 +12,6 @@ Bu proje iki farklı lisans altında dağıtılmaktadır:
    Lisansın bir kopyasını şu adresten edinebilirsiniz:
    https://www.gnu.org/licenses/gpl-3.0.html
 
-2. **Dokümantasyon ve Medya (Documentation and Media)**:
-   
-   Bu doküman içerisindeki tüm grafikler, görseller ve metinler aşağıdaki lisans altında dağıtılmaktadır:
-
-   Copyright (C) <2025> <İSİM / KURUM>
-
 
 **İletişim**
 ++++++++++++

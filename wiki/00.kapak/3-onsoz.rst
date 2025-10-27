@@ -10,6 +10,9 @@ Açık kaynak bir sistem, kullanıcıya yalnızca bir işletim sistemi sunmakla 
 
 Kendi dağıtımınızı geliştirmek ise bu bağımsızlığı bir adım öteye taşır. Kullandığınız her paket, yapılandırma ve araç zinciri tamamen sizin kontrolünüzdedir. Bu sayede dışa bağımlılığı azaltabilir, sisteminizin işlevlerini kendi güvenlik ve performans kriterlerinize göre şekillendirebilirsiniz. Ayrıca, yerelleştirme ve özgün ihtiyaçlara özel optimizasyonlar yaparak sadece bir kullanıcı değil, aynı zamanda kendi yazılım ekosisteminizin yöneticisi haline gelirsiniz. Açık kaynak bu anlamda yalnızca bir tercih değil, uzun vadede teknolojik egemenliğin anahtarıdır.
 
+Bu çalışmanın hazırlanma sürecinde değerli bilgi birikimi, sabrı ve rehberliğiyle büyük katkılarda bulunan **Ali Rıza KESKİN**’e özel bir teşekkür borçluyum. Belgenin teknik içeriğinin olgunlaşmasında, yapısal düzenlemelerinde ve özellikle açık kaynak ekosistemine dair derinlemesine görüşleriyle yön vermesinde önemli bir rol oynamıştır. Katkıları, yalnızca bu dokümanın niteliğini artırmakla kalmamış, aynı zamanda açık kaynak topluluğuna yönelik paylaşım kültürünün de güzel bir örneğini oluşturmuştur. Kendisine emekleri, desteği ve ilham verici katkıları için içtenlikle teşekkür ederim.
+
+
 .. raw:: pdf
 
    PageBreak

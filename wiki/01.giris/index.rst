@@ -1,6 +1,7 @@
 .. _giris:
 Temel Kavramlar
 ================
+
 .. toctree::
 	:glob:
 
