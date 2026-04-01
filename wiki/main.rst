@@ -1,5 +1,5 @@
-Kendi Linux'unu Yap
-===================
+Kendi Linux'unu Yap Temel Sistem
+================================
 
 Bu dokumanda dağıtım hazırlamak için temel işlemler anlatılmaktadır.
 
@@ -8,5 +8,5 @@ Bu kitap, açık kaynak ve özgür yazılıma gönül vermiş kişilerin, Türk�
 
 Kaynak ve dokümanlarımız yansılarımız:
 
-* Bu sitedeki bilgilerin pdf kitap hali için `tıklayınız. <https://kendilinuxunuyap.github.io/kitap/>`_
+* Bu sitedeki bilgilerin **Kendi Linux'unu Yap Temel Sistem** pdf kitap hali için `tıklayınız. <https://kendilinuxunuyap.github.io/kitap/>`_
 
