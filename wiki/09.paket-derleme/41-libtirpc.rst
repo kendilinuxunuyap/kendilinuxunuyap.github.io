@@ -2,7 +2,7 @@
 libtirpc
 ++++++++
 
-libtirpc, UNIX sistemlerinde yaygın olarak kullanılan bir RPC kütüphanesidir. Bu kütüphane, istemci ve sunucu uygulamaları arasında uzaktan prosedür çağrıları yapmayı mümkün kılar. libtirpc, özellikle dağıtık sistemlerde veri paylaşımını ve iletişimi kolaylaştırmak amacıyla geliştirilmiştir.
+libtirpc, istemci ve sunucu uygulamaları arasında iletişimi kolaylaştırmak amacıyla geliştirilmiş pakettir.
 
 Derleme
 --------

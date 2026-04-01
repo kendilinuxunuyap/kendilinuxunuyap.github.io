@@ -3,8 +3,6 @@
 **Lisans Bilgileri**
 ===========================
 
-Bu proje iki farklı lisans altında dağıtılmaktadır:
-
 1. **Kaynak Kodlar (Source Code)**:
    
    Bu dokümandaki kaynak kodların tamamı Free Software Foundation tarafından yayınlanan GNU Genel Kamu Lisansı'nın (GPL) 3. versiyonu ile lisanslıdır.
@@ -12,6 +10,13 @@ Bu proje iki farklı lisans altında dağıtılmaktadır:
    Lisansın bir kopyasını şu adresten edinebilirsiniz:
    https://www.gnu.org/licenses/gpl-3.0.html
 
+|
+
+|
+
+|
+
+|
 
 **İletişim**
 ++++++++++++
@@ -19,6 +24,28 @@ Bu proje iki farklı lisans altında dağıtılmaktadır:
 - https://github.com/kendilinuxunuyap
 - https://kendilinuxunuyap.github.io
 - kendilinuxunuyap@gmail.com
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+|
+
+
+**ISBN:** 978-625-00-6004-9
+
+|
+
+**Yayın Yılı:** Nisan 2026
+
 
 
 

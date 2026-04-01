@@ -2,9 +2,7 @@
 elfutils
 ++++++++
 
-elfutils, ELF dosyalarının oluşturulması, düzenlenmesi ve incelenmesi için gerekli araçları sağlayan bir yazılım paketidir. Bu paket, özellikle derleyiciler ve bağlantı editörleri tarafından üretilen ikili dosyaların yapısını anlamak ve analiz etmek için kullanılır.
-
-Paket, readelf, objdump, eu-strip gibi araçları içerir. Örneğin, readelf komutu, bir ELF dosyasının içeriğini detaylı bir şekilde görüntülemeye olanak tanırken, objdump ise ikili dosyaların iç yapısını analiz etmek için kullanılır. Bu araçlar, geliştiricilerin yazılımlarını optimize etmelerine ve hata ayıklama süreçlerini kolaylaştırmalarına yardımcı olur. 
+elfutils, ELF dosyalarının için gerekli readelf, objdump, eu-strip gibi araçları içeren pakettir. 
 
 Derleme öncesi  **sudo apt install libbz2-dev liblzma-dev** komutuyla paketin yüklenmesi gerekir.
 

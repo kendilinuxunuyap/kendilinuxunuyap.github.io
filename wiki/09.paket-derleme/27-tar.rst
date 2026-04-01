@@ -2,7 +2,7 @@
 tar
 +++
 
-Tar paketi, Unix ve Linux sistemlerinde dosya arşivleme ve sıkıştırma işlemleri için kullanılan bir dosya formatıdır. "tar" kelimesi, "tape archive" ifadesinin kısaltmasıdır ve başlangıçta manyetik bantlarda veri saklamak amacıyla geliştirilmiştir.
+tar paketi, dosya arşivleme ve sıkıştırma işlemleri pakettir. 
 
 Derleme
 --------

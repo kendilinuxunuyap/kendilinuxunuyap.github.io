@@ -1,37 +1,35 @@
-Bu dokümanda, bir cihazı açan, kendini kurulabilen ve kullanıcıyla etkileşime giren bir sistemin nasıl tasarlanacağı anlatılmaktadır. Adımları uygularken ve araştırmalarınız sırasında sıkça karşılaşacağınız temel kavramları https://tr.wikipedia.org/wiki/Linux adresini inceleyip basit bir dille açıklayarak ilerleyelim. 
+Bu dokümanda, bir cihaz açıldığında kendi kendine kurulabilen ve kullanıcıyla iletişim kurabilen bir sistemin nasıl yapılacağı anlatılmaktadır.
 
 Linux Nedir?
 ============
 
-Linux, Linus Torvalds’ın öncülüğünde geliştirilen ve tamamen açık kaynak kodlu bir çekirdek mimarisidir. Unutulmamalıdır ki Linux ifadesi, teknik olarak sadece çekirdek bileşenine karşılık gelir. Tam bir işletim sistemi deneyimi için GNU araç seti ve kütüphanelerle birleştirilir. Bu birleşime **GNU/Linux** denir. Bugün Linux, bilgisayarlar, telefonlar, sunucular ve birçok farklı cihazda yaygın olarak kullanılmaktadır.
+Linux, Linus Torvalds tarafından geliştirilen açık kaynaklı bir çekirdektir. Tek başına tam bir işletim sistemi değildir. Genellikle GNU araçları ile birlikte kullanılır. Bu yüzden çoğu zaman GNU/Linux olarak adlandırılır.
 
 GPL Nedir?
 ==========
 
-GPL (Genel Kamu Lisansı), yazılımların özgürce kullanılmasına, değiştirilmesine ve paylaşılmasına izin veren bir lisanstır. Bu lisans sayesinde herkes yazılımların kaynak koduna erişebilir ve kendi ihtiyaçlarına göre düzenleyebilir.
+GPL, yazılımların özgürce kullanılmasını, değiştirilmesini ve paylaşılmasını sağlayan bir lisans türüdür. Bu lisans sayesinde kaynak kodları herkes tarafından görülebilir.
 
 GNU Nedir?
 ==========
 
-**GNU**, özgür yazılım hareketinin bir parçası olarak başlatılmış bir projedir. Kısaltması “GNU’s Not Unix” (GNU Unix değildir) anlamına gelir. GNU araçları, Linux çekirdeğiyle birleşerek bugün kullandığımız GNU/Linux sistemlerini oluşturur.
+GNU, özgür yazılım geliştirmek amacıyla başlatılmış bir projedir. Linux çekirdeği ile birlikte kullanıldığında tam bir işletim sistemi ortaya çıkar.
 
 Açık Kaynak Nedir?
 ==================
 
-Açık kaynak, bir yazılımın kaynak kodlarının herkesin erişimine açık olmasıdır. Böylece isteyen herkes kodları inceleyebilir, geliştirebilir ve başkalarıyla paylaşabilir. Bu yaklaşım, yazılımların daha hızlı gelişmesini ve daha güvenli hale gelmesini sağlar.
+Açık kaynak, bir yazılımın kaynak kodlarının herkese açık olması demektir. İsteyen kişiler bu kodları inceleyebilir ve geliştirebilir.
 
 Dağıtım Nedir?
 ==============
 
-Bir GNU/Linux dağıtımı; Linux çekirdeği, GNU araçları, kütüphaneler ve çeşitli uygulamaların bir araya gelmesiyle oluşan tam bir işletim sistemidir. Farklı dağıtımlar, farklı ihtiyaçlara göre şekillendirilir ve özelleştirilir.
+Dağıtım, Linux çekirdeği ve çeşitli yazılımların bir araya gelmesiyle oluşan hazır işletim sistemidir. Farklı dağıtımlar farklı amaçlar için hazırlanır.
 
 Yazılım Bağımsızlığı
 ====================
 
-Açık kaynak yazılımlar, kullanıcıların bir şirkete bağlı kalmadan yazılım geliştirmesine ve kullanmasına imkan tanır. Bu sayede lisans maliyetleri ortadan kalkar, güvenlik artar ve yazılımlar daha esnek bir şekilde geliştirilebilir.
-
+Açık kaynak yazılımlar sayesinde kullanıcılar belirli bir firmaya bağlı kalmaz. Bu da daha özgür ve esnek kullanım sağlar.
 
 .. raw:: pdf
 
    PageBreak
-

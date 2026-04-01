@@ -2,7 +2,7 @@
 libxcrypt
 +++++++++
 
-libxcrypt, Unix benzeri sistemlerde parolaların şifrelenmesi için kullanılan bir kütüphanedir. Bu kütüphane, geleneksel crypt() fonksiyonunun yerini alarak daha güvenli ve esnek bir şifreleme yöntemi sunar. libxcrypt, çeşitli şifreleme algoritmalarını destekler; bunlar arasında bcrypt, scrypt ve Argon2 gibi modern algoritmalar bulunmaktadır.
+libxcrypt, verilerin şifrelenmesi için kullanılan bir kütüphanedir.
 
 Derleme
 --------

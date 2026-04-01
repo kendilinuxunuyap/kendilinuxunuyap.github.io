@@ -2,7 +2,7 @@
 libcap-ng
 +++++++++
 
-libcap-ng paketi, Linux işletim sistemlerinde yetki yönetimi ve güvenlik uygulamaları için kullanılan bir kütüphanedir. Bu kütüphane, kullanıcıların ve süreçlerin sahip olduğu yetkileri daha esnek bir şekilde yönetmelerine olanak tanır.
+libcap-ng paketi, yetki yönetimi ve güvenlik uygulamaları için kullanılan bir kütüphanedir.
 
 Derleme
 --------

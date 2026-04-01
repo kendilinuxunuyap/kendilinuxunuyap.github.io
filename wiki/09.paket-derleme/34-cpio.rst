@@ -2,7 +2,7 @@
 cpio
 ++++
 
-CPIO (Copy In and Out), Unix ve Linux işletim sistemlerinde dosyaları arşivlemek ve taşımak için kullanılan bir komut satırı aracıdır. CPIO, dosyaları bir arşiv dosyası içinde saklayarak, bu dosyaların daha sonra kolayca geri yüklenmesini sağlar. CPIO, genellikle tarayıcılar ve diğer arşivleme araçları ile birlikte kullanılır.
+CPIO dosyaları arşivleme aracıdır. En sık initrd sıkıştırmasında kullanılır.
 
 Derleme
 --------

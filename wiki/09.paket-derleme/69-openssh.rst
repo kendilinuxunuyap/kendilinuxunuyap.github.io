@@ -2,9 +2,7 @@
 openssh
 +++++++
 
-OpenSSH, Secure Shell (SSH) protokolünü uygulayan bir yazılım paketidir ve genellikle Linux ve Unix tabanlı sistemlerde kullanılır. Bu paket, kullanıcıların uzak sunuculara güvenli bir şekilde bağlanmalarını, dosya transferi yapmalarını ve uzaktan komut çalıştırmalarını sağlar. OpenSSH, veri iletimini şifreleyerek, ağ üzerinden yapılan iletişimlerin güvenliğini artırır.
-
-OpenSSH, genellikle ssh, scp, sftp ve sshd gibi araçları içerir. 
+OpenSSH, uzak sunuculara bağlanma, dosya taransferi ve uzaktan komut çalıştırmalarını sağlar. OpenSSH, ssh, scp, sftp ve sshd gibi araçları içerir. 
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libssh2-1-dev libcrypt-dev** komutuyla paketlerin kurulması gerekmektedir.
 

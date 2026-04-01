@@ -2,7 +2,8 @@
 libssh
 ++++++
 
-libssh, SSH protokolünü uygulamak için kullanılan açık kaynaklı bir C kütüphanesidir. Bu kütüphane, geliştiricilere güvenli bir şekilde veri iletimi, uzaktan erişim ve dosya transferi gibi işlevleri gerçekleştirme imkanı tanır. libssh, hem istemci hem de sunucu tarafında kullanılabilir ve çoklu platform desteği sunar.
+libssh, programların SSH (Secure Shell) protokolü uzak sistemlere şifreli veri iletimi ve komut çalıştırma işlemleri yapmamızı sağlayan kütüphanedir.
+
 
 Derleme
 --------

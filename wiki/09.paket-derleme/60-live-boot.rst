@@ -2,7 +2,7 @@
 live-boot
 +++++++++
 
-Live-boot paketi, kullanıcıların bir işletim sistemini kurmadan önce denemelerine olanak tanıyan bir araçtır. Genellikle bir USB bellek veya CD/DVD gibi taşınabilir bir ortamda bulunur. Bu paket, sistemin kurulu olduğu ortamdan bağımsız olarak çalışır ve kullanıcıların işletim sisteminin özelliklerini, performansını ve uyumluluğunu test etmelerine imkan tanır.
+Live-boot paketi, işletim sistemini kurmadan çalıştıran bir araçtır.
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install po4a** komutuyla paketin kurulması gerekmektedir.
 

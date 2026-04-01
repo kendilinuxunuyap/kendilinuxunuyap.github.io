@@ -2,7 +2,7 @@
 grub
 ++++
 
-GRUB (GRand Unified Bootloader), çoklu işletim sistemlerini destekleyen ve kullanıcıların sistemlerini başlatmalarını sağlayan bir önyükleyici yazılımıdır. GRUB yapılandırma dosyası genellikle /boot/grub/grub.cfg konumunda bulunur.
+GRUB, bilgisayar açılırken işletim sistemini başlatan bir önyükleyici (boot loader) programıdır. GRUB yapılandırma dosyası genellikle /boot/grub/grub.cfg konumunda bulunur.
 
 Derleme
 --------

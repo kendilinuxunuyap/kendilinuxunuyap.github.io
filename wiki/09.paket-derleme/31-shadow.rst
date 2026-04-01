@@ -2,8 +2,7 @@
 shadow
 ++++++
 
-Shadow paketi, Linux işletim sistemlerinde kullanıcı hesaplarının şifrelerini güvenli bir şekilde saklamak için kullanılan bir mekanizmadır. Bu paket, kullanıcı bilgilerini ve şifrelerini içeren dosyaların yönetiminde önemli bir rol oynamaktadır.
-
+Shadow paketi, kullanıcı hesaplarının şifrelerini yönetmek için kullanılan bir yapıdır.
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libreadline-dev libcap-dev libcap2-bin libpam0g-dev** komutları çalıştırıldıktan sonra derleme yapılmalıdır.
 
 .. code-block:: bash

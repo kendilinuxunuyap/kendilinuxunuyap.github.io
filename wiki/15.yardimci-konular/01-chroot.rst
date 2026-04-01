@@ -50,28 +50,29 @@ lddscript.sh
 
 	#!/bin/bash
 
-	if [ ${#} != 2 ]
-	then
-	    echo "usage $0 PATH_TO_BINARY target_folder"
-	    exit 1
+	# Betik iki parametre bekler: kopyalanacak dosya ve hedef klasör
+	if [ ${#} != 2 ]; then
+		echo "Kullanım: $0 PATH_TO_BINARY hedef_klasor"
+		exit 1
 	fi
+
 	path_to_binary="$1"
 	target_folder="$2"
 
-	# if we cannot find the the binary we have to abort
-	if [ ! -f "${path_to_binary}" ]
-	then
-	    echo "The file '${path_to_binary}' was not found. Aborting!"
-	    exit 1
+	# Dosya yoksa işlem durur
+	if [ ! -f "${path_to_binary}" ]; then
+		echo "Dosya '${path_to_binary}' bulunamadı. İşlem iptal ediliyor!"
+		exit 1
 	fi
 
-	echo "---> copy binary itself" # copy the binary itself
+	# Dosyayı kopyala
+	echo "Dosya kopyalanıyor..."
 	cp --parents -v "${path_to_binary}" "${target_folder}"
 
-	echo "---> copy libraries" # copy the library dependencies
-	ldd "${path_to_binary}" | awk -F'[> ]' '{print $(NF-1)}' | while read -r lib
-	do
-	    [ -f "$lib" ] && cp -v --parents "$lib" "${target_folder}"
+	# Bağımlı kütüphaneleri kopyala
+	echo "Kütüphaneler kopyalanıyor..."
+	ldd "${path_to_binary}" | awk -F'[> ]' '{print $(NF-1)}' | while read -r lib; do
+		[ -f "$lib" ] && cp -v --parents "$lib" "${target_folder}"
 	done
 
 Basit Sistem Oluşturma
@@ -95,7 +96,6 @@ ls Komutu
 
 .. code-block:: shell
 
-	# ls komutu ve bağımlılığı kopyalandı.
 	bash lddscripts.sh /bin/ls /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-3.png
@@ -108,10 +108,20 @@ rmdir Komutu
 
 .. code-block:: shell
 
-	# rmdir komutu ve bağımlılığı kopyalandı.
 	bash lddscripts.sh /bin/rmdir /home/etapadmin/test/
 
 .. image:: /_static/images/chroot-4.png
+  :width: 600
+
+   
+mkdir Komutu
+------------
+
+.. code-block:: shell
+
+	bash lddscripts.sh /bin/mkdir /home/etapadmin/test/
+
+.. image:: /_static/images/chroot-5.png
   :width: 600
 
 
@@ -119,17 +129,6 @@ rmdir Komutu
 
    PageBreak
    
-mkdir Komutu
-------------
-
-.. code-block:: shell
-
-	# mkdir komutu ve bağımlılığı kopyalandı.
-	bash lddscripts.sh /bin/mkdir /home/etapadmin/test/
-
-.. image:: /_static/images/chroot-5.png
-  :width: 600
-
 bash Komutu
 ------------
 

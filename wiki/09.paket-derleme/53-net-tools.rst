@@ -2,7 +2,7 @@
 net-tools
 +++++++++
 
-net-tools, Linux tabanlı sistemlerde ağ yönetimi için kullanılan klasik bir araçlar paketidir. Bu paket, ifconfig, route, netstat, arp gibi komutları içerir. ifconfig komutu, ağ arayüzlerinin durumunu görüntülemek ve yapılandırmak için kullanılırken, route komutu yönlendirme tablolarını yönetmekte kullanılır. netstat ise ağ bağlantılarını ve istatistiklerini gösterir.
+net-tools, ağ yönetimi için ifconfig, route, netstat, arp gibi araçları içerir.
 
 Derleme
 --------

@@ -2,7 +2,7 @@
 icu
 +++
 
-ICU, çok dilli uygulamalar geliştirmek için gerekli olan metin işleme, tarih ve saat formatlama, sayı biçimlendirme gibi işlevleri sağlayan bir kütüphanedir. Unicode standardını destekleyerek, farklı dillerdeki karakterlerin doğru bir şekilde işlenmesini ve görüntülenmesini mümkün kılar. Özellikle, uluslararasılaşma (i18n) ve yerelleştirme (l10n) süreçlerinde kritik bir rol oynar.
+ICU, dil destekli uygulamalar geliştirmek metin, tarih ve saatve dil desteği sağlayan bir kütüphanedir.
 
 Derleme
 --------

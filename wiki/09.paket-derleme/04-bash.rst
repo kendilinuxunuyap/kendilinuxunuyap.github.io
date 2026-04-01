@@ -2,7 +2,7 @@
 bash
 ++++
 
-Bash, Linux ve diğer Unix tabanlı işletim sistemlerinde kullanılan bir kabuk programlama dilidir. Kullanıcıların komutlar vererek işletim sistemini yönetmelerine olanak tanır. Bash, kullanıcıların işlemleri otomatikleştirmesine ve betik dosyaları oluşturmasına olanak tanır. Özellikle sistem yöneticileri ve geliştiriciler arasında yaygın olarak kullanılan güçlü bir araçtır.
+Bash, kabuk programlama dilidir. Kullanıcıların komut girmesini, program çalıştırmasını ve betikler (script) ile bir çok işlemi otomatikleştirmemizi sağlar.
 
 .. code-block:: bash
 

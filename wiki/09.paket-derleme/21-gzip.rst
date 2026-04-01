@@ -2,7 +2,7 @@
 gzip
 ++++
 
-Gzip, "GNU zip" ifadesinin kısaltmasıdır ve dosyaları sıkıştırmak için kullanılan bir yazılımdır. Temel amacı, dosya boyutunu azaltarak depolama alanından tasarruf sağlamak ve veri iletimini hızlandırmaktır. Gzip, genellikle metin dosyaları gibi tekrarlayan verilerde yüksek sıkıştırma oranları sunar.
+gzip(GNU zip) dosyaları sıkıştırmak için kullanılan bir yazılımdır. 
 
 Derleme
 --------

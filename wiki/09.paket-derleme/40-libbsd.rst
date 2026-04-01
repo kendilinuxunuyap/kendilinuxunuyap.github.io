@@ -2,7 +2,7 @@
 libbsd
 ++++++
 
-libbsd, geliştiricilere daha güvenli ve taşınabilir kod yazma imkanı tanırken, aynı zamanda BSD sistemlerinde yaygın olarak kullanılan işlevlerin Linux üzerinde de kullanılmasını sağlar. Bu kütüphane, sistem programlama ve ağ programlama gibi alanlarda sıkça tercih edilmektedir.
+libbsd, kod geliştirme süreçleri için gerekli pakettir.
 
 Derleme
 --------

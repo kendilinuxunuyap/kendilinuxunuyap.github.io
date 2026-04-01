@@ -2,7 +2,7 @@
 e2fsprogs
 +++++++++
 
-e2fsprogs, Linux tabanlı sistemlerde yaygın olarak kullanılan bir dosya sistemi yönetim aracıdır. Bu paket, ext2, ext3 ve ext4 dosya sistemleri üzerinde çeşitli işlemler yapabilmek için gerekli olan araçları içerir. Örneğin, dosya sistemi oluşturma, onarma, kontrol etme ve boyutlandırma gibi işlemler e2fsprogs ile gerçekleştirilebilir.
+e2fsprogs, ext2, ext3 ve ext4 dosya sistemi araçlarının paketidir.
 
 Derleme
 --------

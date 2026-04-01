@@ -2,7 +2,7 @@
 openssl
 +++++++
 
-OpenSSL, açık kaynaklı bir kriptografik kütüphanedir ve SSL/TLS protokollerini uygulamak, şifreleme, dijital sertifikalar oluşturma ve doğrulama gibi işlemleri gerçekleştirmek için yaygın olarak tercih edilir. coreutils için gerekli olan paket.
+OpenSSL, şifreleme, sertifika yönetimi ve güvenli bağlantılar (TLS/SSL) oluşturmak için kullanılır. coreutils için gerekli olan paket.
 
 Derleme
 --------

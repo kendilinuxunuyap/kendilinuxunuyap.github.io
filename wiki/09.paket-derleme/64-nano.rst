@@ -2,7 +2,7 @@
 nano
 ++++
 
-Nano, terminal tabanlı bir metin düzenleyici olup, GNU projesinin bir parçasıdır. Kullanıcıların metin dosyalarını kolayca oluşturmasına, düzenlemesine ve kaydetmesine olanak tanır. Nano, vi veya emacs gibi daha karmaşık metin düzenleyicilere göre daha basit bir kullanım sunar.
+Nano, terminal tabanlı bir metin düzenleme editörüdür.
 
 Derleme
 --------

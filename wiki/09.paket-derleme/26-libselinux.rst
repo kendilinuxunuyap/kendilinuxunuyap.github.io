@@ -2,7 +2,7 @@
 libselinux
 ++++++++++
 
-libselinux paketi, Linux işletim sistemlerinde güvenlik politikalarının uygulanmasına yardımcı olan bir kütüphanedir. Bu kütüphane, SELinux (Security-Enhanced Linux) mekanizmasının temel bileşenlerinden biridir.
+libselinux güvenlik politikalarının uygulanmasına yardımcı olan bir kütüphane paketidir.
 
 Derleme
 --------

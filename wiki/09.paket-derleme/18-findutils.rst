@@ -2,7 +2,7 @@
 findutils
 +++++++++
 
-Finutils paketi, Linux işletim sistemlerinde dosya ve dizin yönetimi ile ilgili çeşitli işlevler sunan bir araç setidir. Bu paket, özellikle dosya sistemleri üzerinde işlem yaparken kullanıcıların işini kolaylaştırmayı hedefler.
+finutils paketi, dosya ve dizin yönetimi ile ilgili çeşitli işlevler sunan bir araç setidir.
 
 Derleme
 --------

@@ -1,22 +1,22 @@
-Bir önceki bölümde, temel bir sistem hazırlamayı adım adım öğrenmiştik. O çalışmada, temel işlevselliğe sahip, kendi kendine açılabilen, küçük ama işlevsel bir Linux ortamı kurduk. Bu süreç, hepimiz için oldukça öğretici ve motive ediciydi. Şimdi ise bu yolculuğu bir adım daha ileri taşıyoruz!
+Bir önceki bölümde, temel bir sistem hazırlamayı adım adım öğrenmiştik. O çalışmada, temel işlevselliğe sahip, kendi kendine açılabilen, küçük ama işlevsel bir Linux ortamı kurduk. Şimdi ise bu yolculuğu bir adım daha ileri taşıyoruz!
 
 Artık daha güçlü, daha esnek ve daha geniş özelliklere sahip bir sistem inşa etmenin zamanı geldi. Bu bölümde, **GNU araçlarıyla** nasıl bir dağıtım hazırlayabileceğimizi detaylı şekilde anlatacağız. Peki neden busybox'la yetinmeyip GNU araçlarına geçiyoruz? İşte tam da burada kararımızın nedenlerini birlikte keşfedelim.
 
-BusyBox: Küçük Dev ama Sınırlı
--------------------------------
+BusyBox:
+--------
 
-**BusyBox**, bize temel sistem oluşturmada büyük kolaylık sağladı. Tek bir binary ile onlarca temel komutu çalıştırabildik, disk alanından tasarruf ettik ve bağımlılıklarla uğraşmadık. Busybox özellikle gömülü sistemlerde ve kurtarma ortamlarında adeta bir hayat kurtarıcı.
+**BusyBox**, bize temel sistem oluşturmada büyük kolaylık sağladı. Tek bir binary ile onlarca temel komutu çalıştırabildik, disk alanından tasarruf ettik ve bağımlılıklarla uğraşmadık. Busybox özellikle gömülü sistemlerde ve kurtarma ortamlarında adeta bir hayat kurtarıcı. **BusyBox** kurulumu ve kullanımıyla ilgili detayları **Yardımcı Konular** bölümünde bulabilirsiniz.
 
-Avantajlar (Artıları)
-......................
+Avantajlar
+..........
 
 - **Küçük boyut**, **Taşınabilirlik** : Tek binary ile onlarca komut.
 - **Düşük bağımlılık**: Ekstra kütüphane gerektirmez.
 - **Kolay kurulum**: Derlemesi ve kurulumu oldukça basit.
 - **Çok amaçlı kullanım**: Tek dosyada tüm temel araçlar.
 
-Dezavantajlar (Eksileri)
-.........................
+Dezavantajlar
+.............
 
 - **Sınırlı özellikler**: Gelişmiş parametre seçenekleri yok.
 - **Standart dışı davranışlar**, **Script uyumsuzluğu**: GNU araçlarıyla tam uyumlu değil. Karmaşık bash scriptleri çalışmayabilir.
@@ -59,16 +59,17 @@ Bu, Linux ortamında aktif olan kullanıcının ev dizinini ifade eden standart 
 
 Artık ortam hazır!
 
-Ortamın hazırlanmasından sonra bazı konuları bilmemiz gerelmektedir. Bunlar; 
+Ortamın hazırlanmasından sonra bazı konuları bilmemiz gerekmektedir. Bunlar; 
 
-1. Derleme(Dinamik/Static) 
-2. chroot Kullanımı 
-3. Kernel/Modül Derleme
-4. İso Oluşturma
-5. Canlı Sistem Oluşturma Kullanma
-6. qemu Kullanmı
-7. cfdisk Kullanımı
-8. Canlı Sistemden Kurulum Yapma
+1. Derleme(Dinamik/Static)
+2. BusyBox 
+3. chroot Kullanımı
+4. Kernel/Modül Derleme
+5. İso Oluşturma
+6. Canlı Sistem Oluşturma Kullanma
+7. qemu Kullanmı
+8. cfdisk Kullanımı
+9. Canlı Sistemden Kurulum Yapma
 
 
 Burada liste halinde verilen konu başlıkları bu dokümanın **Yardımcı Konular** bölümünde anlatılmaktadır. 
@@ -161,6 +162,7 @@ Bundan sonraki adımlarda kendi dağıtımımızı şekillendirmeye başlayacağ
    * - 24- :ref:`bzip2`
      - 49- :ref:`lvm2`
      - 74-
+
 
 Bağımlılıklar Zinciri: Doğru Sıralama Şart!
 -------------------------------------------

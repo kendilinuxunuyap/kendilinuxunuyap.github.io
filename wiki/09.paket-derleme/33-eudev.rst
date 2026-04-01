@@ -2,7 +2,7 @@
 eudev
 +++++
 
-Eudev, Linux tabanlı sistemlerde cihaz yönetimi için kullanılan bir kullanıcı alanı aracı olan udev'in bir fork'udur. Udev, sistemdeki donanım bileşenlerinin tanınması, yönetilmesi ve olay bildirimlerinin gerçekleştirilmesi için kritik bir rol oynar. Debian ortamında bu paketin derlenmesi için; **sudo apt install libkmod-dev gperf** paketlerin kurulması gerekmektedir.
+Eudev, udev'in bir çatallanmış halidir. Udev, donanımların tanınması, yönetilmesi gerekli pakettir. Debian ortamında bu paketin derlenmesi için; **sudo apt install libkmod-dev gperf** paketlerin kurulması gerekmektedir.
 
 
 .. code-block:: bash

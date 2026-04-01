@@ -2,7 +2,8 @@
 dosfstools
 ++++++++
 
-Dosfstools, Linux işletim sistemlerinde kullanılan bir dizi araç ve komut setidir. Bu araçlar, sistem yöneticilerine ve geliştiricilere, sistem yönetimi, dosya işlemleri ve ağ yönetimi gibi çeşitli görevleri daha verimli bir şekilde gerçekleştirme imkanı sunar.
+Dosfstools, FAT dosya sistemlerini oluşturmak ve yönetmek için kullanılan araçlar paketidir.  
+
 
 Derleme
 --------

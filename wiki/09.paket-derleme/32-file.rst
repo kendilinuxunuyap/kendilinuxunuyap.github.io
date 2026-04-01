@@ -2,7 +2,7 @@
 file
 ++++
 
-Linux'ta "file" komutu, dosyaların türlerini tanımlamak için kullanılan bir araçtır. Bu komut, dosyanın içeriğini analiz ederek, dosyanın ne tür bir veri içerdiğini belirler. Örneğin, bir dosyanın metin dosyası mı, ikili dosya mı yoksa bir resim dosyası mı olduğunu tespit edebilir.
+file, dosyaların yapılarını anlamak için kullanılan bir araçtır.
 
 Derleme
 --------

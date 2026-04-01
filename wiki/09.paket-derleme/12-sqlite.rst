@@ -2,7 +2,9 @@
 sqlite
 ++++++
 
-SQLite, C dilinde yazılmış ve gömülü bir veritabanı motoru olarak bilinen bir yazılımdır. Özellikle hafifliği ve taşınabilirliği ile dikkat çeker. SQLite, bir dosya sistemi üzerinde çalışarak verileri depolar ve bu sayede herhangi bir sunucuya ihtiyaç duymadan uygulama içinde kullanılabilir. Derleme öncesi **sudo apt install libsqlite3-dev** komutuyla paketi kurmalıyız.
+SQLite, bir veritabanı sistemidir. Sunucu gerektirmez ve verileri tek bir dosya içinde saklar.
+
+Derleme öncesi **sudo apt install libsqlite3-dev** komutuyla paketi kurmalıyız.
 
 Derleme
 --------

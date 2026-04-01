@@ -175,7 +175,7 @@ Aşağıda **base-file** paketine ait tam script örneği verilmiştir:
 **Paket Derleme Yöntemi**
 =========================
 
-**base-file** paketi ilk olduğu için detaylı anlatıldı. Bundan sonraki paketlerde sadece **şablon bir script dosyası** verilecek. Eğer paketin ek dosyaları varsa, bunlar **files.tar** şeklinde sunulacak.
+**base-file** paketi ilk paket olduğu için detaylı anlatıldı. Bundan sonraki paketlerde sadece **şablon bir script dosyası** verilecek. Eğer paketin ek dosyaları varsa, bunlar **files.tar** şeklinde sunulacak.
 
 Her paket için istediğiniz bir konumda yeni bir dizin oluşturun. Varsa, ilgili **files.tar** arşivini dizin içinde açın.
 

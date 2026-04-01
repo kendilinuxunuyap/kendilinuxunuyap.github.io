@@ -2,7 +2,7 @@
 brotli
 ++++++
 
-Brotli, Google tarafından geliştirilen ve özellikle web tarayıcıları için optimize edilmiş bir veri sıkıştırma algoritmasıdır. Bu algoritma, HTTP/2 ve HTTPS protokolleri ile birlikte kullanıldığında, web sayfalarının daha hızlı yüklenmesine olanak tanır. Brotli, gzip'e göre daha yüksek sıkıştırma oranları sunarak, veri transferini optimize eder.
+Brotli, veri sıkıştırmak için kullanılan bir algoritmadır.
 
 Derleme
 --------

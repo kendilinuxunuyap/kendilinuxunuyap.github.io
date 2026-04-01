@@ -2,7 +2,7 @@
 acl
 +++
 
-ACL (Access Control List), dosya sistemlerinde veya ağ cihazlarında erişim kontrolünü yönetmek için kullanılan bir mekanizmadır. ACL'ler, belirli kullanıcıların veya kullanıcı gruplarının belirli dosya veya kaynaklara erişim düzeylerini tanımlamak için kullanılır. Bu, dosyalara veya kaynaklara erişim izinlerini hassas bir şekilde kontrol etmeyi sağlar. Örneğin, bir dosyaya sadece belirli kullanıcıların yazma izni vermek için ACL'ler kullanılabilir. Bu şekilde, güvenlik ve erişim kontrolü daha ayrıntılı bir şekilde yapılabilmektedir.coreutils için gerekli olan paket.
+ACL (Access Control List), dosya ve sistemlerde kimlerin hangi işlemleri yapabileceğini belirleyen bir yapıdır. Erişim kontrolü daha düzenli ve güvenli hale gelir. ACL, özellikle coreutils gibi temel sistem araçlarının doğru çalışması için gerekli olan bileşenlerden biridir.
 
 Derleme
 --------

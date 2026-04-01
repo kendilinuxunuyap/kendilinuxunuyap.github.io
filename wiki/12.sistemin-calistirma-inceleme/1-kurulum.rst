@@ -19,7 +19,6 @@ Bu dokümanda anlatılan paketlerin **kly Paket Sistemiyle** hazırlanmış **Te
 
 .. image:: /_static/images/iso-21.png
   :width: 600
-  :height: 350
 
 Canlı(live) sistem çalıştırıldığında overlay live bir sistemin açıldığını görmekteyiz. Canlı(live) sistemde kullanıcı adları ve parolaları;
 
@@ -137,12 +136,6 @@ Buradaki tüm paketler ve bağımlılıkları derlendikten sonra **Xorg:0** şek
 
 
 Bu dokümanın devamı niteliğinde temel bir **x11** ortamı nasıl derleneceğini anlatan bir doküman hazırlamayı planlamaktayız. 
-
-
-.. raw:: pdf
-
-   PageBreak
-
 
 
 .. raw:: pdf

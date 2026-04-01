@@ -2,7 +2,7 @@
 bzip2
 +++++
 
-bzip2, dosyaları sıkıştırmak için kullanılan bir yazılımdır ve genellikle Unix tabanlı sistemlerde tercih edilmektedir.
+bzip2, dosyaları sıkıştırmak için kullanılan pakettir.
 
 Derleme
 --------

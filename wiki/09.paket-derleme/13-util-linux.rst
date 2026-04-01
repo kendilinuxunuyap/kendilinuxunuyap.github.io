@@ -2,7 +2,7 @@
 util-linux
 ++++++++++
 
-Util-linux paketi, Linux tabanlı sistemlerde kritik öneme sahip bir bileşendir. Bu paket, dosya sistemleri, disk yönetimi, kullanıcı yönetimi ve sistem izleme gibi çeşitli işlevleri yerine getiren bir dizi araç içerir. Örneğin, mount ve umount komutları, dosya sistemlerini bağlamak ve ayırmak için kullanılırken, fdisk ve parted disk bölümlerini yönetmek için kullanılır. Ayrıca, login, su, ve passwd gibi komutlar, kullanıcı kimlik doğrulama ve yönetimi için önemli işlevler sunar. 
+util-linux, Linux sistemlerinde kullanılan temel araçları içeren pakettir. Dosya sistemlerini bağlamak/ayırmak, parted araçları, kullanıcı işlemleri ve kimlik doğrulama için kullanılır.
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libudev-dev** komutuyla paketin kurulması gerekmektedir.
 

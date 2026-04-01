@@ -2,7 +2,7 @@
 rsync
 +++++
 
-rsync, dosya transferi ve senkronizasyonu için geliştirilmiş bir yazılımdır. Temel işlevi, yerel veya uzak sistemler arasında dosyaların ve dizinlerin hızlı ve verimli bir şekilde kopyalanmasını sağlamaktır. rsync, yalnızca değişen verileri transfer ederek bant genişliği kullanımını optimize eder. Bu özellik, büyük dosyaların veya dizinlerin güncellenmesi gerektiğinde önemli bir avantaj sunar.
+rsync, yerel veya uzak sistemler arasında dosyaların kopyalanmasını sağlamaktır.
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libzstd-dev libacl1-dev libacl1 libssl-dev** komutuyla paketlerin kurulması gerekmektedir.
 

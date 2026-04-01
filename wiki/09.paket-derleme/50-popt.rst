@@ -2,7 +2,8 @@
 popt
 ++++
 
-Popt, "Portable Options Parsing Library" ifadesinin kısaltmasıdır ve özellikle C programlama dilinde geliştirilmiş bir kütüphanedir. Bu kütüphane, komut satırı argümanlarını analiz etmek ve yönetmek için kullanılır. Popt, kullanıcıların programlarına daha anlaşılır ve esnek bir seçenek yönetimi eklemelerine olanak tanır. 
+popt, komut satırı parametrelerin kolayca işlenmesini sağlayan bir kütüphanedir.  
+ 
 
 Derleme
 --------

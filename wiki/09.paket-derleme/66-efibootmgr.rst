@@ -2,7 +2,7 @@
 efibootmgr
 ++++++++++
 
-efibootmgr, UEFI (Unified Extensible Firmware Interface) tabanlı sistemlerde önyükleme yöneticisi olarak işlev gören bir Linux aracıdır. Bu paket, UEFI önyükleme seçeneklerini yönetmek için kullanılır ve sistemin önyükleme sırasını, önyükleme girişlerini ve diğer ilgili ayarları düzenlemeye olanak tanır.
+efibootmgr, UEFI sistemlerde önyükleme aracıdır.
 
 Derleme
 --------

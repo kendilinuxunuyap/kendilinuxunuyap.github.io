@@ -2,7 +2,7 @@
 efivar
 ++++++
 
-efivar paketi, UEFI tabanlı sistemlerde, firmware ile işletim sistemi arasında veri alışverişini sağlamak için kritik bir rol oynamaktadır. UEFI, BIOS'un yerini alarak daha modern bir arayüz sunmakta ve sistem başlangıcında daha fazla esneklik sağlamaktadır. efivar, UEFI değişkenlerini okuma, yazma ve silme işlemlerini gerçekleştirmek için bir dizi komut sunar.
+efivar paketi, UEFI sistemlerde, UEFI değişkenlerini okuma, yazma ve silme işlemlerini gerçekleştiriren kütüphanedir.
 
 Derleme
 --------

@@ -11,17 +11,17 @@
    * - 3- :ref:`paketderleme`
      - 9
    * - 4- :ref:`isohazirlama`
-     - 94
+     - 93
    * - 5- :ref:`sistemcalistirma-inceleme`
-     - 98
+     - 97
    * - 6- :ref:`paketsistemi`
-     - 104
+     - 103
    * - 7- :ref:`yardimcikonular`
-     - 115
+     - 114
    * - 8- :ref:`kaynaklar`
-     - 137
+     - 146
    * - 9- :ref:`gelistiricimesaji`
-     - 138
+     - 147
  
 .. raw:: pdf
 

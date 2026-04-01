@@ -2,9 +2,9 @@
 **gcc**
 +++++++
 
-gcc paketi, GNU Compiler Collection (GCC) ile birlikte gelen ve C, C++ gibi dillerde yazılmış programların çalışması için gerekli olan temel kütüphaneleri içeren bir bileşendir. Debian ortamında derlemek için **sudo apt install libmpc-dev libmpfr-dev libgmp-dev libisl-dev** paketleri kurmalıyız.
+gcc paketi, C, C++ gibi dillerde yazılmış programların çalışması için gereken kütüphaneleri içerir. Debian ortamında derlemek için **sudo apt install libmpc-dev libmpfr-dev libgmp-dev libisl-dev** paketleri kurmalıyız.
 
-Bu dağıtım için gcc kütüphaneleri olması yeterli. Bunun için sadece libgcc adında bir paket yapmammız yeterli. Fakat sic gcc derlemek isterseniz aşağıda gcc derleme scriptini paylaşıldı.
+Bu dağıtım için gcc kütüphaneleri olması yeterli. Bunun için sadece libgcc adında bir paket yapmamız yeterli. Fakat siz gcc derlemek isterseniz aşağıda gcc derleme scriptini paylaşıldı.
 
 **libgcc Kurma Scripti**
 --------------------------

@@ -2,9 +2,7 @@
 kmod
 ++++
 
-Linux çekirdeği ile donanım arasındaki haberleşmeyi sağlayan kod parçalarıdır. Bu kod parçalarını kernele eklediğimizde kerneli tekrardan derlememiz gerekmektedir. Her kod ekleme ve her kod çıkartma işleminden sonra kernel derlemek ciddi bir iş yükü ve karmaşa oluşturacaktır.
-
-Bu sorunların çözümü için modul vardır. Moduller kernele istediğimiz kod parçalarını ekleme ya da çıkartma yapabilmemizi sağlar. Bu işlemleri yaparken kernel derleme işlemi yapmamıza gerek yoktur. Bu süreçleri yöneten uygulamalarının bulunduğu pakettir.
+Linux çekirdeği ile donanım arasındaki haberleşmeyi sağlayan kod parçalarını(modülleri) kerneli derlenmeden ekleme ya da çıkartmamızı sağlar.
 
 Derleme
 --------

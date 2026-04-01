@@ -2,7 +2,7 @@
 dialog
 ++++++
 
-Dialog paketi, terminal tabanlı uygulamalar için kullanıcı ile etkileşim kurmayı kolaylaştıran bir araçtır. Bu paket, kullanıcıdan bilgi almak veya kullanıcıya bilgi sunmak amacıyla çeşitli diyalog kutuları oluşturmanıza olanak tanır. Örneğin, metin kutuları, onay kutuları, seçim kutuları gibi farklı türde diyaloglar oluşturabilirsiniz.
+Dialog paketi, terminalde metin kutuları, onay kutuları, seçim kutuları gibi farklı türde diyaloglar oluşturmamızı sağlayan kütüphanedir.
 
 Derleme
 --------

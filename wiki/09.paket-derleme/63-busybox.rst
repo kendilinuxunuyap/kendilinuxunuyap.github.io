@@ -2,9 +2,9 @@
 busybox
 +++++++
 
-BusyBox, Linux tabanlı sistemlerde "İsviçre Çakısı" benzeri bir işlevsellik sunarak, çeşitli komutları tek bir ikili dosya altında toplar. 
+BusyBox, çeşitli komutları tek bir ikili dosya altında toplar. BusyBox, ls, cp, mv, rm gibi temel komutları, ağ yönetimi, dosya sistemleri ve sistem yönetimi gerekli araçları içinde barındıran tek ikili dosyadır. 
 
-BusyBox, ls, cp, mv, rm gibi temel komutların yanı sıra, ağ yönetimi, dosya sistemleri ve sistem yönetimi gibi birçok alanda işlevsellik sunar. Kullanıcılar, bu komutları BusyBox ile çağırarak bir dosyayı kopyalamak için aşağıdaki komut kullanılabilir:
+Örneğin; Kullanıcı, BusyBox ile bir dosyayı kopyalamak için aşağıdaki komut kullanılabilir:
 
 .. code-block:: shell
 	

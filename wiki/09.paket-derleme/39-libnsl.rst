@@ -2,7 +2,7 @@
 libnsl
 ++++++
 
-libnsl, "Network Services Library" anlamına gelen bir kütüphanedir ve genellikle Unix sistemlerinde ağ hizmetleri ile ilgili işlevsellik sağlamak amacıyla kullanılır. Bu kütüphane, uzaktan prosedür çağrıları (RPC) ve diğer ağ iletişim protokollerinin uygulanmasında kritik bir bileşendir. libnsl, özellikle eski sistemlerde ve uygulamalarda yaygın olarak bulunur ve modern sistemlerde de bazı uygulamalar için gereklidir.
+libnsl, ağ hizmetleri sağlamak amacıyla kullanılan pakettir. 
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libtirpc-dev** komutuyla paketin kurulması gerekmektedir.
 

@@ -2,7 +2,7 @@
 libsepol
 ++++++++
 
-libsepol, SELinux'un güvenlik politikalarını oluşturmak, düzenlemek ve uygulamak için gerekli olan temel bir kütüphanedir. SELinux, Linux çekirdeği üzerinde güvenlik katmanları ekleyerek sistemin güvenliğini artırmayı amaçlar. libsepol, bu güvenlik politikalarının tanımlanması ve yönetilmesi için gerekli olan araçları sağlar.
+libsepol, SELinux'un bir parçasıdır. libsepol, güvenlik politikalarının tanımlanması ve yönetilmesi için gereken pakettir.
 
 Derleme
 --------

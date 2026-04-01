@@ -2,7 +2,7 @@
 mpfr
 ++++
 
-MPFR (Multiple Precision Floating-Point Reliable) paketi, yüksek hassasiyetli kayan nokta hesaplamaları yapmak için kullanılan bir kütüphanedir. Bu kütüphane, matematiksel hesaplamalarda doğruluğu artırmak amacıyla tasarlanmıştır.
+MPFR (Multiple Precision Floating-Point Reliable) paketi, yüksek hassasiyetli kayan nokta hesaplamaları yapmak için kullanılan bir kütüphanedir.
 
 Debian ortamında bu paketin derlenmesi için; **sudo apt install libgmp-dev** komutuyla paketin kurulması gerekmektedir.
 

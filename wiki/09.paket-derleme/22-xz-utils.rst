@@ -2,7 +2,7 @@
 xz-utils
 ++++++++
 
-xz-utils, Linux işletim sistemlerinde dosyaları sıkıştırmak ve açmak için kullanılan bir yazılım paketidir. Bu paket, LZMA (Lempel-Ziv-Markov chain algorithm) algoritmasını temel alarak yüksek sıkıştırma oranları sağlar. xz-utils, genellikle büyük dosyaların depolanması ve aktarılması sırasında disk alanından tasarruf sağlamak amacıyla tercih edilir.
+xz-utils, dosyaları sıkıştırmak ve açmak için kullanılan bir yazılım paketidir.
 
 Derleme
 --------
