@@ -1,0 +1,3 @@
+#!/bin/bash
+rc-service elogind stop 
+rc-update del elogind default

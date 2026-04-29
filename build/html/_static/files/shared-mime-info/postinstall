@@ -1,0 +1,5 @@
+#!/bin/sh
+chmod -R 755 /usr/share/mime
+update-mime-database /usr/share/mime/
+sed -i "/update-mime-database/d" /bin/install-remove-to-do
+echo -e "\nupdate-mime-database /usr/share/mime/">>/bin/install-remove-to-do

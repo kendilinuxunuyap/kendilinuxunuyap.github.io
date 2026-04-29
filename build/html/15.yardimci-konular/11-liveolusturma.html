@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Live Sistem Oluşturma ve Sistem Kurulumu &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/15.yardimci-konular/11-liveolusturma.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="kmod Nedir?" href="13-modul-kmod.html" />
+    <link rel="prev" title="VirtualBox" href="100-virtualbox.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="live-sistem-olusturma-ve-sistem-kurulumu">
+<h1><strong>Live Sistem Oluşturma   ve Sistem Kurulumu</strong><a class="headerlink" href="#live-sistem-olusturma-ve-sistem-kurulumu" title="Permalink to this heading">¶</a></h1>
+<p>Canlı sistem oluşturma veya RAM üzerinden çalışan sistem hazırlamak için SquashFS dosya sisteminde dağıtım sıkıştırılmalıdır.
+SquashFS, Linux işletim sistemlerinde sıkıştırılmış bir dosya sistemidir. Sistemimizi sıkıştırır ve ardından salt okunur bir dosya sistemine dönüştürür.</p>
+<section id="squashfs-olusturma">
+<h2>SquashFS Oluşturma<a class="headerlink" href="#squashfs-olusturma" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># mksquashfs input_source output/filesystem.squashfs -comp xz -wildcards</span>
+mksquashfs<span class="w"> </span>initrd<span class="w"> </span><span class="nv">$HOME</span>/distro/filesystem.squashfs<span class="w"> </span>-comp<span class="w"> </span>xz<span class="w"> </span>-wildcards
+</pre></div>
+</div>
+</section>
+<section id="cdrom-erisimi">
+<h2>Cdrom Erişimi<a class="headerlink" href="#cdrom-erisimi" title="Permalink to this heading">¶</a></h2>
+<p>Cd veya Dvd aygıtı Linux sistemlerinde /dev/sr0 aygıt dosyası olarak erişilir.
+Cd içeriği üzerinde okuma yapmak için aşağıdaki komutu kullanabiliriz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>/dev/sr0
+</pre></div>
+</div>
+</section>
+<section id="cdrom-baglama">
+<h2>Cdrom Bağlama<a class="headerlink" href="#cdrom-baglama" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>cdrom
+mount<span class="w"> </span>/dev/sr0<span class="w"> </span>/cdrom
+</pre></div>
+</div>
+<p>Bu işlem sonucunda cdrom bağlanmış olacaktır. ISO dosyamızın içerisine erişebiliriz.</p>
+</section>
+<section id="squashfs-dosyasini-bulma">
+<h2>Squashfs Dosyasını Bulma<a class="headerlink" href="#squashfs-dosyasini-bulma" title="Permalink to this heading">¶</a></h2>
+<p>Genellikle isoların içine squashfs dosyası oluşturulur. Bu sayede live yükleme yapılabilir.
+Örneğin, /live/filesystem.squashfs imaj dosyalarında konumudur.</p>
+</section>
+<section id="squashfs-baglama">
+<h2>Squashfs Bağlama<a class="headerlink" href="#squashfs-baglama" title="Permalink to this heading">¶</a></h2>
+<p>Squashfs dosyasını bağlamadan önce loop modülünün yüklü olması gerekmektedir. Eğer yüklemediyseniz;</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># loop modülü yüklenir.</span>
+modprobe<span class="w"> </span>loop
+mkdir<span class="w"> </span>kaynak
+mount<span class="w"> </span>-t<span class="w"> </span>squashfs<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>cdrom/live/filesystem.squashfs<span class="w"> </span>/kaynak
+</pre></div>
+</div>
+</section>
+<section id="squashfs-sistemine-gecis">
+<h2>Squashfs Sistemine Geçiş<a class="headerlink" href="#squashfs-sistemine-gecis" title="Permalink to this heading">¶</a></h2>
+<p>Yukarıdaki adımlarda squashfs dosyamızı <strong>/kaynak</strong> adında dizine bağlamış olduk.
+Bu aşamadan sonra sistemimizin bir kopyası olan squashfs canlıdan erişilebilir veya sistemi buradan başlatabiliriz.</p>
+<p>Squashfs dosya sistemimize bağlanmak için;</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>chroot<span class="w"> </span>canli<span class="w"> </span>/bin/bash
+</pre></div>
+</div>
+<p>Bu işlemin yerine exec komutuyla bağlanırsak sistemimiz id &quot;1&quot; değeriyle çalıştıracaktır.
+Eğer sistemin bu dosya sistemiyle açılmasını istiyorsak exec ile çalıştırıp id=1 olmasına dikkat etmeliyiz.</p>
+<p>Bu bölümde <strong>/kaynak</strong> bağlanan sistemin disk üzerine kopyalanması ve sisk üzerinden sistemi açacak şekilde hazırlanmasını iki senaryo için anlatılmıştır.</p>
+<section id="tek-bolum-kurulumu">
+<h3><strong>1-Tek Bölüm Kurulumu</strong><a class="headerlink" href="#tek-bolum-kurulumu" title="Permalink to this heading">¶</a></h3>
+<p><strong>Hazırlıklar:</strong></p>
+<ul>
+<li><p>Disk işlemleri için <cite>evdev</cite> veya <cite>udevd</cite> servislerinin aktif olması gerekir.</p></li>
+<li><p>Gerekli çekirdek modüllerini yükleyin:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>modprobe<span class="w"> </span>loop
+modprobe<span class="w"> </span>squashfs
+modprobe<span class="w"> </span>ext4
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Disk Bölümlendirme:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cfdisk<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><cite>dos</cite> seçilmeli</p></li>
+<li><p><cite>type linux system</cite> seçilmeli</p></li>
+<li><p><cite>write</cite> yazılmalı</p></li>
+<li><p><cite>quit</cite> yapılmalı</p></li>
+<li><p>Bu işlem sonucunda sadece <strong>/dev/sda1</strong> bölümü olacaktır</p></li>
+</ol>
+<p><strong>Disk biçimlendirme</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mkfs.ext2 /dev/sda1
+</pre></div>
+</div>
+<p><strong>Dosya Sistemi Oluşturma:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkfs.ext4<span class="w"> </span>/dev/sda1
+</pre></div>
+</div>
+<p><strong>Kurulum Medyasını Bağlama ve Dosya Kopyalama:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>/cdrom<span class="w"> </span>/kaynak
+mount<span class="w"> </span>-t<span class="w"> </span>iso9660<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/dev/sr0<span class="w"> </span>/cdrom
+mount<span class="w"> </span>-t<span class="w"> </span>squashfs<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/cdrom/live/filesystem.squashfs<span class="w"> </span>/kaynak
+mkdir<span class="w"> </span>-p<span class="w"> </span>/hedef
+mount<span class="w"> </span>/dev/sda1<span class="w"> </span>/hedef
+cp<span class="w"> </span>-prfv<span class="w"> </span>/kaynak/*<span class="w"> </span>/hedef
+sync
+</pre></div>
+</div>
+<p><strong>Chroot Ortamına Geçiş ve GRUB Kurulumu:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>/dev<span class="w"> </span>/sys<span class="w"> </span>/proc<span class="w"> </span>/run<span class="w"> </span>/tmp<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/hedef/<span class="nv">$dir</span>
+<span class="w">    </span>mount<span class="w"> </span>--bind<span class="w"> </span>/<span class="nv">$dir</span><span class="w"> </span>/hedef/<span class="nv">$dir</span>
+<span class="k">done</span>
+
+chroot<span class="w"> </span>/hedef
+grub-install<span class="w"> </span>--boot-directory<span class="o">=</span>/boot<span class="w"> </span>/dev/sda
+grub-mkconfig<span class="w"> </span>-o<span class="w"> </span>/boot/grub/grub.cfg
+</pre></div>
+</div>
+</section>
+<section id="uefi-sistem-kurulumu">
+<h3><strong>2-UEFI Sistem Kurulumu</strong><a class="headerlink" href="#uefi-sistem-kurulumu" title="Permalink to this heading">¶</a></h3>
+<p><strong>Hazırlıklar:</strong></p>
+<ul>
+<li><p>Disk işlemleri için <cite>evdev</cite> veya <cite>udevd</cite> servislerinin aktif olması gerekir.</p></li>
+<li><p>Gerekli çekirdek modüllerini yükleyin:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>modprobe<span class="w"> </span>loop
+modprobe<span class="w"> </span>squashfs
+modprobe<span class="w"> </span>ext4
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Disk Bölümlendirme:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cfdisk<span class="w"> </span>/dev/sda
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><cite>gpt</cite> seçin</p></li>
+<li><p>512MB <cite>uefi</cite> alanı oluşturun (sda1)</p></li>
+<li><p>Geri kalan alanı <cite>Linux system</cite> olarak ayarlayın (sda2)</p></li>
+<li><p><cite>Write</cite> ve ardından <cite>Quit</cite></p></li>
+<li><p>Bu işlem sonucunda sadece <strong>/dev/sda1 ve dev/sda2</strong> bölümü oluşmalı.</p></li>
+</ol>
+<p><strong>Bölümleri biçimlendirme</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkfs</span><span class="o">.</span><span class="n">vfat</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
+<span class="n">mkfs</span><span class="o">.</span><span class="n">ext4</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda2</span>
+</pre></div>
+</div>
+<p><strong>Kurulum Medyasını Bağlama ve Dosya Kopyalama:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>/cdrom<span class="w"> </span>/kaynak
+mount<span class="w"> </span>-t<span class="w"> </span>iso9660<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/dev/sr0<span class="w"> </span>/cdrom
+mount<span class="w"> </span>-t<span class="w"> </span>squashfs<span class="w"> </span>-o<span class="w"> </span>loop<span class="w"> </span>/cdrom/live/filesystem.squashfs<span class="w"> </span>/kaynak
+mkdir<span class="w"> </span>-p<span class="w"> </span>/hedef
+mkdir<span class="w"> </span>-p<span class="w"> </span>/hedef/boot/efi
+mount<span class="w"> </span>/dev/sda2<span class="w"> </span>/hedef
+mount<span class="w"> </span>/dev/sda1<span class="w"> </span>/hedef/boot/efi
+cp<span class="w"> </span>-prfv<span class="w"> </span>/kaynak/*<span class="w"> </span>/hedef
+sync
+</pre></div>
+</div>
+<p><strong>Chroot Ortamına Geçiş ve GRUB Kurulumu:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>/dev<span class="w"> </span>/sys<span class="w"> </span>/proc<span class="w"> </span>/run<span class="w"> </span>/tmp<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/hedef/<span class="nv">$dir</span>
+<span class="w">    </span>mount<span class="w"> </span>--bind<span class="w"> </span>/<span class="nv">$dir</span><span class="w"> </span>/hedef/<span class="nv">$dir</span>
+<span class="k">done</span>
+
+chroot<span class="w"> </span>/hedef
+
+mount<span class="w"> </span>-t<span class="w"> </span>efivarfs<span class="w"> </span>efivarfs<span class="w"> </span>/sys/firmware/efi/efivars
+grub-install<span class="w"> </span>--removable<span class="w"> </span>--boot-directory<span class="o">=</span>/boot<span class="w"> </span>--efi-directory<span class="o">=</span>/boot<span class="w"> </span>--target<span class="o">=</span>x86_64-efi<span class="w"> </span>/dev/sda
+grub-mkconfig<span class="w"> </span>-o<span class="w"> </span>/boot/grub/grub.cfg
+</pre></div>
+</div>
+<p>Kaynak:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">wiki</span><span class="o">.</span><span class="n">archlinux</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">title</span><span class="o">/</span><span class="n">GRUB_</span><span class="p">(</span><span class="n">T</span><span class="o">%</span><span class="n">C3</span><span class="o">%</span><span class="n">BCrk</span><span class="o">%</span><span class="n">C3</span><span class="o">%</span><span class="n">A7e</span><span class="p">)</span><span class="c1">#UEFI_sistemler - 08/07/2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">tldp</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">HOWTO</span><span class="o">/</span><span class="n">html_single</span><span class="o">/</span><span class="n">SquashFS</span><span class="o">-</span><span class="n">HOWTO</span><span class="o">/</span> <span class="o">-</span> <span class="mi">09</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">askubuntu</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">questions</span><span class="o">/</span><span class="mi">437880</span><span class="o">/</span><span class="n">extract</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">squashfs</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">an</span><span class="o">-</span><span class="n">existing</span><span class="o">-</span><span class="n">directory</span> <span class="o">-</span> <span class="mi">11</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">grok</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">c2hhcmQtMw</span><span class="o">%</span><span class="mi">3</span><span class="n">D</span><span class="o">%</span><span class="mi">3</span><span class="n">D_2ad2ac6b</span><span class="o">-</span><span class="n">d067</span><span class="o">-</span><span class="mi">40</span><span class="n">b0</span><span class="o">-</span><span class="mi">9</span><span class="n">b55</span><span class="o">-</span><span class="mi">46</span><span class="n">db0c2c98dc</span> <span class="o">-</span> <span class="mi">10</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.iso-hazirlama/index.html"><strong>ISO Hazırlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.sistemin-calistirma-inceleme/index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.paket-sistemi-tasarlama/index.html"><strong>Paket Sistemi Tasarlama</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="00-apt.html"><strong>apt Paket Sistemi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-chroot.html"><strong>Chroot Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-derleme-t%C3%BCrleri.html"><strong>Kaynak Kod Derleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-0.derleme-ara%C3%A7lar%C4%B1.html"><strong>Derleme Araçları</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-1.make.html"><strong>1-make</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-2.cmake.html"><strong>2-cmake</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-3.meson.html"><strong>3-meson</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-4.python.html"><strong>4-python</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-busybox.html"><strong>BusyBox</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="09-openrc.html"><strong>OpenRC</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html"><strong>Qemu Kullanımı</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="100-virtualbox.html"><strong>VirtualBox</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>Live Sistem Oluşturma   ve Sistem Kurulumu</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-olusturma">SquashFS Oluşturma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdrom-erisimi">Cdrom Erişimi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdrom-baglama">Cdrom Bağlama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-dosyasini-bulma">Squashfs Dosyasını Bulma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-baglama">Squashfs Bağlama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#squashfs-sistemine-gecis">Squashfs Sistemine Geçiş</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tek-bolum-kurulumu"><strong>1-Tek Bölüm Kurulumu</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uefi-sistem-kurulumu"><strong>2-UEFI Sistem Kurulumu</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html"><strong>kmod Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html"><strong>strip</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="38-kullaniciekleme.html"><strong>Kullanıcı Ekleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-github.html"><strong>github</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-github.html#sik-kullanilan-github-komutlari"><strong>Sık Kullanılan github Komutları</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="42-userdetect.html"><strong>X11 Kullanıcısının Tespiti</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/15.yardimci-konular/11-liveolusturma.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

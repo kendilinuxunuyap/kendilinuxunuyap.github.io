@@ -1,0 +1,5 @@
+#!/bin/sh
+
+gdk-pixbuf-query-loaders --update-cache
+sed -i "/gdk-pixbuf-query-loaders/d" /bin/install-remove-to-do
+echo -e "\ngdk-pixbuf-query-loaders --update-cache">>/bin/install-remove-to-do

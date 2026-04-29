@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Depo indexleme &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/13.paket-sistemi-tasarlama/12-github-index-gucelleme.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="index Güncelleme" href="13-yerel-index-guncelleme.html" />
+    <link rel="prev" title="Paket Oluşturma" href="11-paket-olusturma.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="depo-indexleme">
+<h1><strong>Depo indexleme</strong><a class="headerlink" href="#depo-indexleme" title="Permalink to this heading">¶</a></h1>
+<p>Depo, paketlerimizin olduğu alandır. Depoda ne kadar paket varsa bunların isimleri sürüm numaraları gibi bilgiler ile adreslerini liste halinde oluşturma işlemine <strong>depo indexleme</strong> denir.
+Depo indexlenirken genellikle bilgiler <strong>paket derleme talimatı(klybuild)</strong> dosyasından alınır.
+Paketlerin listesi, paketler kurulurken, silinirken ve güncellenirken kullanılmaktadır.</p>
+<section id="kly-github-depo-yapma">
+<h2><strong>kly github Depo Yapma</strong><a class="headerlink" href="#kly-github-depo-yapma" title="Permalink to this heading">¶</a></h2>
+<p>Bu doküman kullanılarak hazırlanan paketleri bilgisayarınızda bir dizinde tutabiliriz. Fakat bu çok kısıtlı bir sistem olmasına sebep olacaktır. Paketleri bir internet ortamında bir yerde saklayarak, kurmak istediğimizde internet(uzak) üzerinden kurulması daha doğru bir yöntemdir. Bu dağıtımda paketlerimizi github.com üzerinde oluşturulan bir repository üzerinden çekilmektedir. İnternetteki paketlerimizin listesi her yeni paketi yükleme sırasında güncellenmektedir. Bu işlem github hesabı üzerinden yapılmaktadır. github hakkında temel işlemler için <a class="reference internal" href="../15.yardimci-konular/39-github.html#githubbilgi"><span class="std std-ref">github</span></a> konusunu okuyunuz.</p>
+<p><strong>github üzerinde depolamak için;</strong></p>
+<ul class="simple">
+<li><p>github hesabı açılır(kendilinuxunuyap)</p></li>
+<li><p>github repository oluşturulur(kly-binary-packages)</p></li>
+<li><p>kly-binary-packages deposuna aşağıda verilen index dosyasını oluşturunuz.</p></li>
+<li><p>kly-binary-packages deposuna .github/workflows dizinini oluşturarak aşağıda verilen <strong>main.yml</strong> dosyasını oluşturunuz. <strong>main.yml</strong> dosyasısdaki <strong>sh index</strong> satırı <strong>index</strong> scriptimizi her githuba paket gönderdiğimizde(commit) çalışacak ve <strong>index.lst</strong> dosyasını oluşturacaktır.</p></li>
+<li><p>internet üzerinden kly-binary-packages reposunda settings-&gt;action-&gt;general-&gt;Workflow permissions-&gt;Read and write permissions  işaretlenmelidir.</p></li>
+<li><p>Yapılan paketler github üzerinde gönderilmelidir.</p></li>
+</ul>
+</section>
+<section id="main-yml">
+<h2>main.yml<a class="headerlink" href="#main-yml" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------------------------------------</span>
+name:<span class="w"> </span>CI
+
+on:
+<span class="w">  </span>push:
+<span class="w">        </span>branches:<span class="w"> </span><span class="o">[</span><span class="w"> </span>master<span class="w"> </span><span class="o">]</span>
+<span class="w">  </span>schedule:
+<span class="w">        </span>-<span class="w"> </span>cron:<span class="w"> </span><span class="s2">&quot;0 0 1 2 6&quot;</span>
+
+jobs:
+<span class="w">        </span>compile:
+<span class="w">            </span>name:<span class="w"> </span>depoindex
+<span class="w">            </span>runs-on:<span class="w"> </span>ubuntu-latest
+<span class="w">            </span>steps:
+<span class="w">              </span>-<span class="w"> </span>name:<span class="w"> </span>Check<span class="w"> </span>out<span class="w"> </span>the<span class="w"> </span>repo
+<span class="w">                </span>uses:<span class="w"> </span>actions/checkout@v2
+<span class="w">              </span>-<span class="w"> </span>name:<span class="w"> </span>Run<span class="w"> </span>the<span class="w"> </span>build<span class="w"> </span>process<span class="w"> </span>with<span class="w"> </span>Docker
+<span class="w">                </span>uses:<span class="w"> </span>addnab/docker-run-action@v3
+<span class="w">                </span>with:
+<span class="w">                    </span>image:<span class="w"> </span>debian:testing
+<span class="w">                    </span>options:<span class="w"> </span>-v<span class="w"> </span><span class="si">${</span><span class="p">{ github.workspace </span><span class="si">}</span><span class="o">}</span>:/root<span class="w"> </span>-v<span class="w"> </span>/output:/output
+<span class="w">                    </span>run:<span class="w"> </span><span class="p">|</span>
+<span class="w">                        </span><span class="nb">cd</span><span class="w"> </span>/root
+<span class="w">                        </span>sh<span class="w"> </span>index
+<span class="w">              </span>-<span class="w"> </span>uses:<span class="w"> </span><span class="s2">&quot;marvinpinto/action-automatic-releases@latest&quot;</span>
+<span class="w">                </span>with:
+<span class="w">                    </span>repo_token:<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p">{ secrets.GITHUB_TOKEN </span><span class="si">}</span><span class="s2">}&quot;</span>
+<span class="w">                    </span>automatic_release_tag:<span class="w"> </span><span class="s2">&quot;current&quot;</span>
+<span class="w">                    </span>prerelease:<span class="w"> </span><span class="nb">false</span>
+<span class="w">                    </span>title:<span class="w"> </span><span class="s2">&quot;Latest release&quot;</span>
+<span class="w">                    </span>files:<span class="w"> </span><span class="p">|</span>
+<span class="w">                      </span>/output/*
+</pre></div>
+</div>
+</section>
+<section id="index-dosyasi">
+<h2><strong>index Dosyası</strong><a class="headerlink" href="#index-dosyasi" title="Permalink to this heading">¶</a></h2>
+<p>Aşağıdaki script kly paket dosyalarımızı olduğu dizinde tek tek açarak içerisinden <strong>klybuild</strong> dosyalarını çıkartır. Paketle ilgili bilgileri alıp <strong>index.lst</strong> dosyası oluşturmaktadır. İstersek paketler local ortamdada index oluşturabiliriz. Bu dokümanda github üzerinde oluşturacak şekilde anlatılmıştır. Paket indeksi oluşturan <strong>index.lst</strong> dosyası aşağıdaki gibi olacaktır. Listede name, version ve depends(bağımlı olduğu paketler) bilgileri bulunmaktadır. Bilgilerin arasında <strong>|</strong> karekteri kullanılmıştır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="c1">#set -ex</span>
+mkdir<span class="w"> </span>/output<span class="w"> </span>-p
+mkdir<span class="w"> </span>-p<span class="w"> </span>/klysource
+&gt;index.lst
+find<span class="w"> </span>*<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span>*.kly<span class="w"> </span><span class="p">|</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>file_name<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">                        </span><span class="nv">dosya</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>dirname<span class="w"> </span><span class="nv">$file_name</span><span class="k">)</span><span class="s2">/klybuild&quot;</span>
+<span class="w">                        </span><span class="nv">version</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="nv">$dosya</span><span class="p">|</span>grep<span class="w"> </span><span class="nv">version</span><span class="o">=</span><span class="k">)</span>
+<span class="w">                        </span><span class="nv">name</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="nv">$dosya</span><span class="p">|</span>grep<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="k">)</span>
+<span class="w">                        </span><span class="nv">depends</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="nv">$dosya</span><span class="p">|</span>grep<span class="w"> </span><span class="nv">depends</span><span class="o">=</span><span class="k">)</span>
+<span class="w">                        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$name</span><span class="s2">|</span><span class="nv">$version</span><span class="s2">|</span><span class="nv">$depends</span><span class="s2">|</span><span class="k">$(</span>dirname<span class="w"> </span><span class="nv">$file_name</span><span class="k">)</span><span class="s2">&quot;</span>&gt;&gt;index.lst
+<span class="w">                </span><span class="k">done</span>
+cp<span class="w"> </span>-rf<span class="w"> </span>index.lst<span class="w"> </span>/output
+
+<span class="c1"># *****************************source files******************************</span>
+cp<span class="w"> </span>-prfv<span class="w"> </span>./*<span class="w"> </span>/klysource/
+
+find<span class="w"> </span>/klysource/*<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span>*.kly<span class="w"> </span><span class="p">|</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>file_name<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">                </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$file_name</span><span class="s2">&quot;</span>
+<span class="w">                </span><span class="k">done</span>
+tar<span class="w"> </span>-cf<span class="w"> </span>/output/klysourcepackage.tar<span class="w"> </span>/klysource/
+rm<span class="w"> </span>-rf<span class="w"> </span>/klysource
+</pre></div>
+</div>
+</section>
+<section id="index-lst-icerigi">
+<h2><strong>index.lst İçeriği</strong><a class="headerlink" href="#index-lst-icerigi" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/kendilinuxunuyap/kly-binary-packages/releases/download/current/index.lst">https://github.com/kendilinuxunuyap/kly-binary-packages/releases/download/current/index.lst</a> adresinde bulunan dosya aşağıdaki gibi liste oluşturacaktır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;acl&quot;</span><span class="p">|</span><span class="nv">version</span><span class="o">=</span><span class="s2">&quot;2.3.1&quot;</span><span class="p">|</span><span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;attr&quot;</span><span class="p">|</span>acl
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;attr&quot;</span><span class="p">|</span><span class="nv">version</span><span class="o">=</span><span class="s2">&quot;2.5.1&quot;</span><span class="p">|</span><span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">|</span>attr
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;audit&quot;</span><span class="p">|</span><span class="nv">version</span><span class="o">=</span><span class="s1">&#39;3.1.1&#39;</span><span class="p">|</span><span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">|</span>audit
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;bash&quot;</span><span class="p">|</span><span class="nv">version</span><span class="o">=</span><span class="s2">&quot;5.2.21&quot;</span><span class="p">|</span><span class="nv">depends</span><span class="o">=</span><span class="s2">&quot;glibc,readline,ncurses&quot;</span><span class="p">|</span>bash
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.iso-hazirlama/index.html"><strong>ISO Hazırlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.sistemin-calistirma-inceleme/index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html"><strong>Paket Sistemi Tasarlama</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="10-giris.html"><strong>Paket Sitemi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-paket-olusturma.html"><strong>Paket Oluşturma</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>Depo indexleme</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kly-github-depo-yapma"><strong>kly github Depo Yapma</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-yml">main.yml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#index-dosyasi"><strong>index Dosyası</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#index-lst-icerigi"><strong>index.lst İçeriği</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="13-yerel-index-guncelleme.html"><strong>index Güncelleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-paket-kurma.html"><strong>Paket Kurma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-paket-kald%C4%B1rma.html"><strong>Paket Kaldırma</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/13.paket-sistemi-tasarlama/12-github-index-gucelleme.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

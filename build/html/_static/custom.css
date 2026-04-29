@@ -1,0 +1,12 @@
+/* :ref: ve :doc: bağlantılarını mavi yap */
+a.reference.internal {
+    color: #2196F3; /* Mavi */
+    text-decoration: underline;
+}
+
+/* :external: bağlantılarını yeşil yap */
+a.reference.external {
+    color: #4CAF50; /* Yeşil */
+    text-decoration: none; /* Alt çizgiyi kaldır */
+}
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sed -i "/polkitd/d" /etc/group
+sed -i "/polkitd/d" /etc/passwd
+echo "polkitd:x:102:polkitd" >> /etc/group
+echo "polkitd:x:102:102:User for polkitd:/var/empty:/sbin/nologin" >> /etc/passwd
+
+
+
+    install -d /usr/share/polkit-1/rules.d
+    install -d /etc/polkit-1/rules.d
+    chown -R polkitd:polkitd /etc/polkit-1/rules.d /usr/share/polkit-1/rules.d
+    chmod -R 700 /etc/polkit-1/rules.d
+    chmod -R 700 /usr/share/polkit-1/rules.d
+  
+rc-update add polkit default
+rc-service polkit start

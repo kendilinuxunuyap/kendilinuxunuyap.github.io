@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Paket Sitemi &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/13.paket-sistemi-tasarlama/10-giris.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Paket Oluşturma" href="11-paket-olusturma.html" />
+    <link rel="prev" title="Paket Sistemi Tasarlama" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="paket-sitemi">
+<span id="paketsistemi"></span><h1><strong>Paket Sitemi</strong><a class="headerlink" href="#paket-sitemi" title="Permalink to this heading">¶</a></h1>
+<p>Paket sistemi dağıtımların paketleri yükleme, kaldırma, güncelleme gibi temel işlemlerin yapılmasını sağlayan en önemli bileşenidir.</p>
+<p>Paket sistemleri bir paketi yüklemek istediğinde, genellikle daha önceden derlenmiş paketleri veya yükleme aşamasında derleyebilir. Önceden derlenmiş olan yapıya(binary==ikili), yükleme aşamasında derleme işleminede (source==kaynak) paket sistemi denir.</p>
+<p>Gnu/Linux deneyimi az olan kullanıcılar için  daha önceden hazırlanmış ikili paketler tercih edilmektedir.</p>
+<p>Dağıtımlarda uygulamalar paketler halinde hazırlanır. Bu paketleri dağıtımda kullanabilmek için temel işlemler şunlardır;</p>
+<ol class="arabic simple">
+<li><p>Paket Oluşturma</p></li>
+<li><p>Paket Liste İndexi Güncelleme</p></li>
+<li><p>Paket Kurma</p></li>
+<li><p>Paket Kaldırma</p></li>
+<li><p>Paket Yükseltme gibi işlemleri yapan uygulamaların tamamı paket sistemi olarak adlandırılır.</p></li>
+</ol>
+<p>Paket sisteminde, uygulama paketi haline getirilip sisteme kurulur. Genelde paket sistemi dağıtımın temel bir parçası olması sebebiyle üzerinde yüklü gelir.</p>
+<p>Bazı dağıtımların kullandığı paket sistemleri şunlardır.</p>
+<ul class="simple">
+<li><p>apt: Debian dağıtımının kullandığı paket sistemi.</p></li>
+<li><p>emerge :Gentoo dağıtımının kullandığı paket sistemi.</p></li>
+</ul>
+<p><strong>Not:</strong> Bu dokümanda <strong>Paket Oluşturma, Paket Liste İndexi Güncelleme, Paket Kurma, Paket Kaldırma</strong> işlemini yapan scriptleri tasarlanmaktadır.</p>
+<section id="kly-paket-sistemi">
+<h2><strong>kly Paket Sistemi</strong><a class="headerlink" href="#kly-paket-sistemi" title="Permalink to this heading">¶</a></h2>
+<p>Bu dokümanda hazırlanan dağıtımın paket sistemi için ise <strong>kly(KendiLinuxunuYap)</strong> olarak ifade edeceğimiz paket sistemi adını kullandık. kly paket sistemindeki beş temel işlemin nasıl yapılacağı ayrı başlıklar altında anlatılacaktır. Paket sistemi derlemeli bir dil yerine bash script ile yapılacaktır. Bu dokumanı takip eden kişi, bu dokümanda yazılanları anlaması için orta seviye bash script bilmesi gerekmektedir.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.iso-hazirlama/index.html"><strong>ISO Hazırlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.sistemin-calistirma-inceleme/index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html"><strong>Paket Sistemi Tasarlama</strong></a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>Paket Sitemi</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kly-paket-sistemi"><strong>kly Paket Sistemi</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="11-paket-olusturma.html"><strong>Paket Oluşturma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-github-index-gucelleme.html"><strong>Depo indexleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-yerel-index-guncelleme.html"><strong>index Güncelleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="15-paket-kurma.html"><strong>Paket Kurma</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="16-paket-kald%C4%B1rma.html"><strong>Paket Kaldırma</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/13.paket-sistemi-tasarlama/10-giris.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

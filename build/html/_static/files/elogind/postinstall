@@ -1,0 +1,9 @@
+#!/bin/bash
+sed -i "/elogind-user/d" /etc/pam.d/system-auth
+echo -e "\nsession    include    elogind-user" >> /etc/pam.d/system-auth
+
+sed -i "/agetty_options/d" /etc/conf.d/agetty
+echo -e "\nagetty_options=\"-l /usr/bin/login\"" >> /etc/conf.d/agetty
+
+rc-update add elogind default
+rc-service elogind start

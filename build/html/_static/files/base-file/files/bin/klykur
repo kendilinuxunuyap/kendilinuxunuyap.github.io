@@ -1,0 +1,33 @@
+#!/bin/sh
+name="name=\"${1}\""
+target=$2
+mkdir -p $target
+paket=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f2)
+version=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f4)
+depends=$(echo $(cat $target/etc/kly/index.lst|grep $name)|cut -d"\"" -f6)
+# index dosyamızda paket aranıyor
+if [ ! -n "${paket}" ]; then
+echo "***********Paket Bulunamadı**********"; exit
+fi
+
+# 1. adım paketi indirme
+mkdir -p $target/tmp/kly $target/tmp/kly/kur
+rm -rf $target/tmp/kly/kur/*
+curl -Lo $target/tmp/kly/kur/${paket}-${version}.tar.gz \
+https://github.com/kendilinuxunuyap/kly-binary-packages/raw/master/${paket}/${paket}-${version}.kly
+mkdir -p $target/var/lib/kly
+cd $target/tmp/kly/kur/
+
+# 2. adım paketi açma
+tar -xf ${paket}-${version}.tar.gz
+mkdir -p rootfs
+tar -xf rootfs.tar.xz -C rootfs
+
+# 3. adım paketi kurma
+cp -prfv rootfs/* $target/
+
+# 4. adım name version depends /var/lib/kly/index.lst eklenmesi
+echo "name=\"${paket}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/kly/index.lst
+# 5. adım paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan
+# file index dosyanının /var/lib/kly/ konumuna kopyalanması
+cp file.index $target/var/lib/kly/${paket}-${version}.lst

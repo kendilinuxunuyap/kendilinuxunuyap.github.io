@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>1-grub.cfg Hazırlama &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/10.iso-hazirlama/1-iso-hazirlama.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Oluşan Sistemin Çalıştırılması İncelenmesi" href="../12.sistemin-calistirma-inceleme/index.html" />
+    <link rel="prev" title="ISO Hazırlama" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <p>Önceki bölümlerde, gerekli paketlerin derlenmesi tamamlandı. Bu paketler, oturum açtığınız kullanıcının ev dizininde <strong>$HOME/distro/rootfs</strong> konumunda yer alacaktır. Burada <strong>$HOME</strong>, o anki kullanıcıya göre değişiklik gösterecektir. Örneğin, kullanıcı adımız <strong>bd</strong> ise, <strong>$HOME</strong> dizini <strong>/home/bd/</strong> olacaktır. Bu durumda, <strong>$HOME/distro/rootfs</strong> aslında <strong>/home/bd/distro/rootfs</strong> dizinini temsil eder.</p>
+<p>ISO hazırlama süreci, yazının başında anlattığımız <strong>Temel Linux Sistemi Oluşturma</strong> ISO yapımına benzer bir şekilde ilerleyecektir. Oluşturulacak <strong>iso</strong> dosyasının temel yapısı aşağıdaki gibi olacaktır. Bu yapıyı oluşturan dört temel dosyanın her biri için hazırlık adımları tek tek açıklanacak ve en sonunda hepsini bir araya getiren bir ISO oluşturma scripti verilecektir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">$HOME</span>/distro/iso/boot/grub/grub.cfg
+<span class="nv">$HOME</span>/distro/iso/boot/initrd.img
+<span class="nv">$HOME</span>/distro/iso/boot/vmlinuz
+<span class="nv">$HOME</span>/distro/iso/live/filesystem.squashfs
+</pre></div>
+</div>
+<section id="grub-cfg-hazirlama">
+<h1><strong>1-grub.cfg Hazırlama</strong><a class="headerlink" href="#grub-cfg-hazirlama" title="Permalink to this heading">¶</a></h1>
+<p>Sistemin açılmasını sağlayan temel dosyalardan biri <strong>grub.cfg</strong> dosyasıdır. Genel olarak basit bir <strong>grub.cfg</strong> şu şekildedir:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>linux<span class="w"> </span>/boot/vmlinuz
+initrd<span class="w"> </span>/boot/initrd.img
+boot
+</pre></div>
+</div>
+<p>Bu örnekteki sistem için <strong>grub.cfg</strong> dosyası aşağıdaki gibi düzenlenmiştir. Burada dikkat edilmesi gereken noktalar:</p>
+<ul class="simple">
+<li><p>Menü seçeneklerinde <strong>live</strong> ifadesinin kullanılması.</p></li>
+<li><p>Sistemin <strong>openrc</strong> ile başlatılmasını sağlamak için gerekli kernel parametrelerinin eklenmesi.</p></li>
+<li><p>Kurulum için özel bir <strong>init=/bin/kur</strong> satırı kullanılması.</p></li>
+</ul>
+<p>İşte örnek <strong>grub.cfg</strong> oluşturma komutları:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; &quot;$HOME/distro/iso/boot/grub/grub.cfg&quot;</span>
+<span class="s">set timeout=3        # Timeout for menu</span>
+<span class="s">set default=1        # Default boot entry</span>
+<span class="s">set menu_color_normal=white/black    # Menu Colours</span>
+<span class="s">set menu_color_highlight=white/blue  # Menu Colours</span>
+<span class="s">insmod all_video; terminal_output console; terminal_input console</span>
+
+<span class="s">menuentry &quot;Canli(live) GNU/Linux(kly)&quot; --class liveiso {</span>
+<span class="s"> linux /boot/vmlinuz boot=live init=/sbin/openrc-init net.ifnames=0 \</span>
+<span class="s">     biosdevname=0</span>
+<span class="s"> initrd /boot/initrd.img</span>
+<span class="s">}</span>
+<span class="s">menuentry &quot;Kur GNU/Linux(kly)&quot; --class liveiso {</span>
+<span class="s">   linux /boot/vmlinuz boot=live init=/bin/kur quiet</span>
+<span class="s">   initrd /boot/initrd.img</span>
+<span class="s">   }</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</section>
+<section id="initrd-img-olusturma-guncelleme">
+<h1><strong>2-initrd.img Oluşturma/Güncelleme</strong><a class="headerlink" href="#initrd-img-olusturma-guncelleme" title="Permalink to this heading">¶</a></h1>
+<p><strong>initrd.img</strong> dosyasının güncellenmesi veya oluşturulması için aşağıdaki adımlar izlenebilir.</p>
+<p>Varsayılan sistemde çalışıyorsanız doğrudan aşağıdaki komut yeterlidir:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># initrd günceller</span>
+/usr/sbin/update-initramfs<span class="w"> </span>-u<span class="w"> </span>-k<span class="w"> </span><span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>
+</pre></div>
+</div>
+<p>Ancak bir <strong>chroot</strong> ortamında çalışıyorsanız (yani rootfs içine girip işlem yapacaksanız), önce <strong>dev</strong>, <strong>sys</strong>, <strong>proc</strong>, <strong>run</strong>, <strong>tmp</strong> dizinlerinin bağlanması gerekir. Bu işlemler root yetkisi ile yapılmalıdır.</p>
+<p>Aşağıda örnek bir <strong>initrd.img oluşturma scripti</strong> yer almaktadır:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------------------------------------------------</span>
+<span class="nv">rootfs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/distro/rootfs&quot;</span>
+<span class="nv">distro</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/distro&quot;</span>
+
+<span class="c1">## Gerekli dizinler oluşturuluyor bağlanıyor</span>
+<span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>dev<span class="w"> </span>sys<span class="w"> </span>proc<span class="w"> </span>run<span class="w"> </span>tmp<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$rootfs</span><span class="s2">/</span><span class="nv">$dir</span><span class="s2">&quot;</span>
+<span class="w"> </span>mount<span class="w"> </span>--bind<span class="w"> </span>/<span class="nv">$dir</span><span class="w"> </span><span class="nv">$rootfs</span>/<span class="nv">$dir</span>
+<span class="k">done</span>
+
+<span class="c1">## Kernel versiyonu tespiti</span>
+<span class="nv">fname</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$rootfs</span>/boot/config*<span class="k">)</span>
+<span class="nv">kversion</span><span class="o">=</span><span class="si">${</span><span class="nv">fname</span><span class="p">:</span><span class="nv">7</span><span class="si">}</span>
+mv<span class="w"> </span><span class="nv">$rootfs</span>/boot/config*<span class="w"> </span><span class="nv">$rootfs</span>/boot/config-<span class="nv">$kversion</span>
+cp<span class="w"> </span><span class="nv">$rootfs</span>/boot/config-<span class="nv">$kversion</span><span class="w"> </span><span class="nv">$rootfs</span>/etc/kernel-config
+
+<span class="c1">## initramfs oluşturuluyor</span>
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>update-initramfs<span class="w"> </span>-u<span class="w"> </span>-k<span class="w"> </span><span class="nv">$kversion</span>
+
+<span class="c1">## Dizin bağlantıları kaldırılıyor</span>
+<span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>dev<span class="w"> </span>sys<span class="w"> </span>proc<span class="w"> </span>run<span class="w"> </span>tmp<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">     </span>umount<span class="w"> </span>-lf<span class="w"> </span>-R<span class="w"> </span><span class="nv">$rootfs</span>/<span class="nv">$dir</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<span class="k">done</span>
+
+<span class="c1">## initrd.img dosyası kopyalanıyor</span>
+cp<span class="w"> </span>-pf<span class="w"> </span><span class="nv">$rootfs</span>/boot/initrd.img-*<span class="w"> </span><span class="nv">$distro</span>/iso/boot/initrd.img
+</pre></div>
+</div>
+</section>
+<section id="vmlinuz-hazirlama">
+<h1><strong>3-vmlinuz Hazırlama</strong><a class="headerlink" href="#vmlinuz-hazirlama" title="Permalink to this heading">¶</a></h1>
+<p>Kernel dosyamız olan <strong>vmlinuz</strong>, ISO dizinine aşağıdaki komutla kopyalanır:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------------------------------------------------</span>
+<span class="nv">rootfs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/distro/rootfs&quot;</span>
+<span class="nv">distro</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/distro&quot;</span>
+
+<span class="c1"># Kernel dosyasını kopyala</span>
+cp<span class="w"> </span>-pf<span class="w"> </span><span class="nv">$rootfs</span>/boot/vmlinuz-*<span class="w"> </span><span class="nv">$distro</span>/iso/boot/vmlinuz
+
+<span class="c1"># Sistemde rootfs dışında boot bölümü olduğu için boot dizini silinebilir</span>
+<span class="c1">#rm -rf $rootfs/boot</span>
+</pre></div>
+</div>
+</section>
+<section id="filesystem-squashfs-hazirlama">
+<h1><strong>4-filesystem.squashfs Hazırlama</strong><a class="headerlink" href="#filesystem-squashfs-hazirlama" title="Permalink to this heading">¶</a></h1>
+<p>Sistemin <strong>live</strong> olarak çalıştırılabilmesi ve kurulum için kaynak oluşturacak <strong>filesystem.squashfs</strong> dosyası oluşturulur:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------------------------------------------------</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro/
+mksquashfs<span class="w"> </span><span class="nv">$HOME</span>/distro/rootfs<span class="w"> </span><span class="nv">$HOME</span>/distro/filesystem.squashfs<span class="w"> </span>-comp<span class="w"> </span>xz<span class="w"> </span>-wildcards
+mv<span class="w"> </span><span class="nv">$HOME</span>/distro/filesystem.squashfs<span class="w"> </span><span class="nv">$HOME</span>/distro/iso/live/filesystem.squashfs
+</pre></div>
+</div>
+</section>
+<section id="iso-dosyasinin-olusturulmasi">
+<h1><strong>5-ISO Dosyasının Oluşturulması</strong><a class="headerlink" href="#iso-dosyasinin-olusturulmasi" title="Permalink to this heading">¶</a></h1>
+<p>Tüm dosyalar konumlarına uygun hazırlandıktan sonra, <strong>grub-mkrescue</strong> aracı ile ISO dosyamızı oluşturabiliriz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------------------------------------------------</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$HOME</span>/distro
+grub-mkrescue<span class="w"> </span>iso/<span class="w"> </span>-o<span class="w"> </span>kly.iso
+</pre></div>
+</div>
+</section>
+<section id="iso-nun-test-edilmesi">
+<h1><strong>6-ISO'nun Test Edilmesi</strong><a class="headerlink" href="#iso-nun-test-edilmesi" title="Permalink to this heading">¶</a></h1>
+<p>Oluşturduğumuz ISO dosyasını <strong>qemu</strong> veya <strong>VirtualBox</strong> ile test edebiliriz. Linux üzerinde terminalden <strong>qemu</strong> kullanarak aşağıdaki şekilde test gerçekleştirebilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># qemu ile ISO&#39;nun test edilmesi</span>
+qemu-system-x86_64<span class="w"> </span>-cdrom<span class="w"> </span><span class="nv">$HOME</span>/distro/kly.iso<span class="w"> </span>-m<span class="w"> </span>1G
+</pre></div>
+</div>
+</section>
+<section id="iso-olusturma-scripti">
+<h1><strong>ISO Oluşturma Scripti</strong><a class="headerlink" href="#iso-olusturma-scripti" title="Permalink to this heading">¶</a></h1>
+<p>Bu dokümanda anlatılan paketleri kurulduğu <strong>/home/$user/distro/rootfs</strong> dizini kullanarak, <strong>/home/$user/distro/iso/</strong> konumuna <strong>kly.iso</strong> dosyasını üretir. Bu bölümde anlatılan tüm aşamalar tek script halinde aşağıda verilmiştir. Bu scripti <strong>sudo</strong> yetkisiyle çalıştırınız.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+<span class="nv">tepmPath</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/sbin/
+<span class="nv">display</span><span class="o">=</span><span class="s2">&quot;:</span><span class="k">$(</span>ls<span class="w"> </span>/tmp/.X11-unix/*<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s#/tmp/.X11-unix/X##&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">user</span><span class="o">=</span><span class="k">$(</span>who<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;(&#39;</span><span class="nv">$display</span><span class="s1">&#39;)&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span><span class="w"> </span><span class="c1"># Kullanıcı&amp;ekran bul</span>
+<span class="nv">distro</span><span class="o">=</span><span class="s2">&quot;/home/</span><span class="nv">$user</span><span class="s2">/distro&quot;</span><span class="p">;</span><span class="w"> </span><span class="nv">rootfs</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$distro</span><span class="s2">/rootfs&quot;</span><span class="p">;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$distro</span><span class="s2">/iso&quot;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[+] </span><span class="nv">$rootfs</span><span class="s2"> dizininin izinleri düzenleniyor...&quot;</span>
+chown<span class="w"> </span>-R<span class="w"> </span>root:root<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/bin<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/sbin<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/usr/bin<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/usr/sbin<span class="w"> </span><span class="c1">#sahibi root:root olsun</span>
+chown<span class="w"> </span>-R<span class="w"> </span>root:root<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/var<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/run<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/root<span class="w">   </span><span class="c1">#sahibi root:root olsun</span>
+find<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span><span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-exec<span class="w"> </span>chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span><span class="w">    </span><span class="c1"># Tüm dizinlere 755 ver</span>
+chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/etc/shadow<span class="w"> </span>etc/gshadow<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w">  </span><span class="c1"># Hassas dosyaları ayarla</span>
+chmod<span class="w"> </span><span class="m">1777</span><span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/tmp<span class="w"> </span><span class="c1"># /tmp için sticky bit</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[+] </span><span class="nv">$rootfs</span><span class="s2"> dizininden iso oluşturuluyor...&quot;</span><span class="w">      </span><span class="c1"># chroot ortamı için gerekli bind işlemleri</span>
+<span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>dev<span class="w"> </span>dev/pts<span class="w"> </span>proc<span class="w"> </span>sys<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>mount<span class="w"> </span>-o<span class="w"> </span><span class="nb">bind</span><span class="w"> </span>/<span class="nv">$dir</span><span class="w"> </span><span class="nv">$rootfs</span>/<span class="nv">$dir</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+
+<span class="c1"># root ve live kullanıcı eklenmesi</span>
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;1\n1\n&quot;</span><span class="p">|</span>chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>passwd<span class="w"> </span>root
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>userdel<span class="w"> </span>-r<span class="w"> </span>live
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>useradd<span class="w"> </span>live<span class="w"> </span>-m<span class="w"> </span>-s<span class="w"> </span>/bin/sh<span class="w"> </span>-d<span class="w"> </span>/home/live
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;live\nlive\n&quot;</span><span class="p">|</span>chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>passwd<span class="w"> </span>live
+<span class="c1"># /root ve /home/live için sahiplik ve izinleri ayarlanıyor</span>
+chown<span class="w"> </span>live:live<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/home/live
+chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/home/live
+chown<span class="w"> </span>root:root<span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/root
+chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span><span class="si">${</span><span class="nv">rootfs</span><span class="si">}</span>/root
+<span class="k">for</span><span class="w"> </span>grp<span class="w"> </span><span class="k">in</span><span class="w"> </span>users<span class="w"> </span>tty<span class="w"> </span>wheel<span class="w"> </span>cdrom<span class="w"> </span>audio<span class="w"> </span>dip<span class="w"> </span>video<span class="w"> </span>plugdev<span class="w"> </span>netdev<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span><span class="nv">$grp</span><span class="w"> </span>live<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="k">done</span>
+<span class="c1"># agetty ayarları</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;/agetty_options/d&quot;</span><span class="w"> </span><span class="nv">$rootfs</span>/etc/conf.d/agetty
+<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nagetty_options=\&quot;-l /usr/bin/login\&quot;&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$rootfs</span>/etc/conf.d/agetty
+<span class="c1"># initrd güncellemesi</span>
+<span class="nv">fname</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="nv">$rootfs</span>/boot/config*<span class="k">)</span>
+<span class="nv">kversion</span><span class="o">=</span><span class="si">${</span><span class="nv">fname</span><span class="p">:</span><span class="nv">7</span><span class="si">}</span>
+mv<span class="w"> </span><span class="nv">$rootfs</span>/boot/config*<span class="w"> </span><span class="nv">$rootfs</span>/boot/config-<span class="nv">$kversion</span>
+cp<span class="w"> </span><span class="nv">$rootfs</span>/boot/config-<span class="nv">$kversion</span><span class="w"> </span><span class="nv">$rootfs</span>/etc/kernel-config
+chroot<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span>update-initramfs<span class="w"> </span>-u<span class="w"> </span>-k<span class="w"> </span><span class="nv">$kversion</span>
+<span class="c1"># chroot bind dizinlerini ayır</span>
+<span class="k">for</span><span class="w"> </span>dir<span class="w"> </span><span class="k">in</span><span class="w"> </span>dev<span class="w"> </span>dev/pts<span class="w"> </span>proc<span class="w"> </span>sys<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="k">while</span><span class="w"> </span>umount<span class="w"> </span>-lf<span class="w"> </span>-R<span class="w"> </span><span class="nv">$rootfs</span>/<span class="nv">$dir</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<span class="k">done</span>
+<span class="c1"># ISO dizin yapısını oluştur</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$distro</span><span class="s2">/iso/boot/grub&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$distro</span><span class="s2">/iso/live&quot;</span>
+cp<span class="w"> </span>-pf<span class="w"> </span><span class="nv">$rootfs</span>/boot/initrd.img-*<span class="w"> </span><span class="nv">$distro</span>/iso/boot/initrd.img<span class="w"> </span><span class="c1"># initrd.img</span>
+cp<span class="w"> </span>-pf<span class="w"> </span><span class="nv">$rootfs</span>/boot/vmlinuz-*<span class="w"> </span><span class="nv">$distro</span>/iso/boot/vmlinuz<span class="w"> </span><span class="c1"># vmlinuz kopyala</span>
+mksquashfs<span class="w"> </span><span class="nv">$rootfs</span><span class="w"> </span><span class="nv">$distro</span>/filesystem.squashfs<span class="w"> </span>-comp<span class="w"> </span>xz<span class="w"> </span>-wildcards<span class="w"> </span><span class="c1"># squashfs</span>
+mv<span class="w"> </span><span class="nv">$distro</span>/filesystem.squashfs<span class="w"> </span><span class="nv">$distro</span>/iso/live/filesystem.squashfs
+<span class="c1"># grub.cfg dosyasını yaz</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; &quot;$distro/iso/boot/grub/grub.cfg&quot;</span>
+<span class="s">set timeout=6; set default=1; terminal_input console;</span>
+<span class="s">menuentry &quot;Canli(live) GNU/Linux 64-bit&quot; --class liveiso {</span>
+<span class="s">linux /boot/vmlinuz boot=live init=/sbin/openrc-init net.ifnames=0 \</span>
+<span class="s">biosdevname=0</span>
+<span class="s">initrd /boot/initrd.img</span>
+<span class="s">}</span>
+<span class="s">menuentry &quot;Kur GNU/Linux 64-bit&quot; --class liveiso {</span>
+<span class="s">linux /boot/vmlinuz boot=live init=/bin/kur quiet</span>
+<span class="s">initrd /boot/initrd.img</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+grub-mkrescue<span class="w"> </span><span class="nv">$distro</span>/iso/<span class="w"> </span>-o<span class="w"> </span><span class="nv">$distro</span>/kly.iso<span class="w">   </span><span class="c1">#iso oluşturuluyor</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">tempPath</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Kaynaklar:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">subrat</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">build</span><span class="o">-</span><span class="n">kernel</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">userspace</span><span class="o">/</span> <span class="o">-</span> <span class="mi">08</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">medium</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="nd">@chienhaotan</span><span class="o">/</span><span class="n">compiling</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">running</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">minimal</span><span class="o">-</span><span class="n">kernel</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">busybox</span><span class="o">-</span><span class="n">bfc45a991017</span> <span class="o">-</span> <span class="mi">08</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">wiki</span><span class="o">.</span><span class="n">archlinux</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">title</span><span class="o">/</span><span class="n">GRUB_</span><span class="p">(</span><span class="n">T</span><span class="o">%</span><span class="n">C3</span><span class="o">%</span><span class="n">BCrk</span><span class="o">%</span><span class="n">C3</span><span class="o">%</span><span class="n">A7e</span><span class="p">)</span>  <span class="o">-</span> <span class="mi">08</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+<span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">chatgpt</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="mi">6875084</span><span class="n">c</span><span class="o">-</span><span class="mi">6050</span><span class="o">-</span><span class="mi">8012</span><span class="o">-</span><span class="mi">9229</span><span class="o">-</span><span class="n">a37b47351aa2</span> <span class="o">-</span> <span class="mi">14</span><span class="o">/</span><span class="mi">07</span><span class="o">/</span><span class="mi">2025</span>
+</pre></div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html"><strong>ISO Hazırlama</strong></a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>1-grub.cfg Hazırlama</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initrd-img-olusturma-guncelleme"><strong>2-initrd.img Oluşturma/Güncelleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vmlinuz-hazirlama"><strong>3-vmlinuz Hazırlama</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filesystem-squashfs-hazirlama"><strong>4-filesystem.squashfs Hazırlama</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iso-dosyasinin-olusturulmasi"><strong>5-ISO Dosyasının Oluşturulması</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iso-nun-test-edilmesi"><strong>6-ISO'nun Test Edilmesi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#iso-olusturma-scripti"><strong>ISO Oluşturma Scripti</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../12.sistemin-calistirma-inceleme/index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.paket-sistemi-tasarlama/index.html"><strong>Paket Sistemi Tasarlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/10.iso-hazirlama/1-iso-hazirlama.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

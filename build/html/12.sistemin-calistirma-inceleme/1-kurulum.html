@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Canlı(live) Sistem Kullanımı &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/12.sistemin-calistirma-inceleme/1-kurulum.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Paket Sistemi Tasarlama" href="../13.paket-sistemi-tasarlama/index.html" />
+    <link rel="prev" title="Oluşan Sistemin Çalıştırılması İncelenmesi" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <p>Yaptığımız sistem ISO haline dönüştürüldü ve artık <strong>test etme</strong> ile <strong>inceleme</strong> aşamasına geçtik. ISO hazırlama bölümünde aşağıdaki komutla ISO’yu oluşturduk:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>grub-mkrescue<span class="w"> </span><span class="nv">$distro</span>/iso/<span class="w"> </span>-o<span class="w"> </span><span class="nv">$distro</span>/kly.iso
+</pre></div>
+</div>
+<p>Oluşturulan ISO dosyası <code class="docutils literal notranslate"><span class="pre">$distro/kly.iso</span></code> konumunda yer almakta olup, bu konum <code class="docutils literal notranslate"><span class="pre">$HOME/distro/kly.iso</span></code> dizinine karşılık gelmektedir.</p>
+<p>Bu dokümanda anlatılan paketlerin <strong>kly Paket Sistemiyle</strong> hazırlanmış <strong>Temel Sistem</strong> isosu hazırlandı. İsoyu <a class="reference external" href="https://github.com/kendilinuxunuyap/kly-base-distro/releases/download/current/kly-base-distro.iso">https://github.com/kendilinuxunuyap/kly-base-distro/releases/download/current/kly-base-distro.iso</a> adresinden indirebilirsiniz.</p>
+<p>Şimdi hazırlanan ISO’yu <strong>QEMU</strong> veya <strong>VirtualBox</strong> kullanarak çalıştıralım. Ekran görüntüleri aşağıda verilmiştir.</p>
+<section id="canli-live-sistem-kullanimi">
+<h1><strong>Canlı(live) Sistem Kullanımı</strong><a class="headerlink" href="#canli-live-sistem-kullanimi" title="Permalink to this heading">¶</a></h1>
+<a class="reference internal image-reference" href="../_images/iso-20.png"><img alt="../_images/iso-20.png" src="../_images/iso-20.png" style="width: 600px; height: 100px;" /></a>
+<a class="reference internal image-reference" href="../_images/iso-21.png"><img alt="../_images/iso-21.png" src="../_images/iso-21.png" style="width: 600px;" /></a>
+<p>Canlı(live) sistem çalıştırıldığında overlay live bir sistemin açıldığını görmekteyiz. Canlı(live) sistemde kullanıcı adları ve parolaları;</p>
+<ul class="simple">
+<li><p>Kullanıcı: root       Parola: 1</p></li>
+<li><p>Kullanıcı: live       Parola: live</p></li>
+</ul>
+</section>
+<section id="sistem-kurulumu">
+<h1><strong>Sistem Kurulumu</strong><a class="headerlink" href="#sistem-kurulumu" title="Permalink to this heading">¶</a></h1>
+<p>Hazırlanan ISO ile birlikte, farklı kurulum araçları da gelebilir. Bu araçlar, çeşitli kurulum yöntemlerini destekleyebilir. En sık kullanılan kurulum yöntemleri şunlardır:</p>
+<ol class="arabic simple">
+<li><p>Tek bölüme sistem kurulumu</p></li>
+<li><p>UEFI sistem kurulumu (boot + sistem)</p></li>
+</ol>
+<p>Bu bölümde, tek bölüm kurulum ve boot + sistem şeklinde iki farklı kurulum yöntemi sırayla anlatılacaktır. Anlatılan yöntemler, farklı kullanıcı senaryolarına cevap verebilecek şekilde tasarlanmıştır.</p>
+<p>Ancak dikkat edilmesi gereken önemli bir nokta şudur: Her yöntemi ayrı ayrı son kullanıcıya seçenek olarak sunmak, özellikle tecrübesiz kullanıcılar için kafa karıştırıcı olabilir. Örneğin:</p>
+<ul class="simple">
+<li><p>Kullanıcı, kurulum sırasında <strong>EFI</strong> seçeneğini işaretlediğinde fakat sistem aslında <strong>Legacy BIOS</strong> ise, ya da tam tersi durumda, yanlış seçim yapabilir.</p></li>
+<li><p>Ayrıca, <strong>sda</strong> ve <strong>nvme</strong> diskler arasında farklı kurulum senaryoları gerekebilir.</p></li>
+</ul>
+<p>Bu nedenle hazırlanan kurulum sistemi, aşağıdaki tüm olası senaryolara otomatik cevap verecek şekilde tasarlanmıştır:</p>
+<ul class="simple">
+<li><p><strong>Legacy BIOS → sd*</strong> disk tipi</p></li>
+<li><p><strong>Legacy BIOS → nvme*</strong> disk tipi (<strong>desteklenmemektedir</strong>)</p></li>
+<li><p><strong>UEFI → sd*</strong> disk tipi</p></li>
+<li><p><strong>UEFI → nvme*</strong> disk tipi</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Not</p>
+<p>Bu senaryolara göre hazırlanan kurulum scripti, <strong>dialog</strong> aracı kullanılarak oluşturulmuştur. İlgili kurulum scriptleri, <strong>base-file</strong> paketinin içindeki <strong>files.rar</strong> arşivinde yer almaktadır.</p>
+<p>Bu bölümde, sadece <strong>Legacy BIOS</strong> ve <strong>UEFI</strong> sistem kurulumunun genel adımları anlatılacaktır. Bu yöntemleri kendi ihtiyaçlarınıza göre düzenleyerek kullanabilirsiniz.</p>
+</div>
+<p>Sistemin kurulumu için resimlerde görünen sıraya göre seçimler yapmalıyız.</p>
+<a class="reference internal image-reference" href="../_images/iso-30.png"><img alt="../_images/iso-30.png" src="../_images/iso-30.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../_images/iso-31.png"><img alt="../_images/iso-31.png" src="../_images/iso-31.png" style="width: 600px;" /></a>
+<p>Kurulum menüsünde kullanıcı adları ve parolaları, klayve varsayılan olarak;</p>
+<ul class="simple">
+<li><p>Kullanıcı: root       Parola: 1</p></li>
+<li><p>Kullanıcı: user1      Parola: 1</p></li>
+<li><p>Dil           : tr_TR</p></li>
+<li><p>Klavye        : trq</p></li>
+</ul>
+<p>menüden değişiklik yapabilirsiniz. Değişiklik yapmadan sadece kurulum diskini ve disk bölümünü seçip Install(Yükle) işlemi yapabilirsiniz.</p>
+<a class="reference internal image-reference" href="../_images/iso-32.png"><img alt="../_images/iso-32.png" src="../_images/iso-32.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../_images/iso-33.png"><img alt="../_images/iso-33.png" src="../_images/iso-33.png" style="width: 600px;" /></a>
+</section>
+<section id="sistemin-calismasi">
+<h1><strong>Sistemin Çalışması</strong><a class="headerlink" href="#sistemin-calismasi" title="Permalink to this heading">¶</a></h1>
+<p>Sistem kurulumu gerçekleştiğinde  sistem resimde görüldüğü gibi açılmalıdır.</p>
+<a class="reference internal image-reference" href="../_images/iso-40.png"><img alt="../_images/iso-40.png" src="../_images/iso-40.png" style="width: 600px;" /></a>
+<p>Sisteme <strong>root</strong> kullanıcısı olarak giriş yapıldığı görülmektedir.</p>
+<a class="reference internal image-reference" href="../_images/iso-41.png"><img alt="../_images/iso-41.png" src="../_images/iso-41.png" style="width: 600px;" /></a>
+<section id="olusan-sistemin-degerlendirmesi">
+<h2><strong>Oluşan Sistemin Değerlendirmesi</strong><a class="headerlink" href="#olusan-sistemin-degerlendirmesi" title="Permalink to this heading">¶</a></h2>
+<p>Mevcut sistem <strong>Debian</strong> ortamında derlenmiştir. Paketler derlenirken, Debian’a özgü fakat bizim sistemimiz için gerekli olmayan bazı ayarlar ve bağımlılıklar da yeni sisteme taşınmış olabilir. Bu tür taşınan unsurları ortadan kaldırmak için, tüm paketlerin tamamen kendi sistemimiz üzerinde yeniden derlenmesi gereklidir.</p>
+<p>İlk derleme süreci Debian üzerinde yapılmış olsa da, sonraki derleme adımı mutlaka hazırladığımız yeni sistemde gerçekleştirilmelidir. Bu yöntem, sistemdeki eksiklikleri tespit etmek ve gözden kaçan bağımlılıkları ortaya çıkarmak açısından kritik öneme sahiptir.</p>
+<p>Derleme işlemimin yapılabilmesi için oluşturulan sistemdeki paketlere ek paketler derlenmesi gerekmektedir. Bu paketlerin en önemlileri <strong>gcc, binutils, mpfr, libmpc, zlib, libisl, make</strong>'dir.</p>
+<p>Bu dokümanın amacı, bir sistemin nasıl derlenip çalıştırılacağını adım adım bir rehber olarak sunmaktır. Bundan sonraki aşamada ise, tüm paketlerin yeni sistem üzerinde eksiksiz bir şekilde derlenmesi hedeflenmelidir.</p>
+<p>Tüm paketler yeni sistemde başarıyla derlendikten ve sistem sorunsuz şekilde çalıştıktan sonra, <strong>x11</strong> ortamını derleme aşamasına geçilebilir. Dokümanda yer alan paket derleme betikleri kullanılarak <strong>x11</strong> kolaylıkla derlenebilir. Bu noktaya kadar sorunsuz ilerlenmişse, <strong>x11</strong>’in derlenmesi yalnızca zaman alacak bir işlemdir.</p>
+<p>x11'in en temel paketi <strong>xorg-server, mesa, llvm, cairo</strong> paketleridir. Bu paketlere aşağıdaki adreslerden ulaşılabilir.</p>
+<ol class="arabic simple">
+<li><p>xorg-server: <a class="reference external" href="https://www.x.org/releases/individual/xserver/">https://www.x.org/releases/individual/xserver/</a></p></li>
+<li><p>mesa : <a class="reference external" href="https://gitlab.freedesktop.org/mesa/mesa/-/tags">https://gitlab.freedesktop.org/mesa/mesa/-/tags</a></p></li>
+<li><p>llvm : <a class="reference external" href="https://github.com/llvm/llvm-project/tags">https://github.com/llvm/llvm-project/tags</a></p></li>
+<li><p>cairo: <a class="reference external" href="https://gitlab.freedesktop.org/cairo/cairo/-/tags">https://gitlab.freedesktop.org/cairo/cairo/-/tags</a></p></li>
+</ol>
+<p>Tüm paketleri derlesek bile <strong>xorg-server, mesa, llvm, cairo</strong> paketleri düzgün ve uyumlu versiyonları olmadığı zaman <strong>x</strong> penceremiz açılmayacaktır.</p>
+<p>Buradaki tüm paketler ve bağımlılıkları derlendikten sonra <strong>Xorg:0</strong> şeklinde elle çalıştırarak hata ayıklama yapılmalıdır.</p>
+<p>Bu dokümanın devamı niteliğinde temel bir <strong>x11</strong> ortamı nasıl derleneceğini anlatan bir doküman hazırlamayı planlamaktayız.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.iso-hazirlama/index.html"><strong>ISO Hazırlama</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>Canlı(live) Sistem Kullanımı</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sistem-kurulumu"><strong>Sistem Kurulumu</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sistemin-calismasi"><strong>Sistemin Çalışması</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#olusan-sistemin-degerlendirmesi"><strong>Oluşan Sistemin Değerlendirmesi</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../13.paket-sistemi-tasarlama/index.html"><strong>Paket Sistemi Tasarlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15.yardimci-konular/index.html">Yardımcı Konular</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/12.sistemin-calistirma-inceleme/1-kurulum.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

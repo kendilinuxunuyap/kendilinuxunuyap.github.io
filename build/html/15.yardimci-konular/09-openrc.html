@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>OpenRC &#8212; distro Wiki  belgelendirmesi</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="canonical" href="https://kendilinuxunuyap.github.io/15.yardimci-konular/09-openrc.html" />
+    <link rel="index" title="Dizin" href="../genindex.html" />
+    <link rel="search" title="Ara" href="../search.html" />
+    <link rel="next" title="Qemu Kullanımı" href="10-qemu.html" />
+    <link rel="prev" title="BusyBox" href="04-busybox.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="openrc">
+<h1><strong>OpenRC</strong><a class="headerlink" href="#openrc" title="Permalink to this heading">¶</a></h1>
+<p>Openrc sistem açılışında çalışacak uygulamaları çalıştıran servis yöneticisidir.</p>
+<section id="calistirilmasi">
+<h2><strong>Çalıştırılması</strong><a class="headerlink" href="#calistirilmasi" title="Permalink to this heading">¶</a></h2>
+<p>Openrc servis yönetiminin çalışması için boot parametrelerine yazılması gerekmektedir.
+<strong>/boot/grub.cfg</strong> içindeki
+<strong>linux /vmlinuz init=/usr/sbin/openrc-init root=/dev/sdax</strong>
+olan satırda
+<strong>init=/usr/sbin/openrc-init</strong>
+yazılması gerekmektedir. Artık sistem openrc servis yöneticisi tarafından uygulamalar çalıştırılacak ve sistem hazır hale getirilecek.</p>
+</section>
+<section id="openrc-kullanimi">
+<h2><strong>openrc Kullanımı</strong><a class="headerlink" href="#openrc-kullanimi" title="Permalink to this heading">¶</a></h2>
+<p>Servis etkinleştirip devre dışı hale getirmek için <strong>rc-update</strong> komutu kullanılır.
+Aşağıda <strong>udhcpc</strong> internet servisi örnek olarak gösterilmiştir.
+<strong>/etc/init.d/</strong> konumunda <strong>udhcpc</strong> dosyamızın olması gerekmektedir.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># servis etkinleştirmek için</span>
+rc-update<span class="w"> </span>add<span class="w"> </span>udhcpc<span class="w"> </span>boot
+<span class="c1"># servisi devre dışı yapmak için</span>
+rc-update<span class="w"> </span>del<span class="w"> </span>udhcpc<span class="w"> </span>boot
+<span class="c1"># Burada udhcpc servis adı, boot ise runlevel adıdır.</span>
+</pre></div>
+</div>
+<p>Elle <strong>/etc/runlevels/</strong> altında bulunan <strong>boot</strong>, <strong>default</strong>, <strong>nonetwork</strong>, <strong>shutdown</strong>, <strong>sysinit</strong> dizinlerine
+<strong>/etc/init.d/</strong> dizininin altındaki dosyaları <strong>ln</strong> komutuyla kısayol yaparsak
+<strong>rc-update add</strong> komutunun yaptığı görevi yapmış oluruz.
+Kısayolu silersek <strong>rc-update del</strong> komutunun görevini yapmış oluruz.</p>
+<p><strong>/etc/runlevels/</strong> altında bulunan <strong>boot</strong>, <strong>default</strong>, <strong>nonetwork</strong>, <strong>shutdown</strong>, <strong>sysinit</strong> dizinler servis dosyalarımızın hangi sırayla çalışacağını belirleyen dizinlerdir.
+Mesela <strong>boot</strong> dizini ilk açılış sırasında çalışacak olan servis dosyalarının konulacağı dizindir.</p>
+<p>Servisleri başlatıp durdurmak için ise <strong>rc-service</strong> komutu kullanılır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>rc-service<span class="w"> </span>udhcpc<span class="w"> </span>start
+<span class="c1"># veya şu şekilde de çalıştırılabilir.</span>
+/etc/init.d/udhcpc<span class="w"> </span>start
+</pre></div>
+</div>
+<p>Servislerin durumunu öğrenmek için <strong>rc-status</strong> komutu kullanılır. Ayrıca
+sistemdeki servislerin sonraki açılışta hangisinin başlatılacağını öğrenmek için
+parametresiz olarak <strong>rc-update</strong> kullanabilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># şu an hangi servislerin çalıştığını gösterir</span>
+rc-status
+<span class="c1"># sonraki açılışta hangi servislerin çalışacağını gösterir</span>
+rc-update
+</pre></div>
+</div>
+<p>Sistemi kapatmak veya yeniden başlatmak için <strong>openrc-shutdown</strong> komutunu kullanabilirsiniz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>openrc-shutdown<span class="w"> </span>-p<span class="w"> </span><span class="m">0</span><span class="w">     </span><span class="c1"># kapatmak için</span>
+openrc-shutdown<span class="w"> </span>-r<span class="w"> </span><span class="m">0</span><span class="w">     </span><span class="c1"># yeniden başlatmak için</span>
+</pre></div>
+</div>
+</section>
+<section id="servis-dosyasi">
+<h2><strong>Servis Dosyası</strong><a class="headerlink" href="#servis-dosyasi" title="Permalink to this heading">¶</a></h2>
+<p>Openrc servis dosyaları basit birer <strong>bash</strong> betiğidir. Bu betikler <strong>openrc-run</strong> komutu ile çalıştırılır ve çeşitli fonksiyonlardan oluşabilir.
+Servis dosyaları <strong>/etc/init.d</strong> içerisinde bulunur.
+Servisleri ayarlamak için ise <strong>/etc/conf.d</strong> içerisine aynı isimle ayar dosyası oluşturabiliriz.</p>
+<p>Çalıştırılacak komut, komut parametreleri ve <strong>pidfile</strong> dosyamızı aşağıdaki gibi belirtebiliriz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;Ornek servis&quot;</span>
+<span class="nv">name</span><span class="o">=</span><span class="s2">&quot;ornek-servis&quot;</span>
+<span class="nv">command</span><span class="o">=</span>/usr/bin/ornek-servis
+<span class="nv">command_args</span><span class="o">=</span>--parametre
+<span class="nv">pidfile</span><span class="o">=</span>/run/ornek-servis.pid
+<span class="nv">command_background</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">start_stop_daemon_args</span><span class="o">=</span><span class="s2">&quot;--quiet&quot;</span>
+<span class="nv">output_log</span><span class="o">=</span><span class="s2">&quot;/var/log/ornek-servis.log&quot;</span>
+<span class="nv">error_log</span><span class="o">=</span><span class="s2">&quot;/var/log/ornek-servis.err&quot;</span>
+</pre></div>
+</div>
+<p>Eğer bu scriptin sadece boot sırasında bir kere çalışması yetiyorsa, o zaman <strong>command_background=true</strong> ayarını kaldırın.
+OpenRC aslında &quot;oneshot&quot; türü servisleri destekler. Böyle bir senaryoda <strong>pidfile=/run/ornek-servis.pid</strong> gerek yok.
+Mesajların gözükmemesi için <strong>start_stop_daemon_args=&quot;--quiet&quot;</strong> kullanılır.</p>
+<p>Bununla birlikte <strong>start</strong>, <strong>stop</strong>, <strong>status</strong>, <strong>reload</strong>, <strong>start_pre</strong>, <strong>stop_pre</strong> gibi fonksiyonlar da yazabiliriz.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>start<span class="o">(){</span>
+<span class="w">    </span>ebegin<span class="w"> </span><span class="s2">&quot;Starting </span><span class="si">${</span><span class="nv">RC_SVCNAME</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span>start-stop-daemon<span class="w"> </span>--start<span class="w"> </span>--pidfile<span class="w"> </span><span class="s2">&quot;/run/servis.pid&quot;</span><span class="w"> </span>--exec<span class="w"> </span>/usr/bin/ornek-servis<span class="w"> </span>--parametre
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Servis bağımlılıklarını belirtmek için ise <strong>depend</strong> fonksiyonu kullanılır.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>depend<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span>need<span class="w"> </span>localmount
+<span class="w">  </span>after<span class="w"> </span>dbus
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Gezinti</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html"><strong>Yazar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#paket-derleme"><strong>Paket Derleme</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/2-yazar.html#iletisim"><strong>İletişim</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/3-onsoz.html">Ön Söz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../00.kapak/4-icindekiler.html">İçindekiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01.giris/index.html">Temel Kavramlar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06-temel-sistem-olusturma/index.html"><strong>Temel Linux Sistemi Oluşturma</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09.paket-derleme/index.html"><strong>GNU Araçlarıyla Kendi Linux Dağıtımını Hazırlamak</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../10.iso-hazirlama/index.html"><strong>ISO Hazırlama</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../12.sistemin-calistirma-inceleme/index.html">Oluşan Sistemin Çalıştırılması İncelenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../13.paket-sistemi-tasarlama/index.html"><strong>Paket Sistemi Tasarlama</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Yardımcı Konular</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="00-apt.html"><strong>apt Paket Sistemi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-chroot.html"><strong>Chroot Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-derleme-t%C3%BCrleri.html"><strong>Kaynak Kod Derleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-0.derleme-ara%C3%A7lar%C4%B1.html"><strong>Derleme Araçları</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-1.make.html"><strong>1-make</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-2.cmake.html"><strong>2-cmake</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-3.meson.html"><strong>3-meson</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-4.python.html"><strong>4-python</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-busybox.html"><strong>BusyBox</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>OpenRC</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#calistirilmasi"><strong>Çalıştırılması</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openrc-kullanimi"><strong>openrc Kullanımı</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#servis-dosyasi"><strong>Servis Dosyası</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="10-qemu.html"><strong>Qemu Kullanımı</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="100-virtualbox.html"><strong>VirtualBox</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-liveolusturma.html"><strong>Live Sistem Oluşturma   ve Sistem Kurulumu</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-modul-kmod.html"><strong>kmod Nedir?</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="30-strip.html"><strong>strip</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="38-kullaniciekleme.html"><strong>Kullanıcı Ekleme</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-github.html"><strong>github</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="39-github.html#sik-kullanilan-github-komutlari"><strong>Sık Kullanılan github Komutları</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="42-userdetect.html"><strong>X11 Kullanıcısının Tespiti</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2-kaynak.html"><strong>Kaynaklar</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-contact-sonkapak.html"><strong>Geliştiricilere Mesajımız</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-lisans.html"><strong>Lisans Bilgileri</strong></a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;distro 2023.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/15.yardimci-konular/09-openrc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
