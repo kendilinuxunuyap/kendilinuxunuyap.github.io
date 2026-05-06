@@ -28,6 +28,6 @@ sh build.sh
 mkdir /output -p
 cp -rf kitap /output
 
-cp -r build/pdf/rst2pdf.pdf /output/distro.pdf
+cp -r build/pdf/rst2pdf.pdf /output/temel-distro.pdf
 cp -r build/html/* /output
 cp robots.txt /output
